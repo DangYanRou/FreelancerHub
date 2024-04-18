@@ -1,14 +1,27 @@
 import React from "react";
 import fileUploadImage from "../Gallery/fileupload.png"; 
 import '../styles/ProposalForm.css';
+import { useHistory } from 'react-router-use-history'
 
 
 export const ProposalForm = () =>{
+    const history = useHistory()
+    const handleSubmit = (event) => {
+        
+        
+        event.preventDefault();
+        const isConfirmed = window.confirm("Are you sure you want to submit?");
+        if (isConfirmed) {
+            history.push('/projects-applied')
+        } else {
+            console.log("Submission cancelled!");
+        }
+    }
 
     return (
         <div>
             <h1>Proposal Submission</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="fullName">*Full Name</label>
                 <input type="text" id="fullName" name="fullname"/>
 
@@ -19,19 +32,21 @@ export const ProposalForm = () =>{
                 <input type="number" id="bids" name="bids"/>
 
                 <label htmlFor="cv" className="file-upload-label">
-                <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" />
-                    Upload Your CV Here</label>
+                    <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" />
+                    Upload Your CV Here
+                </label>
                 <input type="file" id="cv" name="cv" className="file-upload-input" />
 
                 <label htmlFor="proposal" className="file-upload-label">
-                <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" />
-                    Upload Your Proposal Here</label>
+                    <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" />
+                    Upload Your Proposal Here
+                </label>
                 <input type="file" id="proposal" name="proposal" className="file-upload-input" />
 
                 <label htmlFor="notes">Notes</label>
                 <textarea id="notes" name="notes" className="longtextinput"></textarea>
                 
-                <button>Submit</button>
+                <button type="submit">Submit</button>
             </form>
         </div>
     )
