@@ -8,7 +8,7 @@ import { ProposalForm } from './ProposalFormComponents/ProposalForm';
 function App() {
   return (
     <div className="App">
-      <h1>My Form</h1>
+      <h1>Proposal Submission</h1>
       <ProposalForm/>
     </div>
   );

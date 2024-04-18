@@ -9,6 +9,7 @@ label{
   font-weight: bold;
   display: flex;
   margin-bottom: 5px;
+  color: #213E60;
 }
 
 input[type="text"],
@@ -20,7 +21,7 @@ input[type="data"]{
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42;
-  color: #fff;
+  color: #213E60;
   background-image: none;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -37,28 +38,45 @@ button{
   font-weight: bold;
 }
 
+.longtextinput {
+  display: block;
+  font-family: inherit;
+  min-height: 200px;
+  width: 400px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42;
+  color: #213e60;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 30px;
+}
+
 
 .file-upload-input {
   display: none;
+  align-items: center;
 }
 
 /* Style the label element */
 .file-upload-label {
-  display: block;
+  display: flex; /* Use flexbox layout */
+  align-items: center; /* Align items vertically */
   cursor: pointer;
-  padding: 30px;
+  padding: 15px; /* Adjust padding as needed */
   border: none;
   border-radius: 5px;
   background-color: #F0F7F9;
-  color: #213E60;
+  color: #213e60;
   font-weight: bold;
-  text-align: center;
+  text-align: left;
   margin-bottom: 20px;
 }
 
 /* Style the file upload icon */
 .file-upload-icon {
-  width: 50px; /* Adjust the size as needed */
-  height: 50px; /* Adjust the size as needed */
-  margin-right: 5px; /* Add spacing between the icon and text */
+  width: 50px; 
+  height: 50px; 
+  margin-right: 10px; /* Adjust margin as needed */
 }
