@@ -1,9 +1,17 @@
-  #root{
-    width: auto;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-  }
+
+
+form {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+}
+
+input,
+label {
+  margin: 0;
+  padding: 0;
+}
 
   label{
     font-weight: bold;

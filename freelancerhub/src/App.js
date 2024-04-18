@@ -1,16 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
-
 import React from 'react';
-import { ProposalForm } from './pages/ProposalForm';
 import NavigationBarFreelancer from './pages/NavigationBarFreelancer';
+import {Routes, Route } from 'react-router-dom';
+import ProposalForm from './pages/ProposalForm';
 
 function App() {
   return (
     <div className="App">
       <NavigationBarFreelancer/>
-      <h1>Proposal Submission</h1>
-      <ProposalForm/>
+      <Routes>
+          <Route path="/proposal-form" element={<ProposalForm/>} ></Route>
+          {/* Add more routes as needed (change the element)*/}
+      </Routes>
     </div>
   );
 }

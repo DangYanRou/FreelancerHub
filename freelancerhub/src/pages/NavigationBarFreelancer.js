@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/NavigationBarFreelancer.css';
+
 
 const NavigationBar = () => {
   const [showSubMenu, setShowSubMenu] = useState(false);
@@ -12,7 +14,8 @@ const NavigationBar = () => {
   return (
     <nav className="navbar">
       <ul className="nav-list">
-        <li><a href="#Explore">Explore</a></li>
+        {/* Use Link component from React Router for navigation */}
+        <li><Link to="/proposal-form">Explore</Link></li>
         <li>
           <a href="#Projects" onClick={toggleSubMenu}>Projects</a>
           {/* Conditionally render the sub-menu based on the state */}
@@ -23,12 +26,22 @@ const NavigationBar = () => {
             </ul>
           )}
         </li>
-        <li><a href="#Saved">Saved</a></li>
+        <li>
+          <a href="#Saved" onClick={toggleSubMenu}>Saved</a>
+          {/* Conditionally render the sub-menu based on the state */}
+          {showSubMenu && (
+            <ul className="sub-menu">
+              <li><a href="#projectsSaved">Projects</a></li>
+              <li><a href="#clientsSaved">Clients</a></li>
+            </ul>
+          )}
+        </li>
         <li><a href="#Notification">Notification</a></li>
         <li><a href="#Profile">Profile</a></li>
         <li><a href="#LogOut">Log Out</a></li>
       </ul>
     </nav>
+    
   );
 };
 

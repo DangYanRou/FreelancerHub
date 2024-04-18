@@ -7,6 +7,7 @@ export const ProposalForm = () =>{
 
     return (
         <div>
+            <h1>Proposal Submission</h1>
             <form>
                 <label htmlFor="fullName">*Full Name</label>
                 <input type="text" id="fullName" name="fullname"/>
@@ -35,3 +36,5 @@ export const ProposalForm = () =>{
         </div>
     )
 }
+
+export default ProposalForm;
