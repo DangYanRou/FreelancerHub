@@ -1,5 +1,6 @@
 import React from "react";
 import fileUploadImage from "../Gallery/fileupload.png"; 
+import '../styles/ProposalForm.css';
 
 
 export const ProposalForm = () =>{
