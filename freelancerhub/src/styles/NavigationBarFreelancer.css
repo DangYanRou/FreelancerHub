@@ -1,3 +1,10 @@
+
+.navbar {
+  background-color: #213e60;
+  overflow: hidden;
+  width: 100%; 
+}
+
 .navbar {
   background-color: #213e60;
   overflow: hidden;
@@ -25,4 +32,29 @@
 .nav-list li a:hover {
   background-color: #F0F7F9;
   color: black;
+}
+
+.sub-menu {
+  display: none; /* Hide the sub-menu by default */
+  position: absolute;
+  background-color: #fff; /* Background color for the sub-menu */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add some shadow for a dropdown effect */
+}
+
+.nav-list li:hover .sub-menu {
+  display: block; /* Display the sub-menu when hovering over its parent */
+}
+
+.sub-menu li {
+  display: block;
+}
+
+.sub-menu li a {
+  padding: 10px; /* Adjust padding as needed */
+  color: #333; /* Text color for sub-menu items */
+  text-decoration: none;
+}
+
+.sub-menu li a:hover {
+  background-color: #f0f0f0; /* Background color when hovering over sub-menu items */
 }
