@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import '../../styles/NavigationBarClient.css';
+import '../../styles/NavigationBar.css';
 
 const NavigationBarClient = () => {
 
