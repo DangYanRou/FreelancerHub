@@ -36,7 +36,7 @@ const NavigationBar = () => {
           )}
         </li>
         <li><Link to="/freelancers/proposal-form">Notification</Link></li>
-        <li><Link to="/freelancers/proposal-form">Profile</Link></li>
+        <li><Link to="/freelancers/profile">Profile</Link></li>
         <li><Link to="/login">Log Out</Link></li>
       </ul>
     </nav>

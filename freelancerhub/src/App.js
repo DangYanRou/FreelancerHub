@@ -5,6 +5,10 @@ import ProposalForm from './pages/Freelancer/ProposalForm';
 import LoginPage from './pages/LoginPage';
 import ProjectsApplied from './pages/Freelancer/ProjectsApplied';
 import ClientLandingPage from './pages/Clients/ClientLandingPage';
+import ProposalReceivedPage from './pages/Clients/ProposalReceivedPage';
+import FreelancerProfile from './pages/Freelancer/FreelancerProfile';
+import ClientProfile from './pages/Clients/ClientProfile';
+import ProposalDetails from './pages/Clients/ProposalDetails';
 
 function App() {
   return (
@@ -26,6 +30,7 @@ function FreelancerRoutes() {
       <Route path="/" element={<FreelancerLandingPage />} />
       <Route path="projects-applied" element={<ProjectsApplied />} />
       <Route path="proposal-form" element={<ProposalForm />} />
+      <Route path="profile" element={<FreelancerProfile />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
@@ -36,6 +41,9 @@ function ClientRoutes() {
   return (
     <Routes>
       <Route path="/" element={<ClientLandingPage />} />
+      <Route path="proposal-received" element={<ProposalReceivedPage />} />
+      <Route path="profile" element={<ClientProfile />} />
+      <Route path="proposal-details" element={<ProposalDetails />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

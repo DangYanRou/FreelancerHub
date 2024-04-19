@@ -1,0 +1,110 @@
+
+
+.proposalFormReceived {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 50px;
+  }
+  
+  .proposalInputted,
+  .proposalLabel{
+    margin: 0;
+    padding: 0;
+  }
+  
+    .proposalLabel{
+      font-weight: bold;
+      display: flex;
+      margin-bottom: 5px;
+      color: #213E60;
+      width: 400px;
+    }
+    
+    .proposalInputted{
+        font-family: inherit;
+        display: block;
+        width: 400px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42;
+        color: #213E60;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        text-align: left;
+        word-wrap: break-word;
+    }
+
+    .FilesAttachedContainer{
+        display: flex;
+        flex-direction: column;
+        padding: 15px; 
+        border: none;
+        border-radius: 5px;
+        background-color: #F0F7F9;
+        color: #213e60;
+        text-align: left;
+        margin-bottom: 20px;
+        width: 400px;
+        min-height: 20px;
+    }
+
+    .linkToFileSubmitted{
+      text-decoration: none;
+      font-size: 12px;
+      color: #69ACC2;
+      margin-top: 5px;
+      text-align: center;
+    }
+
+    .proposalSubLabel{
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+
+      
+      .proposalButton {
+        background-color: #213E60;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 7px;
+        font-weight: bold;
+        margin-top: 20px;
+        min-width: 300px;
+      }
+
+      .proposalRejectButton {
+        background-color: #d4442e;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 7px;
+        font-weight: bold;
+        margin-top: 20px;
+        min-width: 300px;
+      }
+      
+    
+    
+    .proposalDetailsPageContainer {
+      display: flex;
+  }
+  
+  .left-side {
+    align-items: center; 
+    flex: 1;
+    padding-left: 100px;
+  }
+
+  .right-side {
+      align-items: center;
+      flex: 1;
+      padding-right: 100px;
+      
+  }

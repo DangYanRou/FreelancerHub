@@ -1,19 +1,19 @@
 
 
-form {
+.proposalForm {
   display: flex;
   flex-direction: column; 
   justify-content: center;
   align-items: center;
 }
 
-input,
-label {
+.proposalInput,
+.proposalLabel{
   margin: 0;
   padding: 0;
 }
 
-  label{
+  .proposalLabel{
     font-weight: bold;
     display: flex;
     margin-bottom: 5px;
@@ -21,10 +21,10 @@ label {
     width: 400px;
   }
   
-  input[type="text"],
-  input[type="email"],
-  input[type="number"],
-  input[type="data"]{
+  .proposalInput[type="text"],
+  .proposalInput[type="email"],
+  .proposalInput[type="number"],
+  .proposalInput[type="data"]{
     display: block;
     width: 400px;
     padding: 6px 12px;
@@ -37,7 +37,7 @@ label {
     margin-bottom: 20px;
   }
   
-  button{
+  .proposalSubmitButton{
     background-color: #213E60;
     color: #fff;
     border: none;
