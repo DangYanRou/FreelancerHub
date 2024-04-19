@@ -1,18 +1,17 @@
 import React from "react";
-import fileUploadImage from "../Gallery/fileupload.png"; 
-import '../styles/ProposalForm.css';
+import fileUploadImage from "../../Gallery/fileupload.png"; 
+import '../../styles/Freelancers/ProposalForm.css';
 import { useHistory } from 'react-router-use-history'
+import NavigationBar from "./NavigationBarFreelancer";
 
 
 export const ProposalForm = () =>{
     const history = useHistory()
     const handleSubmit = (event) => {
-        
-        
         event.preventDefault();
         const isConfirmed = window.confirm("Are you sure you want to submit?");
         if (isConfirmed) {
-            history.push('/projects-applied')
+            history.push('projects-applied')
         } else {
             console.log("Submission cancelled!");
         }
@@ -20,6 +19,7 @@ export const ProposalForm = () =>{
 
     return (
         <div>
+            <NavigationBar></NavigationBar>
             <h1>Proposal Submission</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="fullName">*Full Name</label>
