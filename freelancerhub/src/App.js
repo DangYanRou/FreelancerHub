@@ -5,6 +5,7 @@ import ProposalForm from './pages/Freelancer/ProposalForm';
 import LoginPage from './pages/LoginPage';
 import ProjectsApplied from './pages/Freelancer/ProjectsApplied';
 import ClientLandingPage from './pages/Clients/ClientLandingPage';
+import ClientFeedbackPage from './pages/Clients/ClientFeedbackPage';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function ClientRoutes() {
   return (
     <Routes>
       <Route path="/" element={<ClientLandingPage />} />
+      <Route path="client-feedback-page" element={<ClientFeedbackPage />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
