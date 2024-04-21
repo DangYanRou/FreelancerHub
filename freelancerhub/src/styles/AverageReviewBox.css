@@ -1,0 +1,97 @@
+.container {
+    border: 1px solid #e0e0e0;
+    width: 800px;
+    padding: 20px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center vertically inside the container */
+    margin: auto;
+    margin-top: 50px;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 20px; /* Increase if you need more space below the title */
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.content {
+    display: flex;
+    width: 100%;
+    justify-content: center; /* Center everything horizontally */
+    align-items: center;
+    margin-bottom: 20px; 
+  
+}
+
+.avgNumContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3em; /* Consider reducing or removing this gap */
+    margin-left:10px;
+}
+
+.circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid #4CAF50;
+    margin-bottom: 5px; /* Reduced margin for less space between circle and totalRating */
+}
+
+.avgNum {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 0;
+}
+
+.totalRating {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 10px; /* Reduced margin for less space between totalRating and rating bars */
+}
+
+.ratingBarContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    margin-left: 20px; /* Consider adjusting if needed */
+}
+
+.ratingBar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%; /* This can be adjusted for aesthetic preference */
+    margin-bottom: 5px; /* Adjust the margin as needed */
+}
+
+.BarBase {
+    height: 10px;
+    width: 90%; /* Full width of its container */
+    background-color: #ddd;
+    border-radius: 5px;
+}
+
+.BarOverlay {
+    height: 10px;
+    background: linear-gradient(to right, #4CAF50, #2196F3);
+    border-radius: 5px;
+}
+
+.ratingLabel, .count {
+    flex-shrink: 0;
+    min-width: 20px;
+    text-align: center;
+    white-space: nowrap;
+}
