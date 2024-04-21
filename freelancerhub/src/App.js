@@ -9,6 +9,13 @@ import ProposalReceivedPage from './pages/Clients/ProposalReceivedPage';
 import FreelancerProfile from './pages/Freelancer/FreelancerProfile';
 import ClientProfile from './pages/Clients/ClientProfile';
 import ProposalDetails from './pages/Clients/ProposalDetails';
+import FreelancerExplore from './pages/Freelancer/FreelancerExplore';
+import CreateProjectDetail from './pages/Clients/CreateProjectDetail';
+import CreateProjectDescription from './pages/Clients/CreateProjectDescription';
+import CreateProjectPreferred from './pages/Clients/CreateProjectPreferred';
+import CreateProjectInvite from './pages/Clients/CreateProjectInvite';
+import CreateProjectPreview from './pages/Clients/CreateProjectPreview';
+import './tailwind.css';
 
 function App() {
   return (
@@ -31,6 +38,7 @@ function FreelancerRoutes() {
       <Route path="projects-applied" element={<ProjectsApplied />} />
       <Route path="proposal-form" element={<ProposalForm />} />
       <Route path="profile" element={<FreelancerProfile />} />
+      <Route path="Explore" element={<FreelancerExplore />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
@@ -44,6 +52,11 @@ function ClientRoutes() {
       <Route path="proposal-received" element={<ProposalReceivedPage />} />
       <Route path="profile" element={<ClientProfile />} />
       <Route path="proposal-details" element={<ProposalDetails />} />
+      <Route path="post-project" element={<CreateProjectDetail />} />
+      <Route path="post-project-description" element={<CreateProjectDescription />} />
+      <Route path="post-project-preferred" element={<CreateProjectPreferred />} />
+      <Route path="post-project-invite" element={<CreateProjectInvite />} />
+      <Route path="post-project-preview" element={<CreateProjectPreview />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

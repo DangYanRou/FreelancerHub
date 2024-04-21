@@ -1,30 +1,30 @@
 
 
-.proposalForm {
+.proposal-form form {
   display: flex;
   flex-direction: column; 
   justify-content: center;
   align-items: center;
 }
 
-.proposalInput,
-.proposalLabel{
+.proposal-form input,
+.proposal-form label {
   margin: 0;
   padding: 0;
 }
 
-  .proposalLabel{
+.proposal-form label{
     font-weight: bold;
     display: flex;
     margin-bottom: 5px;
     color: #213E60;
     width: 400px;
   }
-  
-  .proposalInput[type="text"],
-  .proposalInput[type="email"],
-  .proposalInput[type="number"],
-  .proposalInput[type="data"]{
+
+  .proposal-form input[type="text"],
+  .proposal-form input[type="email"],
+  .proposal-form input[type="number"],
+  .proposal-form input[type="data"]{
     display: block;
     width: 400px;
     padding: 6px 12px;
@@ -36,8 +36,8 @@
     border-radius: 4px;
     margin-bottom: 20px;
   }
-  
-  .proposalSubmitButton{
+
+  .proposal-form button{
     background-color: #213E60;
     color: #fff;
     border: none;

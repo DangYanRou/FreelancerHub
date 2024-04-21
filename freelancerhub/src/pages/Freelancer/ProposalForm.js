@@ -18,6 +18,8 @@ export const ProposalForm = () =>{
     };
 
     return (
+        <div className="proposal-form">
+
         <div>
             <NavigationBar />
             <h1>Proposal Submission</h1>
