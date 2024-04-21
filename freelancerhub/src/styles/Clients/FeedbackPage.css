@@ -3,18 +3,6 @@
     color: #213e60;
 }
 
-.feedbackHeader {
-    padding: 20px;
-    border-bottom: #d3d3d3 1px solid;
-
-}
-
-.feedbackHeader h1 {
-    font-size: 30px;
-    font-weight: bold;
-    text-align: center;
-}
-
 .title {
     margin: 30px auto; 
     max-width: 600px; 
@@ -74,7 +62,7 @@
     opacity: 0;
     border-radius: 50%; /* Ensure it matches the parent's border-radius */
     transition: opacity 0.3s ease; /* Transition for the opacity */
-    z-index: 0; /* Ensures this layer is below the content */
+    z-index: -1; /* Ensures this layer is below the content */
 }
 
 .rateNum {
@@ -85,8 +73,9 @@
     color: inherit; /* Ensures text color transitions with the parent */
 }
 
-.rateNumBorder:hover::before {
-    opacity: 1; /* Change opacity on hover to show the gradient */
+.rateNumBorder:hover::before , .rateNumberBorder.selected{
+    opacity: 1; 
+    z-index: 0;
 }
 
 .rateNum {
@@ -126,6 +115,7 @@
     overflow: hidden; /* Needed for pseudo-element clipping */
     transition: background-color 0.3s ease; /* Smooth color transition */
     z-index:1;
+    margin-bottom: 50px;
 }
 
 .submitFeedbackBtn::before {
@@ -150,4 +140,20 @@
     color:#213e60;
 }
 
+.form{
+    border: 1px solid #d3d3d3;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    display: block;
+}
 
+
+.notification {
+    color: green;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  

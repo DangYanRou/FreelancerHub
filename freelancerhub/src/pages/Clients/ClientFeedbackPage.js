@@ -1,42 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import NavigationBarClient from './NavigationBarClient';
 import '../../styles/Clients/FeedbackPage.css';
 
-
 function ClientFeedbackPage() {
+  const [rating, setRating] = useState(null);
+  const [feedback, setFeedback] = useState('');  // Manage textarea input
+  const [showSubmitted, setShowSubmitted] = useState(false);
+
+  const handleRating = (num) => {
+    setRating(num);
+  };
+
+  const handleFeedbackChange = (event) => {
+    setFeedback(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (rating && feedback) {  // Check both rating and feedback are provided
+      setShowSubmitted(true);
+    } else {
+      alert('Please provide both a rating and your feedback!');
+    }
+  };
+
   return (
     <div>
       <NavigationBarClient/>
-      <div className='feedbackHeader'>
-        <h1>Submit Feedback</h1>
-      </div>
-
-      <div className="title">
-        <h2>How was your experience?</h2>
-        <p className="description">Let your collaborator know your feeling in this collaboration</p>
-      </div>
-        <p className="question">How satisfied are your in this collaboration?</p>
-        <form>
-            <div className="rating">
-                <div className="rateNumBorder">
-                    <div className="rateNum">1</div>
-                </div>
-                <div className="rateNumBorder">
-                    <div className="rateNum">2</div>
-                </div>
-                <div className="rateNumBorder">
-                    <div className="rateNum">3</div>
-                </div>
-                <div className="rateNumBorder">
-                    <div className="rateNum">4</div>
-                </div>
-                <div className="rateNumBorder">
-                    <div className="rateNum">5</div>
-                </div>
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="title">
+          <h2>How was your experience?</h2>
+          <p className="description">Let your collaborator know your feelings in this collaboration</p>
+        </div>
+        <p className="question">How satisfied are you in this collaboration?</p>
+        <div className="rating">
+          {[1, 2, 3, 4, 5].map((num) => (
+            <div key={num} className={`rateNumBorder ${rating === num ? 'selected' : ''}`} 
+            onClick={() => handleRating(num)}>
+                <div className="rateNum">{num}</div>
             </div>
-            <textarea className="feedback" placeholder="Please tell us in few words"></textarea>
-            <button className="submitFeedbackBtn">Submit</button>
-        </form>
+          ))}
+        </div>
+        {rating && <p>You have rated {rating} out of 5.</p>}
+        <textarea
+          className="feedback"
+          placeholder="Please tell us in a few words"
+          value={feedback}
+          onChange={handleFeedbackChange}
+          required
+        ></textarea>
+        <button className="submitFeedbackBtn" type="submit">Submit</button>
+        {showSubmitted && <div className="notification">Your feedback has been submitted!</div>}
+      </form>
     </div>
   );
-}export default ClientFeedbackPage;
+}
+
+export default ClientFeedbackPage;
