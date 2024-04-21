@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import ProjectsApplied from './pages/Freelancer/ProjectsApplied';
 import ClientLandingPage from './pages/Clients/ClientLandingPage';
 import ClientFeedbackPage from './pages/Clients/ClientFeedbackPage';
+import FreelancerFeedbackPage from './pages/Freelancer/FreelancerFeedbackPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function FreelancerRoutes() {
       <Route path="/" element={<FreelancerLandingPage />} />
       <Route path="projects-applied" element={<ProjectsApplied />} />
       <Route path="proposal-form" element={<ProposalForm />} />
+      <Route path="freelancer-feedback-page" element={<FreelancerFeedbackPage />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
