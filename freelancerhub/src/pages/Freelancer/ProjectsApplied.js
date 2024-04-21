@@ -16,7 +16,7 @@ const ProjectDetails =({project}) => {
   return(
     <div className="project-details">
      
-      <Link to="/project-details" className="link">{project.title}</Link><br></br>
+      <Link to="/freelancers/project-details" className="link">{project.title}</Link><br></br>
       <a href="#" className="hover-profileLink">{project.client}</a>
           <p id="category">{project.category}</p>
           <p>{project.location}</p>
@@ -128,7 +128,7 @@ const handleCloseModal = () => {
   return (
     <div className="ProjectsApplied">
       <NavigationBar></NavigationBar>
-      <h1 className="page-header">Projects Applied</h1>
+      <h2 className="page-header">Projects Applied</h2>
       <div className="centered-container">
    <ProjectList projects={projects} onProjectClick={handleProjectClick}   selectedProjectId={selectedProject ? selectedProject.id : null}/>
    </div>

@@ -2,7 +2,7 @@ import NavigationBar from './NavigationBarFreelancer';
 
 const ProjectDetailsPage = () => {
   return (
-    <div>
+    <div className="ProjectDetailsPage">
       <NavigationBar></NavigationBar>
        
     </div>
