@@ -7,6 +7,8 @@ import ProjectsApplied from './pages/Freelancer/ProjectsApplied';
 import ClientLandingPage from './pages/Clients/ClientLandingPage';
 import ClientFeedbackPage from './pages/Clients/ClientFeedbackPage';
 import FreelancerFeedbackPage from './pages/Freelancer/FreelancerFeedbackPage';
+import FreelancerAverageReviewBox from './pages/Freelancer/FreelancerAverageReviewBox';
+import ClientAverageReviewBox from './pages/Clients/ClientAverageReviewBox';
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function FreelancerRoutes() {
       <Route path="projects-applied" element={<ProjectsApplied />} />
       <Route path="proposal-form" element={<ProposalForm />} />
       <Route path="freelancer-feedback-page" element={<FreelancerFeedbackPage />} />
+      <Route path="freelancer-average-review-box" element={<FreelancerAverageReviewBox />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
@@ -40,6 +43,7 @@ function ClientRoutes() {
     <Routes>
       <Route path="/" element={<ClientLandingPage />} />
       <Route path="client-feedback-page" element={<ClientFeedbackPage />} />
+      <Route path="client-average-review-box" element={<ClientAverageReviewBox />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

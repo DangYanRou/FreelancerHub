@@ -47,7 +47,7 @@ function FreelancerFeedbackPage() {
           placeholder="Please tell us in a few words"
           value={feedback}
           onChange={handleFeedbackChange}
-          required
+         
         ></textarea>
         <button className="submitFeedbackBtn" type="submit">Submit</button>
         {showSubmitted && <div className="notification">Your feedback has been submitted!</div>}

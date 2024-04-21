@@ -14,6 +14,7 @@ function ClientLandingPage() {
       <NavigationBarClient/>
       <div>
          <button onClick={() => navigate('./client-feedback-page')}>Submit feedback</button>
+         <button onClick={() => navigate('./client-average-review-box')}>Show average review</button>
       </div>
     </div>
 

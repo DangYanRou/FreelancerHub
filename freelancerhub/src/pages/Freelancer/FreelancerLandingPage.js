@@ -9,6 +9,7 @@ function FreelancerLandingPage() {
       <NavigationBarFreelancer/>
       <div>
          <button onClick={() => navigate('./freelancer-feedback-page')}>Submit feedback</button>
+         <button onClick={() => navigate('./freelancer-average-review-box')}>Show average review</button>
       </div>
     </div>
   );
