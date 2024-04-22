@@ -32,6 +32,7 @@ import FreelancerNotificationPage from './pages/Freelancer/FreelancerNotificatio
 import FreelancerTemporaryProfile from './pages/Freelancer/FreelancerTemporaryProfile';
 import ClientNotificationPage from './pages/Clients/ClientNotificationPage.js';
 import Register from './pages/LoginPage/Register';
+import ClientTemporaryProfile from './pages/Clients/ClientTemporaryProfile';
 
 
 
@@ -92,6 +93,7 @@ function ClientRoutes() {
       <Route path="client-feedback-page" element={<ClientFeedbackPage />} />
       <Route path="client-average-review-box" element={<ClientAverageReviewBox />} />
       <Route path="notifications" element={<ClientNotificationPage />} />
+      <Route path="client-temporary-profile" element={<ClientTemporaryProfile />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
       <Route path="saved" element={<ClientSaved/>} />
