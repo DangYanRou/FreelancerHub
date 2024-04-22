@@ -6,6 +6,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
 import Rating from "../../pages/Freelancer/FreelancerAverageReviewBox";
+import StarRating from "../../Components/Rating";
 
 const FreelancerProfile = () => {
   const [showAbout, setShowAbout] = useState(true);
@@ -179,15 +180,15 @@ const FreelancerProfile = () => {
               <h2 className='title'>Reviews</h2>
               <div className='reviews_container'>
                 <div className='review_details'>
-                  <h3 className='review_name'>Agnes</h3><Rating className='review_rating'></Rating>
+                  <h3 className='review_name'>Agnes</h3><StarRating className='review_rating'></StarRating>
                   <p>Nice Work! Keep it up</p>
                 </div>
                 <div className='review_details'>
-                  <h3 className='review_name'>Bill Gates</h3><Rating className='review_rating'></Rating>
+                  <h3 className='review_name'>Bill Gates</h3><StarRating className='review_rating'></StarRating>
                   <p>Very responsive and work is completed on time. Definitely will work with you again soon!</p>
                 </div>
                 <div className='review_details'>
-                  <h3 className='review_name'>Zus Coffee Sdn. Bhd.</h3><Rating className='review_rating'></Rating>
+                  <h3 className='review_name'>Zus Coffee Sdn. Bhd.</h3><StarRating className='review_rating'></StarRating>
                   <p></p>
                 </div>
               </div>
