@@ -24,6 +24,7 @@ const cellStyle = {
 };
 
 const rows = [
+  createData('Elon Musk','elonmusk@gmail.com','Software Engineer', 4.0),
   createData('Ollie Bearman','ollie38@gmail.com','Software Engineer', 5.0),
   createData('Charles Leclerc','charles16@gmail.com','Data Science Engineer', 4.5),
   createData('Carlos Sainz','sainz55@gmail.com','Frontend Developer', 4.0),
@@ -47,7 +48,7 @@ export default function BasicTable() {
 
   return (
     <>
-    <TableContainer component={Paper} className='font-poppin'>
+    <TableContainer component={Paper} className='font-poppin ml-[70px] ' style={{maxWidth:1500}}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
