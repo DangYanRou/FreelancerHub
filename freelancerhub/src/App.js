@@ -29,6 +29,7 @@ import ProjectCompletedPage from './pages/Freelancer/ProjectCompletedPage';
 import FreelancerSaved from './pages/Freelancer/FreelancerSaved';
 import ClientSaved from './pages/Clients/ClientSaved';
 import FreelancerNotificationPage from './pages/Freelancer/FreelancerNotificationPage.js';
+import ClientNotificationPage from './pages/Clients/ClientNotificationPage.js';
 
 
 
@@ -87,6 +88,7 @@ function ClientRoutes() {
       <Route path="profile" element={<ClientProfile/>}/>
       <Route path="client-feedback-page" element={<ClientFeedbackPage />} />
       <Route path="client-average-review-box" element={<ClientAverageReviewBox />} />
+      <Route path="notifications" element={<ClientNotificationPage />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
       <Route path="saved" element={<ClientSaved/>} />
