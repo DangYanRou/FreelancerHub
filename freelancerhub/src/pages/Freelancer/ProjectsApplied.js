@@ -25,7 +25,7 @@ const ProjectDetails =({project}) => {
           <p id="description">{project.description}</p>
           <div>
             <h3 id="key-requirement">Key Requirements:</h3>
-            <ul className="list">
+            <ul className="kr-list">
               {project.items.map((item,index)=>(
                 <li key={index}>{item}</li>
               ))}
@@ -53,7 +53,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
       <div className="modal-overlay" onClick={onClose}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>View Application</h2>
+              <h2 id className='view-application-header'>View Application</h2>
             <button className="close-btn" onClick={onClose}><GrFormClose /></button>
             </div>
              <ProjectDetails project={project}/>{/* Pass project to ProjectDetails */}
@@ -128,7 +128,7 @@ const handleCloseModal = () => {
   return (
     <div className="ProjectsApplied">
       <NavigationBar></NavigationBar>
-      <h2 className="page-header">Projects Applied</h2>
+      <h2 className="jl-page-header">Projects Applied</h2>
       <div className="centered-container">
    <ProjectList projects={projects} onProjectClick={handleProjectClick}   selectedProjectId={selectedProject ? selectedProject.id : null}/>
    </div>

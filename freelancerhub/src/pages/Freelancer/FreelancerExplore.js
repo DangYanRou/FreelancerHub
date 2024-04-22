@@ -242,8 +242,11 @@ const FreelancerExplore = () => {
       
     </div>
   </div>
+  
 </div>
     </div>
+
+    
   );
 };
 
