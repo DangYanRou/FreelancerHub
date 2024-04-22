@@ -1,0 +1,13 @@
+
+.page-header{
+    margin-top: 2%;
+    margin-left: 43%;
+}
+.centered-container {
+    margin-top: 2%;
+    display: flex;
+    justify-content: center; /* Aligns items horizontally */
+    align-items: center; /* Aligns items vertically */
+    overflow-y: auto;
+}
+

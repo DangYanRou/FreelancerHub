@@ -1,0 +1,136 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    outline:none;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.centered-container {
+    display: flex;
+    justify-content: center; /* Aligns items horizontally */
+    align-items: center; /* Aligns items vertically */
+    overflow-y: auto;
+}
+
+.card{
+    width:700px;
+    position: relative;
+    flex-direction: column;
+    align-items: flex-start;
+    padding:20px;
+    background-color:#F0F7F9;
+    display: flex;
+    box-shadow: rgba(0,0,0,0.30) 0px 1px 3px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.apply-status{
+    margin-top: 20px;
+    font-style: italic;
+    color: green;
+}
+.complete-date{
+    font-style: italic;
+    color: grey;
+}
+
+.card:hover{
+    box-shadow:rgba(0,0,0,0.24)0px 3px 8px;
+}
+
+.card.selected {
+    background-color:#e7f9ff ;
+    ; /* Updated background color when selected */
+  }
+
+.card h2{
+    font-size: 22px;
+}
+.card p{
+    font-size: 16px;
+}
+
+.hover-profileLink {
+    font-size: 18px;
+    color: black; /* Set the text color */
+    text-decoration: none;
+     /* Remove default underline */
+     
+}
+
+.hover-profileLink:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-direction: row;
+    bottom: 0;
+    right: 0;
+    gap: 10px;
+    margin-right:5px;
+   
+}
+
+.buttonContainer button {
+    width: 200px; /* Make button width 100% */
+    height:40px;/* Limit button width */
+    color:white;
+    border: none;
+    width:200px; 
+    border-radius: 60px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #69acc2; /* Default solid background color */
+    cursor: pointer; /* Add cursor pointer */
+    position: relative;
+    overflow: hidden; /* Needed for pseudo-element clipping */
+    transition: background-color 0.3s ease; /* Smooth color transition */
+    z-index:1;
+    margin-bottom: 25px;
+}
+
+.buttonContainer button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(90deg, #a1c4fd, #c2e9fb); /* Gradient background */
+    opacity: 0;
+    border-radius: 60px; /* Match the border radius of the button */
+    transition: opacity 0.3s ease; /* Transition for the opacity */
+    z-index:-1;/* Ensure this layer is below the content */
+}
+
+.buttonContainer button:hover::before {
+    opacity: 1; /* Change opacity on hover to show the gradient */
+}
+
+.buttonContainer button:hover{
+    color:#213e60;
+}
+
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-top:5px;
+  }
+
+  .bottom-row p {
+    margin-top: -30px; /* Adjust the value as needed */
+    text-align: left;
+    color:green;
+}
+
+
+  
+ 

@@ -6,7 +6,7 @@ import NavigationBar from "./NavigationBarFreelancer";
 
 export const ProposalForm = () =>{
     const history = useHistory();
-
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         const isConfirmed = window.confirm("Are you sure you want to submit?");
@@ -34,17 +34,17 @@ export const ProposalForm = () =>{
                 <label className="proposalLabel" htmlFor="bids">*Bids(RM)</label>
                 <input className="proposalInput" type="number" id="bids" name="bids"/>
 
-                <label className="proposalLabel file-upload-label">
+                <label className="file-upload-label">
                     <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" />
                     Upload Your CV Here
-                </label>
                 <input className="file-upload-input" type="file" id="cv" name="cv" />
+                </label>
 
-                <label className="proposalLabel file-upload-label">
+                <label className="file-upload-label">
                     <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" />
                     Upload Your Proposal Here
-                </label>
                 <input className="file-upload-input" type="file" id="proposal" name="proposal" />
+                </label>
 
                 <label className="proposalLabel" htmlFor="notes">Notes</label>
                 <textarea className="longtextinput" id="notes" name="notes"></textarea>

@@ -1,0 +1,159 @@
+* {
+    font-family: 'Roboto', sans-serif;
+    color: #213e60;
+}
+
+.title {
+    margin: 30px auto; 
+    max-width: 600px; 
+}
+
+.title h2 {
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0; 
+}
+
+.title p {
+    font-size: 16px; /* Make the description text smaller */
+    text-align: center;
+    margin-top: 10px;
+}
+
+.question {
+    font-size: 18px; /* Make the question text smaller */
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px; /* Increase top margin */
+}
+
+.rating {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    gap: 3rem;
+}
+
+.rateNumBorder {
+    position: relative;
+    overflow: hidden; /* Ensures the pseudo-element doesn't exceed the border limits */
+    border: 1px solid #d3d3d3;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fafafa; /* Initial background color */
+    cursor: pointer;
+    transition: color 0.3s ease; /* Smoothly transition the text color */
+}
+
+.rateNumBorder::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(90deg, #a1c4fd, #c2e9fb); /* Gradient background */
+    opacity: 0;
+    border-radius: 50%; /* Ensure it matches the parent's border-radius */
+    transition: opacity 0.3s ease; /* Transition for the opacity */
+    z-index: -1; /* Ensures this layer is below the content */
+}
+
+.rateNum {
+    position: relative; /* Ensures the text appears above the pseudo-element */
+    z-index: 1; /* Higher z-index so text is on top */
+    font-size: 24px;
+    font-weight: bold;
+    color: inherit; /* Ensures text color transitions with the parent */
+}
+
+.rateNumBorder:hover::before , .rateNumberBorder.selected{
+    opacity: 1; 
+    z-index: 0;
+}
+
+.rateNum {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.feedback {
+    width: 100%;
+    max-width: 600px;
+    height: 150px;
+    border: 1px solid #d3d3d3;
+    border-radius: 10px;
+    font-size: 16px; /* Adjust font size */
+    padding: 10px 20px; /* Add padding to align text properly */
+    margin: 20px auto;
+}
+
+.feedback::placeholder {
+    color: #999;
+    font-size: 14px; /* Reduce font size */
+    padding-left: 10px; /* Adjust padding */
+}
+
+.submitFeedbackBtn {
+    width: 100%; /* Make button width 100% */
+    max-width: 500px; /* Limit button width */
+    color:white;
+    border: none;
+    border-radius: 60px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 25px;
+    background-color: #69acc2; /* Default solid background color */
+    cursor: pointer; /* Add cursor pointer */
+    position: relative;
+    overflow: hidden; /* Needed for pseudo-element clipping */
+    transition: background-color 0.3s ease; /* Smooth color transition */
+    z-index:1;
+    margin-bottom: 50px;
+}
+
+.submitFeedbackBtn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(90deg, #a1c4fd, #c2e9fb); /* Gradient background */
+    opacity: 0;
+    border-radius: 60px; /* Match the border radius of the button */
+    transition: opacity 0.3s ease; /* Transition for the opacity */
+    z-index:-1;/* Ensure this layer is below the content */
+}
+
+.submitFeedbackBtn:hover::before {
+    opacity: 1; /* Change opacity on hover to show the gradient */
+}
+
+.submitFeedbackBtn:hover{
+    color:#213e60;
+}
+
+.form{
+    border: 1px solid #d3d3d3;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    display: block;
+}
+
+
+.notification {
+    color: green;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
