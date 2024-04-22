@@ -4,8 +4,11 @@
 
 .upperProfile{
     display: flex;
-    justify-content: center;
+    flex-direction:column;
+    justify-content: space-around;
     align-items: center;
+   
+    
 }
 
 .profileCard{
@@ -13,7 +16,8 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     border-radius: 6px;
     align-items: center;
-    margin: 20px 40px 40px 40px;
+    margin: 30px 40px 30px 40px;
+    width:80%;
 }
 
 .profileCard img{
@@ -25,6 +29,7 @@
 ClientProfile.profile_text{
     text-align: left;
     margin-bottom: 0px;
+
 }
 
 .profile_text .name-location {
@@ -33,8 +38,8 @@ ClientProfile.profile_text{
     margin-bottom: 5px;
 }
 
-.profileCard button{
-    margin:50px 50px 0px 0px;
+.profileCard button {
+    margin: 50px 50px 0px auto; /* Change this line */
     align-self: baseline;
     border: rgb(255,255,255);
     font-size: 14px;
@@ -49,6 +54,7 @@ ClientProfile.profile_text{
 .profileCard button:hover{
     cursor: pointer;
     background: rgb(105,172,194);
+
 }
 
 .clientAbout_details{
@@ -95,6 +101,22 @@ ClientProfile.profile_text{
     border-color: (163,163,163);
     text-align: center;
 } 
+
+.rate {
+    padding-bottom: 30px;
+    width:80%;
+}
+.lowerProfile {
+    width: 90%; /* This will make the item have the same width as upperProfile */
+    margin: auto; /* This will center the item */
+}
+
+.nav-links{
+   width:96%;
+   margin:auto;
+   padding-bottom:10px;
+}
+
 /* .client_content{
     overflow: hidden;
 } */
@@ -142,7 +164,7 @@ ClientProfile.profile_text{
     font-size: 12px;
 }
 
-.rating .rate {
+ .rate {
     padding-bottom: 10px;
 }
 
