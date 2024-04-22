@@ -1,8 +1,8 @@
 import React from 'react';
 import NavigationBarClient from './NavigationBarClient';
-import ProjectList from '../../components/ProjectList';
+import ProjectList from '../../Components/ProjectList';
 import { useNavigate } from 'react-router-dom';
-import CompletedProjectList from '../../components/CompletedProjectList';
+import CompletedProjectList from '../../Components/CompletedProjectList';
 
 const ProjectCompletedPageClient = () => {
   const navigate = useNavigate();
