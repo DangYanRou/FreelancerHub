@@ -9,8 +9,8 @@ import NavigationBarClients from './NavigationBarClient';
 // ProgressBar component to display the stages of project creation
 const ProgressBar = ({ stages }) => {
     return (
-      <div className="flex justify-between w-full mb-8 border py-4">
-        {stages.map((stage, index) => (
+      <div className="flex justify-between w-10/12 mb-8 border py-4 mx-auto">
+      {stages.map((stage, index) => (
           <div key={index} className={`stage-container w-1/4 ${index !== stages.length - 1 ? 'border-r' : ''}`}>
           <div className="stage flex flex-col items-center px-4">
               <div className="icon w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: stage.title === 'Invite' ? '#213E60' : '#E9EBFD' }}>
@@ -73,8 +73,8 @@ const CreateProjectInvite= () => {
     <div className="flex flex-col items-start justify-center">
                         <NavigationBarClients/>
 
-      <h1 className="text-4xl mb-5 mt-10 font-bold pl-10">Create Project</h1>
-      <div className="w-full h-px bg-black mb-5"></div>
+      <h1 className="text-4xl mb-5 mt-10 font-bold pl-16">Create Project</h1>
+      <div className="w-11/12 h-px bg-black mb-5 mx-auto"></div>
       <ProgressBar stages={stages} />
       <div style={{ backgroundColor: '#69ACC2' }} className="w-screen max-w-full h-8/10">
         <div className="bg-white w-4/5 rounded-md my-12 mx-auto text-left">
