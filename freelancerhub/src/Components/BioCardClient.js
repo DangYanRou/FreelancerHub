@@ -11,8 +11,12 @@ import CardActions from '@mui/joy/CardActions';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import SvgIcon from '@mui/joy/SvgIcon';
+import { useNavigate } from 'react-router-dom';
 
 export default function BioCardClient() {
+
+  const navigate = useNavigate();
+
   return (
     <Card
       sx={{
@@ -36,9 +40,9 @@ export default function BioCardClient() {
         >
           PRO
         </Chip>
-        <Typography level="title-lg">Deon Mak</Typography>
+        <Typography level="title-lg">Agnes Noris</Typography>
         <Typography level="body-sm" sx={{ maxWidth: '24ch' }}>
-          Hello, this is Deon. 
+          Hello, this is Agnes. 
         </Typography>
         <Box
           sx={{
@@ -105,7 +109,7 @@ export default function BioCardClient() {
         <CardActions buttonFlex="1">
           <ButtonGroup variant="outlined" sx={{ bgcolor: 'background.surface' }}>
             <Button>Remove</Button>
-            <Button>Go To Profile</Button>
+            <Button onClick={()=>navigate('/clients/profile')}>Go To Profile</Button>
           </ButtonGroup>
         </CardActions>
       </CardOverflow>

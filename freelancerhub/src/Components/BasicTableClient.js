@@ -24,7 +24,7 @@ const cellStyle = {
 };
 
 const rows = [
-    createData('Deon Mak', 'deonmak07@gmail.com', '221-126-6527', 4.5),
+    createData('Agnes Noris', 'agnes07@gmail.com', '221-126-6527', 4.5),
   createData('Lenee Abrahamowitcz', 'labrahamowitcz1@yale.edu', '106-134-7086', 0.6),
   createData('Randene Carreyette', 'rcarreyette2@myspace.com', '177-154-2391', 1.0),
   createData('Silvester Zuker', 'szuker3@jimdo.com', '758-470-5778', 1.0),
@@ -72,7 +72,7 @@ export default function BasicTableClient() {
 
   return (
     <>
-    <TableContainer component={Paper} className='font-poppin ml-[70px] ' style={{maxWidth:1500}}>
+    <TableContainer component={Paper} className='font-poppin'>
       <Table sx={{ minWidth: 650}} aria-label="simple table">
         <TableHead>
           <TableRow>

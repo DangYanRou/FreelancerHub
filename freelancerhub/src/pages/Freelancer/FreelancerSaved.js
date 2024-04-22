@@ -3,7 +3,7 @@ import NavigationBar from './NavigationBarFreelancer';
 import Heading from '../../components/Heading';
 import ProjectList from '../../components/ProjectListSaved';
 import List from '../../components/List';
-import BasicTable from '../../components/BasicTable';
+import BasicTable from '../../components/BasicTableClient';
 import { GrFormClose } from "react-icons/gr";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
