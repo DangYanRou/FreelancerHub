@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import NavigationBarClients from './NavigationBarClient';
+import Heading from '../../Components/Heading';
 
 
 
@@ -13,20 +14,20 @@ const ProgressBar = ({ stages }) => {
   return (
     <div className="flex justify-between w-10/12 mb-8 border py-4 mx-auto">
       {stages.map((stage, index) => (
-        <div key={index} className={`stage-container w-1/4 ${index !== stages.length - 1 ? 'border-r' : ''}`}>
+        <div key={index} className={`stage-container w-1/4 flex flex-col justify-between ${index !== stages.length - 1 ? 'border-r' : ''}`}>
         <div className="stage flex flex-col items-center px-4">
             <div className="icon w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: stage.title === 'Project Description' ? '#213E60' : '#E9EBFD' }}>
               <img src={stage.title === 'Project Description' ? workImage : noteImage} alt="Stage icon" />
             </div>
             <div className="title font-bold">{stage.title}</div>
-            <div>{stage.step}</div>
-          </div>
-        </div>
+            </div>
+
+            <div className="flex items-center justify-center">{stage.step}</div>
+            </div>
       ))}
     </div>
   );
 };
-
 
 const durationUnits = ['day', 'week', 'month', 'year'];
 
@@ -39,16 +40,37 @@ const workloadOptions = [
     '100% (5 days per week)'
   ];
 
-const categories = [
-    'Marketing',
+  const categories = [
+    'Accounting',
+    'Administration & Office Support',
+    'Advertising, Arts & Media',
+    'Banking & Financial Services',
+    'Call Centre & Customer Service',
+    'CEO & General Management',
+    'Community Services & Development',
+    'Construction',
+    'Consulting & Strategy',
+    'Design & Architecture',
+    'Education & Training',
+    'Engineering',
+    'Farming, Animals & Conservation',
+    'Government & Defence',
+    'Healthcare & Medical',
+    'Hospitality & Tourism',
+    'Human Resources & Recruitment',
+    'Information & Communication Technology',
+    'Insurance & Superannuation',
+    'Legal',
+    'Manufacturing, Transport & Logistics',
+    'Marketing & Communications',
+    'Mining, Resources & Energy',
+    'Real Estate & Property',
+    'Retail & Consumer Products',
     'Sales',
-    'Development',
-    'Design',
-    'Human Resources',
-    'Finance',
-    'IT',
-    'Operations',
-    'Product',
+    'Science & Technology',
+    'Self Employment',
+    'Sport & Recreation',
+    'Trades & Services',
     'Other'
   ];
   
@@ -74,22 +96,16 @@ const CreateProjectDescription = () => {
   const [startDate, setStartDate] = useState(new Date());
 
   const [jobCateInput, setJobCateInput] = useState('');
-  const [projectStartInput, setProjectStartInput] = useState('');
-  const [workloadInput, setWorkloadInput] = useState('');
 
   const [jobCateError, setJobCateError] = useState('');
-  const [projectStartError, setProjectStartError] = useState('');
-  const [workloadError, setWorkloadError] = useState('');
 
 
   const handleJobCateChange = (event) => setJobCateInput(event.target.value);
-  const handleProjectStartChange = (event) => setProjectStartInput(event.target.value);
-  const handleWorkloadChange = (event) => setWorkloadInput(event.target.value);
 
   
 
 // Check if all required fields are filled
-const allFieldsFilled = jobCateInput !== '' && projectStartInput !== '' && workloadInput !== '';
+const allFieldsFilled = jobCateInput !== '';
 
 const handleFormSubmit = (event) => {
   event.preventDefault(); 
@@ -100,23 +116,12 @@ const handleFormSubmit = (event) => {
     setJobCateError('');
   }
 
-  if (!projectStartInput) {
-    setProjectStartError('Project Start Time is required');
-  } else {
-    setProjectStartError('');
-  }
-
-  if (!workloadInput) {
-    setWorkloadError('Workloadis required');
-  } else {
-    setWorkloadError('');
-  }
 
   if (!allFieldsFilled) 
   window.alert('Required fields must be filled!');
 
   // Proceed with form submission if no errors
-  if (jobCateInput && workloadInput && projectStartInput) {
+  if (jobCateInput ) {
     navigate("/clients/post-project-preferred");
   }  
 };
@@ -135,8 +140,12 @@ const handleNextButtonClick = (event) => {
   return (
     <div className="flex flex-col items-start justify-center">
                 <NavigationBarClients/>
-      <h1 className="text-4xl mb-5 mt-10 font-bold pl-16">Create Project</h1>
-      <div className="w-11/12 h-px bg-black mb-5 mx-auto"></div>
+                <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
+                      Create Project
+          </Heading>
+
+           {/* Line divider */}
+           <hr className="border-gray-700 my-8 w-[93%] mx-auto" />
       <ProgressBar stages={stages} />
       <div style={{ backgroundColor: '#69ACC2' }} className="w-screen max-w-full h-8/10">
         <div className="bg-white w-4/5 rounded-md my-12 mx-auto text-left">
@@ -144,15 +153,16 @@ const handleNextButtonClick = (event) => {
 
         <div className="flex justify-between w-8/10 m-4">
         <div className="flex flex-col w-1/2 mr-8">
-  <label className="block text-gray-700 text-sm font-bold mb-2 " htmlFor="jobCategory">Job Category: </label>
-    <select required className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
-     id="jobCategory" value={jobCateInput} onChange={handleJobCateChange}>
-       {categories.map((category, index) => (
-        <option key={index} value={category}>
-          {category}
-        </option>
-      ))}
-    </select>
+        <label className="block text-gray-700 text-sm font-bold mb-2 " htmlFor="jobCategory">Project Category: </label>
+<select required className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
+id="projectCategory" value={jobCateInput} onChange={handleJobCateChange}>
+  <option value="">Select a category</option>
+  {categories.map((category, index) => (
+    <option key={index} value={category}>
+      {category}
+    </option>
+  ))}
+</select>
     {jobCateError && <p className="text-red-500 text-xs italic">{jobCateError}</p>}
 
   </div>
@@ -196,14 +206,13 @@ const handleNextButtonClick = (event) => {
   <div className="flex flex-col w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="workload">Workload: </label>
     <select className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="workload" value={workloadInput} onChange={handleWorkloadChange} >
+ id="workload"  >
        {workloadOptions.map((workloadOptions, index) => (
         <option key={index} value={workloadOptions}>
           {workloadOptions}
         </option>
       ))}
     </select>
-    {workloadError && <p className="text-red-500 text-xs italic">{workloadError}</p>}
 
   </div>
 </div>

@@ -41,7 +41,7 @@ function FreelancerFeedbackPage() {
             </div>
           ))}
         </div>
-        {rating && <p>You have rated {rating} out of 5.</p>}
+        {rating && <p className="ratedNoti">You have rated {rating} out of 5.</p>}
         <textarea
           className="feedback"
           placeholder="Please tell us in a few words"
@@ -49,7 +49,9 @@ function FreelancerFeedbackPage() {
           onChange={handleFeedbackChange}
          
         ></textarea>
+        
         <button className="submitFeedbackBtn" type="submit">Submit</button>
+        
         {showSubmitted && <div className="notification">Your feedback has been submitted!</div>}
       </form>
     </div>

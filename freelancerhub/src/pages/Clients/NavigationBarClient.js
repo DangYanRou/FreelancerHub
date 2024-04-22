@@ -12,7 +12,7 @@ const NavigationBarClient = () => {
         <li><Link to="/clients/project-posted">Project Posted</Link></li>
         <li><Link to="/clients/project-completed">Project Completed</Link></li>
         <li><Link to="/clients/saved">Favourite Freelancer</Link></li>
-        <li><Link to="/clients/notification">Notification</Link></li>
+        <li><Link to="/clients/notifications">Notification</Link></li>
         <li><Link to="/clients/profile">Profile</Link></li>
         <li><Link to="/">Log Out</Link></li>
       </ul>

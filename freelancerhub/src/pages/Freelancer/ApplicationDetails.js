@@ -40,7 +40,7 @@ const ApplicationDetails = () => {
     return (
         <div>
             <NavigationBarClient />
-            <h1 className='applicationDetailsH1'>Your Application</h1>
+            <h1 className='applicationDetailsH1'>Application</h1>
             <div className="proposalDetailsPageContainer">
                 <div className="left-side">
                     {proposalsDetails.map((proposalDetail, index) => (

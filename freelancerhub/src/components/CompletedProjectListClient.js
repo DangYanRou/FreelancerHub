@@ -39,7 +39,7 @@ const CompletedProjectListClient = ({ projects }) => {
                             ) : '+ Favourite Collaborator'}
                         </button>
 
-                            <button className="feedbackBtn" onClick={() => navigate('../freelancer-feedback-page')}>Submit feedback</button>
+                            <button className="feedbackBtn" onClick={() => navigate('../client-feedback-page')}>Submit feedback</button>
                         </div>
                     </div>
                 </div>
