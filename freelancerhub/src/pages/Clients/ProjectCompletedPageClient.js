@@ -10,7 +10,7 @@ const ProjectCompletedPageClient = () => {
     <div className="ProjectCompletedPage">
     <NavigationBarClient></NavigationBarClient>
     <h2 className="page-header">Projects Completed</h2>
-    <div className="centered-container">
+    <div className="jl-centered-container">
       <CompletedProjectList projects={projects} />
     </div>
    
@@ -33,7 +33,7 @@ const projects=[
     'Mobile Responsiveness',
     'Integration of E-Commerce Features'
   ],
-  completeDate: '10/10/2021',
+  completeDate: '23/4/2024',
   }];
 
 export default ProjectCompletedPageClient;

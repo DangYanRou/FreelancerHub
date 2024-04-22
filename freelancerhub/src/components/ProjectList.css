@@ -6,7 +6,7 @@
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.centered-container {
+.jl-centered-container {
     display: flex;
     justify-content: center; /* Aligns items horizontally */
     align-items: center; /* Aligns items vertically */

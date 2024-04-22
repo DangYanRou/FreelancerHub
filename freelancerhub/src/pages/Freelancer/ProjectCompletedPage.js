@@ -10,7 +10,7 @@ const ProjectCompletedPage = () => {
     <div className="ProjectCompletedPage">
      <NavigationBarFreelancer/>
     <h2 className="page-header">Projects Completed</h2>
-    <div className="centered-container">
+    <div className="jl-centered-container">
       <CompletedProjectList projects={projects} />
     </div>
    

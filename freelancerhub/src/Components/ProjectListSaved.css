@@ -11,6 +11,7 @@
     justify-content: flex-start; /* Aligns items horizontally */
     align-items: flex-start; /* Aligns items vertically */
     overflow-y: auto;
+   
 }
 
 .card{
