@@ -18,6 +18,9 @@ import ProposalDetails from './pages/Clients/ProposalDetails';
 import './tailwind.css';
 import ProjectDetailsPage from './pages/Freelancer/ProjectDetailsPage';
 import ProjectPosted from './pages/Clients/ProjectPosted';
+import FreelancerSaved from './pages/Freelancer/FreelancerSaved';
+import ClientSaved from './pages/Clients/ClientSaved';
+
 
 function App() {
   return (
@@ -44,6 +47,7 @@ function FreelancerRoutes() {
       <Route path="project-details" element={<ProjectDetailsPage />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
+      <Route path="saved" element={<FreelancerSaved />} />
     </Routes>
   );
 }
@@ -63,6 +67,7 @@ function ClientRoutes() {
       <Route path="profile" element={<ClientProfile/>}/>
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
+      <Route path="saved" element={<ClientSaved/>} />
     </Routes>
   );
 }
