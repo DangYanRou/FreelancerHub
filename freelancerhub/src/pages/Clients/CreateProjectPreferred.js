@@ -4,6 +4,7 @@ import noteImage from '../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import { IoMdClose } from 'react-icons/io';
 import NavigationBarClients from './NavigationBarClient';
+import Heading from '../../Components/Heading';
 
 
 // ProgressBar component to display the stages of project creation
@@ -11,14 +12,15 @@ const ProgressBar = ({ stages }) => {
   return (
     <div className="flex justify-between w-10/12 mb-8 border py-4 mx-auto">
       {stages.map((stage, index) => (
-        <div key={index} className={`stage-container w-1/4 ${index !== stages.length - 1 ? 'border-r' : ''}`}>
+        <div key={index} className={`stage-container w-1/4 flex flex-col justify-between ${index !== stages.length - 1 ? 'border-r' : ''}`}>
         <div className="stage flex flex-col items-center px-4">
             <div className="icon w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: stage.title === 'Preferred' ? '#213E60' : '#E9EBFD' }}>
               <img src={stage.title === 'Preferred' ? workImage : noteImage} alt="Stage icon" />
             </div>
             <div className="title font-bold">{stage.title}</div>
-            <div>{stage.step}</div>
-          </div>
+            </div>
+
+            <div className="flex items-center justify-center">{stage.step}</div>
         </div>
       ))}
     </div>
@@ -28,8 +30,8 @@ const ProgressBar = ({ stages }) => {
 const CreateProjectPreferred = () => {
   // Define the stages of project creation
   const stages = [
-    { title: 'Job Details', step: 'Step 1/5' },
-    { title: 'Job Description', step: 'Step 2/5' },
+    { title: 'Project Details', step: 'Step 1/5' },
+    { title: 'Project Description', step: 'Step 2/5' },
     { title: 'Preferred', step: 'Step 3/5' },
     { title: 'Invite', step: 'Step 4/5' },
     { title: 'Preview', step: 'Step 5/5' },
@@ -83,8 +85,12 @@ const handleKeywordDelete = (keywordToDelete) => {
     <div className="flex flex-col items-start justify-center">
                         <NavigationBarClients/>
 
-      <h1 className="text-4xl mb-5 mt-10 font-bold pl-16">Create Project</h1>
-      <div className="w-11/12 h-px bg-black mb-5 mx-auto"></div>
+                        <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
+                      Create Project
+          </Heading>
+
+           {/* Line divider */}
+           <hr className="border-gray-700 my-8 w-[93%] mx-auto" />
       <ProgressBar stages={stages} />
       <div style={{ backgroundColor: '#69ACC2' }} className="w-screen max-w-full h-8/10">
         <div className="bg-white w-4/5 rounded-md my-12 mx-auto text-left">
