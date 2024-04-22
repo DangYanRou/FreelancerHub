@@ -1,14 +1,10 @@
-#root{
-  width: 100%;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
 
 .navbar {
   background-color: #213e60;
   overflow: hidden; 
   width:100%;
+  z-index: 1000;
+
 }
 
 
@@ -67,4 +63,8 @@
 .sub-menu li a:hover {
   background-color: #213e60;
   color: #fff;
+}
+
+.nav-item {
+  position: relative;
 }

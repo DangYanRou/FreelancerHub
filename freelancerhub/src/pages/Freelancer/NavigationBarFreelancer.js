@@ -14,7 +14,7 @@ const NavigationBar = () => {
     <nav className="navbar">
       <ul className="nav-list">
         {/* Use Link component from React Router for navigation */}
-        <li><Link to="/freelancers/proposal-form">Explore</Link></li>
+        <li><Link to="/freelancers/Explore">Explore</Link></li>
         <li>
           <a href="#Projects" onClick={toggleSubMenu}>Projects</a>
           {/* Conditionally render the sub-menu based on the state */}

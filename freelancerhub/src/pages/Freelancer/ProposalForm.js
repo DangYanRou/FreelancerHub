@@ -18,6 +18,8 @@ export const ProposalForm = () =>{
     }
 
     return (
+        <div className="proposal-form">
+
         <div>
             <NavigationBar></NavigationBar>
             <h1>Proposal Submission</h1>
@@ -49,6 +51,8 @@ export const ProposalForm = () =>{
                 <button type="submit">Submit</button>
             </form>
         </div>
+        </div>
+
     )
 }
 
