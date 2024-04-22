@@ -78,7 +78,7 @@
 }
 
 .buttonContainer button {
-    width: 200px; /* Make button width 100% */
+    width: 300px; /* Make button width 100% */
     height:40px;/* Limit button width */
     color:white;
     border: none;
@@ -93,6 +93,7 @@
     transition: background-color 0.3s ease; /* Smooth color transition */
     z-index:1;
     margin-bottom: 25px;
+    padding:2px;
 }
 
 .buttonContainer button::before {
@@ -100,8 +101,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    /* width: 100%;
+    height: 100%; */
     background-image: linear-gradient(90deg, #a1c4fd, #c2e9fb); /* Gradient background */
     opacity: 0;
     border-radius: 60px; /* Match the border radius of the button */
@@ -140,6 +141,13 @@
 
 }
 
+.favourite-collaborator{
+    display:flex;
+    align-items:center;
+    
+}
 
-  
- 
+.icon-text{
+    display:flex;
+    align-items:center;
+}

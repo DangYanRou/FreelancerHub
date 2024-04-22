@@ -5,7 +5,8 @@ import profilePic from "../../Gallery/Elon_Musk.jpg";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
-import Rating from "../../Components/Rating";
+import Rating from "../../pages/Freelancer/FreelancerAverageReviewBox";
+import StarRating from "../../Components/Rating";
 
 const FreelancerProfile = () => {
   const [showAbout, setShowAbout] = useState(true);
@@ -35,8 +36,9 @@ const FreelancerProfile = () => {
   return (
     <div className="FreelancerProfile">
       <NavigationBar></NavigationBar>
+      <h1>My Profile</h1>
       <div className="content">
-        <h1>My Profile</h1>
+        <div className='leftProfile'>
         <div className='profile'>
             <div className='pic_container'>
               <img src={profilePic} alt="profile picture"></img>
@@ -45,15 +47,17 @@ const FreelancerProfile = () => {
               <div className="name-location">
                 <h2 className='name'>Elon Musk</h2>
                 <div className='location'>
-                <p><FaMapMarkerAlt className='markerIcon' />Kuala Lumpur, Malaysia</p>
+                <FaMapMarkerAlt className='markerIcon' /><span>Kuala Lumpur, Malaysia</span>
                 </div>
               </div>
               <p className="job">Software Engineer</p>
-              <p className='rating'>RATING:</p>
-              <div className="rate"><Rating></Rating></div>
             </div>
             <button className='edit' ><MdOutlineModeEdit /> Edit Profile</button> 
         </div>
+        <div className='rating'>
+              <div className="rate"><Rating></Rating></div>
+              </div>
+              </div>
         <div className='lowerProfile'>
           <nav className='profileNav'>
               <div className="navigation">
@@ -77,14 +81,14 @@ const FreelancerProfile = () => {
                 With a relentless focus on innovation and a willingness to take risks, I strive to push the boundaries of what's possible and inspire others to join me in shaping a better tomorrow.</p>
               <div className='about_container'>
               <div className='about_details'>
-                  <MdSchool/><h3>Education</h3>
+                  <MdSchool className='aboutIcon' /><h3>Education</h3>
                   <p className='experience_text'>
                     B.Sc. Bachelors Degree<br/>
                     M.Sc. Masters Degree
                   </p>
                 </div>
                 <div className='about_details'>
-                  <GrAchievement /><h3>Experience</h3>
+                  <GrAchievement className='aboutIcon' /><h3>Experience</h3>
                   <p className='experience_text'>
                     2+ years<br/>
                     Frontend Development
@@ -172,19 +176,19 @@ const FreelancerProfile = () => {
               </div>
             </div> 
             <div id="reviews" style={{ display: showReviews ? 'block' : 'none' }}>
-              <p className='about_text'>Let Us Listen To Others</p>
+              <p className='projects_text'>Let Us Listen To Others</p>
               <h2 className='title'>Reviews</h2>
               <div className='reviews_container'>
                 <div className='review_details'>
-                  <h3 className='review_name'>Agnes</h3><Rating className='review_rating'></Rating>
+                  <h3 className='review_name'>Agnes</h3><StarRating className='review_rating'></StarRating>
                   <p>Nice Work! Keep it up</p>
                 </div>
                 <div className='review_details'>
-                  <h3 className='review_name'>Bill Gates</h3><Rating className='review_rating'></Rating>
+                  <h3 className='review_name'>Bill Gates</h3><StarRating className='review_rating'></StarRating>
                   <p>Very responsive and work is completed on time. Definitely will work with you again soon!</p>
                 </div>
                 <div className='review_details'>
-                  <h3 className='review_name'>Zus Coffee Sdn. Bhd.</h3><Rating className='review_rating'></Rating>
+                  <h3 className='review_name'>Zus Coffee Sdn. Bhd.</h3><StarRating className='review_rating'></StarRating>
                   <p></p>
                 </div>
               </div>
