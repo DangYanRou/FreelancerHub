@@ -9,21 +9,21 @@ import Rating from "../../components/Rating";
 
 const FreelancerProfile = () => {
   const [showAbout, setShowAbout] = useState(true);
-  const [showProjects, setShowProjects] = useState(true);
-  const [showReviews, setShowReviews] = useState(true);
+  const [showProjects, setShowProjects] = useState(false);
+  const [showReviews, setShowReviews] = useState(false);
 
   const handleProfileNavClick = (section) => {
-    if(section=='about') {
+    if(section==='about') {
         setShowAbout(true);
         setShowProjects(false);
         setShowReviews(false);
     }
-    else if(section=='projects'){
+    else if(section==='projects'){
         setShowAbout(false);
         setShowProjects(true);
         setShowReviews(false);
     }
-    else if(section=='reviews'){
+    else if(section==='reviews'){
         setShowAbout(false);
         setShowProjects(false);
         setShowReviews(true);
@@ -65,7 +65,7 @@ const FreelancerProfile = () => {
               </div>
           </nav>
           <div className='Card2'>
-            <div id="about" style={{ display: showAbout ? 'block' : 'none' }}>
+            <div id="about"style={{ display: showAbout ? 'block' : 'none' }}>
               <p className='about_text'>Get To Know More</p>
               <h2 className='title'>About Me</h2>
               <p>Innovative and visionary entrepreneur with a passion for revolutionizing industries and solving some of the world's most pressing challenges. 
