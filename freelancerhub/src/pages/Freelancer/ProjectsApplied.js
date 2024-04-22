@@ -72,7 +72,6 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
 }
 
 
-
 const ProjectsApplied = () => {
 
   const [selectedProject,setSelectedProject]=useState(null);

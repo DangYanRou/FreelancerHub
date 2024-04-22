@@ -2,19 +2,20 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import FreelancerLandingPage from './pages/Freelancer/FreelancerLandingPage';
 import ProposalForm from './pages/Freelancer/ProposalForm';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/LoginPage/LoginPage.js';
 import ProjectsApplied from './pages/Freelancer/ProjectsApplied';
 import ClientLandingPage from './pages/Clients/ClientLandingPage';
+import ProposalReceivedPage from './pages/Clients/ProposalReceivedPage';
+import FreelancerProfile from './pages/Freelancer/FreelancerProfile';
+import ClientProfile from './pages/Clients/ClientProfile';
+import ProposalDetails from './pages/Clients/ProposalDetails';
+import ResetPassword from './pages/LoginPage/ResetPassword';
 import FreelancerExplore from './pages/Freelancer/FreelancerExplore';
 import CreateProjectDetail from './pages/Clients/CreateProjectDetail';
 import CreateProjectDescription from './pages/Clients/CreateProjectDescription';
 import CreateProjectPreferred from './pages/Clients/CreateProjectPreferred';
 import CreateProjectInvite from './pages/Clients/CreateProjectInvite';
 import CreateProjectPreview from './pages/Clients/CreateProjectPreview';
-import FreelancerProfile from './pages/Freelancer/FreelancerProfile';
-import ClientProfile from './pages/Clients/ClientProfile';
-import ProposalReceivedPage from './pages/Clients/ProposalReceivedPage';
-import ProposalDetails from './pages/Clients/ProposalDetails';
 import './tailwind.css';
 import ProjectDetailsPage from './pages/Freelancer/ProjectDetailsPage';
 import ProjectPosted from './pages/Clients/ProjectPosted';
@@ -26,6 +27,7 @@ function App() {
       <LoginPage />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/resetPassword" element={<ResetPassword/>} />
         <Route path="/freelancers/*" element={<FreelancerRoutes />} />
         <Route path="/clients/*" element={<ClientRoutes />} />
         {/* Add more top-level routes if needed */}
@@ -40,7 +42,7 @@ function FreelancerRoutes() {
       <Route path="/" element={<FreelancerLandingPage />} />
       <Route path="projects-applied" element={<ProjectsApplied />} />
       <Route path="proposal-form" element={<ProposalForm />} />
-      <Route path="Explore" element={<FreelancerExplore />} />
+      <Route path="explore" element={<FreelancerExplore />} />
       <Route path="profile" element={<FreelancerProfile />} />
       <Route path="project-details" element={<ProjectDetailsPage />} />
       <Route path="application" element={<ApplicationDetails />} />
