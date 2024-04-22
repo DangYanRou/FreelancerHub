@@ -20,6 +20,7 @@ import './tailwind.css';
 import ProjectDetailsPage from './pages/Freelancer/ProjectDetailsPage';
 import ProjectPosted from './pages/Clients/ProjectPosted';
 import ApplicationDetails from './pages/Freelancer/ApplicationDetails';
+import ProjectCompletedPageClient from './pages/Clients/ProjectCompletedPageClient.js';
 import ClientFeedbackPage from './pages/Clients/ClientFeedbackPage';
 import FreelancerFeedbackPage from './pages/Freelancer/FreelancerFeedbackPage';
 import FreelancerAverageReviewBox from './pages/Freelancer/FreelancerAverageReviewBox';
@@ -27,6 +28,9 @@ import ClientAverageReviewBox from './pages/Clients/ClientAverageReviewBox';
 import ProjectCompletedPage from './pages/Freelancer/ProjectCompletedPage';
 import FreelancerSaved from './pages/Freelancer/FreelancerSaved';
 import ClientSaved from './pages/Clients/ClientSaved';
+
+
+
 
 
 function App() {
