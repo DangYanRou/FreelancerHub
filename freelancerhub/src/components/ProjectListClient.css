@@ -1,0 +1,98 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    outline:none;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.centered-container {
+    display: flex;
+    justify-content: center; /* Aligns items horizontally */
+    align-items: center; /* Aligns items vertically */
+    overflow-y: auto;
+}
+
+.card{
+    width:700px;
+    position: relative;
+    flex-direction: column;
+    align-items: flex-start;
+    padding:20px;
+    background-color:#F0F7F9;
+    display: flex;
+    box-shadow: rgba(0,0,0,0.30) 0px 1px 3px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.posted-status{
+    margin-top: 20px;
+    font-style: italic;
+    color: green;
+}
+.posted-date{
+    font-style: italic;
+    color: grey;
+}
+
+.card:hover{
+    box-shadow:rgba(0,0,0,0.24)0px 3px 8px;
+}
+
+.card.selected {
+    background-color:#e7f9ff ;
+    ; /* Updated background color when selected */
+  }
+
+.card h2{
+    font-size: 22px;
+}
+.card p{
+    font-size: 16px;
+}
+
+.hover-profileLink {
+    font-size: 18px;
+    color: black; /* Set the text color */
+    text-decoration: none;
+     /* Remove default underline */
+     
+}
+
+.hover-profileLink:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+.optionBtn-container{
+    right: 0;
+}
+  .option-button {
+    cursor: pointer;
+    border-radius: 999999px;
+    padding: 1px;
+    position: absolute;
+    right: 10px;
+  }
+  
+  .pa-options-dropdown {
+    padding:5px;
+    position: absolute;
+    top:20%;
+    right: 5px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+  
+
+  
+  .option-button:hover,.pa-options-dropdown:hover  {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .pa-options li:hover{
+    background-color: #eaeaea;
+  }
+
+  

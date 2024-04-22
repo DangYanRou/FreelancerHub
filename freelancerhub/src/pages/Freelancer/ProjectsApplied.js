@@ -86,11 +86,11 @@ const ProjectsApplied = () => {
      'Integration of E-Commerce Features'
    ],status:'Applied on FreelancerHub',applyDate:'1 May 2024'
    },{
-     title: 'Online Shopping Website Design',
-   client: 'Hana Florist',
+     title: 'Online Shop Website Design',
+   client: 'Mr Honey Bees Farm',
    category: 'Information & Communication Technology',
-   budget: 'RM 1500-RM 2000',
-   location: 'Petaling Jaya, Selangor',
+   budget: 'RM 800-RM1000',
+   location: 'Sitiawan, Manjung',
    id: 2,
    description: `We are a flourishing florist business seeking a skilled freelancer to help us design our online shopping website. As the owner of a thriving florist, we recognize the importance of establishing a strong online presence to cater to our customers' evolving needs. We aim to create a seamless and aesthetically pleasing online shopping platform that reflects the beauty and elegance of our floral arrangements.`,
    items: [
@@ -98,21 +98,7 @@ const ProjectsApplied = () => {
      'Aesthetic Appeal',
      'Mobile Responsiveness',
      'Integration of E-Commerce Features'
-   ]
-   },{
-     title: 'Accountant',
-   client: 'Mr Honey Bees Farm',
-   category: 'Accounting',
-   budget: 'RM 1500-RM 2000',
-   location: 'Petaling Jaya, Selangor',
-   id: 3,
-   description: `We are a flourishing florist business seeking a skilled freelancer to help us design our online shopping website. As the owner of a thriving florist, we recognize the importance of establishing a strong online presence to cater to our customers' evolving needs. We aim to create a seamless and aesthetically pleasing online shopping platform that reflects the beauty and elegance of our floral arrangements.`,
-   items: [
-     'User-Friendly Design',
-     'Aesthetic Appeal',
-     'Mobile Responsiveness',
-     'Integration of E-Commerce Features'
-   ]
+   ],status:'Applied on FreelancerHub',applyDate:'24 April 2024'
    }
  ];
 

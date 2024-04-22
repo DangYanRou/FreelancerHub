@@ -23,6 +23,7 @@
     display: flex;
     justify-content: flex-end; /* Align modal to the right */
     align-items: center;
+    
 }
 
 .modal-content {
@@ -32,7 +33,6 @@
     overflow-y: auto;
     height: 100%;
     width: 600px;
-    
    
 }
 .modal-header {
@@ -67,18 +67,13 @@
 }
 
 #about-the-project{
-    display: flex; /* Use flexbox */
-    flex-direction: column; /* Arrange children vertically */
-    justify-content: flex-start; /* Align children to the start */
-    align-items: flex-start; /* Align children to the start */
+    font-style: bold;
     margin-top: 3%;
+    font-size: 18px;
    
 }
 #key-requirement{
-    display: flex; /* Use flexbox */
-    flex-direction: column; /* Arrange children vertically */
-    justify-content: flex-start; /* Align children to the start */
-    align-items: flex-start; /* Align children to the start */
+    font-size: 18px;
     margin-top: 3%;
 }
 #p-title{

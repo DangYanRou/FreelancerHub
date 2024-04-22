@@ -1,7 +1,8 @@
 import NavigationBar from './NavigationBarClient';
-import ProjectList from '../../components/ProjectList';
+import ProjectListClient from '../../components/ProjectListClient';
 import { useState } from 'react';
 import '../../styles/Clients/ProjectPosted.css';
+
 
 
 
@@ -51,7 +52,7 @@ const ProjectPosted= () => {
       <NavigationBar></NavigationBar>
        <h2 className="page-header">Project Posted</h2>
        <div className="centered-container">
-   <ProjectList projects={projects} onProjectClick={handleProjectClick}/>
+   <ProjectListClient projects={projects} onProjectClick={handleProjectClick}/>
     </div>
     </div>
   )
