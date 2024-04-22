@@ -29,7 +29,7 @@ import ProjectCompletedPage from './pages/Freelancer/ProjectCompletedPage';
 import FreelancerSaved from './pages/Freelancer/FreelancerSaved';
 import ClientSaved from './pages/Clients/ClientSaved';
 import FreelancerNotificationPage from './pages/Freelancer/FreelancerNotificationPage.js';
-
+import FreelancerTemporaryProfile from './pages/Freelancer/FreelancerTemporaryProfile';
 
 
 
@@ -62,6 +62,7 @@ function FreelancerRoutes() {
       <Route path="freelancer-average-review-box" element={<FreelancerAverageReviewBox />} />
       <Route path="project-completed-page" element={<ProjectCompletedPage />} />
       <Route path="notifications" element={<FreelancerNotificationPage />} />
+      <Route path="freelancer-temporary-profile" element={<FreelancerTemporaryProfile />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
       <Route path="saved" element={<FreelancerSaved />} />
