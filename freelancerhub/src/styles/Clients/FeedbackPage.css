@@ -92,6 +92,9 @@
     font-size: 16px; /* Adjust font size */
     padding: 10px 20px; /* Add padding to align text properly */
     margin: 20px auto;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .feedback::placeholder {
@@ -101,8 +104,8 @@
 }
 
 .submitFeedbackBtn {
-    width: 100%; /* Make button width 100% */
-    max-width: 500px; /* Limit button width */
+    width: 80%; /* Make button width 100% */
+    height:40px;
     color:white;
     border: none;
     border-radius: 60px;
@@ -116,6 +119,9 @@
     transition: background-color 0.3s ease; /* Smooth color transition */
     z-index:1;
     margin-bottom: 50px;
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
 }
 
 .submitFeedbackBtn::before {
@@ -157,3 +163,8 @@
     margin-top: 20px;
   }
   
+  .ratedNoti{
+    display:flex;
+    justify-content:center;
+    align-items: center;
+  }

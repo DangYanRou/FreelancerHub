@@ -1,3 +1,4 @@
+CompletedProjectlistClient.js (component)
 import './CompletedProjectList.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -5,7 +6,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 
-const CompletedProjectList = ({ projects }) => {
+const CompletedProjectListClient = ({ projects }) => {
     const navigate = useNavigate();
     const [favourites, setFavourites] = useState({});
 
@@ -39,7 +40,7 @@ const CompletedProjectList = ({ projects }) => {
                             ) : '+ Favourite Collaborator'}
                         </button>
 
-                            <button className="feedbackBtn" onClick={() => navigate('../freelancer-feedback-page')}>Submit feedback</button>
+                            <button className="feedbackBtn" onClick={() => navigate('../client-feedback-page')}>Submit feedback</button>
                         </div>
                     </div>
                 </div>
@@ -49,4 +50,4 @@ const CompletedProjectList = ({ projects }) => {
     );
 }
 
-export default CompletedProjectList;
+export default CompletedProjectListClient;
