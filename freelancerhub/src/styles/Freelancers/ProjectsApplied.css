@@ -1,5 +1,7 @@
 
-.page-header{
+.jl-page-header{
+    font-size: 28px;
+    font-style: bold;
     margin-top: 2%;
     margin-left: 43%;
 }
@@ -29,6 +31,7 @@
     border-radius: 8px;
     overflow-y: auto;
     height: 100%;
+    width: 600px;
     
    
 }
@@ -69,6 +72,7 @@
     justify-content: flex-start; /* Align children to the start */
     align-items: flex-start; /* Align children to the start */
     margin-top: 3%;
+   
 }
 #key-requirement{
     display: flex; /* Use flexbox */
@@ -81,13 +85,19 @@
    font-size: 36px; 
 }
 
+.view-application-header{
+    font-size: 34px;
+    
+}
 
-.list{
+.kr-list{
     display: flex; /* Use flexbox */
     flex-direction: column; /* Arrange children vertically */
     justify-content: flex-start; /* Align children to the start */
     align-items: flex-start; /* Align children to the start */
     margin-left: 1rem;
+    list-style-type: disc; /* This will give you filled dots */
+    
 }
 
 .button-container{
@@ -123,7 +133,7 @@
    margin-top: 2rem;
 }
 .detail-status{
-
+    font-style: italic;
     color: green;
 }
 .detail-date{
