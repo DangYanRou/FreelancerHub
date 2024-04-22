@@ -14,7 +14,7 @@ const NavigationBarClient = () => {
         <li><Link to="/clients/saved">Favourite Freelancer</Link></li>
         <li><Link to="/clients/notification">Notification</Link></li>
         <li><Link to="/clients/profile">Profile</Link></li>
-        <li><Link to="/login">Log Out</Link></li>
+        <li><Link to="/">Log Out</Link></li>
       </ul>
     </nav>
   );

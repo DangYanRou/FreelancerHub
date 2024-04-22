@@ -2,7 +2,10 @@ import './ProjectListClient.css'
 import React from 'react';
 import { SlOptionsVertical } from "react-icons/sl";
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Import Link from React Router
+import { FaLocationDot } from "react-icons/fa6";
+import { MdOutlineAttachMoney } from "react-icons/md";
+
 
 
 const ProjectListClient=({projects,onProjectClick,selectedProjectId}) => {
@@ -17,7 +20,7 @@ const ProjectListClient=({projects,onProjectClick,selectedProjectId}) => {
     return(
       <div>
           {projects.map((blog,index)=>(
-            <div className="card-content">
+            <div className="card-container">
             <div className={`card ${selectedProjectId === blog.id ? 'selected' : ''}`} key={blog.id} onClick={()=>onProjectClick(blog)}>
                 
                 <div className='optionBtn-container'>
@@ -40,8 +43,8 @@ const ProjectListClient=({projects,onProjectClick,selectedProjectId}) => {
             <h2 className="project-title">{blog.title}</h2>
            <a href="#" className="hover-profileLink">{blog.client}</a>
             <p id="category">{blog.category}</p>
-            <p>{blog.location}</p>
-            <p>{blog.budget}/project</p>
+            <p><FaLocationDot className="icon-style"/>{blog.location}</p>
+            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{blog.budget}/project</p>
   
              <p className="posted-status">{blog.status}</p>
              <p className="posted-date">{blog.applyDate}</p>

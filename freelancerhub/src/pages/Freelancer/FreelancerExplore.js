@@ -80,7 +80,7 @@ const FreelancerExplore = () => {
       'Aesthetic Appeal',
       'Mobile Responsiveness',
       'Integration of E-Commerce Features'
-    ],date:"30/4/2024"
+    ],date:"30 April 2024"
     },{
       title: 'Accountant',
     client: 'Mr Honey Bees Farm',

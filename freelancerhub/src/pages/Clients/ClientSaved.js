@@ -21,7 +21,7 @@ const ClientSaved = () => {
             
 
             {/* collaborator button section */}
-            <div className="font-poppin border-4 border-grey rounded-lg p-3 mb-6">
+            <div className="ml-[30px] font-poppin border-4 border-grey rounded-lg p-3 mb-6">
               Collaborator
             </div>
 

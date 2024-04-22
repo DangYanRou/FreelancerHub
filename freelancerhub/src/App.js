@@ -37,7 +37,6 @@ import FreelancerNotificationPage from './pages/Freelancer/FreelancerNotificatio
 function App() {
   return (
     <div className="App">
-      <LoginPage></LoginPage>
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/resetPassword" element={<ResetPassword/>} />

@@ -17,8 +17,9 @@ const CompletedProjectList = ({ projects }) => {
     };
 
     return (
-        <div>
+        <div className='jl-centered-container '>
             {projects.map((project) => (
+             
                 <div className="card" key={project.id}> 
                     <h2>{project.title}</h2>
                     <a href="#" className="hover-profileLink">{project.client}</a>
@@ -27,7 +28,7 @@ const CompletedProjectList = ({ projects }) => {
             <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.budget}/project</p>
                     <p className="apply-status">{project.status}</p>
                     <div className="bottom-row">
-                        <p style={{ flexGrow: 1 }}>Completed on: <span className="complete-date">{project.completeDate}</span></p>
+                        <p style={{ flexGrow: 1 }}>Completed on:  <span className="complete-date">{project.completeDate}</span></p>
                         <div className="buttonContainer">
                         <button 
                             className="favouriteBtn" 
@@ -42,6 +43,7 @@ const CompletedProjectList = ({ projects }) => {
                         </div>
                     </div>
                 </div>
+                
             ))}
         </div>
     );

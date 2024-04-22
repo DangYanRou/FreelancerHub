@@ -12,8 +12,9 @@ const ProjectList=({projects,onProjectClick,selectedProjectId}) => {
     return(
       <div>
           {projects.map((blog)=>(
+             <div className="jl-centred-container">
             <div className={`card ${selectedProjectId === blog.id ? 'selected' : ''}`} key={blog.id} onClick={()=>onProjectClick(blog)}> 
-            <div className="card-content">
+           
              <h2>{blog.title}</h2>
             <a href="#" className="hover-profileLink">{blog.client}</a>
             <p id="category">{blog.category}</p>
