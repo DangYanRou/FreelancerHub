@@ -4,8 +4,6 @@ import { useState } from 'react';
 import '../../styles/Clients/ProjectPosted.css';
 
 
-
-
 const ProjectPosted= () => {
     const [selectedProject,setSelectedProject]=useState(null);
     // Initial status index

@@ -9,7 +9,7 @@ const NavigationBarClient = () => {
       <ul className="nav-list">
         {/* Use Link component from React Router for navigation */}
         <li><Link to="/freelancers/post-project">Post Project</Link></li>
-        <li><Link to="/freelancers/project-posted">Project Posted</Link></li>
+        <li><Link to="/clients/project-posted">Project Posted</Link></li>
         <li><Link to="/freelancers/project-completed">Project Completed</Link></li>
         <li><Link to="/freelancers/favourite-freelancer">Favourite Freelancer</Link></li>
         <li><Link to="/freelancers/notification">Notification</Link></li>
