@@ -7,10 +7,16 @@ import { GrFormClose } from "react-icons/gr";
 import ProjectDetailsPage from './ProjectDetailsPage';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import StatusBar from '../../components/statusBar';
+import { useHistory } from 'react-router-use-history';
 
 
 const ProjectDetails =({project}) => {
 
+  const history = useHistory();
+  const handleViewApplication = () => {
+    history.push('/freelancers/application');
+  };
+  
   const [status, setStatus] = useState(0);
   if(!project)return null;
   return(
@@ -37,7 +43,7 @@ const ProjectDetails =({project}) => {
            < StatusBar status={status}/>
           </div>
           <div className='button-container'>
-          <button className="btn-primary">View Application</button>
+          <button className="btn-primary" onClick={handleViewApplication}>View Application</button>
           <button className="btn-secondary">Cancel Application</button>
           </div>
 
@@ -47,13 +53,15 @@ const ProjectDetails =({project}) => {
 };
 
 const ProjectModal = ({ isOpen, onClose, project }) => {
+
+
   if (!isOpen||!project) return null;
 
   return (
       <div className="modal-overlay" onClick={onClose}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2 id className='view-application-header'>View Application</h2>
+              <h2 id className='view-application-header' >View Application</h2>
             <button className="close-btn" onClick={onClose}><GrFormClose /></button>
             </div>
              <ProjectDetails project={project}/>{/* Pass project to ProjectDetails */}
@@ -62,6 +70,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
       </div>
   );
 }
+
 
 
 const ProjectsApplied = () => {

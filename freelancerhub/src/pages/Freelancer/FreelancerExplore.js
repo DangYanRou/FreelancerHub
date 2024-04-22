@@ -7,10 +7,15 @@ import dropdownArrow from "../../Gallery/dropdownArrow_icon.svg";
 import NavigationBarFreelancer from './NavigationBarFreelancer';
 import '../../styles/Freelancers/FreelancerExplore.css'
 import { GrFormClose } from "react-icons/gr";
+import { useHistory } from 'react-router-use-history';
 
 
 const FreelancerExplore = () => {
   
+  const history = useHistory();
+  const handleApply = () => {
+    history.push('/freelancers/proposal-form');
+    };
  
   const [minBudget, setMinBudget] = useState('');
   const [maxBudget, setMaxBudget] = useState('');
@@ -155,7 +160,7 @@ const FreelancerExplore = () => {
                 ))}
               </ul>
             </div>
-            <button id="applyButton" className="btn btn-primary">Apply</button>
+            <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
   
   
       </div>
