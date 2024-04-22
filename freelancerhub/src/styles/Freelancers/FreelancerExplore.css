@@ -1,14 +1,18 @@
+
 .parent-container{
+    
     display: grid;
     grid-template-columns: auto 1fr; /* Change the order of columns to display project list first and then project details */
     gap: 20px; /* Add some gap between the columns */
     padding: 20px; /* Add padding for spacing */
     height: 100vh; /* Make the container fill the height of the viewport */
+    overflow: hidden; /* Hide any overflow content */
 }
 
   
 .card{
-    flex:1;
+    position: relative;
+    flex: 1;/* allow flexibility */
     flex-direction: column;
     align-items: flex-start;
     padding:2%;
@@ -17,7 +21,11 @@
     border-radius: 10px;
     cursor: pointer;
     margin-bottom: 1rem;
+    width: 900px;
+   
 }
+
+
 .card:hover{
     box-shadow:rgba(0,0,0,0.24)0px 3px 8px;
     
@@ -58,9 +66,7 @@
     background-color: white;
 }
 
-.ExploreProjectList {
-    max-width: 100%; /* Adjust this value as needed */
-}
+
 
 .project-details a,
 .project-details p {
@@ -105,4 +111,8 @@
 
 #applyButton{
     margin-top: 5%;
+}
+
+#detail-title{
+    font-size: 28px;
 }

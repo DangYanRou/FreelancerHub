@@ -6,6 +6,7 @@ import catergory from "../../Gallery/catergory_icon.svg";
 import dropdownArrow from "../../Gallery/dropdownArrow_icon.svg";
 import NavigationBarFreelancer from './NavigationBarFreelancer';
 import '../../styles/Freelancers/FreelancerExplore.css'
+import { GrFormClose } from "react-icons/gr";
 
 
 const FreelancerExplore = () => {
@@ -41,6 +42,7 @@ const FreelancerExplore = () => {
     return true;
   }
   const [selectedProject,setSelectedProject]=useState(null);
+  const [showDetails, setShowDetails] = useState(false);
 
   const projects=[
     {
@@ -92,30 +94,53 @@ const FreelancerExplore = () => {
     setSelectedProject((prevProject)=>
       prevProject && prevProject.id==project.id?null:project
     );
+  
   }
-  const ProjectList=({projects,onProjectClick,selectedProjectId}) => {
-    return(
-      <div>
-          {projects.map((blog)=>(
-            <div className={`card ${selectedProjectId === blog.id ? 'selected' : ''}`} key={blog.id} onClick={()=>onProjectClick(blog)}> 
+  const handleCloseModal = () => {
+    setSelectedProject(null);
+ }
+ 
+
+
+  const ProjectList = ({ projects, onProjectClick, selectedProjectId }) => {
+    return (
+      <div className={`flex flex-col ${selectedProjectId ? 'w-3/5' : 'flex-grow'}`}>
+        {projects.map((blog) => (
+          <div className={`card ${selectedProjectId === blog.id ? 'selected' : ''} mb-4`} key={blog.id} onClick={() => onProjectClick(blog)}>
             <h2>{blog.title}</h2>
             <a href="#" className="hover-profileLink">{blog.client}</a>
             <p id="category">{blog.category}</p>
             <p>{blog.location}</p>
             <p>{blog.budget}/project</p>
+          </div>
+        ))}
+      </div>
+    );
+  };
+  
+  const ProjectModal = ({ isOpen, onClose, project }) => {
+    if (!isOpen||!project) return null;
+  
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <h2 id className='view-application-header'>View Project</h2>
+              <button className="close-btn" onClick={onClose}><GrFormClose /></button>
+              </div>
+               <ProjectDetails project={project}/>{/* Pass project to ProjectDetails */}
+                
             </div>
-              
-          ))}
         </div>
-     
     );
   }
+  
   
   const ProjectDetails =({project}) => {
     if(!project)return null;
     return(
       <div className="project-details">
-        <h2>{project.title}</h2>
+        <h2 id="detail-title">{project.title}</h2>
         <a href="#" className="hover-profileLink">{project.client}</a>
             <p id="category">{project.category}</p>
             <p>{project.location}</p>
@@ -236,10 +261,12 @@ const FreelancerExplore = () => {
       ))}
 
     </div>
-    <div className="parent-container">
+    <div className={`FreelancerExplore ${showDetails? 'show-details':''}`}>
+    <div className="parent-container ">
    <ProjectList projects={projects} onProjectClick={handleProjectClick}   selectedProjectId={selectedProject ? selectedProject.id : null}/>
- <ProjectDetails project={selectedProject}/>
+   <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} />
       
+    </div>
     </div>
   </div>
   
