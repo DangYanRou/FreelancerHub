@@ -72,8 +72,8 @@ export default function BasicTableClient() {
 
   return (
     <>
-    <TableContainer component={Paper} className='font-poppin'>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Paper} className='font-poppin ml-[70px] ' style={{maxWidth:1500}}>
+      <Table sx={{ minWidth: 650}} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell style={headerStyle}>Name</TableCell>
