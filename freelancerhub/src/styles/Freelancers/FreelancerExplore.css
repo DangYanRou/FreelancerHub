@@ -71,25 +71,29 @@
 .project-details a,
 .project-details p {
     margin-bottom: 0.5rem; /* Add spacing between each element inside project details */
+    display: flex;
 }
+
 .project-details a{
     font-size: 24px;
 }
+#category{
+margin-bottom: 1.5rem;
+}
+#preferredQualification{
+    font-size: 18px;
+}
 
-#about-the-project{
-    margin-top: 3%;
+#about-the-project,#key-requirement,#preferredQualification{
+    margin-top: 1.5rem;
 }
-#key-requirement{
-    margin-top: 3%;
-}
+
 #p-title{
    font-size: 36px; 
 
 }
 
-#key-requirements{
-    margin-bottom: 3rem;
-}
+
 .list{
     margin-left: 1rem;
     list-style-type: disc; /* This will give you filled dots */
@@ -115,4 +119,9 @@
 
 #detail-title{
     font-size: 28px;
+}
+
+.icon-style{
+    margin-top: 3px;
+    margin-right: 3px;
 }

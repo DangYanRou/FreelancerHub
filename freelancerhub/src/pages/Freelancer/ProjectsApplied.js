@@ -8,6 +8,10 @@ import ProjectDetailsPage from './ProjectDetailsPage';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import StatusBar from '../../components/statusBar';
 import { useHistory } from 'react-router-use-history';
+import { FaLocationDot } from "react-icons/fa6";
+import { MdOutlineAttachMoney } from "react-icons/md";
+import { BiTimeFive } from "react-icons/bi";
+
 
 
 const ProjectDetails =({project}) => {
@@ -20,28 +24,22 @@ const ProjectDetails =({project}) => {
   const [status, setStatus] = useState(0);
   if(!project)return null;
   return(
-    <div className="project-details">
-     
+    <div className="pa-project-details">
       <Link to="/freelancers/project-details" className="link">{project.title}</Link><br></br>
       <a href="#" className="hover-profileLink">{project.client}</a>
           <p id="category">{project.category}</p>
-          <p>{project.location}</p>
-          <p>{project.budget}/project</p>
-          <h3 id="about-the-project">About the Project:</h3>
-          <p id="description">{project.description}</p>
-          <div>
-            <h3 id="key-requirement">Key Requirements:</h3>
-            <ul className="kr-list">
-              {project.items.map((item,index)=>(
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
-            <h3 id="status">Status:</h3>
+          <p><FaLocationDot className="icon-style"/>{project.location}</p>
+            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.budget}/project</p>
+            <p><BiTimeFive size={20}className='icon-style2' />{project.duration}</p> 
+            <p>Starting from: {project.date}</p>
+          
+          <h3 id="status">Status:</h3>
             <p className="detail-status">{project.status}</p>
            <p className="detail-date">{project.applyDate}</p>
            {/*  status bar*/}
-           < StatusBar status={status}/>
-          </div>
+           <div className="statusbar">
+           < StatusBar status={status}/></div>
+          
           <div className='button-container'>
           <button className="btn-primary" onClick={handleViewApplication}>View Application</button>
           <button className="btn-secondary">Cancel Application</button>
@@ -92,7 +90,7 @@ const ProjectsApplied = () => {
      'Aesthetic Appeal',
      'Mobile Responsiveness',
      'Integration of E-Commerce Features'
-   ],status:'Applied on FreelancerHub',applyDate:'1 May 2024'
+   ],status:'Applied on FreelancerHub',applyDate:'1 May 2024',preferQuali:"Diploma/Degree in COmputer Science",date:"27/4/2024",duration:"1 month"
    },{
      title: 'Online Shop Website Design',
    client: 'Mr Honey Bees Farm',

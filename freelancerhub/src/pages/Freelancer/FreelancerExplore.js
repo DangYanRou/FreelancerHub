@@ -8,6 +8,9 @@ import NavigationBarFreelancer from './NavigationBarFreelancer';
 import '../../styles/Freelancers/FreelancerExplore.css'
 import { GrFormClose } from "react-icons/gr";
 import { useHistory } from 'react-router-use-history';
+import { FaLocationDot } from "react-icons/fa6";
+import { MdOutlineAttachMoney } from "react-icons/md";
+import { BiTimeFive } from "react-icons/bi";
 
 
 const FreelancerExplore = () => {
@@ -63,7 +66,7 @@ const FreelancerExplore = () => {
       'Aesthetic Appeal',
       'Mobile Responsiveness',
       'Integration of E-Commerce Features'
-    ]
+    ],preferQuali:'Diploma/Degree in Computer Science',date:"27/4/2024",duration:"1 month"
     },{
       title: 'Online Shopping Website Design',
     client: 'Hana Florist',
@@ -77,7 +80,7 @@ const FreelancerExplore = () => {
       'Aesthetic Appeal',
       'Mobile Responsiveness',
       'Integration of E-Commerce Features'
-    ]
+    ],date:"30/4/2024"
     },{
       title: 'Accountant',
     client: 'Mr Honey Bees Farm',
@@ -115,8 +118,9 @@ const FreelancerExplore = () => {
             <h2>{blog.title}</h2>
             <a href="#" className="hover-profileLink">{blog.client}</a>
             <p id="category">{blog.category}</p>
-            <p>{blog.location}</p>
-            <p>{blog.budget}/project</p>
+            <p><FaLocationDot className="icon-style"/>{blog.location}</p>
+            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{blog.budget}/project</p>
+           
           </div>
         ))}
       </div>
@@ -148,18 +152,24 @@ const FreelancerExplore = () => {
         <h2 id="detail-title">{project.title}</h2>
         <a href="#" className="hover-profileLink">{project.client}</a>
             <p id="category">{project.category}</p>
-            <p>{project.location}</p>
-            <p>{project.budget}/project</p>
+            <p><FaLocationDot className="icon-style"/>{project.location}</p>
+            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.budget}/project</p>
+            <p><BiTimeFive size={20}className='icon-style2' />{project.duration}</p> 
+            <p>Starting from: {project.date}</p>
+           
             <h3 id="about-the-project">About the Project:</h3>
             <p>{project.description}</p>
             <div>
-              <h3 id="key-requirement">Key Requirements:</h3>
+              <h3 id="key-requirement">Job Responsibilities:</h3>
               <ul className="list">
                 {project.items.map((item,index)=>(
                   <li key={index}>{item}</li>
                 ))}
               </ul>
             </div>
+            <h3 id="preferredQualification">Preferred Qualification:</h3>
+            <p>{project.preferQuali}</p>
+
             <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
   
   

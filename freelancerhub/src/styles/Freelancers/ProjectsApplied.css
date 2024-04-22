@@ -12,6 +12,7 @@
     align-items: center; /* Aligns items vertically */
     overflow-y: auto;
 }
+
 .modal-overlay {
     display: flex;
     position: fixed;
@@ -32,7 +33,7 @@
     border-radius: 8px;
     overflow-y: auto;
     height: 100%;
-    width: 600px;
+    max-width: 600px; /* Limit the maximum width of the modal content */
    
 }
 .modal-header {
@@ -50,19 +51,21 @@
     font-size: 1.5rem;
 }
 
-.project-details{
+.pa-project-details{
     padding: 20px;
-    width:700px;
+    max-width:600px;
     border-radius: 10px;
-    overflow: auto;
+    overflow-y: auto;
+    
 }
 
 
-.project-details a,
-.project-details p {
+.pa-project-details p {
     margin-bottom: 0.5rem; /* Add spacing between each element inside project details */
+    display: flex;
 }
-.project-details a{
+
+.pa-project-details a{
     font-size: 24px;
 }
 
@@ -96,7 +99,8 @@
 }
 
 .button-container{
-    margin-top: 5%;
+    max-width: 500px;
+    margin-top: 7%;
     display: flex; /* Use flexbox to arrange buttons horizontally */
     justify-content: space-evenly; /* Spread buttons apart */
 }
@@ -126,6 +130,7 @@
 
 #status{
    margin-top: 2rem;
+   overflow-x: hidden; /* Hide horizontal overflow */
 }
 .detail-status{
     font-style: italic;
@@ -148,3 +153,6 @@
     text-decoration: underline; /* Change color on hover */
     
   }
+.statusbar{
+    max-width: 500px;
+}

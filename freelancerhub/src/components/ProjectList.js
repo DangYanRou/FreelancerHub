@@ -1,6 +1,8 @@
 import './ProjectList.css'
 import React from 'react';
-import { SlOptionsVertical } from "react-icons/sl";
+import { FaLocationDot } from "react-icons/fa6";
+import { MdOutlineAttachMoney } from "react-icons/md";
+
 
 const ProjectList=({projects,onProjectClick,selectedProjectId}) => {
   const handleOptionClick = (event) => {
@@ -15,9 +17,9 @@ const ProjectList=({projects,onProjectClick,selectedProjectId}) => {
              <h2>{blog.title}</h2>
             <a href="#" className="hover-profileLink">{blog.client}</a>
             <p id="category">{blog.category}</p>
-            <p>{blog.location}</p>
-            <p>{blog.budget}/project</p>
-  
+            
+            <p><FaLocationDot className="icon-style"/>{blog.location}</p>
+            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{blog.budget}/project</p>
              <p className="apply-status">{blog.status}</p>
              <p className="apply-date">{blog.applyDate}</p>
             </div>

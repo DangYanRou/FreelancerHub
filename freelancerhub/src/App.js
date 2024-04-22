@@ -25,6 +25,7 @@ import FreelancerFeedbackPage from './pages/Freelancer/FreelancerFeedbackPage';
 import FreelancerAverageReviewBox from './pages/Freelancer/FreelancerAverageReviewBox';
 import ClientAverageReviewBox from './pages/Clients/ClientAverageReviewBox';
 import ProjectCompletedPage from './pages/Freelancer/ProjectCompletedPage';
+import ProjectCompletedPageClient from './pages/Clients/ProjectCompletedPageClient.js';
 
 
 function App() {
@@ -70,6 +71,7 @@ function ClientRoutes() {
       <Route path="project-posted" element={<ProjectPosted />} />
       <Route path="proposal-received" element={<ProposalReceivedPage />} />
       <Route path="proposal-details" element={<ProposalDetails />} />
+      <Route path="project-completed" element={<ProjectCompletedPageClient />} />
       <Route path="post-project" element={<CreateProjectDetail />} />
       <Route path="post-project-description" element={<CreateProjectDescription />} />
       <Route path="post-project-preferred" element={<CreateProjectPreferred />} />

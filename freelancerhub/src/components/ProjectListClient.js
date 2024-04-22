@@ -4,6 +4,7 @@ import { SlOptionsVertical } from "react-icons/sl";
 import { useState } from 'react';
 import { Link } from 'react-router-dom'; // Import Link from React Router
 
+
 const ProjectListClient=({projects,onProjectClick,selectedProjectId}) => {
     
 
@@ -29,6 +30,7 @@ const ProjectListClient=({projects,onProjectClick,selectedProjectId}) => {
                   <li>Edit Project</li>
                   <li>Delete Project</li>
                   <li><Link to ="/clients/proposal-received">View Applications</Link></li>
+                  <li><Link to ="/clients/project-completed">Mark As Done</Link></li>
                 </ul>
               </div>
             )}

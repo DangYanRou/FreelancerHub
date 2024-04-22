@@ -18,7 +18,7 @@ const ProjectPosted= () => {
      client: 'Hana Florist',
      category: 'Information & Communication Technology',
      budget: 'RM 1500-RM 2000',
-     location: 'Petaling Jaya, Selangor'
+     location: 'Subang Jaya, Selangor'
      ,id: 1,
      description: `We are a flourishing florist business seeking a skilled freelancer to help us design our online shopping website. As the owner of a thriving florist, we recognize the importance of establishing a strong online presence to cater to our customers' evolving needs. We aim to create a seamless and aesthetically pleasing online shopping platform that reflects the beauty and elegance of our floral arrangements.`,
      items: [

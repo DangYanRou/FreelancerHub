@@ -51,6 +51,7 @@
 }
 .card p{
     font-size: 16px;
+    display: flex;
 }
 
 .hover-profileLink {
@@ -64,4 +65,9 @@
 .hover-profileLink:hover {
     text-decoration: underline; /* Add underline on hover */
 }
+.icon-style{
+    margin-top: 3px;
+    margin-right: 3px;
+}
+
 

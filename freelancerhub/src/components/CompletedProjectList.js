@@ -2,6 +2,8 @@ import './CompletedProjectList.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { FaLocationDot } from "react-icons/fa6";
+import { MdOutlineAttachMoney } from "react-icons/md";
 
 const CompletedProjectList = ({ projects }) => {
     const navigate = useNavigate();
@@ -21,8 +23,8 @@ const CompletedProjectList = ({ projects }) => {
                     <h2>{project.title}</h2>
                     <a href="#" className="hover-profileLink">{project.client}</a>
                     <p id="category">{project.category}</p>
-                    <p>{project.location}</p>
-                    <p>{project.budget}/project</p>
+                    <p><FaLocationDot className="icon-style"/>{project.location}</p>
+            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.budget}/project</p>
                     <p className="apply-status">{project.status}</p>
                     <div className="bottom-row">
                         <p style={{ flexGrow: 1 }}>Completed on: <span className="complete-date">{project.completeDate}</span></p>
