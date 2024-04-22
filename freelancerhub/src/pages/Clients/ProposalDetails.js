@@ -76,7 +76,7 @@ const ProposalDetails = () => {
                                             <div className="FilesAttachedContainer">
                                                 <label className="proposalSubLabel" htmlFor="proposal">CV</label>
                                                 <a className="linkToFileSubmitted" href={proposalDetail.cv} target="_blank" rel="noopener noreferrer">
-                                                    <PdfPreview fileUrl={proposalDetail.cv} fileName="Minimalist White and Grey Professional Resume.pdf" />
+                                                    <PdfPreview fileUrl={proposalDetail.cv} fileName="Minimalist Professional Resume.pdf" />
                                                 </a>
                                             </div>
                                         </>

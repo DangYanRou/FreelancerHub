@@ -32,7 +32,7 @@ const ProposalReceivedPage = () => {
   return (
     <div className="ProposalReview">
       <NavigationBarClient></NavigationBarClient>
-      <h1>Proposal Received</h1>
+      <h1 className='proposalReceivedH1'>Proposal Received</h1>
       <div className='proposalGrid'>
       {proposals.map((proposal) => (
         <Link key={proposal.proposal_id} to="/clients/proposal-details" className="proposalDetailsLink">

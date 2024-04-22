@@ -18,9 +18,11 @@ export const ProposalForm = () =>{
     };
 
     return (
+        <div className="proposal-form">
+
         <div>
             <NavigationBar />
-            <h1>Proposal Submission</h1>
+            <h1 className="proposalSubmissionH1">Proposal Submission</h1>
             <form onSubmit={handleSubmit} className="proposalForm">
                 {/* Use a shared class for labels and inputs */}
                 <label className="proposalLabel" htmlFor="fullName">*Full Name</label>
@@ -50,7 +52,9 @@ export const ProposalForm = () =>{
                 <button type="submit" className="proposalSubmitButton">Submit</button>
             </form>
         </div>
-    );
-};
+        </div>
+
+    )
+}
 
 export default ProposalForm;

@@ -1,15 +1,13 @@
 #root{
   width: 100%;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  margin: 0;
 }
 
 .navbar {
   background-color: #213e60;
   overflow: hidden; 
   width:100%;
-  text-align: center;
+  z-index: 1000;
 }
 
 
@@ -48,7 +46,7 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
   margin: 0; 
   padding: 0; 
-  width: 250px;
+  width: inherit;
 }
 
 .nav-list li:hover .sub-menu {
@@ -68,4 +66,8 @@
 .sub-menu li a:hover {
   background-color: #213e60;
   color: #fff;
+}
+
+.nav-item {
+  position: relative;
 }

@@ -5,10 +5,17 @@ import ProposalForm from './pages/Freelancer/ProposalForm';
 import LoginPage from './pages/LoginPage';
 import ProjectsApplied from './pages/Freelancer/ProjectsApplied';
 import ClientLandingPage from './pages/Clients/ClientLandingPage';
-import ProposalReceivedPage from './pages/Clients/ProposalReceivedPage';
+import FreelancerExplore from './pages/Freelancer/FreelancerExplore';
+import CreateProjectDetail from './pages/Clients/CreateProjectDetail';
+import CreateProjectDescription from './pages/Clients/CreateProjectDescription';
+import CreateProjectPreferred from './pages/Clients/CreateProjectPreferred';
+import CreateProjectInvite from './pages/Clients/CreateProjectInvite';
+import CreateProjectPreview from './pages/Clients/CreateProjectPreview';
 import FreelancerProfile from './pages/Freelancer/FreelancerProfile';
 import ClientProfile from './pages/Clients/ClientProfile';
+import ProposalReceivedPage from './pages/Clients/ProposalReceivedPage';
 import ProposalDetails from './pages/Clients/ProposalDetails';
+import './tailwind.css';
 
 function App() {
   return (
@@ -30,6 +37,7 @@ function FreelancerRoutes() {
       <Route path="/" element={<FreelancerLandingPage />} />
       <Route path="projects-applied" element={<ProjectsApplied />} />
       <Route path="proposal-form" element={<ProposalForm />} />
+      <Route path="Explore" element={<FreelancerExplore />} />
       <Route path="profile" element={<FreelancerProfile />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
@@ -41,10 +49,15 @@ function ClientRoutes() {
   return (
     <Routes>
       <Route path="/" element={<ClientLandingPage />} />
+      <Route path="project-posted" element={<ProposalReceivedPage />} />
       <Route path="proposal-received" element={<ProposalReceivedPage />} />
-      <Route path="profile" element={<ClientProfile />} />
       <Route path="proposal-details" element={<ProposalDetails />} />
-      {/* Add more nested routes as needed */}
+      <Route path="post-project" element={<CreateProjectDetail />} />
+      <Route path="post-project-description" element={<CreateProjectDescription />} />
+      <Route path="post-project-preferred" element={<CreateProjectPreferred />} />
+      <Route path="post-project-invite" element={<CreateProjectInvite />} />
+      <Route path="post-project-preview" element={<CreateProjectPreview />} />
+      <Route path="profile" element={<ClientProfile/>}/>
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

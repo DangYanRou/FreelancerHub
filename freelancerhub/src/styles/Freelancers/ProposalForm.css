@@ -45,6 +45,7 @@
     width: 200px;
     border-radius: 5px;
     font-weight: bold;
+    margin-bottom: 50px;
   }
   
   .longtextinput {
@@ -75,7 +76,7 @@
     display: flex; 
     align-items: center; 
     cursor: pointer;
-    padding: 15px; 
+    padding: 30px; 
     border: none;
     border-radius: 5px;
     background-color: #F0F7F9;
@@ -84,6 +85,7 @@
     text-align: left;
     margin-bottom: 20px;
     max-width: 400px;
+    height: 75px;
   }
   
   /* Style the file upload icon */
@@ -91,4 +93,15 @@
     width: 50px; 
     height: 50px; 
     margin-right: 10px; 
+  }
+
+  .proposalSubmissionH1{
+    margin-bottom: 50px;
+    font-family: inherit;
+    font-size: 25px;
+    color: #213e60;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 50px;
+    
   }
