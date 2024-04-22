@@ -121,7 +121,7 @@ const handleCloseModal = () => {
     <div className="ProjectsApplied">
       <NavigationBar></NavigationBar>
       <h2 className="jl-page-header">Projects Applied</h2>
-      <div className="centered-container">
+      <div className="jl-centered-container">
    <ProjectList projects={projects} onProjectClick={handleProjectClick}   selectedProjectId={selectedProject ? selectedProject.id : null}/>
    </div>
    <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} />

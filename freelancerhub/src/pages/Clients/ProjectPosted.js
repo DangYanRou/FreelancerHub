@@ -14,7 +14,7 @@ const ProjectPosted= () => {
   
    const projects=[
      {
-       title: 'Online Shopping Website Design',
+       title: 'Online Shopping App Design',
      client: 'Hana Florist',
      category: 'Information & Communication Technology',
      budget: 'RM 1500-RM 2000',
@@ -51,7 +51,7 @@ const ProjectPosted= () => {
     <div className="ProjectPosted">
       <NavigationBar></NavigationBar>
        <h2 className="page-header">Project Posted</h2>
-       <div className="centered-container">
+       <div className="jl-centered-container">
    <ProjectListClient projects={projects} onProjectClick={handleProjectClick}/>
     </div>
     </div>
