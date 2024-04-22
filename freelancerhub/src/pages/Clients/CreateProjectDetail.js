@@ -13,8 +13,8 @@ const ProgressBar = ({ stages }) => {
       {stages.map((stage, index) => (
         <div key={index} className={`stage-container w-1/4 ${index !== stages.length - 1 ? 'border-r' : ''}`}>
         <div className="stage flex flex-col items-center px-4">
-            <div className="icon w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: stage.title === 'Job Details' ? '#213E60' : '#E9EBFD' }}>
-              <img src={stage.title === 'Job Details' ? workImage : noteImage} alt="Stage icon" />
+            <div className="icon w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: stage.title === 'Project Details' ? '#213E60' : '#E9EBFD' }}>
+              <img src={stage.title === 'Project Details' ? workImage : noteImage} alt="Stage icon" />
             </div>
             <div className="title font-bold">{stage.title}</div>
             <div>{stage.step}</div>
@@ -34,8 +34,8 @@ const CreateProjectDetail = () => {
 
   // Define the stages of project creation
   const stages = [
-    { title: 'Job Details', step: 'Step 1/5' },
-    { title: 'Job Description', step: 'Step 2/5' },
+    { title: 'Project Details', step: 'Step 1/5' },
+    { title: 'Project Description', step: 'Step 2/5' },
     { title: 'Preferred', step: 'Step 3/5' },
     { title: 'Invite', step: 'Step 4/5' },
     { title: 'Preview', step: 'Step 5/5' },

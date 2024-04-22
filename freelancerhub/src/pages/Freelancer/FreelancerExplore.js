@@ -35,7 +35,6 @@ const FreelancerExplore = () => {
 
   const dropdowns = [
     { title: 'Workplace', options: ['Onsite', 'Remote', 'Hybrid'] },
-    { title: 'Contract Type', options: ['Freelance', 'Part Time', 'Full Time'] },
     { title: 'Workload', options: ['20% (1 day per week)', '40% (2 days per week)', '60% (3 days per week)','80% (4 days per week)','100% (5 days per week)','not specified'] },
     { title: 'Budget', min: minBudget, max: maxBudget }
   ];
