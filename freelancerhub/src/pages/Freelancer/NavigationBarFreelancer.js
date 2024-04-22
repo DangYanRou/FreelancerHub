@@ -21,7 +21,7 @@ const NavigationBar = () => {
           {showSubMenu && (
             <ul className="sub-menu">
               <li><Link to="/freelancers/projects-applied">Projects Applied</Link></li>
-              <li><Link to="/freelancers/proposal-form">Projects Completed</Link></li>
+              <li><Link to="/freelancers/project-completed-page">Projects Completed</Link></li>
             </ul>
           )}
         </li>
