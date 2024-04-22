@@ -2,13 +2,15 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import FreelancerLandingPage from './pages/Freelancer/FreelancerLandingPage';
 import ProposalForm from './pages/Freelancer/ProposalForm';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/LoginPage/LoginPage';
 import ProjectsApplied from './pages/Freelancer/ProjectsApplied';
 import ClientLandingPage from './pages/Clients/ClientLandingPage';
 import ProposalReceivedPage from './pages/Clients/ProposalReceivedPage';
 import FreelancerProfile from './pages/Freelancer/FreelancerProfile';
 import ClientProfile from './pages/Clients/ClientProfile';
 import ProposalDetails from './pages/Clients/ProposalDetails';
+import Register from './pages/LoginPage/Register';
+import ResetPassword from './pages/LoginPage/ResetPassword';
 import FreelancerExplore from './pages/Freelancer/FreelancerExplore';
 import CreateProjectDetail from './pages/Clients/CreateProjectDetail';
 import CreateProjectDescription from './pages/Clients/CreateProjectDescription';
@@ -23,6 +25,8 @@ function App() {
       <LoginPage />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<Register/>} />
+        <Route path="/resetPassword" element={<ResetPassword/>} />
         <Route path="/freelancers/*" element={<FreelancerRoutes />} />
         <Route path="/clients/*" element={<ClientRoutes />} />
         {/* Add more top-level routes if needed */}
