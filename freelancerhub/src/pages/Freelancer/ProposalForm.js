@@ -22,7 +22,7 @@ export const ProposalForm = () =>{
 
         <div>
             <NavigationBar />
-            <h1 className="proposalSubmissionH1">Proposal Submission</h1>
+            <h1 className="proposalSubmissionH1">Application</h1>
             <form onSubmit={handleSubmit} className="proposalForm">
                 {/* Use a shared class for labels and inputs */}
                 <label className="proposalLabel" htmlFor="fullName">*Full Name</label>

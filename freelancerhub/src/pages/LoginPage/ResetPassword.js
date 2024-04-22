@@ -16,7 +16,7 @@ const ResetPassword=()=>{
                         </div>
                         <button type="submit">Send</button>
                         <div className="register-link">
-                            <p><Link to="/Login">Back to Login</Link></p>
+                            <p><Link to="/">Back to Login</Link></p>
                         </div>
                     </form>
                 </div>
