@@ -51,7 +51,6 @@ const FreelancerProfile = () => {
               <p className="job">Software Engineer</p>
               <p className='rating'>RATING:</p>
               <div className="rate"><Rating></Rating></div>
-                
             </div>
             <button className='edit' ><MdOutlineModeEdit /> Edit Profile</button> 
         </div>
