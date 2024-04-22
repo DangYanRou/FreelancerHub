@@ -35,14 +35,14 @@ const LoginPage = () => {
             <div className="loginPage">
                 <div className="wrapper">
                     <form onSubmit={onSubmit}>
-                        <h1>Login</h1>
+                        <h1 style={{ color:'white'}}>Login</h1>
                         <div className="input-box">
                             <FaUser className="icon"/><input className="username" type="text" placeholder="Username" required></input>
                         </div>
-                        <div className="input-box">
+                        <div className="input-box" style={{ color:'white'}}>
                             <FaLock className="icon"/><input className="pass" type="password" placeholder="Password" required></input>
                         </div>
-                        <div className="remember-forgot">
+                        <div className="remember-forgot" style={{ color:'white'}}>
                             <label><input type="checkbox"></input>Remember Me</label>
                             <Link to="/resetPassword" >Forgot password?</Link>
                         </div>
@@ -50,7 +50,7 @@ const LoginPage = () => {
                         <button type="submit">Login</button>
 
                         <div className="register-link">
-                            <p>Don't have an account? <Link to="/register">Register</Link></p>
+                            <p style={{ color:'white'}}>Don't have an account? <Link to="/register">Register</Link></p>
                         </div>
                     </form>
                 </div>

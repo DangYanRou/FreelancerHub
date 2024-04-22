@@ -26,7 +26,7 @@ const NavigationBar = () => {
           )}
         </li>
         <li><Link to="/freelancers/saved">Saved</Link></li>
-        <li><Link to="/freelancers/proposal-form">Notification</Link></li>
+        <li><Link to="/freelancers/notifications">Notification</Link></li>
         <li><Link to="/freelancers/profile">Profile</Link></li>
         <li><Link to="/">Log Out</Link></li>
       </ul>

@@ -28,9 +28,19 @@
     font-weight: bold;
   }
 
+  .freelancerProfileLink:hover {
+    text-decoration: none;
+    color: #69ACC2;
+  }
+
   .proposalDetailsLink {
     color: #213e60;
     text-decoration: none;
+  }
+
+  .proposalDetailsLink:hover {
+    text-decoration: none;
+    color: #213e60;
   }
 
   .proposalGrid {

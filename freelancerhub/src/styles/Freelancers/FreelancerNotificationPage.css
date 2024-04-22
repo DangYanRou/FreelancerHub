@@ -1,0 +1,48 @@
+.notification-container {
+    width: 100%;
+  }
+  
+  .notification-box {
+    display: flex;
+    justify-content: space-between; /* Align items horizontally with space in between */
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 70%;
+    min-height: 30px;
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+  
+  .notification-text {
+    font-weight: bold;
+    color: #213e60;
+  }
+  
+  .notification-time {
+    color: #213e60;
+    font-weight: light;
+  }
+  
+  .notification-heading {
+    font-family: inherit;
+    font-size: 25px;
+    color: #213e60;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  
+  .important {
+    background-color: #fdd566;
+  }
+  
+  .normal {
+    background-color: #69ACC2;
+  }
+  
+  .seen {
+    background-color: #F0F7F9; 
+  }
