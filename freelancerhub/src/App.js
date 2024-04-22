@@ -31,7 +31,7 @@ import ClientSaved from './pages/Clients/ClientSaved';
 import FreelancerNotificationPage from './pages/Freelancer/FreelancerNotificationPage.js';
 import FreelancerTemporaryProfile from './pages/Freelancer/FreelancerTemporaryProfile';
 import ClientNotificationPage from './pages/Clients/ClientNotificationPage.js';
-
+import Register from './pages/LoginPage/Register';
 
 
 
@@ -42,6 +42,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/resetPassword" element={<ResetPassword/>} />
+        <Route path="/register" element={<Register/>} />
         <Route path="/freelancers/*" element={<FreelancerRoutes />} />
         <Route path="/clients/*" element={<ClientRoutes />} />
         {/* Add more top-level routes if needed */}
