@@ -25,16 +25,7 @@ const NavigationBar = () => {
             </ul>
           )}
         </li>
-        <li>
-          <a href="#Saved" onClick={toggleSubMenu}>Saved</a>
-          {/* Conditionally render the sub-menu based on the state */}
-          {showSubMenu && (
-            <ul className="sub-menu">
-              <li><Link to="/freelancers/proposal-form">Projects</Link></li>
-              <li><Link to="/freelancers/proposal-form">Clients</Link></li>
-            </ul>
-          )}
-        </li>
+        <li><Link to="/freelancers/saved">Saved</Link></li>
         <li><Link to="/freelancers/proposal-form">Notification</Link></li>
         <li><Link to="/freelancers/profile">Profile</Link></li>
         <li><Link to="/login">Log Out</Link></li>

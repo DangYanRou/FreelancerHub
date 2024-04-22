@@ -25,12 +25,14 @@ import FreelancerFeedbackPage from './pages/Freelancer/FreelancerFeedbackPage';
 import FreelancerAverageReviewBox from './pages/Freelancer/FreelancerAverageReviewBox';
 import ClientAverageReviewBox from './pages/Clients/ClientAverageReviewBox';
 import ProjectCompletedPage from './pages/Freelancer/ProjectCompletedPage';
+import FreelancerSaved from './pages/Freelancer/FreelancerSaved';
+import ClientSaved from './pages/Clients/ClientSaved';
 
 
 function App() {
   return (
     <div className="App">
-      <LoginPage />
+      <LoginPage></LoginPage>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/resetPassword" element={<ResetPassword/>} />
@@ -57,6 +59,7 @@ function FreelancerRoutes() {
       <Route path="project-completed-page" element={<ProjectCompletedPage />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
+      <Route path="saved" element={<FreelancerSaved />} />
     </Routes>
   );
 }
@@ -80,6 +83,7 @@ function ClientRoutes() {
       <Route path="client-average-review-box" element={<ClientAverageReviewBox />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
+      <Route path="saved" element={<ClientSaved/>} />
     </Routes>
   
   );
