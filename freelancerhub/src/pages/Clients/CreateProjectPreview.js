@@ -3,6 +3,7 @@ import workImage from '../../Gallery/work.png';
 import noteImage from '../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import NavigationBarClients from './NavigationBarClient';
+import Heading from '../../Components/Heading';
 
 
 
@@ -11,15 +12,16 @@ const ProgressBar = ({ stages }) => {
   return (
     <div className="flex justify-between w-10/12 mb-8 border py-4 mx-auto">
       {stages.map((stage, index) => (
-        <div key={index} className={`stage-container w-1/4 ${index !== stages.length - 1 ? 'border-r' : ''}`}>
+        <div key={index} className={`stage-container w-1/4 flex flex-col justify-between ${index !== stages.length - 1 ? 'border-r' : ''}`}>
         <div className="stage flex flex-col items-center px-4">
             <div className="icon w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: stage.title === 'Preview' ? '#213E60' : '#E9EBFD' }}>
               <img src={stage.title === 'Preview' ? workImage : noteImage} alt="Stage icon" />
             </div>
             <div className="title font-bold">{stage.title}</div>
-            <div>{stage.step}</div>
+            </div>
+
+            <div className="flex items-center justify-center">{stage.step}</div>
           </div>
-        </div>
       ))}
     </div>
   );
@@ -33,7 +35,7 @@ const CreateProjectPreview = () => {
 
   const handleNextButtonClick = (event) => {
     event.preventDefault();
-    navigate("/clients/post-project");
+    navigate("/clients/project-posted");
   };
 
   //edit here to navigate to posted part
@@ -44,20 +46,25 @@ const CreateProjectPreview = () => {
 
   // Define the stages of project creation
   const stages = [
-    { title: 'Job Details', step: 'Step 1/5' },
-    { title: 'Job Description', step: 'Step 2/5' },
+    { title: 'Project Details', step: 'Step 1/5' },
+    { title: 'Project Description', step: 'Step 2/5' },
     { title: 'Preferred', step: 'Step 3/5' },
     { title: 'Invite', step: 'Step 4/5' },
     { title: 'Preview', step: 'Step 5/5' },
   ];
 
 
+
   return (
     <div className="flex flex-col items-start justify-center">
                         <NavigationBarClients/>
 
-      <h1 className="text-4xl mb-5 mt-10 font-bold pl-16">Create Project</h1>
-      <div className="w-11/12 h-px bg-black mb-5 mx-auto"></div>
+                        <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
+                      Create Project
+          </Heading>
+
+           {/* Line divider */}
+           <hr className="border-gray-700 my-8 w-[93%] mx-auto" />
       <ProgressBar stages={stages} />
       <div style={{ backgroundColor: '#69ACC2' }} className="w-screen max-w-full h-8/10">
         <div className="bg-white w-4/5 rounded-md my-12 mx-auto text-left">
@@ -90,7 +97,7 @@ const CreateProjectPreview = () => {
 </div>
 <div className="flex justify-left m-4 w-8/10">
             <div className="w-full">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Job Description: </label>
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Project Description: </label>
               <p className="w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal"
  id="duration">
     We're looking for someone who can create stunning websites and communications. Sounds like you? Good! Keep reading...
@@ -182,11 +189,43 @@ Why Us:
 
 <div className="flex justify-left m-4 w-8/10">
             <div className="w-full">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Job Responsibilities: </label>
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Project Responsibilities: </label>
               <p className="w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal"
- id="duration">bra bra bra bra bra bra bra bra 
- bra bra bra bra bra bra bra bra bra bra bra bra bra bra bra bra bra bra bra 
- bra bra bra bra <br></br>bra bra bra brabra bra bra bra
+ id="duration">
+1. User Research and Analysis:
+<br></br>
+  - Conduct user research to understand user behaviors, needs, and motivations.
+  <br></br>
+  - Analyze data from user studies, interviews, and surveys to derive insights.
+<br></br>
+  - Create user personas and user journey maps based on research findings.
+  <br></br>
+<br></br>
+2. UI Design:
+<br></br>
+  - Design user interfaces for digital products such as websites, mobile apps, and software applications.
+<br></br>
+  - Develop wireframes, prototypes, and mockups to visualize design concepts.
+<br></br>
+  - Ensure UI designs are visually appealing, user-friendly, and consistent with brand guidelines.
+<br></br>
+<br></br>
+3. UX Design:
+<br></br>
+  - Define and refine user flows, interactions, and information architecture.
+<br></br>
+  - Collaborate with stakeholders to define product requirements and features.
+<br></br>
+  - Conduct usability testing and gather feedback for iterative design improvements.
+<br></br>
+<br></br>
+4. Prototyping and Testing:
+<br></br>
+  - Create interactive prototypes using tools like Figma, Sketch, Adobe XD, or InVision.
+<br></br>
+  - Conduct usability tests and iterate designs based on user feedback and usability findings.
+  <br></br>
+  - Optimize designs for responsiveness, accessibility, and cross-platform compatibility.
  </p>
             </div>
           </div>
