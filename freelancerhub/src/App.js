@@ -36,9 +36,8 @@ import ClientSaved from './pages/Clients/ClientSaved';
 function App() {
   return (
     <div className="App">
-      <LoginPage></LoginPage>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/resetPassword" element={<ResetPassword/>} />
         <Route path="/freelancers/*" element={<FreelancerRoutes />} />
         <Route path="/clients/*" element={<ClientRoutes />} />
