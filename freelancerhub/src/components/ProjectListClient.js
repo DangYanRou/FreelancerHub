@@ -2,12 +2,11 @@ import './ProjectListClient.css'
 import React from 'react';
 import { SlOptionsVertical } from "react-icons/sl";
 import { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from React Router
+import { Link } from 'react-router-dom';
 
 
 const ProjectListClient=({projects,onProjectClick,selectedProjectId}) => {
-    
-
+  
     const[showDropdown,setShowDropdown]=useState([]);
     
     const toggleDropDown =(index) =>{
@@ -27,7 +26,7 @@ const ProjectListClient=({projects,onProjectClick,selectedProjectId}) => {
               </div>
               {showDropdown[index] && (<div className="pa-options-dropdown">
                 <ul className="pa-options">
-                  <li>Edit Project</li>
+                  <li><Link to ="/clients/post-project">Edit Project</Link></li>
                   <li>Delete Project</li>
                   <li><Link to ="/clients/proposal-received">View Applications</Link></li>
                   <li><Link to ="/clients/project-completed">Mark As Done</Link></li>
