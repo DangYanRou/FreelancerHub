@@ -1,0 +1,108 @@
+.parent-container{
+    display: grid;
+    grid-template-columns: auto 1fr; /* Change the order of columns to display project list first and then project details */
+    gap: 20px; /* Add some gap between the columns */
+    padding: 20px; /* Add padding for spacing */
+    height: 100vh; /* Make the container fill the height of the viewport */
+}
+
+  
+.card{
+    flex:1;
+    flex-direction: column;
+    align-items: flex-start;
+    padding:2%;
+    background-color:#F0F7F9;
+    box-shadow: rgba(0,0,0,0.30) 0px 1px 3px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+.card:hover{
+    box-shadow:rgba(0,0,0,0.24)0px 3px 8px;
+    
+}
+
+.card.selected {
+    background-color: #C5E1EB; /* Updated background color when selected */
+  }
+
+.card h2{
+    font-size: 22px;
+}
+.card p{
+    font-size: 16px;
+}
+
+#category{
+    margin-bottom: 0.5rem;
+}
+
+.hover-profileLink {
+    font-size: 18px;
+    color: black; /* Set the text color */
+    text-decoration: none;
+     /* Remove default underline */
+     
+}
+
+.hover-profileLink:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+
+.project-details{
+    padding: 20px;
+    border-radius: 10px;
+    overflow: auto;
+    width: 500px;
+    background-color: white;
+}
+
+.ExploreProjectList {
+    max-width: 100%; /* Adjust this value as needed */
+}
+
+.project-details a,
+.project-details p {
+    margin-bottom: 0.5rem; /* Add spacing between each element inside project details */
+}
+.project-details a{
+    font-size: 24px;
+}
+
+#about-the-project{
+    margin-top: 3%;
+}
+#key-requirement{
+    margin-top: 3%;
+}
+#p-title{
+   font-size: 36px; 
+
+}
+
+#key-requirements{
+    margin-bottom: 3rem;
+}
+.list{
+    margin-left: 1rem;
+    list-style-type: disc; /* This will give you filled dots */
+
+}
+.btn-primary{
+    background-color: #213E60;
+    padding:9px 28px; /* Adjust padding to increase button size */
+    border: none; /* Remove default border */
+    font-size: 16px;
+    color: white;
+    border-radius: 8px; 
+    cursor: pointer; /* Change cursor to pointer on hover */
+    margin-bottom: 3rem;
+}
+.btn:hover {
+    background-color:#6fb9d1; /* Change background color on hover */
+}
+
+#applyButton{
+    margin-top: 5%;
+}
