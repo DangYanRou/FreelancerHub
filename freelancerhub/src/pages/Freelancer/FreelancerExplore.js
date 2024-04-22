@@ -11,6 +11,8 @@ import { useHistory } from 'react-router-use-history';
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
+import { BsBookmark } from "react-icons/bs";
+import { BsBookmarkCheckFill } from "react-icons/bs";
 
 
 const FreelancerExplore = () => {
@@ -22,6 +24,14 @@ const FreelancerExplore = () => {
  
   const [minBudget, setMinBudget] = useState('');
   const [maxBudget, setMaxBudget] = useState('');
+
+  const [bookmarkedProjects, setBookmarkedProjects] = useState({});
+  const handleClick = (projectId) => {
+    setBookmarkedProjects({
+      ...bookmarkedProjects,
+      [projectId]: !bookmarkedProjects[projectId]
+    });
+  };
 
   const dropdowns = [
     { title: 'Workplace', options: ['Onsite', 'Remote', 'Hybrid'] },
@@ -120,12 +130,32 @@ const FreelancerExplore = () => {
             <p id="category">{blog.category}</p>
             <p><FaLocationDot className="icon-style"/>{blog.location}</p>
             <p><MdOutlineAttachMoney size={20}className='icon-style2' />{blog.budget}/project</p>
-           
+            <div className="absolute top-4 right-3 space-x-4 w-8 h-8">
+            {bookmarkedProjects[blog.id] ? 
+              <BsBookmarkCheckFill 
+                size={20} 
+                className="cursor-pointer" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClick(blog.id);
+                }} 
+              /> 
+              : 
+              <BsBookmark 
+                size={20} 
+                className="cursor-pointer" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClick(blog.id);
+                }} 
+              />
+            }
           </div>
-        ))}
-      </div>
-    );
-  };
+        </div>
+      ))}
+    </div>
+  );
+}
   
   const ProjectModal = ({ isOpen, onClose, project }) => {
     if (!isOpen||!project) return null;
@@ -212,10 +242,10 @@ const FreelancerExplore = () => {
 </button>
 </div>
 </div>
-      </div>
-      <div className="flex justify-start h-full ml-10 w-full mt-10">
-  <div className="flex w-full">
-    <div className="flex flex-col w-1/5">
+</div>
+      <div className="flex justify-center items-center h-full pt-10">
+      <div className="flex flex-row">
+            <div className="flex flex-col w-1/4">
       {dropdowns.map((dropdown, index) => (
   <details key={index} open className="mb-4 rounded-xl bg-white shadow overflow-hidden" onToggle={(e) => {
     const arrow = e.target.querySelector('.arrow');

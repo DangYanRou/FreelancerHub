@@ -5,7 +5,7 @@ import profilePic from "../../Gallery/Elon_Musk.jpg";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
-import Rating from "../../components/Rating";
+import Rating from "../../Components/Rating";
 
 const FreelancerProfile = () => {
   const [showAbout, setShowAbout] = useState(true);
