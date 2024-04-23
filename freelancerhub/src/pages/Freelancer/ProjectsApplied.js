@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { GrFormClose } from "react-icons/gr";
 import ProjectDetailsPage from './ProjectDetailsPage';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import StatusBar from '../../Components/statusBar2';
+import StatusBar from '../../components/statusBar';
 import { useHistory } from 'react-router-use-history';
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
