@@ -29,8 +29,10 @@ import ProjectCompletedPage from './pages/Freelancer/ProjectCompletedPage';
 import FreelancerSaved from './pages/Freelancer/FreelancerSaved';
 import ClientSaved from './pages/Clients/ClientSaved';
 import FreelancerNotificationPage from './pages/Freelancer/FreelancerNotificationPage.js';
+import FreelancerTemporaryProfile from './pages/Freelancer/FreelancerTemporaryProfile';
 import ClientNotificationPage from './pages/Clients/ClientNotificationPage.js';
 import Register from './pages/LoginPage/Register';
+import ClientTemporaryProfile from './pages/Clients/ClientTemporaryProfile';
 
 
 
@@ -64,6 +66,7 @@ function FreelancerRoutes() {
       <Route path="freelancer-average-review-box" element={<FreelancerAverageReviewBox />} />
       <Route path="project-completed-page" element={<ProjectCompletedPage />} />
       <Route path="notifications" element={<FreelancerNotificationPage />} />
+      <Route path="freelancer-temporary-profile" element={<FreelancerTemporaryProfile />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
       <Route path="saved" element={<FreelancerSaved />} />
@@ -90,6 +93,7 @@ function ClientRoutes() {
       <Route path="client-feedback-page" element={<ClientFeedbackPage />} />
       <Route path="client-average-review-box" element={<ClientAverageReviewBox />} />
       <Route path="notifications" element={<ClientNotificationPage />} />
+      <Route path="client-temporary-profile" element={<ClientTemporaryProfile />} />
       {/* Add more nested routes as needed */}
       <Route path="*" element={<Navigate to="/" />} />
       <Route path="saved" element={<ClientSaved/>} />

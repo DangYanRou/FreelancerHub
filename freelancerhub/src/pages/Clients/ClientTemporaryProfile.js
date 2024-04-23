@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import NavigationBarClient from "./NavigationBarClient";
+import NavigationBarFreelancer from '../Freelancer/NavigationBarFreelancer';
 import logo from "../../Gallery/google-logo.jpeg";
 import googleImage from "../../Gallery/google-fulllogo.jpg";
 import "../../styles/Clients/ClientProfile.css";
@@ -88,7 +88,7 @@ const ClientProfile = () => {
 
   return (
     <div className="ClientProfile">
-      <NavigationBarClient></NavigationBarClient>
+      <NavigationBarFreelancer></NavigationBarFreelancer>
       <div className="client_content">
         <div className="upperProfile">
           <div className="profileCard">
