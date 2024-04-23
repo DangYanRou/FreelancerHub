@@ -256,6 +256,7 @@ const FreelancerExplore = () => {
   };
 
   return (
+<<<<<<< Updated upstream
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 ">
       <NavigationBarFreelancer />
       <div className="relative ">
@@ -280,6 +281,94 @@ const FreelancerExplore = () => {
                 placeholder="Job title or keyword"
                 className="!text-[21.03px] border-none outline-none flex-grow h-[30px] py-2"
               />
+=======
+    <div>
+      <NavigationBarFreelancer/>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 ">
+      
+    <div className="relative ">
+      <img src={backgroundHome} alt="Background" className="w-screen object-cover h-1/2" />
+      <div className="absolute bottom-[30%] left-0 right-0 m-auto flex w-full max-w-[1070px] flex-col items-center gap-[66px] md:p-5 sm:gap-[33px]">
+        <h1 className="text-shadow-ts tracking-[-1.20px] text-5xl font-bold mb-5 text-white">
+  Search Project
+</h1>
+<div className="flex items-center justify-between self-stretch rounded-[39px] bg-white px-5 py-2">
+<div className="flex items-center gap-4">
+  <img src={search} alt="search_one" className="h-[42px] w-[42px] align-middle" />
+  <input type="text" placeholder="Job title or keyword" className="!text-[21.03px] border-none outline-none flex-grow h-[30px] py-2" />
+</div>
+<div className="flex items-center gap-4">
+    <img src={catergory} alt="iconoirpinalt" className="h-[33px] w-[33px] align-middle" />
+    <select className="!text-[21.03px] border-none outline-none flex-grow h-[30px] ">
+      <option value="">Select a category...</option>
+      {categories.map((category, index) => (
+        <option key={index} value={category.toLowerCase()}>{category}</option>
+      ))}
+    </select>
+  </div>
+<div className="flex items-center gap-4">
+  <img src={location} alt="iconoirpinalt" className="h-[33px] w-[33px] align-middle" />
+  <input type="text" placeholder="Johor, Malaysia" className="!text-[21.03px] border-none outline-none flex-grow h-[30px] py-2" />
+</div>
+<button 
+  // onClick={handleSearch} 
+  className="ml-[33px] md:ml-0 sm:px-5 bg-[#214E60] hover:bg-[#69ACC2] text-white font-bold py-2 px-4 rounded-full">
+  Search
+</button>
+</div>
+</div>
+</div>
+      <div className="flex justify-center items-center h-full pt-10">
+      <div className="flex flex-row">
+            <div className="flex flex-col w-1/4">
+      {dropdowns.map((dropdown, index) => (
+  <details key={index} open className="mb-4 rounded-xl bg-white shadow overflow-hidden" onToggle={(e) => {
+    const arrow = e.target.querySelector('.arrow');
+          if (e.target.open) {
+            arrow.classList.add('rotate-180');
+          } else {
+            arrow.classList.remove('rotate-180');
+          }
+        }}>
+          <summary className="cursor-pointer text-white font-bold bg-[#69ACC2] p-3 flex justify-between items-center rounded-xl">
+            {dropdown.title}
+            <img className="arrow ml-2" src={dropdownArrow} alt="arrow" />
+          </summary>
+          {dropdown.title === 'Budget' ? (
+            <div className="p-4 white rounded-md">
+              <div className="flex items-center mb-2 justify-between">
+                <label className="text-sm ml-2 font-bold text-gray-700">
+                  Min:
+                </label>
+                <input
+                  type="number"
+                  value={dropdown.min}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (validateBudget(value, dropdown.max)) {
+                      setMinBudget(value);
+                    }
+                  }}
+                  className="mt-1 w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div className="flex items-center mb-2 justify-between">
+                <label className="text-sm ml-2 font-bold text-gray-700">
+                  Max:
+                </label>
+                <input
+                  type="number"
+                  value={dropdown.max}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (validateBudget(dropdown.min, value)) {
+                      setMaxBudget(value);
+                    }
+                  }}
+                  className="mt-1 w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+>>>>>>> Stashed changes
             </div>
             <div className="flex items-center gap-4">
               <img
@@ -416,6 +505,23 @@ const FreelancerExplore = () => {
         </div>
       </div>
     </div>
+<<<<<<< Updated upstream
+=======
+    <div className={`FreelancerExplore ${showDetails? 'show-details':''}`}>
+    <div className="parent-container ">
+   <ProjectList projects={projects} onProjectClick={handleProjectClick}   selectedProjectId={selectedProject ? selectedProject.id : null}/>
+   <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} />
+      
+    </div>
+    </div>
+  </div>
+  
+</div>
+    </div>
+    </div>
+
+    
+>>>>>>> Stashed changes
   );
 };
 

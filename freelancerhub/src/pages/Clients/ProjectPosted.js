@@ -2,6 +2,7 @@ import NavigationBar from './NavigationBarClient';
 import ProjectListClient from '../../components/ProjectListClient';
 import { useState } from 'react';
 import '../../styles/Clients/ProjectPosted.css';
+import Heading from '../../components/Heading';
 
 
 
@@ -50,7 +51,12 @@ const ProjectPosted= () => {
   return (
     <div className="ProjectPosted">
       <NavigationBar></NavigationBar>
-       <h2 className="page-header">Project Posted</h2>
+      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+            Project Posted
+          </Heading>
+
+           {/* Line divider */}
+           <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
        <div className="jl-centered-container">
    <ProjectListClient projects={projects} onProjectClick={handleProjectClick}/>
     </div>
