@@ -1,7 +1,6 @@
 .container {
-    border: 1px solid #e0e0e0;
-    width: 800px;
-    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    width: 400px;
     border-radius: 10px;
     box-sizing: border-box;
     display: flex;
@@ -9,7 +8,6 @@
     align-items: center;
     justify-content: center; /* Center vertically inside the container */
     margin: auto;
-    margin-top: 50px;
 }
 
 .title {
@@ -49,7 +47,7 @@
 
 .avgNum {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
     margin: 0;
 }
 
@@ -64,7 +62,8 @@
     flex-direction: column;
     align-items: center;
     flex-grow: 1;
-    margin-left: 20px; /* Consider adjusting if needed */
+    margin-left: 20px;
+    margin-right: 20px; /* Consider adjusting if needed */
 }
 
 .ratingBar {
@@ -94,4 +93,5 @@
     min-width: 20px;
     text-align: center;
     white-space: nowrap;
+    font-size: 18px;
 }

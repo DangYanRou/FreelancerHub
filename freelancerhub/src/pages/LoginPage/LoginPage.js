@@ -42,8 +42,8 @@ const LoginPage = () => {
                         <div className="input-box" style={{ color:'white'}}>
                             <FaLock className="icon"/><input className="pass" type="password" placeholder="Password" required></input>
                         </div>
-                        <div className="remember-forgot" style={{ color:'white'}}>
-                            <label><input type="checkbox"></input>Remember Me</label>
+                        <div className="remember-forgot" >
+                            <label style={{ color:'white'}}><input type="checkbox"></input>Remember Me</label>
                             <Link to="/resetPassword" >Forgot password?</Link>
                         </div>
 

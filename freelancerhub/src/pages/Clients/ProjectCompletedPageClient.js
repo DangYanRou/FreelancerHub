@@ -1,8 +1,8 @@
 import React from 'react';
 import NavigationBarClient from './NavigationBarClient';
-import ProjectList from '../../Components/ProjectList';
+import ProjectList from '../../components/ProjectList';
 import { useNavigate } from 'react-router-dom';
-import CompletedProjectList from '../../Components/CompletedProjectList';
+import CompletedProjectListClient from '../../components/CompletedProjectListClient';
 
 const ProjectCompletedPageClient = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const ProjectCompletedPageClient = () => {
     <NavigationBarClient></NavigationBarClient>
     <h2 className="page-header">Projects Completed</h2>
     <div className="jl-centered-container">
-      <CompletedProjectList projects={projects} />
+      <CompletedProjectListClient projects={projects} />
     </div>
    
   </div>

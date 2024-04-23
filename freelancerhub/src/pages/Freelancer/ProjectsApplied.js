@@ -1,7 +1,7 @@
 import React from 'react'
 import '../../styles/Freelancers/ProjectsApplied.css'
 import NavigationBar from './NavigationBarFreelancer';
-import ProjectList from '../../Components/ProjectList';
+import ProjectList from '../../components/ProjectList';
 import { useState } from 'react';
 import { GrFormClose } from "react-icons/gr";
 import ProjectDetailsPage from './ProjectDetailsPage';

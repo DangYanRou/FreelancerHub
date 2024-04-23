@@ -1,5 +1,6 @@
 .notification-container {
     width: 100%;
+    margin-bottom: 5%;
   }
   
   .notification-box {
@@ -45,4 +46,14 @@
   
   .seen {
     background-color: #F0F7F9; 
+  }
+
+  .notification-timebond{
+    margin-left: 15%;
+    margin-bottom: 10px;
+  }
+
+  .notificationLink:hover {
+    text-decoration: none;
+    color: #69ACC2;
   }

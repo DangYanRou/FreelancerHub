@@ -41,7 +41,7 @@ function ClientFeedbackPage() {
             </div>
           ))}
         </div>
-        {rating && <p>You have rated {rating} out of 5.</p>}
+        {rating && <p className='ratedNoti'>You have rated {rating} out of 5.</p>}
         <textarea
           className="feedback"
           placeholder="Please tell us in a few words"

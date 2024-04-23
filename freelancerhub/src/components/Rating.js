@@ -24,7 +24,7 @@ const Rate = () => {
 								color={
 									givenRating < rate || givenRating === rate
 										? "#69acc2"
-										: "rgb(192,192,192)"
+										: "rgb(195,195,195)"
 								}
 							/>
 						</Rating>
