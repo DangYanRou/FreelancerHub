@@ -2,13 +2,13 @@
     overflow: hidden;
 }
 
-.FreelancerProfile h1{
+/* .FreelancerProfile h1{
     padding-top:20px;
     margin-left: 40px;
     font-weight: 700;
     font-size: 40px;
     margin-bottom: 0px;
-}
+} */
 
 .FreelancerProfile .leftProfile{
     display: block;
@@ -70,6 +70,7 @@
 
 .rate {
     font-size: 50px;
+    width:88%;
 }
 
 .location{

@@ -1,16 +1,17 @@
 import React from 'react'
 import '../../styles/Freelancers/ProjectsApplied.css'
 import NavigationBar from './NavigationBarFreelancer';
-import ProjectList from '../../Components/ProjectList';
+import ProjectList from '../../components/ProjectList';
 import { useState } from 'react';
 import { GrFormClose } from "react-icons/gr";
 import ProjectDetailsPage from './ProjectDetailsPage';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import StatusBar from '../../Components/statusBar';
+import StatusBar from '../../components/statusBar2';
 import { useHistory } from 'react-router-use-history';
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
+import Heading from '../../components/Heading';
 
 
 
@@ -120,7 +121,12 @@ const handleCloseModal = () => {
   return (
     <div className="ProjectsApplied">
       <NavigationBar></NavigationBar>
-      <h2 className="jl-page-header">Projects Applied</h2>
+      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+            Projects Applied
+          </Heading>
+
+           {/* Line divider */}
+           <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
       <div className="jl-centered-container">
    <ProjectList projects={projects} onProjectClick={handleProjectClick}   selectedProjectId={selectedProject ? selectedProject.id : null}/>
    </div>

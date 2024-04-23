@@ -3,7 +3,7 @@ import workImage from '../../Gallery/work.png';
 import noteImage from '../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import NavigationBarClients from './NavigationBarClient';
-import Heading from '../../Components/Heading';
+import Heading from '../../components/Heading';
 
 
 // ProgressBar component to display the stages of project creation
@@ -135,8 +135,10 @@ const handleButtonClick = (event) => {
 
 
   return (
+    <div>
+      <NavigationBarClients/>
     <div className="flex flex-col items-start justify-center">
-        <NavigationBarClients/>
+        
         <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
                       Create Project
           </Heading>
@@ -219,6 +221,7 @@ const handleButtonClick = (event) => {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

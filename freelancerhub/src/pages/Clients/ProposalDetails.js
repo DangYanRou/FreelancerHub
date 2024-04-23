@@ -22,7 +22,7 @@ const ProposalDetails = () => {
     const history = useHistory();
 
     const handleProfileClick = () => {
-        history.push('/clients/profile');
+        history.push('/clients/freelancer-temporary-profile');
     };
 
     const handleAccept = () => {

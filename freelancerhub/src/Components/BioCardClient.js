@@ -40,9 +40,9 @@ export default function BioCardClient() {
         >
           PRO
         </Chip>
-        <Typography level="title-lg">Agnes Noris</Typography>
+        <Typography level="title-lg">Google Inc.</Typography>
         <Typography level="body-sm" sx={{ maxWidth: '24ch' }}>
-          Hello, this is Agnes. 
+        Google LLC is an American multinational corporation and technology company
         </Typography>
         <Box
           sx={{
@@ -109,7 +109,7 @@ export default function BioCardClient() {
         <CardActions buttonFlex="1">
           <ButtonGroup variant="outlined" sx={{ bgcolor: 'background.surface' }}>
             <Button>Remove</Button>
-            <Button onClick={()=>navigate('/clients/profile')}>Go To Profile</Button>
+            <Button onClick={()=>navigate('/freelancers/client-temporary-profile')}>Go To Profile</Button>
           </ButtonGroup>
         </CardActions>
       </CardOverflow>

@@ -2,6 +2,7 @@ import './ProjectList.css'
 import React from 'react';
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
+import { Link } from 'react-router-dom';
 
 
 const ProjectList=({projects,onProjectClick,selectedProjectId}) => {
@@ -16,7 +17,7 @@ const ProjectList=({projects,onProjectClick,selectedProjectId}) => {
             <div className={`card ${selectedProjectId === blog.id ? 'selected' : ''}`} key={blog.id} onClick={()=>onProjectClick(blog)}> 
            
              <h2>{blog.title}</h2>
-            <a href="#" className="hover-profileLink">{blog.client}</a>
+            <Link to="/freelancers/client-temporary-profile" className="hover-profileLink">{blog.client}</Link>
             <p id="category">{blog.category}</p>
             
             <p><FaLocationDot className="icon-style"/>{blog.location}</p>

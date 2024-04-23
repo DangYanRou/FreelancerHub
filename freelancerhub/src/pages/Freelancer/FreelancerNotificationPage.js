@@ -2,6 +2,7 @@ import React from 'react';
 import '../../styles/Freelancers/FreelancerNotificationPage.css';
 import NavigationBar from './NavigationBarFreelancer';
 import { Link } from 'react-router-dom';
+import Heading from '../../components/Heading';
 
 const notifications1 = [
     { id: 1, text: "You have received a project invitation", time: "2 hours ago", priority: "important"}
@@ -26,7 +27,12 @@ const notifications3 = [
       <div className="notification-page">
         <NavigationBar></NavigationBar>
         <div className="notification-container">
-          <h1 className="notification-heading">Notifications</h1>
+        <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+            Notifications
+          </Heading>
+
+           {/* Line divider */}
+           <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
           <h2 className="notification-timebond">New</h2>
           <div className="notification-list">
             {notifications1.map(notification => (
@@ -58,7 +64,7 @@ const notifications3 = [
             ))}
           </div>
           </Link>
-          <h2 className="notification-timebond">Last 30 Days</h2>
+          <h2 className="notification-timebond">Earlier</h2>
           <Link Link to="/freelancers/saved" className='notificationLink'>
           <div className="notification-list">
             {notifications4.map(notification => (
