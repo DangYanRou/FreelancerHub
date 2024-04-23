@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-use-history';
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
+import Heading from '../../components/Heading';
 
 
 
@@ -120,7 +121,12 @@ const handleCloseModal = () => {
   return (
     <div className="ProjectsApplied">
       <NavigationBar></NavigationBar>
-      <h2 className="jl-page-header">Projects Applied</h2>
+      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+            Projects Applied
+          </Heading>
+
+           {/* Line divider */}
+           <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
       <div className="jl-centered-container">
    <ProjectList projects={projects} onProjectClick={handleProjectClick}   selectedProjectId={selectedProject ? selectedProject.id : null}/>
    </div>
