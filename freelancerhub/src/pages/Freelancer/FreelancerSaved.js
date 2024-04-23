@@ -1,18 +1,24 @@
 import React,{ useState } from 'react'
 import NavigationBar from './NavigationBarFreelancer';
-import Heading from '../../Components/Heading';
-import ProjectList from '../../Components/ProjectListSaved';
-import List from '../../Components/List';
-import BasicTable from '../../Components/BasicTableClient';
+import Heading from '../../components/Heading';
+import ProjectList from '../../components/ProjectListSaved';
+import List from '../../components/List';
+import BasicTable from '../../components/BasicTableClient';
 import { GrFormClose } from "react-icons/gr";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import '../../styles/Freelancers/FreelancerSaved.css'
 import { duration } from '@mui/material';
+import { useHistory } from 'react-router-use-history';
 
 
 const FreelancerSaved = () => {
+
+  const history = useHistory();
+  const handleApply = () => {
+    history.push('/freelancers/proposal-form');
+    };
 
   const [selectedProject,setSelectedProject]=useState(null);
 
@@ -30,7 +36,7 @@ const FreelancerSaved = () => {
       'Aesthetic Appeal',
       'Mobile Responsiveness',
       'Integration of E-Commerce Features'
-    ],status:'Applied on FreelancerHub',applyDate:'22/4/2023', date:'7/5/2024',preferQuali:'Diploma/Degree in Computer Science',duration:'1 month'
+    ],preferQuali:'Diploma/Degree in Computer Science',duration:'1 month'
     },{
       title: 'Online Shopping Website Design',
     client: 'Hana Florist',
@@ -104,6 +110,7 @@ const FreelancerSaved = () => {
             </div>
             <h3 id="preferredQualification">Preferred Qualification:</h3>
             <p>{project.preferQuali}</p>
+            <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
 
           
   

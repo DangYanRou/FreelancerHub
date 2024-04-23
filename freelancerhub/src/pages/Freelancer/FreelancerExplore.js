@@ -145,9 +145,9 @@ const FreelancerExplore = () => {
             onClick={() => onProjectClick(blog)}
           >
             <h2>{blog.title}</h2>
-            <a href="#" className="hover-profileLink">
+            <Link to="/freelancers/client-temporary-profile" className="hover-profileLink">
               {blog.client}
-            </a>
+            </Link>
             <p id="category">{blog.category}</p>
             <p>
               <FaLocationDot className="icon-style" />
@@ -210,12 +210,11 @@ const FreelancerExplore = () => {
     return (
       <div className="project-details">
         <h2 id="detail-title">{project.title}</h2>
-        <a
-          href="/clients/client-temporary-profile"
+        <Link to="/freelancers/client-temporary-profile"
           className="hover-profileLink"
         >
           {project.client}
-        </a>
+        </Link>
 
         <p id="category">{project.category}</p>
         <p>
