@@ -36,6 +36,7 @@
 .nav-list li a:hover {
   background-color: #F0F7F9;
   color: black;
+  border-radius: 0;
 }
 
 .sub-menu {
@@ -50,6 +51,7 @@
 
 .nav-list li:hover .sub-menu {
   display: block; 
+  border-radius: 0;
 }
 
 .sub-menu li {
@@ -65,6 +67,7 @@
 .sub-menu li a:hover {
   background-color: #213e60;
   color: #fff;
+  border-radius: 0;
 }
 
 .nav-item {
