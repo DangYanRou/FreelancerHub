@@ -58,7 +58,7 @@ const notifications3 = [
             ))}
           </div>
           </Link>
-          <h2 className="notification-timebond">Last 30 Days</h2>
+          <h2 className="notification-timebond">Earlier</h2>
           <Link Link to="/freelancers/saved" className='notificationLink'>
           <div className="notification-list">
             {notifications4.map(notification => (
