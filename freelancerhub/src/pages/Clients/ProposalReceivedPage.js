@@ -24,21 +24,21 @@ const ProposalReceivedPage = () => {
   
 
   const [proposals,setProposal] = useState ([
-    { proposal_id: 1, title: 'Proposal 1', freelancer: 'freelancer 1' },
-    { proposal_id: 2, title: 'Proposal 2', freelancer: 'freelancer 2' },
-    { proposal_id: 3, title: 'Proposal 3', freelancer: 'freelancer 3' },
+    { proposal_id: 1, title: 'Application 1', freelancer: 'freelancer 1' },
+    { proposal_id: 2, title: 'Application 2', freelancer: 'freelancer 2' },
+    { proposal_id: 3, title: 'Application 3', freelancer: 'freelancer 3' },
   ]);
 
   return (
     <div className="ProposalReview">
       <NavigationBarClient></NavigationBarClient>
-      <h1 className='proposalReceivedH1'>Proposal Received</h1>
+      <h1 className='proposalReceivedH1'>Application Received</h1>
       <div className='proposalGrid'>
       {proposals.map((proposal) => (
         <Link key={proposal.proposal_id} to="/clients/proposal-details" className="proposalDetailsLink">
         <div className='proposalPreview'>
           <h2> {proposal.title} </h2>
-          <p> submitted by <Link className="freelancerProfileLink" to="/clients/profile">{proposal.freelancer}</Link></p>
+          <p> submitted by <Link className="freelancerProfileLink" to="/clients/freelancer-temporary-profile">{proposal.freelancer}</Link></p>
 
         </div>
         </Link>

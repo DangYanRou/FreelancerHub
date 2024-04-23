@@ -1,17 +1,24 @@
 import React, { useState } from "react";
-import NavigationBarFreelancer from '../Freelancer/NavigationBarFreelancer';
+import NavigationBar from "../Freelancer/NavigationBarFreelancer";
 import logo from "../../Gallery/google-logo.jpeg";
 import googleImage from "../../Gallery/google-fulllogo.jpg";
 import "../../styles/Clients/ClientProfile.css";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit, MdSchool } from "react-icons/md";
-import ProjectListClient from "../../Components/ProjectListClient";
+import ProjectListClient from "../../components/ProjectListClient";
 import youtube from "../../Gallery/youtube-logo.jpeg";
 import nest from "../../Gallery/nest-logo.png";
-import StarRating from "../../Components/Rating";
+import StarRating from "../../components/Rating";
 import Rating from "../../pages/Clients/ClientAverageReviewBox";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-use-history";
 
 const ClientProfile = () => {
+  const history = useHistory(); 
+  const handlefavourite = () => {
+    history.push('/freelancers/saved');
+  };
+
   const [showAbout, setShowAbout] = useState(true);
   const [showCompanies, setShowCompanies] = useState(false);
   const [showProjects, setShowProjects] = useState(false);
@@ -88,7 +95,7 @@ const ClientProfile = () => {
 
   return (
     <div className="ClientProfile">
-      <NavigationBarFreelancer></NavigationBarFreelancer>
+      <NavigationBar></NavigationBar>
       <div className="client_content">
         <div className="upperProfile">
           <div className="profileCard">
@@ -116,6 +123,7 @@ const ClientProfile = () => {
             <button className="edit">
               <MdOutlineModeEdit /> Edit Profile
             </button>
+              <button className="favouriteBtn" onClick={handlefavourite}>+ Favourite</button>
           </div>
           <div className="rate">
             <Rating></Rating>

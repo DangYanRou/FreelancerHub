@@ -7,6 +7,7 @@ import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
 import Rating from "../../pages/Freelancer/FreelancerAverageReviewBox";
 import StarRating from "../../Components/Rating";
+import Heading from '../../Components/Heading';
 
 const FreelancerProfile = () => {
   const [showAbout, setShowAbout] = useState(true);
@@ -36,7 +37,12 @@ const FreelancerProfile = () => {
   return (
     <div className="FreelancerProfile">
       <NavigationBar></NavigationBar>
-      <h1>My Profile</h1>
+      <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
+            Profile
+          </Heading>
+
+           {/* Line divider */}
+           <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
       <div className="content">
         <div className='leftProfile'>
         <div className='profile'>

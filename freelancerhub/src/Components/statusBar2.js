@@ -1,11 +1,10 @@
-// StatusBar.js
 import React from 'react';
 import './statusBar.css'
 import { useState } from 'react';
 import { TiTick } from 'react-icons/ti';
 
 const StatusBar = () => {
-    const steps =['Applied','Assigned by Client','In Progress','Completed'];
+    const steps =['Applied','Assigned ','In Progress','Completed'];
     const[currentStep,setCurrentStep]=useState(2);
     return(
   <>

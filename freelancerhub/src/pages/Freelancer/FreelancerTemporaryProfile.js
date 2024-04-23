@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
-import NavigationBar from '../Clients/NavigationBarClient';
+import NavigationBarClient from '../Clients/NavigationBarClient';
 import"../../styles/Freelancers/FreelancerProfile.css";
 import profilePic from "../../Gallery/Elon_Musk.jpg";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
 import Rating from "../../pages/Freelancer/FreelancerAverageReviewBox";
+import StarRating from "../../components/Rating";
+import { useHistory } from 'react-router-use-history';
+import Heading from '../../components/Heading';
 
 const FreelancerProfile = () => {
+  const history = useHistory(); 
+  const handlefavourite = () => {
+    history.push('/clients/saved');
+  };
+
   const [showAbout, setShowAbout] = useState(true);
   const [showProjects, setShowProjects] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
@@ -34,8 +42,9 @@ const FreelancerProfile = () => {
 
   return (
     <div className="FreelancerProfile">
-      <NavigationBar></NavigationBar>
-      <h1>My Profile</h1>
+      <NavigationBarClient></NavigationBarClient>
+      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5" >Profile</Heading>
+      <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
       <div className="content">
         <div className='leftProfile'>
         <div className='profile'>
@@ -52,6 +61,7 @@ const FreelancerProfile = () => {
               <p className="job">Software Engineer</p>
             </div>
             <button className='edit' ><MdOutlineModeEdit /> Edit Profile</button> 
+            <button className='addasfavourite' onClick={handlefavourite}>+ Favourite</button> 
         </div>
         <div className='rating'>
               <div className="rate"><Rating></Rating></div>
@@ -179,15 +189,15 @@ const FreelancerProfile = () => {
               <h2 className='title'>Reviews</h2>
               <div className='reviews_container'>
                 <div className='review_details'>
-                  <h3 className='review_name'>Agnes</h3><Rating className='review_rating'></Rating>
+                  <h3 className='review_name'>Agnes</h3><StarRating className='review_rating'></StarRating>
                   <p>Nice Work! Keep it up</p>
                 </div>
                 <div className='review_details'>
-                  <h3 className='review_name'>Bill Gates</h3><Rating className='review_rating'></Rating>
+                  <h3 className='review_name'>Bill Gates</h3><StarRating className='review_rating'></StarRating>
                   <p>Very responsive and work is completed on time. Definitely will work with you again soon!</p>
                 </div>
                 <div className='review_details'>
-                  <h3 className='review_name'>Zus Coffee Sdn. Bhd.</h3><Rating className='review_rating'></Rating>
+                  <h3 className='review_name'>Zus Coffee Sdn. Bhd.</h3><StarRating className='review_rating'></StarRating>
                   <p></p>
                 </div>
               </div>

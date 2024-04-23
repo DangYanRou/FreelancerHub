@@ -104,4 +104,69 @@
 
 }
 
+.payment-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    
+  }
+
+ .payment-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 550px;
+  height: 200px;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
   
+}
+
+.radioBtn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.modal-title {
+  color: red;
+  margin-bottom: 3%;
+
+}
+.select{
+  margin-bottom: 2%;
+}
+
+.paymentSuccess-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  text-align: center;
+}
+
+.paymentSuccess-content {
+background-color: white;
+padding: 20px;
+border-radius: 8px;
+width: 550px;
+height: 200px;
+justify-content: center; /* Center horizontally */
+align-items: center; /* Center vertically */
+}
+
+.centre{
+  margin-top: 10%;
+  color: green;margin-bottom: 3px;
+}
+ 
