@@ -8,6 +8,7 @@ import { GrAchievement } from "react-icons/gr";
 import Rating from "../../pages/Freelancer/FreelancerAverageReviewBox";
 import StarRating from "../../components/Rating";
 import { useHistory } from 'react-router-use-history';
+import Heading from '../../components/Heading';
 
 const FreelancerProfile = () => {
   const history = useHistory(); 
@@ -42,6 +43,8 @@ const FreelancerProfile = () => {
   return (
     <div className="FreelancerProfile">
       <NavigationBarClient></NavigationBarClient>
+      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5" >Profile</Heading>
+      <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
       <div className="content">
         <div className='leftProfile'>
         <div className='profile'>
