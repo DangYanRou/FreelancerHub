@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import NavigationBar from './NavigationBarFreelancer';
+import NavigationBarClient from '../Clients/NavigationBarClient';
 import"../../styles/Freelancers/FreelancerProfile.css";
 import profilePic from "../../Gallery/Elon_Musk.jpg";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -7,9 +7,14 @@ import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
 import Rating from "../../pages/Freelancer/FreelancerAverageReviewBox";
 import StarRating from "../../components/Rating";
-import Heading from '../../components/Heading';
+import { useHistory } from 'react-router-use-history';
 
 const FreelancerProfile = () => {
+  const history = useHistory(); 
+  const handlefavourite = () => {
+    history.push('/clients/saved');
+  };
+
   const [showAbout, setShowAbout] = useState(true);
   const [showProjects, setShowProjects] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
@@ -36,13 +41,7 @@ const FreelancerProfile = () => {
 
   return (
     <div className="FreelancerProfile">
-      <NavigationBar></NavigationBar>
-      <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
-            Profile
-          </Heading>
-
-           {/* Line divider */}
-           <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
+      <NavigationBarClient></NavigationBarClient>
       <div className="content">
         <div className='leftProfile'>
         <div className='profile'>
@@ -59,6 +58,7 @@ const FreelancerProfile = () => {
               <p className="job">Software Engineer</p>
             </div>
             <button className='edit' ><MdOutlineModeEdit /> Edit Profile</button> 
+            <button className='addasfavourite' onClick={handlefavourite}>+ Favourite</button> 
         </div>
         <div className='rating'>
               <div className="rate"><Rating></Rating></div>

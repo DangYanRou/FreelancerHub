@@ -3,8 +3,8 @@ import workImage from '../../Gallery/work.png';
 import noteImage from '../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import NavigationBarClients from './NavigationBarClient';
+import '../../styles/Clients/CreateProjectPreview.css';
 import Heading from '../../components/Heading';
-
 
 
 // ProgressBar component to display the stages of project creation
@@ -95,66 +95,49 @@ const CreateProjectPreview = () => {
  id="duration">Kuala Lumpur, Malaysia</p>
   </div>
 </div>
-<div className="flex justify-left m-4 w-8/10">
-            <div className="w-full">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Project Description: </label>
-              <p className="w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal"
- id="duration">
-    We're looking for someone who can create stunning websites and communications. Sounds like you? Good! Keep reading...
-<br></br>
-- Design aesthetically pleasing websites with good usability - from scratch (Figma) or from pre-designed themes
+<div className="m-4 w-8/10">
+  <div className="w-full">
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Project Description: </label>
+    <div className="w-full rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal" id="projectDescriptionSHow">
+      <p>We're looking for someone who can create stunning websites and communications. Sounds like you? Good! Keep reading...</p>
 
-- Eye for detail a must - able to spot an alignment that is off by 1 pixel!
+      <ul className="preview myList">
+    <li>Design aesthetically pleasing websites with good usability - from scratch (Figma) or from pre-designed themes</li>
+    <li>Eye for detail a must - able to spot an alignment that is off by 1 pixel!</li>
+    <li>Well-versed in Wordpress and Elementor</li>
+    <li>Able to multi-task and manage your tasks in a timely manner</li>
+    <li>Collaborate with the web development team</li>
+    <li>Good communication skills in English</li>
+    <li>Keen to skill up and learn new things</li>
+    <li>Meticulous, self-motivated and team-orientated</li>
+  </ul>
 
-- Well-versed in Wordpress and Elementor
+  <p>Benefits:</p>
 
-- Able to multi-task and manage your tasks in a timely manner
-<br></br>
-- Collaborate with the web development team
-<br></br>
-- Good communication skills in English
-<br></br>
-- Keen to skill up and learn new things
-<br></br>
-- Meticulous, self-motivated and team-orientated
-<br></br>
-Benefits:
-<br></br>
-- Competitive salary
-<br></br>
-- Dental and medical claims
-<br></br>
-- Annual leave
-<br></br>
-- Sick leave
-<br></br>
-- Frequent team bonding activities
-<br></br>
-- Educational workshops
-<br></br>
-- Work from Home
-<br></br>
+  <ul className="preview myList">
+    <li>Competitive salary</li>
+    <li>Dental and medical claims</li>
+    <li>Annual leave</li>
+    <li>Sick leave</li>
+    <li>Frequent team bonding activities</li>
+    <li>Educational workshops</li>
+    <li>Work from Home</li>
+  </ul>
 
-Why Us:
-<br></br>
-- Get access to the Heroes of Digital University, where you'll get to learn how we consistently beat professional benchmarks by 100-300% and save marketing costs of up to 50% for our clients.
-<br></br>
-- You'll be part of a passionate and talented group of digital marketers who are constantly learning and improving their skills.
-<br></br>
-- Solid career prospects with upward mobility. We have a results-driven culture.
-<br></br>
-- Awesome team culture and positive environment.
-<br></br>
-- Our office inspires you to do your best work, as well as being close to public transport systems and amenities.
-<br></br>
-- Learn, grow, and help - Get to do all 3 together.
-<br></br>
-- Frequent team bonding activities
-<br></br>
-- Work-from-home days
-<br></br>
-- We believe in investing in good people! Heroes of Digital is a fast-growing company. There are endless opportunities to learn and advance your skillset.
- </p>
+  <p>Why Us:</p>
+
+  <ul className="preview myList">
+    <li>Get access to the Heroes of Digital University, where you'll get to learn how we consistently beat professional benchmarks by 100-300% and save marketing costs of up to 50% for our clients.</li>
+    <li>You'll be part of a passionate and talented group of digital marketers who are constantly learning and improving their skills.</li>
+    <li>Solid career prospects with upward mobility. We have a results-driven culture.</li>
+    <li>Awesome team culture and positive environment.</li>
+    <li>Our office inspires you to do your best work, as well as being close to public transport systems and amenities.</li>
+    <li>Learn, grow, and help - Get to do all 3 together.</li>
+    <li>Frequent team bonding activities</li>
+    <li>Work-from-home days</li>
+    <li>We believe in investing in good people! Heroes of Digital is a fast-growing company. There are endless opportunities to learn and advance your skillset.</li>
+  </ul>
+</div>
             </div>
           </div>
           <div className="flex justify-between w-8/10 m-4">
@@ -190,67 +173,54 @@ Why Us:
 <div className="flex justify-left m-4 w-8/10">
             <div className="w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Project Responsibilities: </label>
-              <p className="w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal"
- id="duration">
-1. User Research and Analysis:
-<br></br>
-  - Conduct user research to understand user behaviors, needs, and motivations.
-  <br></br>
-  - Analyze data from user studies, interviews, and surveys to derive insights.
-<br></br>
-  - Create user personas and user journey maps based on research findings.
-  <br></br>
-<br></br>
-2. UI Design:
-<br></br>
-  - Design user interfaces for digital products such as websites, mobile apps, and software applications.
-<br></br>
-  - Develop wireframes, prototypes, and mockups to visualize design concepts.
-<br></br>
-  - Ensure UI designs are visually appealing, user-friendly, and consistent with brand guidelines.
-<br></br>
-<br></br>
-3. UX Design:
-<br></br>
-  - Define and refine user flows, interactions, and information architecture.
-<br></br>
-  - Collaborate with stakeholders to define product requirements and features.
-<br></br>
-  - Conduct usability testing and gather feedback for iterative design improvements.
-<br></br>
-<br></br>
-4. Prototyping and Testing:
-<br></br>
-  - Create interactive prototypes using tools like Figma, Sketch, Adobe XD, or InVision.
-<br></br>
-  - Conduct usability tests and iterate designs based on user feedback and usability findings.
-  <br></br>
-  - Optimize designs for responsiveness, accessibility, and cross-platform compatibility.
- </p>
+              <div className="w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal"
+ id="responsibilityShow">
+ <p>1. User Research and Analysis:</p>
+ <ul className="preview myList">
+    <li>Conduct user research to understand user behaviors, needs, and motivations.</li>
+    <li>Analyze data from user studies, interviews, and surveys to derive insights.</li>
+    <li>Create user personas and user journey maps based on research findings.</li>
+  </ul>
+
+  <p>2. UI Design:</p>
+  <ul className="preview myList">
+    <li>Design user interfaces for digital products such as websites, mobile apps, and software applications.</li>
+    <li>Develop wireframes, prototypes, and mockups to visualize design concepts.</li>
+    <li>Ensure UI designs are visually appealing, user-friendly, and consistent with brand guidelines.</li>
+  </ul>
+
+  <p>3. UX Design:</p>
+  <ul className="preview myList">
+    <li>Define and refine user flows, interactions, and information architecture.</li>
+    <li>Collaborate with stakeholders to define product requirements and features.</li>
+    <li>Conduct usability testing and gather feedback for iterative design improvements.</li>
+  </ul>
+
+  <p>4. Prototyping and Testing:</p>
+  <ul className="preview myList">
+    <li>Create interactive prototypes using tools like Figma, Sketch, Adobe XD, or InVision.</li>
+    <li>Conduct usability tests and iterate designs based on user feedback and usability findings.</li>
+    <li>Optimize designs for responsiveness, accessibility, and cross-platform compatibility.</li>
+  </ul>
+ </div>
             </div>
           </div>
 
           <div className="flex justify-left m-4 w-8/10">
             <div className="w-full">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Preferred Qualification: </label>
-<p className="w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal"
- id="duration">
-- Minimum 2 years of agency experience
-<br></br>
-- Diploma or Degree in design-related fields
-<br></br>
-- Experienced in Figma, Adobe Photoshop/Illustrator, Wordpress and Elementor
-<br></br>
-- Some experience in other platforms such as Duda and Wix a plus
-<br></br>
-- Experience working with project management tools such as Monday.com, Asana etc
-<br></br>
-- Knowledge of HTML/CSS, UI/UX will be a big plus
-<br></br>
-- Experience in managing projects and interfacing with clients will be a huge bonus.
-<br></br>
-- Must be able to write, read, and speak English fluently.
-</p>
+            <div className="w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal" id="qualificationShow">
+  <ul className="preview myList">
+    <li>Minimum 2 years of agency experience</li>
+    <li>Diploma or Degree in design-related fields</li>
+    <li>Experienced in Figma, Adobe Photoshop/Illustrator, Wordpress and Elementor</li>
+    <li>Some experience in other platforms such as Duda and Wix a plus</li>
+    <li>Experience working with project management tools such as Monday.com, Asana etc</li>
+    <li>Knowledge of HTML/CSS, UI/UX will be a big plus</li>
+    <li>Experience in managing projects and interfacing with clients will be a huge bonus.</li>
+    <li>Must be able to write, read, and speak English fluently.</li>
+  </ul>
+</div>
 </div>
           </div>
 

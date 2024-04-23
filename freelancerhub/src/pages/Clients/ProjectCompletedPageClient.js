@@ -3,13 +3,19 @@ import NavigationBarClient from './NavigationBarClient';
 import ProjectList from '../../components/ProjectList';
 import { useNavigate } from 'react-router-dom';
 import CompletedProjectListClient from '../../components/CompletedProjectListClient';
+import Heading from '../../components/Heading';
 
 const ProjectCompletedPageClient = () => {
   const navigate = useNavigate();
   return (
     <div className="ProjectCompletedPage">
     <NavigationBarClient></NavigationBarClient>
-    <h2 className="page-header">Projects Completed</h2>
+    <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+            Projects Completed
+          </Heading>
+
+           {/* Line divider */}
+           <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
     <div className="jl-centered-container">
       <CompletedProjectListClient projects={projects} />
     </div>

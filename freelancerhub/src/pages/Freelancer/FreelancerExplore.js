@@ -13,6 +13,8 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import { BsBookmark } from "react-icons/bs";
 import { BsBookmarkCheckFill } from "react-icons/bs";
+import Heading from '../../components/Heading';
+import { Link } from 'react-router-dom';
 
 
 const FreelancerExplore = () => {
@@ -125,7 +127,7 @@ const FreelancerExplore = () => {
         {projects.map((blog) => (
           <div className={`card ${selectedProjectId === blog.id ? 'selected' : ''} mb-4`} key={blog.id} onClick={() => onProjectClick(blog)}>
             <h2>{blog.title}</h2>
-            <a href="#" className="hover-profileLink">{blog.client}</a>
+            <Link to="/freelancers/client-temporary-profile" className="hover-profileLink">{blog.client}</Link>
             <p id="category">{blog.category}</p>
             <p><FaLocationDot className="icon-style"/>{blog.location}</p>
             <p><MdOutlineAttachMoney size={20}className='icon-style2' />{blog.budget}/project</p>
@@ -179,7 +181,7 @@ const FreelancerExplore = () => {
     return(
       <div className="project-details">
         <h2 id="detail-title">{project.title}</h2>
-        <a href="#" className="hover-profileLink">{project.client}</a>
+        <Link to="/freelancers/client-temporary-profile" className="hover-profileLink">{project.client}</Link>
             <p id="category">{project.category}</p>
             <p><FaLocationDot className="icon-style"/>{project.location}</p>
             <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.budget}/project</p>
@@ -207,9 +209,10 @@ const FreelancerExplore = () => {
   };
 
   return (
-
+    <div>
+      <NavigationBarFreelancer />
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 ">
-      <NavigationBarFreelancer/>
+      
     <div className="relative ">
       <img src={backgroundHome} alt="Background" className="w-screen object-cover h-1/2" />
       <div className="absolute bottom-[30%] left-0 right-0 m-auto flex w-full max-w-[1070px] flex-col items-center gap-[66px] md:p-5 sm:gap-[33px]">
@@ -315,6 +318,7 @@ const FreelancerExplore = () => {
   </div>
   
 </div>
+    </div>
     </div>
 
     

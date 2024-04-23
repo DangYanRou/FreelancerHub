@@ -1,3 +1,4 @@
+// StatusBar.js
 import React from 'react';
 import './statusBar.css'
 import { useState } from 'react';
