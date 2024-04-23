@@ -11,6 +11,7 @@ import { BiTimeFive } from "react-icons/bi";
 import '../../styles/Freelancers/FreelancerSaved.css'
 import { duration } from '@mui/material';
 import { useHistory } from 'react-router-use-history';
+import { Link } from 'react-router-dom';
 
 
 const FreelancerSaved = () => {
@@ -91,7 +92,7 @@ const FreelancerSaved = () => {
     return(
       <div className="project-details">
         <h2 id="detail-title">{project.title}</h2>
-        <a href="#" className="hover-profileLink">{project.client}</a>
+        <Link to="/freelancers/client-temporary-profile" className="hover-profileLink">{project.client}</Link>
             <p id="category">{project.category}</p>
             <p><FaLocationDot className="icon-style"/>{project.location}</p>
             <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.budget}/project</p>
