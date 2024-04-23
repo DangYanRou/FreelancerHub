@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-use-history';
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
-import Heading from '../../components/Heading';
+import Heading from '../../Components/Heading';
 
 
 

@@ -13,7 +13,7 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import { BsBookmark } from "react-icons/bs";
 import { BsBookmarkCheckFill } from "react-icons/bs";
-import Heading from '../../components/Heading';
+import Heading from '../../Components/Heading';
 import { Link } from 'react-router-dom';
 
 
