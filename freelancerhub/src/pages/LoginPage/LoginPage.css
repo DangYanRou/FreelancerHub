@@ -43,7 +43,7 @@
     text-align: right;
 }
 
-.input-box input::placeholder{
+.loginPage .input-box input::placeholder{
     color:#fff;
 }
 

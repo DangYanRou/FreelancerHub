@@ -8,15 +8,15 @@ const ResetPassword=()=>{
         <div className="resetPage">
             <div className="wrapper">
                     <form action="">
-                        <MdLockReset className="main_icon" style={{ color:'white'}}/>
+                        <MdLockReset className="main_icon"/>
                         <h1 style={{ color:'white'}}>Trouble Logging In?</h1>
                         <p style={{ color:'white'}}>Enter your email and we'll send you a link to get back into your account.</p>
                         <div className="input-box">
-                            <MdEmail className="emailIcon" style={{ color:'white'}}/><input type="text" placeholder="Email" required></input>
+                            <MdEmail className="emailIcon"/><input type="text" placeholder="Email" required></input>
                         </div>
                         <button type="submit">Send</button>
                         <div className="register-link">
-                            <p><Link to="/">Back to Login</Link></p>
+                            <p style={{marginTop:10, marginLeft:100}}><Link to="/">Back to Login</Link></p>
                         </div>
                     </form>
                 </div>
