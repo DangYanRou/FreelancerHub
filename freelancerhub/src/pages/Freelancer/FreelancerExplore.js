@@ -6,8 +6,8 @@ import catergory from "../../Gallery/catergory_icon.svg";
 import dropdownArrow from "../../Gallery/dropdownArrow_icon.svg";
 import NavigationBarFreelancer from './NavigationBarFreelancer';
 import '../../styles/Freelancers/FreelancerExplore.css'
-import { GrFormClose } from "react-icons/gr";
 import { useHistory } from 'react-router-use-history';
+import { GrFormClose } from "react-icons/gr";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
