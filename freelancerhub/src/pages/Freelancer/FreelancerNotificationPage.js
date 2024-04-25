@@ -8,7 +8,7 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import { useState } from 'react';
 import { useHistory } from 'react-router-use-history';
-import Heading from '../../Components/Heading';
+import Heading from '../../components/Heading';
 
 
 const notifications1 = [

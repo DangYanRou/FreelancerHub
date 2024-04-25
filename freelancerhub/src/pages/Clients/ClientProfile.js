@@ -5,10 +5,10 @@ import googleImage from "../../Gallery/google-fulllogo.jpg";
 import "../../styles/Clients/ClientProfile.css";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit, MdSchool } from "react-icons/md";
-import ProjectListClient from "../../Components/ProjectListClient";
+import ProjectListClient from "../../components/ProjectListClient";
 import youtube from "../../Gallery/youtube-logo.jpeg";
 import nest from "../../Gallery/nest-logo.png";
-import StarRating from "../../Components/Rating";
+import StarRating from "../../components/Rating";
 import Rating from "../../pages/Clients/ClientAverageReviewBox";
 
 const ClientProfile = () => {

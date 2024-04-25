@@ -6,8 +6,8 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
 import Rating from "../../pages/Freelancer/FreelancerAverageReviewBox";
-import StarRating from "../../Components/Rating";
-import Heading from '../../Components/Heading';
+import StarRating from "../../components/Rating";
+import Heading from '../../components/Heading';
 
 const FreelancerProfile = () => {
   const [showAbout, setShowAbout] = useState(true);
