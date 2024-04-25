@@ -9,7 +9,7 @@ const Register=()=>{
             <div className="registerPage">
             <div className="wrapper">
                     <form action="">
-                        <h1 >Register</h1>
+                        <h1  >Register</h1>
                         <div className="input-box">
                             <FaUser className="icon"/><input className="username" type="text" placeholder="Username" required></input>
                         </div>
