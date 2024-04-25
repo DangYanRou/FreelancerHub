@@ -35,9 +35,12 @@ function FreelancerFeedbackPage() {
         <p className="question">How satisfied are you in this collaboration?</p>
         <div className="rating">
           {[1, 2, 3, 4, 5].map((num) => (
-            <div key={num} className={`rateNumBorder ${rating === num ? 'selected' : ''}`} 
-            onClick={() => handleRating(num)}>
-                <div className="rateNum">{num}</div>
+            <div
+              key={num}
+              className={`rateNumBorder ${rating === num ? "active" : ""}`}
+              onClick={() => setRating(num)}
+            >
+              <div className="rateNum">{num}</div>
             </div>
           ))}
         </div>

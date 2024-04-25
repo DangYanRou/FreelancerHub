@@ -73,10 +73,11 @@
     color: inherit; /* Ensures text color transitions with the parent */
 }
 
-.rateNumBorder:hover::before , .rateNumberBorder.selected{
+.rateNumBorder:hover::before , .rateNumBorder.active::before{
     opacity: 1; 
     z-index: 0;
 }
+
 
 .rateNum {
     font-size: 24px;
