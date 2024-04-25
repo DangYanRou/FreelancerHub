@@ -43,8 +43,12 @@ const FreelancerProfile = () => {
   return (
     <div className="FreelancerProfile">
       <NavigationBarClient></NavigationBarClient>
-      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5" >Profile</Heading>
-      <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
+      <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
+            Profile
+          </Heading>
+
+           {/* Line divider */}
+           <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
       <div className="content">
         <div className='leftProfile'>
         <div className='profile'>
