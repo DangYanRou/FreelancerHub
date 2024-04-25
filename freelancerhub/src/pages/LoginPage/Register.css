@@ -19,3 +19,21 @@
     top:50%;
     transform: translateY(-50%);
 }
+
+h1 {
+    color:white;
+}
+
+.remember-forgot label{
+    color:white;
+}
+
+.registerPage .input-box input::placeholder{
+    color:#fff;
+}
+
+.register-button:hover{
+    background-color:#213e60;
+    color:white;
+    transition: 0.3s ease;
+}

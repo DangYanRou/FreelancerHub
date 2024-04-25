@@ -24,7 +24,7 @@ const Register=()=>{
                             {/* <Link to="/resetPassword" >Forgot password?</Link> */}
                         </div>
 
-                        <button type="submit" style={{margin:10}}>Register</button>
+                        <button className="register-button" type="submit" style={{margin:10}}>Register</button>
 
                         <div className="register-link">
                             <p style={{ color:'white',marginLeft:20}}>Already have an account? <Link to="/">Login</Link></p>
