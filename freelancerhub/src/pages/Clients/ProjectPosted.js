@@ -1,8 +1,8 @@
 import NavigationBar from './NavigationBarClient';
-import ProjectListClient from '../../Components/ProjectListClient';
+import ProjectListClient from '../../components/ProjectListClient';
 import { useState } from 'react';
 import '../../styles/Clients/ProjectPosted.css';
-import Heading from '../../Components/Heading';
+import Heading from '../../components/Heading';
 
 
 
