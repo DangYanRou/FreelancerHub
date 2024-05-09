@@ -47,7 +47,7 @@ const LoginPage = () => {
                             <Link to="/resetPassword" >Forgot password?</Link>
                         </div>
 
-                        <button type="submit">Login</button>
+                        <button className='login-button' type="submit">Login</button>
 
                         <div className="register-link">
                             <p style={{ color:'white'}}>Don't have an account? <Link to="/register">Register</Link></p>

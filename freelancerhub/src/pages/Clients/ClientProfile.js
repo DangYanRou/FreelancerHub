@@ -11,7 +11,6 @@ import nest from "../../Gallery/nest-logo.png";
 import StarRating from "../../Components/Rating";
 import Rating from "../../pages/Clients/ClientAverageReviewBox";
 
-
 const ClientProfile = () => {
   const [showAbout, setShowAbout] = useState(true);
   const [showCompanies, setShowCompanies] = useState(false);

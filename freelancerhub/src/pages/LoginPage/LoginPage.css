@@ -112,3 +112,9 @@
     text-decoration: underline;
     text-underline-offset: 0px;
 }
+
+.login-button:hover{
+    background-color:#213e60;
+    color:white;
+    transition: 0.3s ease;
+}
