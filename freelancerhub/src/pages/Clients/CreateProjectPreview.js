@@ -4,7 +4,7 @@ import noteImage from '../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import NavigationBarClients from './NavigationBarClient';
 import '../../styles/Clients/CreateProjectPreview.css';
-import Heading from '../../components/Heading';
+import Heading from '../../Components/Heading';
 
 
 // ProgressBar component to display the stages of project creation

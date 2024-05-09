@@ -2,7 +2,7 @@ import React from 'react';
 import '../../styles/Freelancers/FreelancerNotificationPage.css';
 import NavigationBarClient from './NavigationBarClient';
 import { Link } from 'react-router-dom';
-import Heading from '../../components/Heading';
+import Heading from '../../Components/Heading';
 
 
   const notifications2 = [

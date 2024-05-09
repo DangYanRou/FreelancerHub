@@ -2,7 +2,7 @@ import React from 'react';
 import '../../styles/Freelancers/FreelancerNotificationPage.css';
 import NavigationBar from './NavigationBarFreelancer';
 import { Link } from 'react-router-dom';
-import Heading from '../../components/Heading';
+import Heading from '../../Components/Heading';
 
 const notifications1 = [
     { id: 1, text: "You have received a project invitation", time: "2 hours ago", priority: "important"}

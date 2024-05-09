@@ -24,13 +24,8 @@ const cellStyle = {
 };
 
 const rows = [
-<<<<<<< Updated upstream
     createData('Google Inc.', 'google07@gmail.com', '221-126-6527', 4.5),
   createData('Elon Musk', 'elonmuskl@yale.edu', '106-134-7086', 4.5),
-=======
-    createData('Google Inc.', 'google@gmail.com', '221-126-6527', 4.5),
-  createData('Lenee Abrahamowitcz', 'labrahamowitcz1@yale.edu', '106-134-7086', 0.6),
->>>>>>> Stashed changes
   createData('Randene Carreyette', 'rcarreyette2@myspace.com', '177-154-2391', 1.0),
   createData('Silvester Zuker', 'szuker3@jimdo.com', '758-470-5778', 1.0),
   createData('Harrison McGinlay', 'hmcginlay4@163.com', '169-241-0850', 4.6),

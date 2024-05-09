@@ -1,7 +1,7 @@
 import React,{ useState } from 'react'
 import NavigationBar from './NavigationBarClient';
-import Heading from '../../components/Heading';
-import BasicTable from '../../components/BasicTable';
+import Heading from '../../Components/Heading';
+import BasicTable from '../../Components/BasicTable';
 
 const ClientSaved = () => {
 
