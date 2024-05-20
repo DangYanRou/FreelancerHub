@@ -2,7 +2,7 @@ import React from 'react';
 import NavigationBarClient from './NavigationBarFreelancer';
 import '../../styles/Freelancers/ApplicationDetails.css';
 import { useState } from 'react';
-import PdfPreview from '../Clients/PdfPreview';
+import PdfPreview from '../PdfPreview';
 import { useHistory } from 'react-router-use-history';
 
 const ApplicationDetails = () => {

@@ -33,15 +33,18 @@ import FreelancerTemporaryProfile from './pages/Freelancer/FreelancerTemporaryPr
 import ClientNotificationPage from './pages/Clients/ClientNotificationPage.js';
 import Register from './pages/LoginPage/Register';
 import ClientTemporaryProfile from './pages/Clients/ClientTemporaryProfile';
+import Loading from './pages/Loading.js';
+
 
 
 
 
 function App() {
+
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage/>} />
         <Route path="/resetPassword" element={<ResetPassword/>} />
         <Route path="/register" element={<Register/>} />
         <Route path="/freelancers/*" element={<FreelancerRoutes />} />
@@ -55,10 +58,9 @@ function App() {
 function FreelancerRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<FreelancerLandingPage />} />
+      <Route path="explore" element={<FreelancerExplore/>}/>
       <Route path="projects-applied" element={<ProjectsApplied />} />
       <Route path="proposal-form" element={<ProposalForm />} />
-      <Route path="explore" element={<FreelancerExplore />} />
       <Route path="profile" element={<FreelancerProfile />} />
       <Route path="project-details" element={<ProjectDetailsPage />} />
       <Route path="application" element={<ApplicationDetails />} />
@@ -67,9 +69,8 @@ function FreelancerRoutes() {
       <Route path="project-completed-page" element={<ProjectCompletedPage />} />
       <Route path="notifications" element={<FreelancerNotificationPage />} />
       <Route path="client-temporary-profile" element={<ClientTemporaryProfile />} />
-      {/* Add more nested routes as needed */}
-      <Route path="*" element={<Navigate to="/" />} />
       <Route path="saved" element={<FreelancerSaved />} />
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }
