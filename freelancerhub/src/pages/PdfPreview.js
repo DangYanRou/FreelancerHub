@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Document, pdfjs } from 'react-pdf';
-import "../../styles/Clients/PDFPreview.css"
+import "../styles/PDFPreview.css";
 
 // Set up pdfjs worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfPreview = ({ fileUrl, fileName }) => {
   const [numPages, setNumPages] = useState(null);
+  const [firstPageImage, setFirstPageImage] = useState(null);
 
   useEffect(() => {
     const loadPdf = async () => {
@@ -38,8 +39,6 @@ const PdfPreview = ({ fileUrl, fileName }) => {
     return dataUrl;
   };
 
-  const [firstPageImage, setFirstPageImage] = useState(null);
-
   useEffect(() => {
     const loadFirstPageImage = async () => {
       const dataUrl = await renderFirstPageImage();
@@ -49,10 +48,12 @@ const PdfPreview = ({ fileUrl, fileName }) => {
   }, [fileUrl]);
 
   return (
-    <div className="pdf-preview">
+    <div className="pdf-preview" >
       {firstPageImage && (
         <>
-          <img className='previewImage' src={firstPageImage} alt="First Page Preview" />
+          <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+            <img className="previewImage" src={firstPageImage} alt="First Page Preview" />
+          </a>
           <p>{fileName}</p>
         </>
       )}

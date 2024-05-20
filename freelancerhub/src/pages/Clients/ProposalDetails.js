@@ -2,7 +2,7 @@ import React from 'react';
 import NavigationBarClient from './NavigationBarClient';
 import '../../styles/Clients/ProposalDetails.css';
 import { useState } from 'react';
-import PdfPreview from './PdfPreview'; // Import the PdfPreview component
+import PdfPreview from '../PdfPreview'; // Import the PdfPreview component
 import ClientProfile from './ClientProfile';
 import { useHistory } from 'react-router-use-history';
 

@@ -18,16 +18,21 @@ import { Link } from 'react-router-dom';
 
 
 const FreelancerExplore = () => {
+
   
   const history = useHistory();
   const handleApply = () => {
-    history.push('/freelancers/proposal-form');
-    };
+    history.push('/freelancers/proposal-form',
+      {proposal_key:{ userID: "userID1", projectID: "projectID1"}}
+    );
+  };
  
   const [minBudget, setMinBudget] = useState('');
   const [maxBudget, setMaxBudget] = useState('');
-
   const [bookmarkedProjects, setBookmarkedProjects] = useState({});
+
+
+
   const handleClick = (projectId) => {
     setBookmarkedProjects({
       ...bookmarkedProjects,
@@ -165,7 +170,7 @@ const FreelancerExplore = () => {
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
-                <h2 id className='view-application-header'>View Project</h2>
+                <h2 className='view-application-header'>View Project</h2>
               <button className="close-btn" onClick={onClose}><GrFormClose /></button>
               </div>
                <ProjectDetails project={project}/>{/* Pass project to ProjectDetails */}
@@ -200,8 +205,7 @@ const FreelancerExplore = () => {
             </div>
             <h3 id="preferredQualification">Preferred Qualification:</h3>
             <p>{project.preferQuali}</p>
-
-            <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
+              <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
   
   
       </div>
@@ -209,6 +213,7 @@ const FreelancerExplore = () => {
   };
 
   return (
+
     <div>
       <NavigationBarFreelancer />
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 ">
