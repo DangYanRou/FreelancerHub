@@ -101,7 +101,7 @@ const ProposalForm = () => {
       const docId = `${projectID}_${freelancerID}`;
       await setDoc(doc(db, 'proposals', docId), proposalData);
   
-      const notificationData = {
+      const notificationToFreelancerData = {
         timestamp: new Date(),
         type: 1, 
         priority: 1,
@@ -109,7 +109,17 @@ const ProposalForm = () => {
         clientID: `${location.state.project_key.clientID}`,
         to: `${location.state.user_key.freelancerID}`
       };
-      await addDoc(collection(db, 'notifications'), notificationData);
+      await addDoc(collection(db, 'notifications'), notificationToFreelancerData);
+
+      const notificationToClientData = {
+        timestamp: new Date(),
+        type: 2, 
+        priority: 2,
+        projectID: `${location.state.project_key.projectID}`,
+        clientID: `${location.state.user_key.freelancerID}`,
+        to: `${location.state.project_key.clientID}`
+      };
+      await addDoc(collection(db, 'notifications'), notificationToClientData);
   
       toast.success('Proposal submitted successfully!');
   

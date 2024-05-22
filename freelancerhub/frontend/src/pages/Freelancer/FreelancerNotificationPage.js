@@ -19,15 +19,15 @@ import Loading from '../Loading';
 
 /*
 Noti types
-type 0 = freelancer receive invitation
-type 1 = freelancer submitted application
-type 2 = client received application
-type 3 = client accepted application
-type 3.5 = client rejected application
-type 4 = freelancer received assignment
-type 4.5 = freelancer received rejection
-type 5 = client marked project as completed
-type 6 = freelancer reveiced project completeness 
+type 0 = freelancer receive invitation  priority = 2
+type 1 = freelancer submitted application priority = 1
+type 2 = client received application priority = 2
+type 3 = client accepted application priority = 2
+type 3.5 = client rejected application priority = 2
+type 4 = freelancer received assignment priority = 2
+type 4.5 = freelancer received rejection priority = 2
+type 5 = client marked project as completed priority = 1
+type 6 = freelancer reveiced project completeness priority = 1
 */
 const NotificationPage = () => {
   const { user } = useUser();
