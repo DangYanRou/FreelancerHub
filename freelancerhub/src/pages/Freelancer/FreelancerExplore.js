@@ -15,15 +15,15 @@ import { BsBookmark } from "react-icons/bs";
 import { BsBookmarkCheckFill } from "react-icons/bs";
 import Heading from '../../components/Heading';
 import { Link } from 'react-router-dom';
+import { useUser } from '../../UserContext';
 
 
-const FreelancerExplore = () => {
-
-  
+const FreelancerExplore = () => {  
   const history = useHistory();
   const handleApply = () => {
-    history.push('/freelancers/proposal-form',
-      {proposal_key:{ userID: "userID1", projectID: "projectID1"}}
+    history.push('/freelancers/proposal-form', {
+      user_key: { freelancerID: "freelancerID1" },
+      project_key: { projectID: "projectID1", clientID: "clientID1" }}
     );
   };
  

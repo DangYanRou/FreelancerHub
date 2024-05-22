@@ -19,7 +19,9 @@ const ProjectDetails =({project}) => {
 
   const history = useHistory();
   const handleViewApplication = () => {
-    history.push('/freelancers/application');
+    history.push('/freelancers/application',
+      {proposal_key: {projectID:"projectID1",freelancerID:"freelancerID1"}},
+    );
   };
   
   const [status, setStatus] = useState(0);
@@ -63,7 +65,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
               <h2 id className='view-application-header' >View Application</h2>
             <button className="close-btn" onClick={onClose}><GrFormClose /></button>
             </div>
-             <ProjectDetails project={project}/>{/* Pass project to ProjectDetails */}
+             <ProjectDetails project={project}/>
               
           </div>
       </div>

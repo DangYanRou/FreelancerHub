@@ -2,6 +2,7 @@ import React from 'react';
 import { MdEmail, MdLockReset } from "react-icons/md";
 import { Link } from "react-router-dom";
 import "./ResetPassword.css";
+import { useUser } from '../../UserContext';
 
 const ResetPassword=()=>{
     return(

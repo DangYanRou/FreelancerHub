@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-use-history';
 import { db, storage } from '../../firebase';
-import { addDoc, collection } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import fileUploadImage from "../../Gallery/fileupload.png";
 import '../../styles/Freelancers/ProposalForm.css';
@@ -9,10 +9,14 @@ import NavigationBar from "./NavigationBarFreelancer";
 import PdfPreview from '../PdfPreview';
 import { useLocation } from "react-router-dom";
 import Loading from '../Loading';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { collection, addDoc } from "firebase/firestore";
 
-export const ProposalForm = () => {
+const ProposalForm = () => {
   const history = useHistory();
   const location = useLocation();
+  console.log(location);
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -21,15 +25,13 @@ export const ProposalForm = () => {
     proposal: null,
     notes: '',
     cvName: '',
-    proposalName: '',
-    projectID: '',
-    userID: ''
+    proposalName: ''
   });
   const [previewUrls, setPreviewUrls] = useState({
     cvUrl: null,
     proposalUrl: null
   });
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;
@@ -70,15 +72,16 @@ export const ProposalForm = () => {
     event.preventDefault();
     const isConfirmed = window.confirm("Are you sure you want to submit?");
     if (!isConfirmed) return;
-
+  
     setLoading(true);
     try {
-      const { projectID, userID } = location.state.proposal_key; // Destructure projectID and userID from location.state
+      const { projectID, clientID } = location.state.project_key;
+      const { freelancerID } = location.state.user_key;
       const cvUrl = formData.cv ? await uploadFile(formData.cv, 'cvs') : '';
       const proposalUrl = formData.proposal ? await uploadFile(formData.proposal, 'proposals') : '';
       const cvName = formData.cv ? formData.cvName : '';
       const proposalName = formData.proposal ? formData.proposalName : '';
-
+  
       const proposalData = {
         fullname: formData.fullname,
         email: formData.email,
@@ -88,23 +91,46 @@ export const ProposalForm = () => {
         cvName,
         proposalName,
         notes: formData.notes || '',
-        projectID, // Use destructured projectID here
-        userID, // Use destructured userID here
         createdAt: new Date()
       };
-
-      await addDoc(collection(db, 'proposals'), proposalData);
-
-      history.push('/freelancers/projects-applied');
+  
+      const docId = `${projectID}_${freelancerID}`;
+      await setDoc(doc(db, 'proposals', docId), proposalData);
+  
+      const notificationData = {
+        message: `You have received an application for your Project ${location.state.project_key.projectID} from ${location.state.user_key.freelancerID}`,
+        timestamp: new Date(),
+        type: 1, 
+        priority: 1,
+        projectId: `${location.state.project_key.projectID}`,
+        clientId: `${location.state.project_key.clientID}`,
+        freelancerId: `${location.state.user_key.freelancerID}`
+      };
+      await addDoc(collection(db, 'notifications'), notificationData);
+  
+      toast.success('Proposal submitted successfully!');
+  
+      setTimeout(() => {
+        history.push('/freelancers/projects-applied');
+      }, 2000);
     } catch (error) {
       console.error("Error submitting proposal: ", error);
+      const errorNotificationData = {
+        message: 'Error submitting proposal. Please try again.',
+        timestamp: new Date(),
+        type: 'error',
+        userId: `${location.state.user_key.freelancerID}`
+      };
+      await addDoc(collection(db, 'notifications'), errorNotificationData);
+  
+      toast.error('Error submitting proposal. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   const uploadFile = async (file, folder) => {
-    const storageRef = ref(storage, `${folder}/${location.state.proposal_key.projectID}_${location.state.proposal_key.userID}`);
+    const storageRef = ref(storage, `${folder}/${location.state.project_key.projectID}_${location.state.user_key.freelancerID}`);
     await uploadBytes(storageRef, file);
     return await getDownloadURL(storageRef);
   };
@@ -113,6 +139,7 @@ export const ProposalForm = () => {
     <div>
       {loading && <Loading text="Submitting..." />}
       <NavigationBar />
+      <ToastContainer />
       <h1 className="proposalSubmissionH1">Application</h1>
 
       <form onSubmit={handleSubmit} className="proposalForm">
@@ -176,8 +203,8 @@ export const ProposalForm = () => {
                   <PdfPreview fileUrl={previewUrls.cvUrl} fileName={formData.cvName} />
                   <div className="file-preview-buttons">
                     <button type="button" className="file-preview-button" onClick={() => handleDiscardFile('cv')}>X</button>
-                    <label type="button" className="file-preview-button" >
-                    <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" />
+                    <label type="button" className="file-preview-button">
+                      <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" />
                       <input
                         className="file-upload-input"
                         type="file"
@@ -194,7 +221,7 @@ export const ProposalForm = () => {
 
             {!previewUrls.cvUrl && (
               <label className="file-upload-label">
-                <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" style={{ marginRight: '10px' }}/>
+                <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" style={{ marginRight: '10px' }} />
                 Upload Your CV Here
                 <input
                   className="file-upload-input"
@@ -214,8 +241,8 @@ export const ProposalForm = () => {
                   <PdfPreview fileUrl={previewUrls.proposalUrl} fileName={formData.proposalName} />
                   <div className="file-preview-buttons">
                     <button type="button" className="file-preview-button" onClick={() => handleDiscardFile('proposal')}>X</button>
-                    <label type="button" className="file-preview-button" >
-                    <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" />
+                    <label type="button" className="file-preview-button">
+                      <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" />
                       <input
                         className="file-upload-input"
                         type="file"
@@ -232,7 +259,7 @@ export const ProposalForm = () => {
 
             {!previewUrls.proposalUrl && (
               <label className="file-upload-label">
-                <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" style={{ marginRight: '10px' }}/>
+                <img src={fileUploadImage} alt="file uploading icon" className="file-upload-icon" style={{ marginRight: '10px' }} />
                 Upload Your Proposal Here
                 <input
                   className="file-upload-input"
