@@ -34,6 +34,7 @@ import ClientNotificationPage from './pages/Clients/ClientNotificationPage.js';
 import Register from './pages/LoginPage/Register';
 import ClientTemporaryProfile from './pages/Clients/ClientTemporaryProfile';
 import Loading from './pages/Loading.js';
+import { UserProvider } from './UserContext';
 
 
 
@@ -41,16 +42,24 @@ import Loading from './pages/Loading.js';
 
 function App() {
 
+  const [userId, setUserId] = useState(null);
+
+  const handleLogin = (id) => {
+    setUserId(id);
+  };
+
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<LoginPage/>} />
-        <Route path="/resetPassword" element={<ResetPassword/>} />
-        <Route path="/register" element={<Register/>} />
-        <Route path="/freelancers/*" element={<FreelancerRoutes />} />
-        <Route path="/clients/*" element={<ClientRoutes />} />
-        {/* Add more top-level routes if needed */}
-      </Routes>
+      <UserProvider> 
+        <Routes>
+          <Route path="/" element={<LoginPage/>} />
+          <Route path="/resetPassword" element={<ResetPassword/>} />
+          <Route path="/register" element={<Register/>} />
+          <Route path="/freelancers/*" element={<FreelancerRoutes />} />
+          <Route path="/clients/*" element={<ClientRoutes />} />
+          {/* Add more top-level routes if needed */}
+        </Routes>
+    </UserProvider>
     </div>
   );
 }
@@ -78,7 +87,6 @@ function FreelancerRoutes() {
 function ClientRoutes() {
  
   return (
-   
     <Routes>
       <Route path="/" element={<ClientLandingPage />} />
       <Route path="project-posted" element={<ProjectPosted />} />

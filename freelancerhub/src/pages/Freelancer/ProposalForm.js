@@ -16,6 +16,7 @@ import { collection, addDoc } from "firebase/firestore";
 const ProposalForm = () => {
   const history = useHistory();
   const location = useLocation();
+  console.log(location);
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -74,7 +75,8 @@ const ProposalForm = () => {
   
     setLoading(true);
     try {
-      const { projectID, userID } = location.state.proposal_key;
+      const { projectID, clientID } = location.state.project_key;
+      const { freelancerID } = location.state.user_key;
       const cvUrl = formData.cv ? await uploadFile(formData.cv, 'cvs') : '';
       const proposalUrl = formData.proposal ? await uploadFile(formData.proposal, 'proposals') : '';
       const cvName = formData.cv ? formData.cvName : '';
@@ -92,15 +94,17 @@ const ProposalForm = () => {
         createdAt: new Date()
       };
   
-      const docId = `${projectID}_${userID}`;
+      const docId = `${projectID}_${freelancerID}`;
       await setDoc(doc(db, 'proposals', docId), proposalData);
   
       const notificationData = {
-        message: 'Proposal submitted successfully!',
+        message: `You have received an application for your Project ${location.state.project_key.projectID} from ${location.state.user_key.freelancerID}`,
         timestamp: new Date(),
         type: 1, 
         priority: 1,
-        userId: `${location.state.proposal_key.userID}`
+        projectId: `${location.state.project_key.projectID}`,
+        clientId: `${location.state.project_key.clientID}`,
+        freelancerId: `${location.state.user_key.freelancerID}`
       };
       await addDoc(collection(db, 'notifications'), notificationData);
   
@@ -115,7 +119,7 @@ const ProposalForm = () => {
         message: 'Error submitting proposal. Please try again.',
         timestamp: new Date(),
         type: 'error',
-        userId: `${location.state.proposal_key.userID}`
+        userId: `${location.state.user_key.freelancerID}`
       };
       await addDoc(collection(db, 'notifications'), errorNotificationData);
   
@@ -126,7 +130,7 @@ const ProposalForm = () => {
   };
 
   const uploadFile = async (file, folder) => {
-    const storageRef = ref(storage, `${folder}/${location.state.proposal_key.projectID}_${location.state.proposal_key.userID}`);
+    const storageRef = ref(storage, `${folder}/${location.state.project_key.projectID}_${location.state.user_key.freelancerID}`);
     await uploadBytes(storageRef, file);
     return await getDownloadURL(storageRef);
   };

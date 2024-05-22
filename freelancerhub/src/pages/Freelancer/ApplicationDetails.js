@@ -12,14 +12,15 @@ const ApplicationDetails = () => {
     const [proposalDetails, setProposalDetails] = useState(null);
     const history = useHistory();
     const location = useLocation();
-    const { userID, projectID } = location.state.proposal_key;
+    console.log(location)
+    const { freelancerID, projectID } = location.state.proposal_key;
     const [loading, setLoading] = useState(true);
     const [proposalID, setProposalID] = useState(null);
 
     useEffect(() => {
         const fetchProposalDetails = async () => {
             try {
-                const proposalID = `${projectID}_${userID}`;
+                const proposalID = `${projectID}_${freelancerID}`;
                 setProposalID(proposalID);
                 const docRef = doc(db, 'proposals', proposalID);
                 const docSnap = await getDoc(docRef);
@@ -37,7 +38,7 @@ const ApplicationDetails = () => {
         };
 
         fetchProposalDetails();
-    }, [userID, projectID, proposalDetails]);
+    }, [freelancerID, projectID, proposalDetails]);
 
     if (loading) {
         return <div><Loading text='Loading...' /></div>;
@@ -65,24 +66,29 @@ const ApplicationDetails = () => {
                 </div>
                 <div className="right-side">
                     <form className="proposalFormReceived">
-                        <label className="proposalLabel" htmlFor="bids">Files Attached</label>
-                        {proposalDetails.cvUrl && (
-                            <div>
-                                {proposalDetails.cvUrl && (
-                                    <div className="FilesAttachedContainer">
-                                        <label className="proposalSubLabel" htmlFor="proposal">CV</label>
-                                            <PdfPreview fileUrl={proposalDetails.cvUrl} fileName={proposalDetails.cvName || 'CV'} />
-                                    </div>
-                                )}
+                        <label className="proposalLabel">Files Attached</label>
 
-                                {proposalDetails.proposalUrl && (
-                                    <div className="FilesAttachedContainer">
-                                        <label className="proposalSubLabel" htmlFor="proposal">Proposal</label>
-                                            <PdfPreview fileUrl={proposalDetails.proposalUrl} fileName={proposalDetails.proposalName || 'Proposal'} />
-                                    </div>
-                                )}
+                        {!proposalDetails.cvUrl && !proposalDetails.proposalUrl &&( 
+                            <div className="FilesAttachedContainer">
+                                <label className="proposalSubLabel" htmlFor="proposal">No File Attached</label>
                             </div>
+                            
                         )}
+
+                        {proposalDetails.cvUrl && (
+                            <div className="FilesAttachedContainer">
+                                <label className="proposalSubLabel" htmlFor="proposal">CV</label>
+                                <PdfPreview fileUrl={proposalDetails.cvUrl} fileName={proposalDetails.cvName || 'CV'} />
+                            </div>         
+                        )}
+
+                        {proposalDetails.proposalUrl && (
+                            <div className="FilesAttachedContainer">
+                                <label className="proposalSubLabel" htmlFor="proposal">Proposal</label>
+                                <PdfPreview fileUrl={proposalDetails.proposalUrl} fileName={proposalDetails.proposalName || 'Proposal'} />
+                                </div>
+                        )}
+                            
                     </form>
                 </div>
             </div>

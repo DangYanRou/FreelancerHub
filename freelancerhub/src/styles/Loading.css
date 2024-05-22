@@ -83,7 +83,7 @@
 }
 
 .combined-animation {
-  animation: zoomInOut 4s infinite;
+  animation: zoomInOut 3s infinite;
 }
 
 @keyframes zoomInOut {

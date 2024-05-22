@@ -3,8 +3,11 @@ import { useHistory } from 'react-router-use-history'
 import "./LoginPage.css"
 import { FaUser,FaLock } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useUser } from '../../UserContext';;
 
-const LoginPage = () => {
+const LoginPage = ({ onLogin }) => {
+
+    const { updateUser } = useUser();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const history = useHistory();
 
@@ -22,9 +25,11 @@ const LoginPage = () => {
         const username = document.querySelector(".username").value;
         const pass = document.querySelector(".pass").value;
         if ((username=="freelancer") && (pass=="elonmusk")){
+            updateUser("freelancerID1"); 
             handleFreelancerClick();
         }
         else if ((username=="client")&& (pass=="agnes")){
+            updateUser("clientID1");
             handleClientsClick();
         }
     }
