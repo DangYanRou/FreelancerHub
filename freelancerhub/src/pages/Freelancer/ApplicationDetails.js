@@ -1,97 +1,89 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-use-history';
+import { useLocation } from 'react-router-dom';
+import { db } from '../../firebase'; // Make sure to import your Firebase config
+import { doc, getDoc } from 'firebase/firestore';
 import NavigationBarClient from './NavigationBarFreelancer';
 import '../../styles/Freelancers/ApplicationDetails.css';
-import { useState } from 'react';
+import Loading from '../Loading';
 import PdfPreview from '../PdfPreview';
-import { useHistory } from 'react-router-use-history';
 
 const ApplicationDetails = () => {
-    const [proposalsDetails, setProposalDetails] = useState ([
-        { 
-          Name: "My Name", 
-          email: 'myemail@email.com', 
-          tel: '0123456789',
-          bids: 2500, 
-          notes: "NothingNothingNothingNothingNothingNothingNothingNothingNothingNothingNothingNothing",
-          cv: require("../../Gallery/Minimalist White and Grey Professional Resume.pdf"),
-          proposal: require("../../Gallery/WIF2003 Project Proposal - Team 11.pdf")
-        }
-    ]);
-
+    const [proposalDetails, setProposalDetails] = useState(null);
     const history = useHistory();
+    const location = useLocation();
+    const { userID, projectID } = location.state.proposal_key;
+    const [loading, setLoading] = useState(true);
+    const [proposalID, setProposalID] = useState(null);
 
-    const handleProfileClick = () => {
-        history.push('/clients/profile');
-    };
+    useEffect(() => {
+        const fetchProposalDetails = async () => {
+            try {
+                const proposalID = `${projectID}_${userID}`;
+                setProposalID(proposalID);
+                const docRef = doc(db, 'proposals', proposalID);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    setProposalDetails(docSnap.data());
+                } else {
+                    console.log('No such document!');
+                }
 
-    const handleAccept = () => {
-        if (window.confirm('Are you sure you want to accept this proposal?')) {
-            history.push('/clients/proposal-received');
-        }
-    };
+            } catch (error) {
+                console.error('Error fetching proposal details:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const handleReject = () => {
-        if (window.confirm('Are you sure you want to reject this proposal?')) {
-            history.push('/clients/proposal-received');
-            // remove proposal from the list, will do later
-        }
-    };
+        fetchProposalDetails();
+    }, [userID, projectID, proposalDetails]);
+
+    if (loading) {
+        return <div><Loading text='Loading...' /></div>;
+    }
 
     return (
         <div>
             <NavigationBarClient />
-            <h1 className='applicationDetailsH1'>Application</h1>
+            <h1 className='applicationDetailsH1'>Application Submitted</h1>
             <div className="proposalDetailsPageContainer">
                 <div className="left-side">
-                    {proposalsDetails.map((proposalDetail, index) => (
-                        <form className="proposalFormReceived" key={index}>
-                            <label className="proposalLabel" htmlFor="fullName">Full Name</label>
-                            <text className="proposalInputted">{proposalDetail.Name}</text>
+                    <form className="proposalFormReceived">
+                        <label className="proposalLabel" htmlFor="fullName">Full Name</label>
+                        <p className="proposalInputted">{proposalDetails.fullname}</p>
 
-                            <label className="proposalLabel" htmlFor="email">Email</label>
-                            <text className="proposalInputted">{proposalDetail.email}</text>
+                        <label className="proposalLabel" htmlFor="email">Email</label>
+                        <p className="proposalInputted">{proposalDetails.email}</p>
 
-                            <label className="proposalLabel" htmlFor="bids">Bids(RM)</label>
-                            <p className="proposalInputted">{proposalDetail.bids}</p>
+                        <label className="proposalLabel" htmlFor="bids">Bids(RM)</label>
+                        <p className="proposalInputted">{proposalDetails.bids}</p>
 
-                            <label className="proposalLabel" htmlFor="notes">Notes</label>
-                            <text className="proposalInputted">{proposalDetail.notes}</text>
-
-                        </form>
-                    ))}
+                        <label className="proposalLabel" htmlFor="notes">Notes</label>
+                        <p className="proposalInputted">{proposalDetails.notes}</p>
+                    </form>
                 </div>
                 <div className="right-side">
-                    {proposalsDetails.map((proposalDetail, index) => (
-                        <form className="proposalFormReceived" key={index}>
-                            <label className="proposalLabel" htmlFor="bids">Files Attached</label>
-                            {proposalDetail.cv !== "" || proposalDetail.proposal !== "" ? (
-                                <div>
-                                    {proposalDetail.cv !== "" && (
-                                        <>
-                                            <div className="FilesAttachedContainer">
-                                                <label className="proposalSubLabel" htmlFor="proposal">CV</label>
-                                                <a className="linkToFileSubmitted" href={proposalDetail.cv} target="_blank" rel="noopener noreferrer">
-                                                    <PdfPreview fileUrl={proposalDetail.cv} fileName="Minimalist Professional Resume.pdf" />
-                                                </a>
-                                            </div>
-                                        </>
-                                    )}
-                                    {proposalDetail.proposal !== "" && (
-                                        <>
-                                            <div className="FilesAttachedContainer">
-                                                <label className="proposalSubLabel" htmlFor="proposal">Proposal</label>
-                                                <a className="linkToFileSubmitted" href={proposalDetail.proposal} target="_blank" rel="noopener noreferrer">
-                                                    <PdfPreview fileUrl={proposalDetail.proposal} fileName="WIF2003 Project Proposal - Team 11.pdf" />
-                                                </a>
-                                            </div>
-                                        </>
-                                    )}
+                    <form className="proposalFormReceived">
+                        <label className="proposalLabel" htmlFor="bids">Files Attached</label>
+                        {proposalDetails.cvUrl && (
+                            <div>
+                                {proposalDetails.cvUrl && (
+                                    <div className="FilesAttachedContainer">
+                                        <label className="proposalSubLabel" htmlFor="proposal">CV</label>
+                                            <PdfPreview fileUrl={proposalDetails.cvUrl} fileName={proposalDetails.cvName || 'CV'} />
+                                    </div>
+                                )}
+
+                                {proposalDetails.proposalUrl && (
+                                    <div className="FilesAttachedContainer">
+                                        <label className="proposalSubLabel" htmlFor="proposal">Proposal</label>
+                                            <PdfPreview fileUrl={proposalDetails.proposalUrl} fileName={proposalDetails.proposalName || 'Proposal'} />
+                                    </div>
+                                )}
                             </div>
-                        ) : (
-                            <div className="FilesAttachedContainer">No files attached</div>
                         )}
-                        </form>
-                    ))}
+                    </form>
                 </div>
             </div>
         </div>

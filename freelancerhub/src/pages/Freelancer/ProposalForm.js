@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-use-history';
 import { db, storage } from '../../firebase';
-import { addDoc, collection } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import fileUploadImage from "../../Gallery/fileupload.png";
 import '../../styles/Freelancers/ProposalForm.css';
@@ -9,6 +9,7 @@ import NavigationBar from "./NavigationBarFreelancer";
 import PdfPreview from '../PdfPreview';
 import { useLocation } from "react-router-dom";
 import Loading from '../Loading';
+
 
 export const ProposalForm = () => {
   const history = useHistory();
@@ -21,9 +22,7 @@ export const ProposalForm = () => {
     proposal: null,
     notes: '',
     cvName: '',
-    proposalName: '',
-    projectID: '',
-    userID: ''
+    proposalName: ''
   });
   const [previewUrls, setPreviewUrls] = useState({
     cvUrl: null,
@@ -88,12 +87,11 @@ export const ProposalForm = () => {
         cvName,
         proposalName,
         notes: formData.notes || '',
-        projectID, // Use destructured projectID here
-        userID, // Use destructured userID here
         createdAt: new Date()
       };
 
-      await addDoc(collection(db, 'proposals'), proposalData);
+      const docId = `${projectID}_${userID}`;
+      await setDoc(doc(db, 'proposals', docId), proposalData);
 
       history.push('/freelancers/projects-applied');
     } catch (error) {

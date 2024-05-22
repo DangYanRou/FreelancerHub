@@ -19,7 +19,9 @@ const ProjectDetails =({project}) => {
 
   const history = useHistory();
   const handleViewApplication = () => {
-    history.push('/freelancers/application');
+    history.push('/freelancers/application',
+      {proposal_key:{projectID:"projectID1",userID:"userID1"}}
+    );
   };
   
   const [status, setStatus] = useState(0);
