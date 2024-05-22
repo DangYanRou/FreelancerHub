@@ -13,8 +13,8 @@ import Alert from '@mui/material/Alert';
 import { useUser } from '../../UserContext';
 
 const NotificationPage = () => {
-  const { userId } = useUser();
-  console.log(userId)
+  const { user } = useUser();
+  console.log(user)
 
     return (
       <div className="notification-page">
@@ -22,7 +22,7 @@ const NotificationPage = () => {
         <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
           Notifications
         </Heading>
-        <p>User ID: {userId}</p>
+        <p>User ID: {user}</p>
         <div className="notification-container">
           <Alert severity="success">This is a success Alert.</Alert>
           <Alert severity="info">This is an info Alert.</Alert>
