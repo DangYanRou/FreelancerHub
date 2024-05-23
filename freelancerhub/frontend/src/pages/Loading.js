@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/Loading.css'; 
 import { MagnifyingGlass } from 'react-loader-spinner';
 import Working from "../Gallery/working.png";
+import PopNoti from './NotificationContext';
 
 const Loading = ({ text = "Loading..." }) => {
   const wrappedText = text.split("").map((char, index) => (

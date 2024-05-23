@@ -105,7 +105,7 @@ const ClientNotificationPage = () => {
         isRead: true
       });
       
-      history.push("/freelancers/projects-applied");//prompt to check application
+      history.push("/clients/project-posted");//prompt to check application
     } catch (error) {
       console.error("Error updating priority: ", error);
     }
@@ -118,7 +118,7 @@ const ClientNotificationPage = () => {
         isRead: true
       });
       
-      history.push("/freelancers/projects-applied");//prompt to apply
+      history.push("/clients/project-posted");//prompt to apply
     } catch (error) {
       console.error("Error updating priority: ", error);
     }

@@ -4,19 +4,25 @@ import "./LoginPage.css";
 import { FaUser, FaLock } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useUser } from '../../UserContext';
+import { useNotification } from '../NotificationContext';
 
 const LoginPage = () => {
     const { updateUser } = useUser();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const history = useHistory();
+    const { setPathname } = useNotification();
+    updateUser("null");
+    setPathname('null');
 
     const handleFreelancerClick = () => {
         setIsLoggedIn(true);
+        setPathname('/freelancers/notifications');
         history.push('/freelancers/explore');
     };
 
     const handleClientsClick = () => {
         setIsLoggedIn(true);
+        setPathname('/clients/notifications');
         history.push('/clients/post-project');
     };
 

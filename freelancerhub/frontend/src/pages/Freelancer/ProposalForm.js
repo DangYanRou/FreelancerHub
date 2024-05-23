@@ -102,6 +102,8 @@ const ProposalForm = () => {
       await setDoc(doc(db, 'proposals', docId), proposalData);
   
       const notificationToFreelancerData = {
+        isRead: false,
+        isPop: false,
         timestamp: new Date(),
         type: 1, 
         priority: 1,
@@ -112,6 +114,8 @@ const ProposalForm = () => {
       await addDoc(collection(db, 'notifications'), notificationToFreelancerData);
 
       const notificationToClientData = {
+        isRead: false,
+        isPop: false,
         timestamp: new Date(),
         type: 2, 
         priority: 2,
@@ -121,7 +125,6 @@ const ProposalForm = () => {
       };
       await addDoc(collection(db, 'notifications'), notificationToClientData);
   
-      toast.success('Proposal submitted successfully!');
   
       setTimeout(() => {
         history.push('/freelancers/projects-applied');
