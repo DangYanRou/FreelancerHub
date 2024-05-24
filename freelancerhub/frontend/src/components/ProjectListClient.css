@@ -119,23 +119,20 @@
 
  .payment-content {
   background-color: white;
+ 
   padding: 20px;
   border-radius: 8px;
-  width: 550px;
-  height: 200px;
+  width: 560px;
+  height: 350px;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
   
 }
 
-.radioBtn-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
 .modal-title {
   color: red;
   margin-bottom: 3%;
+  flex-grow: 1; /* Make the title take available space */
 
 }
 .select{
@@ -169,4 +166,83 @@ align-items: center; /* Center vertically */
   margin-top: 10%;
   color: green;margin-bottom: 3px;
 }
- 
+.button-container {
+  display: flex;
+  flex-direction: column; /* Change flex direction to column */
+}
+
+.payment-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.payment-button span {
+  margin-right: 10px;
+}
+.payment-button:hover,.payment-button.selected ,.pay-button:hover{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.payment-button img {
+  width: 100px; /* Adjust the size as needed */
+  height: 35px; /* Adjust the size as needed */
+}
+
+.pay-button {
+  width: 120px;
+  height: 40px;
+  display: flex; /* Add display flex */
+  align-items: center;
+  justify-content: center; /* Center horizontally */
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #213E60;
+  margin-bottom: 10px;
+  cursor: pointer;
+  margin-left: 195px;
+  color: #ffffff;
+}
+
+.payment-button.selected {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Add shadow effect for selected state */
+}
+
+.close-btn{
+margin-left: 500px;
+}
+.processing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.spinner {
+  margin-top: 90px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: #09f;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  to {
+      transform: rotate(360deg);
+  }
+}
+
+.processing-text {
+  font-size: 1.2rem;
+  color: #333;
+  text-align: center;
+}
