@@ -17,10 +17,12 @@ import ClientNotificationPage from '../pages/Clients/ClientNotificationPage';
 import FreelancerTemporaryProfile from '../pages/Freelancer/FreelancerTemporaryProfile';
 import ClientSaved from '../pages/Clients/ClientSaved';
 import WithNavigation from '../WithNavigation';
+import { ProjectInfoProvider } from '../pages/Clients/ProjectInfoProvider'; 
 
 const ClientRoutes = () => {
   return (
     <WithNavigation>
+    <ProjectInfoProvider>
       <Routes>
         <Route path="/" element={<ClientLandingPage />} />
         <Route path="project-posted" element={<ProjectPosted />} />
@@ -40,6 +42,7 @@ const ClientRoutes = () => {
         <Route path="saved" element={<ClientSaved />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+      </ProjectInfoProvider>
     </WithNavigation>
   );
 };
