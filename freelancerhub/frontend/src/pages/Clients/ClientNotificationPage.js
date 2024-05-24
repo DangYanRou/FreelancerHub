@@ -13,15 +13,15 @@ import Loading from '../Loading';
 
 /*
 Noti types
-type 0 = freelancer receive invitation
-type 1 = freelancer submitted application
-type 2 = client received application
-type 3 = client accepted application
-type 3.5 = client rejected application
-type 4 = freelancer received assignment
-type 4.5 = freelancer received rejection
-type 5 = client marked project as completed
-type 6 = freelancer reveiced project completeness 
+type 0 = freelancer receive invitation  priority = 2
+type 1 = freelancer submitted application priority = 1
+type 2 = client received application priority = 2
+type 3 = client accepted application priority = 2
+type 3.5 = client rejected application priority = 2
+type 4 = freelancer received assignment priority = 2
+type 4.5 = freelancer received rejection priority = 2
+type 5 = client marked project as completed priority = 1
+type 6 = freelancer reveiced project completeness priority = 1
 */
 const ClientNotificationPage = () => {
   const { user } = useUser();
@@ -32,7 +32,7 @@ const ClientNotificationPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const notiQuery = query(collection(db, 'notifications'), orderBy('timestamp', 'desc'), where('to', '==', user));
+        const notiQuery = query(collection(db, 'notifications'), orderBy('timestamp', 'desc'), where('to', '==', user.id));
         const notiSnapshot = await getDocs(notiQuery);
         const notifications = notiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   
@@ -134,10 +134,11 @@ const ClientNotificationPage = () => {
 
   return (
     <div className="notification-page">
-      <NavigationBarClient />
       <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
         Notifications
       </Heading>
+      <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
+      
       {loading ? ( 
         <Loading />
       ) : (

@@ -55,7 +55,8 @@ const ProjectListClient=({projects,onProjectClick,selectedProjectId}) => {
                 <ul className="pa-options">
                   <li><Link to ="/clients/post-project">Edit Project</Link></li>
                   <li>Delete Project</li>
-                  <li><Link to ="/clients/proposal-received">View Applications</Link></li>
+                  <li><Link to="/clients/proposal-received"  state={{ projectID: "projectID1" }}>
+                    View Applications</Link></li>
                   <li onClick={openModal}>Mark As Done</li>
                 </ul>  
               </div>

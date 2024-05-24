@@ -1,125 +1,171 @@
 
 
-.proposalFormReceived {
+.applicationDetailsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  padding: 10px;
+  margin-left:50px;
+  
+}
+
+.application-left-side, .application-middle-side, .application-right-side {
+  flex: 1;
+}
+
+.applicationFormReceived {
     display: flex;
     flex-direction: column; 
     justify-content: center;
     align-items: center;
     width: 100%;
     margin-top: 50px;
-  }
+}
+
+.applicationInputted,
+.appplicatonLabel{
+  margin: 0;
+  padding: 0;
+}
   
-  .proposalInputted,
-  .proposalLabel{
-    margin: 0;
-    padding: 0;
-  }
+.applicationLabel{
+  font-weight: bold;
+  display: flex;
+  margin-bottom: 5px;
+  color: #213E60;
+  width: 400px;
+}
+    
+.applicationInputted{
+  font-family: inherit;
+  display: block;
+  width: 400px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42;
+  color: #213E60;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.application-profile-button-group{
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 40px;
+}
+
+.application-profile-button,
+.application-contact-button,
+.application-accept-button,
+.application-reject-button{
+  width: 300px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s, border 0.3s, scale 0.3s;
+}
+
+
+.application-contact-button span,
+.application-accept-button span,
+.application-reject-button span{
+  color: #F0F7F9;
+  transition: color 0.3s, scale 0.3s;
+}
+
+.application-profile-button{
+  border-radius: 5px !important;
+}
+
+.application-profile-button span,
+.application-contact-button span{
+  color:#213E60;
+  transition: color 0.3s, scale 0.3s;
+}
+
+.application-profile-button:hover span,
+.application-contact-button:hover span{
+  color:#213E60;
+  scale: 1.05 !important;
+}
+
+
+
+.application-profile-button,
+.application-contact-button{
+  border-color: #F0F7F9;
+  background-color: #F0F7F9;
+}
+
+.application-profile-button:hover,
+.application-contact-button:hover{
+  border-color: #90e0ef;
+  background-color: #90e0ef;
+}
+
+.application-contact-button{
+
+}
+
+.application-accept-button{
+  border-color: #213E60;
+  background-color: #213E60;
+}
+
+.application-accept-button:hover{
+  border-color: #90e0ef;
+  background-color: #90e0ef;
+  scale: 1.1 !important;
+}
+
+.application-accept-button:hover span{
+  color: #213E60;
+  scale: 1.1 !important;
+}
+
+.application-reject-button{
+  border-color: #ED2939;
+  background-color: #ED2939;
+  border-radius: 5px !important;
+}
+
+.application-reject-button:hover{
+  border-color: #6B0101;
+  background-color: #6B0101;
+  border-radius: 5px !important;
+  scale: 1.1;
+}
+
+.application-reject-button:hover span{
+  color:#F0F7F9;
+  scale: 1.1;
+}
+
+.FilesAttachedContainer{
+  display: flex;
+  flex-direction: column;
+  padding: 20px; 
+  border: none;
+  border-radius: 5px;
+  background-color: #F0F7F9;
+  color: #213e60;
+  margin-bottom: 20px;
+  width: 400px;
+  min-height: 20px;
+  align-items: center;
+}
+
+.applicationSubLabel{
+  text-align: center;
+  margin-bottom: 15px;
+}
+    
+
+    
+      
+    
   
-    .proposalLabel{
-      font-weight: bold;
-      display: flex;
-      margin-bottom: 5px;
-      color: #213E60;
-      width: 400px;
-    }
-    
-    .proposalInputted{
-        font-family: inherit;
-        display: block;
-        width: 400px;
-        padding: 6px 12px;
-        font-size: 14px;
-        line-height: 1.42;
-        color: #213E60;
-        background-image: none;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-bottom: 20px;
-        text-align: left;
-        word-wrap: break-word;
-    }
 
-    .FilesAttachedContainer{
-        display: flex;
-        flex-direction: column;
-        padding: 15px; 
-        border: none;
-        border-radius: 5px;
-        background-color: #F0F7F9;
-        color: #213e60;
-        margin-bottom: 20px;
-        width: 400px;
-        min-height: 20px;
-        align-items: center;
-    }
-
-    .linkToFileSubmitted{
-      text-decoration: none;
-      font-size: 12px;
-      color: #69ACC2;
-      margin-top: 5px;
-      text-align: center;
-      align-items: center;
-    }
-
-    .linkToFileSubmitted:hover {
-      text-decoration: none;
-      color: #69ACC2;
-    }
-
-    .proposalSubLabel{
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    
-
-      
-      .proposalButton {
-        background-color: #213E60;
-        color: #fff;
-        border: none;
-        padding: 10px;
-        border-radius: 7px;
-        font-weight: bold;
-        margin-top: 20px;
-        min-width: 300px;
-      }
-
-      .proposalRejectButton {
-        background-color: #d4442e;
-        color: #fff;
-        border: none;
-        padding: 10px;
-        border-radius: 7px;
-        font-weight: bold;
-        margin-top: 20px;
-        min-width: 300px;
-      }
-      
-    
-    
-    .proposalDetailsPageContainer {
-      display: flex;
-  }
-  
-  .left-side {
-    align-items: center; 
-    flex: 1;
-    padding-left: 100px;
-  }
-
-  .right-side {
-      align-items: center;
-      flex: 1;
-      padding-right: 100px;
-      
-  }
-
-  .applicationDetailsH1{
-    font-family: inherit;
-    font-size: 25px;
-    color: #213e60;
-    text-align: center;
-    font-weight: bold;
-    margin-top: 50px;
-  }

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-use-history';
 import { useLocation } from 'react-router-dom';
-import { db } from '../../firebase'; // Make sure to import your Firebase config
+import { db } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import NavigationBarClient from './NavigationBarFreelancer';
 import '../../styles/Freelancers/ApplicationDetails.css';
 import Loading from '../Loading';
 import PdfPreview from '../PdfPreview';
-
+import Heading from '../../components/Heading';
 const ApplicationDetails = () => {
     const [proposalDetails, setProposalDetails] = useState(null);
     const history = useHistory();
@@ -44,53 +44,67 @@ const ApplicationDetails = () => {
     }
 
     return (
-        <div>
-            <NavigationBarClient />
-            <h1 className='applicationDetailsH1'>Application Submitted</h1>
-            <div className="proposalDetailsPageContainer">
-                <div className="left-side">
-                    <form className="proposalFormReceived">
-                        <label className="proposalLabel" htmlFor="fullName">Full Name</label>
-                        <p className="proposalInputted">{proposalDetails.fullname}</p>
+        <div className="applicationDetailsPageContainer">
+            {proposalDetails ? (
+                <div>
+                    <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+                        Application
+                    </Heading>
+                    <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
+                    <div className="applicationDetailsContainer">
+                        <div className="application-left-side" >
+                            <form className="appicationFormReceived" style={{marginTop:"0px"}}>
+                                <label className="applicationLabel" >Full Name</label>
+                                <p className="applicationInputted">{proposalDetails.fullname}</p>
 
-                        <label className="proposalLabel" htmlFor="email">Email</label>
-                        <p className="proposalInputted">{proposalDetails.email}</p>
+                                <label className="applicationLabel" htmlFor="email">Email</label>
+                                <p className="applicationInputted">{proposalDetails.email}</p>
 
-                        <label className="proposalLabel" htmlFor="bids">Bids(RM)</label>
-                        <p className="proposalInputted">{proposalDetails.bids}</p>
+                                <label className="applicationLabel" htmlFor="bids">Bids(RM)</label>
+                                <p className="applicationInputted">{proposalDetails.bids}</p>
 
-                        <label className="proposalLabel" htmlFor="notes">Notes</label>
-                        <p className="proposalInputted">{proposalDetails.notes}</p>
-                    </form>
-                </div>
-                <div className="right-side">
-                    <form className="proposalFormReceived">
-                        <label className="proposalLabel">Files Attached</label>
-
-                        {!proposalDetails.cvUrl && !proposalDetails.proposalUrl &&( 
-                            <div className="FilesAttachedContainer">
-                                <label className="proposalSubLabel" htmlFor="proposal">No File Attached</label>
-                            </div>
-                            
-                        )}
-
-                        {proposalDetails.cvUrl && (
-                            <div className="FilesAttachedContainer">
-                                <label className="proposalSubLabel" htmlFor="proposal">CV</label>
-                                <PdfPreview fileUrl={proposalDetails.cvUrl} fileName={proposalDetails.cvName || 'CV'} />
-                            </div>         
-                        )}
-
-                        {proposalDetails.proposalUrl && (
-                            <div className="FilesAttachedContainer">
-                                <label className="proposalSubLabel" htmlFor="proposal">Proposal</label>
-                                <PdfPreview fileUrl={proposalDetails.proposalUrl} fileName={proposalDetails.proposalName || 'Proposal'} />
+                                <label className="applicationLabel" htmlFor="notes">Notes</label>
+                                <p className="applicationInputted">{proposalDetails.notes || "-"}</p>
+                            </form>
+                        </div>
+                        <div className="application-middle-side">
+                            {proposalDetails.cvUrl ? (
+                                <>
+                                <div className="FilesAttachedContainer">
+                                <label className="applicationSubLabel">CV Attached</label>
+                                    <PdfPreview fileUrl={proposalDetails.cvUrl} fileName={proposalDetails.cvName || 'CV'} />
                                 </div>
-                        )}
-                            
-                    </form>
+                                </>
+                            ):(
+                                <>
+                                <div className="FilesAttachedContainer">
+                                <label className="applicationSubLabel">No CV Attached</label>
+                                </div>
+                                </>
+                            )}
+
+                        </div>
+                        <div className="application-right-side">
+                            {proposalDetails.proposalUrl ? (
+                                <>
+                                <div className="FilesAttachedContainer">
+                                    <label className="applicationSubLabel">Proposal Attached</label>
+                                    <PdfPreview fileUrl={proposalDetails.proposalUrl} fileName={proposalDetails.proposalName || 'Proposal'} />
+                                </div>
+                                </>
+                            ):(
+                                <>
+                                <div className="FilesAttachedContainer">
+                                    <label className="applicationSubLabel">No Proposal Attached</label>
+                                </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <p>No proposal details found.</p>
+            )}
         </div>
     );
 };

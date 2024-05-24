@@ -1,81 +1,98 @@
-
-.proposalReceivedH1{
-    margin-bottom: 50px;
-    font-family: inherit;
-    font-size: 25px;
-    color: #213e60;
-    text-align: center;
-    font-weight: bold;
-    margin-top: 50px;
-
+.application-card-container{
+  padding: 50px;
 }
 
-.proposalPreview{
-    display: block;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: left;
-    color: #213e60;
-    background-color: #F0F7F9;
-    box-shadow: 0 4px 6px rgba(33, 62, 96, 0.2);
-    width: auto;
-    height: auto;
+.application-card{
+  border-color: #213E60 !important;
 }
 
-.freelancerProfileLink {
-    color: #69ACC2;
-    text-decoration: none;
-    font-weight: bold;
-  }
+.application-card-name{
+  color: #213E60;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  transition: color 0.3s;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  width: 250px;
+  transition: color 0.3s, scale 0.3s;
+}
 
-  .freelancerProfileLink:hover {
-    text-decoration: none;
-    color: #69ACC2;
-  }
 
-  .proposalDetailsLink {
-    color: #213e60;
-    text-decoration: none;
-  }
+.application-card-name:hover{
+  color: #90e0ef;
+  scale: 1.02;
+}
 
-  .proposalDetailsLink:hover {
-    text-decoration: none;
-    color: #213e60;
-  }
+.application-card-separator {
+  margin-inline-start: 5px;
+}
 
-  .proposalGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
-    grid-gap: 20px; 
-    margin: 50px;
-  }
+.application-card-email{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  transition: color 0.3s, scale 0.3s;
+}
 
-  .proposalAccpet {
-    background-color: #213E60;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    border-radius: 7px;
-    font-weight: bold;
-    margin-top: 10px;
-    min-width: 75px;
-    flex: 1;
-  }
+.application-card-email:hover{
+  color: #90e0ef;
+  scale: 1.02;
+}
 
-  .proposalReject {
-    background-color: #cc1616;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    border-radius: 7px;
-    font-weight: bold;
-    margin-top: 10px;
-    min-width: 75px;
-    margin-left: 50px;
-    flex: 1;
-  }
+.application-card-bids{
+  color: #213E60;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 15px;
+}
 
-  .assignmentButtonContainer{
-    display: flex;
-    align-items: center;
-  }
+
+.apllication-card-notes {
+  color: #213E60;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 15px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+
+.application-card-button {
+  border-radius: 0px 0px 7px 7px !important; 
+  transition: background-color 0.3s, color 0.3s, scale 0.3s, border-color 0.3s!important;
+  background-color: #213E60 !important;
+  border-color: #213E60 !important;
+}
+.application-card-horizontal-line{
+  border-color: #213E60 !important;
+}
+
+.application-card-button span {
+  color: #F0F7F9 !important; 
+}
+
+.application-card-button svg {
+  fill: #F0F7F9 !important;
+  transition: fill 0.3s, scale 0.3s;
+}
+
+.application-card-button:hover {
+  border-color: #90e0ef !important; 
+  background-color: #90e0ef !important; 
+}
+
+.application-card-button:hover span {
+  color: #213E60 !important;
+  scale:1.05;
+}
+
+.application-card-button:hover svg {
+  fill: #213E60 !important; 
+  scale:1.05;
+}

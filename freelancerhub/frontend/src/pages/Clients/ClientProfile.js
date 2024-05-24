@@ -88,7 +88,6 @@ const ClientProfile = () => {
 
   return (
     <div className="ClientProfile">
-      <NavigationBarClient></NavigationBarClient>
       <div className="client_content">
         <div className="upperProfile">
           <div className="profileCard">

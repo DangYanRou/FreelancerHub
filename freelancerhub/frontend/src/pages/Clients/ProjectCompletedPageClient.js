@@ -9,7 +9,6 @@ const ProjectCompletedPageClient = () => {
   const navigate = useNavigate();
   return (
     <div className="ProjectCompletedPage">
-    <NavigationBarClient></NavigationBarClient>
     <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
             Completed Projects
           </Heading>

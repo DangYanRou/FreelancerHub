@@ -135,7 +135,6 @@ const FreelancerSaved = () => {
 
   return (
     <div>
-      <NavigationBar></NavigationBar>
       <div className="flex w-full justify-end bg-white-A700 py-[63px] md:py-5">
         {/* favorite projects header section */}
         <div className=" flex w-[100%] flex-col items-start  md:w-full md:p-5">

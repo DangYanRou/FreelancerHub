@@ -50,7 +50,6 @@ const ProjectPosted= () => {
   
   return (
     <div className="ProjectPosted">
-      <NavigationBar></NavigationBar>
       <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
             Project Posted
           </Heading>

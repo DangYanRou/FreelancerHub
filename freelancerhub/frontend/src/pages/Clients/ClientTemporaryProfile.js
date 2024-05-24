@@ -95,7 +95,6 @@ const ClientProfile = () => {
 
   return (
     <div className="ClientProfile">
-      <NavigationBar></NavigationBar>
       <div className="client_content">
         <div className="upperProfile">
           <div className="profileCard">
