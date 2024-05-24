@@ -6,9 +6,9 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
 import Rating from "../../pages/Freelancer/FreelancerAverageReviewBox";
-import StarRating from "../../components/Rating";
+import StarRating from "../../Components/Rating";
 import { useHistory } from 'react-router-use-history';
-import Heading from '../../components/Heading';
+import Heading from '../../Components/Heading';
 
 const FreelancerProfile = () => {
   const history = useHistory(); 

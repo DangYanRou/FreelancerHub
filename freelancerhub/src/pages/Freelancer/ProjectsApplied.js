@@ -1,17 +1,17 @@
 import React from 'react'
 import '../../styles/Freelancers/ProjectsApplied.css'
 import NavigationBar from './NavigationBarFreelancer';
-import ProjectList from '../../components/ProjectList';
+import ProjectList from '../../Components/ProjectList';
 import { useState } from 'react';
 import { GrFormClose } from "react-icons/gr";
 import ProjectDetailsPage from './ProjectDetailsPage';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import StatusBar from '../../components/statusBar2';
+import StatusBar from '../../Components/statusBar2';
 import { useHistory } from 'react-router-use-history';
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
-import Heading from '../../components/Heading';
+import Heading from '../../Components/Heading';
 
 
 

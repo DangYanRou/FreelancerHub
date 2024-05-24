@@ -3,7 +3,7 @@ import workImage from '../../Gallery/work.png';
 import noteImage from '../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import NavigationBarClients from './NavigationBarClient';
-import Heading from '../../components/Heading';
+import Heading from '../../Components/Heading';
 
 
 
