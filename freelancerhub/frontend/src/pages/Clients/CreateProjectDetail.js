@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import workImage from '../../Gallery/work.png';
 import noteImage from '../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import NavigationBarClients from './NavigationBarClient';
 import Heading from '../../components/Heading';
-
+import { ProjectContext } from './ProjectContext';
 
 // ProgressBar component to display the stages of project creation
 const ProgressBar = ({ stages }) => {
@@ -27,8 +27,6 @@ const ProgressBar = ({ stages }) => {
 };
 
 
-
-
 const CreateProjectDetail = () => {
 
   const navigate = useNavigate();
@@ -43,25 +41,16 @@ const CreateProjectDetail = () => {
     { title: 'Preview', step: 'Step 5/5' },
   ];
 
-  const contractType = [
-    'Freelance',
-    'Part time',
-    'Full time',
-    'Permanent',
-    'Other'
-  ];
-
   const workPlace = [
+    'Select a Workplace',
     'Onsite',
     'Remote',
     'Hybrid',
     'Other'
   ];
+
   
-  const [projectName, setProjectName] = useState('');
-  const [minInput, setMinInput] = useState('');
-  const [maxInput, setMaxInput] = useState('');
-  const [locationInput, setLocationInput] = useState('');
+  const [project, setProject] = useContext(ProjectContext);
 
 
   const [subjectError, setSubjectError] = useState('');
@@ -70,67 +59,60 @@ const CreateProjectDetail = () => {
   const [locationError, setLocationError] = useState('');
 
 
-  // Update state when input fields change
-const handleProjectNameChange = (event) => setProjectName(event.target.value);
-const handleMinInputChange = (event) => setMinInput(event.target.value);
-const handleMaxInputChange = (event) => setMaxInput(event.target.value);
-const handleLocationInputChange = (event) => setLocationInput(event.target.value);
-
-
-// Check if all required fields are filled
-const allFieldsFilled = projectName !== '' && minInput !== '' && maxInput !==  '' && locationInput !=='';
-
 const handleFormSubmit = (event) => {
   event.preventDefault();
 
+  let isValid = true;
 
-  const projectName = document.getElementById('projectName').value;
-  const min = document.getElementById('min').value;
-  const max = document.getElementById('max').value;
-  const location = document.getElementById('location').value;
-
-  if (!projectName) {
-    setSubjectError('Subject is required');
+  if (!project.projectName) {
+    setSubjectError('Project name is required');
+    isValid = false;
   } else {
     setSubjectError('');
   }
 
-  if (!location) {
-    setLocationError('Location is required');
-  } else {
-    setLocationError('');
-  }
-  
-  if (!min) {
-    setMinError('Min is required');
+  if (!project.minInput) {
+    setMinError('Min input is required');
+    isValid = false;
   } else {
     setMinError('');
   }
 
-  if (!max) {
-    setMaxError('Max is required');
+  if (!project.maxInput) {
+    setMaxError('Max input is required');
+    isValid = false;
   } else {
     setMaxError('');
   }
 
-  if (!allFieldsFilled) 
-  window.alert('All fields must be filled!');
+  if (!project.locationInput) {
+    setLocationError('Location input is required');
+    isValid = false;
+  } else {
+    setLocationError('');
+  }
 
   // Proceed with form submission if no errors
-  if (projectName && min && max && locationInput ) {
+  if (isValid) {
     navigate("/clients/post-project-description");
-  }  
+  }  else {
+    window.alert('All fields must be filled!');
+  }
 };
 
-const handleButtonClick = (event) => {
+const handleButtonClick = async (event) => {
   event.preventDefault();
 
-  // if (!allFieldsFilled) {
-  //   window.alert('All fields must be filled!');
-  // } else {
   handleFormSubmit(event);
-  // navigate("/clients/post-project-description");
-  // }
+
+};
+
+// Update the project state when the input fields change
+const handleInputChange = (event) => {
+  setProject({
+    ...project,
+    [event.target.name]: event.target.value,
+  });
 };
 
 
@@ -147,34 +129,35 @@ const handleButtonClick = (event) => {
       <ProgressBar stages={stages} />
       <div style={{ backgroundColor: '#69ACC2' }} className="w-screen max-w-full h-8/10">
         <div className="bg-white w-4/5 rounded-md my-12 mx-auto text-left">
+
         <form className="flex flex-col space-y-4 p-4" onSubmit={handleFormSubmit}>
 
           <div className="flex justify-left m-4 w-8/10">
             <div className="w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Subject: </label>
               <input required style={{ width: '100%' }} className="flex h-[40px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
-               id="projectName" type="text" value={projectName} onChange={handleProjectNameChange} />
+               id="projectName" name="projectName" type="text" value={project.projectName} onChange={handleInputChange} />
                {subjectError && <p className="text-red-500 text-xs italic">{subjectError}</p>}
             </div>
           </div>
           <div className="flex justify-between w-8/10 m-4">
   <div className="w-1/2 mr-8">
-
-    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="workplace">Workplace: </label>
-    <select className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
-     id="workplace" >
-      {workPlace.map((workPlaceSelect, index) => (
-        <option key={index} value={workPlaceSelect}>
-          {workPlaceSelect}
-        </option>
-      ))}
-    </select>
+    
+  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="workplace">Workplace: </label>
+<select className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
+ id="workplace" name="workPlaceSelect" onChange={handleInputChange} value={project.workPlaceSelect}>
+  {workPlace.map((workPlaceSelect, index) => (
+    index === 0 
+    ? <option key={index} value="" >{workPlaceSelect}</option>
+    : <option key={index} value={workPlaceSelect} >{workPlaceSelect}</option>
+  ))}
+</select>
 
   </div>
   <div className="w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">Location: </label>
     <input required className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="location" type="text" value={locationInput} onChange={handleLocationInputChange} />
+ id="location" name="locationInput" type="text"  value={project.locationInput} onChange={handleInputChange} />
  {locationError && <p className="text-red-500 text-xs italic">{locationError}</p>}
   </div>
 </div>
@@ -185,19 +168,19 @@ const handleButtonClick = (event) => {
   <div className="flex items-center w-1/3 mr-2">
     <label className="mr-2 text-gray-700 text-sm " htmlFor="min">Min: </label>
     <input required className="flex h-[40px] w-3/4 items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="min" type="number" min="0"  value={minInput} onChange={handleMinInputChange}/>
+ id="min" name="minInput" type="number" min="0"  value={project.minInput} onChange={handleInputChange}/>
       {minError && <p className="pl-2 text-red-500 text-xs italic">{minError}</p>}
   </div>
   <div className="flex items-center w-1/3 mr-2">
     <label className="mr-2 text-gray-700 text-sm " htmlFor="max">Max: </label>
     <input required className="flex h-[40px] w-3/4 items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="max" type="number" min="0"  value={maxInput} onChange={handleMaxInputChange} />
+ id="max" name="maxInput" type="number" min="0"  value={project.maxInput} onChange={handleInputChange} />
       {maxError && <p className="pl-2 text-red-500 text-xs italic"> {maxError}</p>}
 
   </div>
   <div className="flex items-center w-1/3 select-div">
   <select required className="flex h-[40px] w-3/4 items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
-  >
+  id="currency" name="currencyInput" onChange={handleInputChange} value={project.currencyInput} >
     <option value="MYR">MYR</option>
     <option value="USD">USD</option>
     <option value="EUR">EUR</option>
@@ -218,6 +201,7 @@ const handleButtonClick = (event) => {
 </div>
 
           </form>
+
         </div>
       </div>
     </div>
