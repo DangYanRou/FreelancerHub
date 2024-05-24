@@ -35,6 +35,7 @@ import Register from './pages/LoginPage/Register';
 import ClientTemporaryProfile from './pages/Clients/ClientTemporaryProfile';
 import Loading from './pages/Loading.js';
 import { UserProvider } from './UserContext';
+import { ProjectInfoProvider } from './pages/Clients/ProjectInfoProvider'; 
 import NotificationProvider from './pages/NotificationContext.js';
 
 
@@ -90,6 +91,7 @@ function FreelancerRoutes() {
 function ClientRoutes() {
  
   return (
+    <ProjectInfoProvider>
     <Routes>
       <Route path="/" element={<ClientLandingPage />} />
       <Route path="project-posted" element={<ProjectPosted />} />
@@ -110,6 +112,8 @@ function ClientRoutes() {
       <Route path="*" element={<Navigate to="/" />} />
       <Route path="saved" element={<ClientSaved/>} />
     </Routes>
+    </ProjectInfoProvider>
+
   
   );
 }

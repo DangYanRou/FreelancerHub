@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import workImage from '../../Gallery/work.png';
 import noteImage from '../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import { IoMdClose } from 'react-icons/io';
 import NavigationBarClients from './NavigationBarClient';
 import Heading from '../../components/Heading';
+import { ProjectContext } from './ProjectContext';
 
 
 // ProgressBar component to display the stages of project creation
@@ -37,6 +38,7 @@ const CreateProjectPreferred = () => {
     { title: 'Preview', step: 'Step 5/5' },
   ];
 
+  const [project, setProject] = useContext(ProjectContext);
 
   const navigate = useNavigate();
   
@@ -50,35 +52,55 @@ const CreateProjectPreferred = () => {
     navigate("/clients/post-project-invite");
   };
 
-  const [skills, setSkills] = useState([]);
+  const [skillInput, setSkillInput] = useState('');
 
 const handleKeyDown = (event) => {
   if (event.key === 'Enter') {
     event.preventDefault();
     const value = event.target.value.trim();
-    if (value && !skills.includes(value)) {
-      setSkills([...skills, value]);
+    if (value && !project.skills.includes(value)) {
+      setProject({
+        ...project,
+        skills: [...project.skills, value],
+      });
     }
-    event.target.value = '';
+    setSkillInput('');
   }
 };
 
 const handleDelete = (skillToDelete) => {
-  setSkills(skills.filter(skill => skill !== skillToDelete));
-};
+  setProject({
+    ...project,
+    skills: project.skills.filter(skill => skill !== skillToDelete),
+  });};
 
-const [keywords, setKeywords] = useState([]);
+const [keywordsInput, setKeywordsInput] = useState('');
 
 const handleKeywordKeyDown = (event) => {
   if (event.key === 'Enter') {
     event.preventDefault();
-    setKeywords([...keywords, event.target.value]);
-    event.target.value = '';
+    const value = event.target.value.trim();
+    if(value && !project.keywords.includes(value)) {
+      setProject({
+        ...project,
+        keywords: [...project.keywords, value],
+      });
   }
+  setKeywordsInput('');
+}
 };
 
 const handleKeywordDelete = (keywordToDelete) => {
-  setKeywords(keywords.filter(keyword => keyword !== keywordToDelete));
+  setProject({
+    ...project,
+    keywords: project.keywords.filter(keyword => keyword !== keywordToDelete),
+  });};
+
+const handleInputChange = (event) => {
+  setProject({
+    ...project,
+    [event.target.name]: event.target.value,
+  });
 };
 
   return (
@@ -98,16 +120,16 @@ const handleKeywordDelete = (keywordToDelete) => {
 
             <div className="flex justify-left m-4 w-8/10">
             <div className="w-full">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="jobDescription">Job Rrsponsibilities: </label>
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="jobDescription">Job Responsibilities: </label>
                 <textarea style={{ width: '100%' }} className="flex h-[100px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 py-2"
-                id="jobDescription"></textarea>
+                id="jobResponsibilities" name="responsibilitiesInput" onChange={handleInputChange} value={project.responsibilitiesInput}></textarea>
             </div>
             </div>
             <div className="flex justify-left m-4 w-8/10">
             <div className="w-full">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="jobDescription">Preferred Qualification: </label>
                 <textarea style={{ width: '100%' }} className="flex h-[100px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 py-2"
-                id="jobDescription"></textarea>
+                id="qualification" name="qualificationInput" onChange={handleInputChange} value={project.qualificationInput}></textarea>
             </div>
             </div>
             <div className="flex justify-between w-8/10 m-4">
@@ -116,10 +138,12 @@ const handleKeywordDelete = (keywordToDelete) => {
     <input 
     className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
     id="preferredSkills"
+    value={skillInput}
+    onChange={e => setSkillInput(e.target.value)}
     onKeyDown={handleKeyDown}
   />
 <div className="flex flex-wrap">
-{skills.map((skill, index) => (
+{project.skills.map((skill, index) => (
   <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
     <span>#{skill}</span>
     <button 
@@ -135,12 +159,14 @@ const handleKeywordDelete = (keywordToDelete) => {
     <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="duration">Keyword: </label>
     <input 
   className="flex h-[40px] w-full items-center justify-center rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 sm:w-full"
-  id="duration" 
+  id="keywords" 
+  value={keywordsInput}
+  onChange={e => setKeywordsInput(e.target.value)}
   type="text" 
   onKeyDown={handleKeywordKeyDown}
 />
 <div className="flex flex-wrap">
-{keywords.map((keyword, index) => (
+{project.keywords.map((keyword, index) => (
   <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
     <span>#{keyword}</span>
     <button 
