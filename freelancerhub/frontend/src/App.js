@@ -36,6 +36,7 @@ import ClientTemporaryProfile from './pages/Clients/ClientTemporaryProfile';
 import Loading from './pages/Loading.js';
 import { UserProvider } from './UserContext';
 import { ProjectInfoProvider } from './pages/Clients/ProjectInfoProvider'; 
+import NotificationProvider from './pages/NotificationContext.js';
 
 
 
@@ -52,6 +53,7 @@ function App() {
   return (
     <div className="App">
       <UserProvider> 
+      <NotificationProvider>
         <Routes>
           <Route path="/" element={<LoginPage/>} />
           <Route path="/resetPassword" element={<ResetPassword/>} />
@@ -60,6 +62,7 @@ function App() {
           <Route path="/clients/*" element={<ClientRoutes />} />
           {/* Add more top-level routes if needed */}
         </Routes>
+      </NotificationProvider>
     </UserProvider>
     </div>
   );
