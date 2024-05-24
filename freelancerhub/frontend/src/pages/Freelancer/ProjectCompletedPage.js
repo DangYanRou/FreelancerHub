@@ -4,6 +4,7 @@ import ProjectList from '../../components/ProjectList';
 import { useNavigate } from 'react-router-dom';
 import CompletedProjectList from '../../components/CompletedProjectList';
 import Heading from '../../components/Heading';
+
 const ProjectCompletedPage = () => {
   const navigate = useNavigate();
   return (

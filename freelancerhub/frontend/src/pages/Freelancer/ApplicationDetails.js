@@ -12,7 +12,6 @@ const ApplicationDetails = () => {
     const [proposalDetails, setProposalDetails] = useState(null);
     const history = useHistory();
     const location = useLocation();
-    console.log(location)
     const { freelancerID, projectID } = location.state.proposal_key;
     const [loading, setLoading] = useState(true);
     const [proposalID, setProposalID] = useState(null);

@@ -25,7 +25,9 @@ const ProposalForm = () => {
     proposal: null,
     notes: '',
     cvName: '',
-    proposalName: ''
+    proposalName: '',
+    freelancerId: '',
+    projectId: '',
   });
   const [previewUrls, setPreviewUrls] = useState({
     cvUrl: null,
@@ -91,24 +93,38 @@ const ProposalForm = () => {
         cvName,
         proposalName,
         notes: formData.notes || '',
+        projectID : location.state.project_key.projectID,
+        freelancerID : location.state.user_key.freelancerID,
         createdAt: new Date()
       };
   
       const docId = `${projectID}_${freelancerID}`;
       await setDoc(doc(db, 'proposals', docId), proposalData);
   
-      const notificationData = {
-        message: `You have received an application for your Project ${location.state.project_key.projectID} from ${location.state.user_key.freelancerID}`,
+      const notificationToFreelancerData = {
+        isRead: false,
+        isPop: false,
         timestamp: new Date(),
         type: 1, 
         priority: 1,
-        projectId: `${location.state.project_key.projectID}`,
-        clientId: `${location.state.project_key.clientID}`,
-        freelancerId: `${location.state.user_key.freelancerID}`
+        projectID: `${location.state.project_key.projectID}`,
+        clientID: `${location.state.project_key.clientID}`,
+        to: `${location.state.user_key.freelancerID}`
       };
-      await addDoc(collection(db, 'notifications'), notificationData);
+      await addDoc(collection(db, 'notifications'), notificationToFreelancerData);
+
+      const notificationToClientData = {
+        isRead: false,
+        isPop: false,
+        timestamp: new Date(),
+        type: 2, 
+        priority: 2,
+        projectID: `${location.state.project_key.projectID}`,
+        clientID: `${location.state.user_key.freelancerID}`,
+        to: `${location.state.project_key.clientID}`
+      };
+      await addDoc(collection(db, 'notifications'), notificationToClientData);
   
-      toast.success('Proposal submitted successfully!');
   
       setTimeout(() => {
         history.push('/freelancers/projects-applied');
@@ -119,7 +135,7 @@ const ProposalForm = () => {
         message: 'Error submitting proposal. Please try again.',
         timestamp: new Date(),
         type: 'error',
-        userId: `${location.state.user_key.freelancerID}`
+        userID: `${location.state.user_key.freelancerID}`
       };
       await addDoc(collection(db, 'notifications'), errorNotificationData);
   
