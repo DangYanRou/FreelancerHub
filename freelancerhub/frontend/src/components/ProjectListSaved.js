@@ -1,4 +1,4 @@
-import './ProjectListSaved.css'
+import './styles/ProjectListSaved.css'
 import React from 'react';
 
 const ProjectList=({projects,onProjectClick,selectedProjectId}) => {

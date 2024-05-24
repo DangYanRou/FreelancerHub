@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-use-history';
-import "./LoginPage.css";
+import "./styles/LoginPage.css";
 import { FaUser, FaLock } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useUser } from '../../UserContext';
-import { useNotification } from '../NotificationContext';
+import { useUser } from '../../context/UserContext';
+import { useNotification } from '../../context/NotificationContext';
 
 const LoginPage = () => {
     const { updateUser } = useUser();

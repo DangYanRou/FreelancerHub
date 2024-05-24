@@ -1,4 +1,4 @@
-import './CompletedProjectList.css';
+import './styles/CompletedProjectList.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineCheckCircle } from "react-icons/ai";

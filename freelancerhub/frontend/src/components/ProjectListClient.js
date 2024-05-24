@@ -1,4 +1,4 @@
-import './ProjectListClient.css';
+import './styles/ProjectListClient.css';
 import React, { useState } from 'react';
 import { SlOptionsVertical } from "react-icons/sl";
 import { Link } from 'react-router-dom';

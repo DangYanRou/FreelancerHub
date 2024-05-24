@@ -1,4 +1,4 @@
-import './ProjectList.css';
+import './styles/ProjectList.css';
 import React from 'react';
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";

@@ -1,4 +1,4 @@
-import "./Register.css";
+import "./styles/Register.css";
 import { Link } from "react-router-dom";
 import { FaUser,FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
