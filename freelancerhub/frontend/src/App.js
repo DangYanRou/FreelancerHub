@@ -52,18 +52,23 @@ function App() {
 
   return (
     <div className="App">
-      <UserProvider> 
-      <NotificationProvider>
-        <Routes>
-          <Route path="/" element={<LoginPage/>} />
-          <Route path="/resetPassword" element={<ResetPassword/>} />
-          <Route path="/register" element={<Register/>} />
-          <Route path="/freelancers/*" element={<FreelancerRoutes />} />
-          <Route path="/clients/*" element={<ClientRoutes />} />
-          {/* Add more top-level routes if needed */}
-        </Routes>
-      </NotificationProvider>
-    </UserProvider>
+<UserProvider>
+        <NotificationProvider>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+          </Routes>
+        </NotificationProvider>
+
+          <Routes> 
+            <Route path="/resetPassword" element={<ResetPassword />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/freelancers/*" element={<FreelancerRoutes />} />
+            <Route path="/clients/*" element={<ClientRoutes />} />
+          </Routes>
+      </UserProvider>
+
+
+
     </div>
   );
 }
