@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import workImage from '../../Gallery/work.png';
 import noteImage from '../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import NavigationBarClients from './NavigationBarClient';
 import Heading from '../../components/Heading';
+import { ProjectContext } from './ProjectContext';
 
 
 
@@ -92,49 +93,52 @@ const CreateProjectDescription = () => {
     navigate("/clients/post-project");
   };
 
+  const [project, setProject] = useContext(ProjectContext);
 
   const [startDate, setStartDate] = useState(new Date());
-
   const [jobCateInput, setJobCateInput] = useState('');
-
   const [jobCateError, setJobCateError] = useState('');
 
-
-  const handleJobCateChange = (event) => setJobCateInput(event.target.value);
-
   
-
-// Check if all required fields are filled
-const allFieldsFilled = jobCateInput !== '';
-
 const handleFormSubmit = (event) => {
-  event.preventDefault(); 
- 
-  if (!jobCateInput) {
+  event.preventDefault();
+
+  let isValid = true;
+
+
+  if (!project.jobCateInput) {
     setJobCateError('Job Category is required');
+    isValid = false;
   } else {
     setJobCateError('');
   }
 
-
-  if (!allFieldsFilled) 
-  window.alert('Required fields must be filled!');
-
-  // Proceed with form submission if no errors
-  if (jobCateInput ) {
-    navigate("/clients/post-project-preferred");
-  }  
+    // Proceed with form submission if no errors
+    if (isValid) {
+      navigate("/clients/post-project-preferred");
+    }  else {
+      window.alert('All fields must be filled!');
+    }
 };
 
-const handleNextButtonClick = (event) => {
+const handleNextButtonClick = async (event) => {
   event.preventDefault();
 
-  // if (!allFieldsFilled) {
-  //   window.alert('All fields must be filled!');
-  // } else {
   handleFormSubmit(event);
-  // navigate("/clients/post-project-description");
-  // }
+
+};
+
+const handleInputChange = (event) => {
+  setProject({
+    ...project,
+    [event.target.name]: event.target.value,
+  });
+};
+const handleDateChange = (date) => {
+  setProject({
+    ...project,
+    startDate: date,
+  });
 };
 
   return (
@@ -155,7 +159,7 @@ const handleNextButtonClick = (event) => {
         <div className="flex flex-col w-1/2 mr-8">
         <label className="block text-gray-700 text-sm font-bold mb-2 " htmlFor="jobCategory">Project Category: </label>
 <select required className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
-id="projectCategory" value={jobCateInput} onChange={handleJobCateChange}>
+id="projectCategory" name="jobCateInput" value={project.jobCateInput} onChange={handleInputChange}>
   <option value="">Select a category</option>
   {categories.map((category, index) => (
     <option key={index} value={category}>
@@ -175,7 +179,7 @@ id="projectCategory" value={jobCateInput} onChange={handleJobCateChange}>
             <div className="w-full">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="jobDescription">Job Description: </label>
                 <textarea style={{ width: '100%' }} className="flex h-[200px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 pt-2"
-                id="jobDescription"></textarea>
+                id="jobDescription" name="descriptionInput" value={project.descriptionInput} onChange={handleInputChange}></textarea>
             </div>
             </div>
             <div className="flex justify-between w-8/10 m-4">
@@ -183,8 +187,8 @@ id="projectCategory" value={jobCateInput} onChange={handleJobCateChange}>
   <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectStartTime">Project Start Time: </label>
     <DatePicker
     required
-      selected={startDate}
-      onChange={(date) => setStartDate(date)}
+      selected={project.startDate}
+      onChange={handleDateChange}
       dateFormat="dd/MM/yyyy"
       className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
     />
@@ -193,8 +197,9 @@ id="projectCategory" value={jobCateInput} onChange={handleJobCateChange}>
   <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="duration">Duration: </label>
     <div className="flex items-center">
       <input className="flex h-[40px] w-3/5 items-center justify-center rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 sm:w-full"
-       id="duration" type="text" />
-      <select className="flex h-[40px] w-2/5 ml-4 items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5">
+       id="duration" name="duration" value={project.duration} onChange={handleInputChange} type="text" />
+      <select className="flex h-[40px] w-2/5 ml-4 items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
+       id="durationUnit" name="durationUnit" onChange={handleInputChange} value={project.durationUnit} >
         {durationUnits.map((unit, index) => (
           <option key={index} value={unit}>
             {unit}
@@ -206,9 +211,11 @@ id="projectCategory" value={jobCateInput} onChange={handleJobCateChange}>
   <div className="flex flex-col w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="workload">Workload: </label>
     <select className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="workload"  >
+ id="workload" name="workloadOptions" onChange={handleInputChange} value={project.workloadOptions} >
        {workloadOptions.map((workloadOptions, index) => (
-        <option key={index} value={workloadOptions}>
+        index===0
+        ? <option key={index} value="" >{workloadOptions}</option>
+        : <option key={index} value={workloadOptions}>
           {workloadOptions}
         </option>
       ))}

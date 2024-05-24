@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import workImage from '../../Gallery/work.png';
 import noteImage from '../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import user from '../../Gallery/user.jpg';
 import NavigationBarClients from './NavigationBarClient';
 import Heading from '../../components/Heading';
+import { ProjectContext } from './ProjectContext';
 
 
 // ProgressBar component to display the stages of project creation
@@ -69,14 +70,21 @@ const CreateProjectInvite= () => {
     }
   };
 
+  const [project, setProject] = useContext(ProjectContext);
+
+  const handleInputChange = (event) => {
+    setProject({
+      ...project,
+      [event.target.name]: event.target.value,
+    });
+  };
+  
   return (
     <div className="flex flex-col items-start justify-center">
-                        <NavigationBarClients/>
-
-                        <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
+     <NavigationBarClients/>
+          <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
                       Create Project
           </Heading>
-
            {/* Line divider */}
            <hr className="border-gray-700 my-8 w-[93%] mx-auto" />
       <ProgressBar stages={stages} />
@@ -90,10 +98,10 @@ const CreateProjectInvite= () => {
 
  <label className="block text-gray-700 text-sm font-bold mb-2 " htmlFor="projectStartTime">Subject: </label>
     <input className="flex h-[40px] w-full items-center justify-center rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 sm:w-full"
- id="duration" type="text" />
+    id="subject" name="subjectInput" onChange={handleInputChange} value={project.subjectInput} type="text" />
     <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="duration">Content: </label>
     <textarea style={{ width: '100%' }} className="flex h-[300px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 py-2"
-                id="jobDescription"></textarea>
+    id="content" name="contentInput" onChange={handleInputChange} value={project.contentInput}></textarea>
   </div>
 
   <div className="flex flex-col w-1/2">
