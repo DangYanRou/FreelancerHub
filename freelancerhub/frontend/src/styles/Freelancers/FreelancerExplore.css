@@ -12,7 +12,6 @@
   
 .card{
     position: relative;
-    flex: 1;/* allow flexibility */
     flex-direction: column;
     align-items: flex-start;
     padding:2%;
@@ -22,6 +21,7 @@
     cursor: pointer;
     margin-bottom: 1rem;
     width: 900px;
+    min-height:230px;
    
 }
 

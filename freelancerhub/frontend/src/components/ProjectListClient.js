@@ -10,7 +10,7 @@ import { BiTimeFive } from "react-icons/bi";
 import visaMaster from "../Gallery/visaMaster.png"; 
 import banks from "../Gallery/banks.jpg"; 
 
-const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMarkAsDone }) => {
+const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMarkAsDone,onDeleteProject  }) => {
     const history = useHistory();
     const [showDropdown, setShowDropdown] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -18,6 +18,9 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
     const [paymentSuccess, setPaymentSuccess] = useState(false);
     const [selectedProject, setSelectedProject] = useState(null);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+    const[showConfirmDeleteModal,setShowConfirmDeleteModal]=useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
 
     const toggleDropDown = (index, e) => {
         e.stopPropagation();
@@ -51,10 +54,28 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
                     history.push('/clients/project-completed');
                 }, 1000);
             }, 2000);
-        } else {
+        } else if (selectedPaymentMethod==null){ {/* */}
             alert("Please select a payment method first.");
         }
     };
+
+    const openConfirmDeleteModal=(project)=>{
+        setSelectedProject(project);
+        setShowConfirmDeleteModal(true)
+    }
+
+    const closeConfirmDeleteModal = () => {
+        setShowConfirmDeleteModal(false);
+    };
+
+    const handleConfirmDelete=()=>{
+        if(selectedProject){
+            onDeleteProject(selectedProject);
+            setShowConfirmDeleteModal(false);
+            setShowSuccessModal(true);
+            setTimeout(()=>setShowSuccessModal(false),2000)
+        }
+    }
 
     return (
         <div className="main-container">
@@ -69,7 +90,8 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
                                 <div className="pa-options-dropdown">
                                     <ul className="pa-options">
                                         <li><Link to="/clients/edit-project">Edit Project</Link></li>
-                                        <li>Delete Project</li>
+                                        <li onClick={(e) => { e.stopPropagation(); openConfirmDeleteModal(project); }}>Delete Project</li>
+
                                         <li><Link to={{ pathname: "/clients/proposal-received"}} state={{ projectID: project.id }} >
                                             View Applications</Link></li>
                                         <li onClick={(e) => { e.stopPropagation(); openModal(project); }}>Mark As Done</li>
@@ -125,6 +147,31 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
                     </div>
                 </div>
             )}
+
+            {showConfirmDeleteModal && (
+                <div className='confirmation-modal-overlay' onClick={closeConfirmDeleteModal}>
+                <div className='confirmation-modal-content' onClick={(e) => e.stopPropagation()}>
+                <div className="confirmation-content">
+                   <p id="confirm-message">Are you sure you want to delete this project?</p>
+                    <div className="confirmation-buttons">
+                        <button className="btn-secondary" onClick={handleConfirmDelete}>Confirm</button>
+                        <button className="btn-primary" onClick={closeConfirmDeleteModal}>Cancel</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            )}
+
+            {showSuccessModal && (
+                    <div className="success-modal-overlay">
+                    <div className="success-modal-content">
+                    
+                        <p className="delete-message">Delete Successful!</p>
+                    
+                    </div>
+                    </div>
+                )}
         </div>
     );
 };

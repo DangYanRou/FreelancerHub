@@ -94,7 +94,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
         <p>Are you sure you want to cancel your application for this project?</p>
         <div className="confirmation-buttons">
           <button className="btn-secondary" onClick={onConfirm}>Confirm</button>
-          <button className="btn-primary" onClick={onClose}>Back</button>
+          <button className="btn-primary" onClick={onClose}>Cancel</button>
         </div>
         </div>
       </div>
