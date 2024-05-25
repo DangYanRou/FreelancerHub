@@ -10,7 +10,7 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import Heading from '../../../components/Heading';
 import { db } from '../../../firebase';  // Adjust the path as necessary
-import { collection, query, getDocs, doc, getDoc,where,updateDoc } from 'firebase/firestore';
+import { collection, query, getDocs, doc, getDoc,where,updateDoc,deleteDoc } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
 import { useUser } from '../../../context/UserContext';
 
@@ -18,7 +18,6 @@ import { useUser } from '../../../context/UserContext';
 
 const ProjectDetails = ({ project ,user,onCancelApplication}) => {
   const history = useHistory();
- const {user}=useUser();
   const handleViewApplication = () => {
     history.push('/freelancers/application', {
       proposal_key: { projectID: project.id, freelancerID: user.id },    });
@@ -103,7 +102,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
   );
 };
 
-const FrrelancerProjectsApplied = () => {
+const FreelancerProjectsApplied = () => {
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [projects, setProjects] = useState([]);
@@ -189,7 +188,6 @@ const FrrelancerProjectsApplied = () => {
 
   return (
     <div className="ProjectsApplied">
-      <NavigationBar />
       <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
         Applied Projects
       </Heading>
