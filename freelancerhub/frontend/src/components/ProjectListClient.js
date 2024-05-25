@@ -1,4 +1,4 @@
-import './ProjectListClient.css';
+import './styles/ProjectListClient.css';
 import React, { useState } from 'react';
 import { SlOptionsVertical } from "react-icons/sl";
 import { Link } from 'react-router-dom';
@@ -70,7 +70,8 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
                                     <ul className="pa-options">
                                         <li><Link to="/clients/edit-project">Edit Project</Link></li>
                                         <li>Delete Project</li>
-                                        <li><Link to="/clients/proposal-received">View Applications</Link></li>
+                                        <li><Link to={{ pathname: "/clients/proposal-received"}} state={{ projectID: project.id }} >
+                                            View Applications</Link></li>
                                         <li onClick={(e) => { e.stopPropagation(); openModal(project); }}>Mark As Done</li>
                                     </ul>
                                 </div>

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import FreelancerRoutes from './routes/FreelancerRoutes';
-import ClientRoutes from './routes/ClientRoutes';
+import FreelancerRoutes from './nav/routes/FreelancerRoutes';
+import ClientRoutes from './nav/routes/ClientRoutes';
 import LoginPage from './pages/LoginPage/LoginPage.js';
 import ResetPassword from './pages/LoginPage/ResetPassword';
 import Register from './pages/LoginPage/Register';
-import { UserProvider, useUser } from './UserContext';
-import NotificationProvider from './pages/NotificationContext';
-import WithNavigation from './WithNavigation';
+import { UserProvider, useUser } from './context/UserContext.js';
+import NotificationProvider from './context/NotificationContext.js';
+import WithNavigation from './nav/routes/WithNavigation';
 import './tailwind.css';
 
 
