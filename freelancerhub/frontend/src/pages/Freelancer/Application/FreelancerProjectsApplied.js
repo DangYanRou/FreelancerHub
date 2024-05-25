@@ -10,7 +10,7 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import Heading from '../../../components/Heading';
 import { db } from '../../../firebase';  // Adjust the path as necessary
-import { collection, query, getDocs, doc, getDoc,where,updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, query, getDocs, doc, getDoc,where,updateDoc,deleteDoc } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
 import { useUser } from '../../../context/UserContext';
 
