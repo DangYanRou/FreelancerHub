@@ -11,11 +11,15 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import Heading from '../../components/Heading';
 import { db } from '../../firebase';  // Adjust the path as necessary
-import { collection, query, getDocs, doc, getDoc,where,updateDoc } from 'firebase/firestore';
+import { collection, query, getDocs, doc, getDoc,where,deleteDoc } from 'firebase/firestore';
 import Loading from '../Loading';
 import { useUser } from '../../UserContext';
+import successTick from '../../Gallery/successTick.json';
+import Lottie from 'lottie-react';
 
-const ProjectDetails = ({ project }) => {
+
+
+const ProjectDetails = ({ project ,user,onCancelApplication}) => {
   const history = useHistory();
   const handleViewApplication = () => {
     history.push('/freelancers/application', {
@@ -23,9 +27,13 @@ const ProjectDetails = ({ project }) => {
     });
   };
 
+  const handleCancelApplication=()=>{
+    onCancelApplication(project.id)
+  }
+
   const getStatusType = (statusState) => {
-    const state = parseInt(statusState);
-    switch (state) {
+  
+    switch (statusState) {
       case 2:
         return "Applied on FreelancerHub";
       case 3:
@@ -40,13 +48,13 @@ const ProjectDetails = ({ project }) => {
   };
 
   if (!project) return null;
-  const [min, max, currency] = project.budget;
+  const [min, max, currency] = project.budget ? project.budget : [null, null, ''];
   const statusMessage = getStatusType(project.statusState);
 
   return (
     <div className="pa-project-details">
-      <Link to="/freelancers/project-details" className="link">{project.title}</Link><br />
-      <a href="#" className="hover-profileLink">{project.client}</a>
+      <Link to="/freelancers/project-details" className="jl-title-pa">{project.title}</Link><br />
+      <a href="#" className="jl-profileLink-pa">{project.client}</a>
       <p id="category">{project.category}</p>
       <p><FaLocationDot className="icon-style" />{project.location}</p>
       <p><MdOutlineAttachMoney size={20} className='icon-style2' />{min}-{max} {currency}/project</p>
@@ -58,41 +66,62 @@ const ProjectDetails = ({ project }) => {
       <div className="statusbar">
         <StatusBar projectId={project.id}/>
       </div>
-      <div className='button-container'>
+      <div className='jl-button-container'>
         <button className="btn-primary" onClick={handleViewApplication}>View Application</button>
-        <button className="btn-secondary">Cancel Application</button>
+        <button className="btn-secondary" onClick={handleCancelApplication}>Cancel Application</button>
       </div>
     </div>
   );
 };
 
-const ProjectModal = ({ isOpen, onClose, project, loading }) => {
+const ProjectModal = ({ isOpen, onClose, project, loading ,user,onCancelApplication}) => {
   if (!isOpen || !project) return null;
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2 className='view-application-header'>View Application</h2>
-          <button className="close-btn" onClick={onClose}><GrFormClose /></button>
+        <div className="jl-modal-header">
+          <h2 className='jl-view-application-header'>View Application</h2>
+          <button className="jl-close-btn" onClick={onClose}><GrFormClose /></button>
         </div>
-        {loading ? <Loading /> : <ProjectDetails project={project} />}
+        {loading ? <Loading /> : <ProjectDetails project={project} user={user} onCancelApplication={onCancelApplication}/>}
+      </div>
+    </div>
+  );
+};
+
+const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="confirmation-modal-overlay">
+      <div className="confirmation-modal-content">
+        <div className="confirmation-content">
+        <p>Are you sure you want to cancel your application for this project?</p>
+        <div className="confirmation-buttons">
+          <button className="btn-secondary" onClick={onConfirm}>Confirm</button>
+          <button className="btn-primary" onClick={onClose}>Back</button>
+        </div>
+        </div>
       </div>
     </div>
   );
 };
 
 const ProjectsApplied = () => {
+
   const [selectedProject, setSelectedProject] = useState(null);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showCancelApplicationModal, setShowCancelApplicationModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false); // Loading state for the modal content
   const [status, setStatus] = useState(1); // Add status state here
-  const {user}=useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const proposalsQuery = query(collection(db, 'proposals'),where('freelancerID','==',user))
+        
         const proposalSnapshot = await getDocs(proposalsQuery);
         const projectPromises = proposalSnapshot.docs.map(async (proposalDoc) => {
           const projectId = proposalDoc.data().projectID;
@@ -131,6 +160,36 @@ const ProjectsApplied = () => {
     return <div><Loading/></div>;
   }
 
+  const handleOpenCancelModal = (project) => {
+    setShowCancelApplicationModal(true);
+  };
+
+  const handleCloseCancelModal = () => {
+    setShowCancelApplicationModal(false);
+  };
+
+  const handleCancelApplication = async (projectId) => {
+    try {
+      const proposalsQuery = query(
+        collection(db, 'proposals'),
+        where('freelancerID', '==', user),
+        where('projectID', '==', projectId)
+      );
+      const proposalSnapshot = await getDocs(proposalsQuery);
+      const proposalDoc = proposalSnapshot.docs[0];
+      if (proposalDoc) {
+        await deleteDoc(doc(db, 'proposals', proposalDoc.id));
+        setProjects(projects.filter(project => project.id !== projectId));
+        setShowCancelApplicationModal(false); // Close confirmation modal
+        setShowSuccessModal(true); // Open success modal
+        handleCloseModal();
+        setTimeout(()=>setShowSuccessModal(false),2000);
+      }
+    } catch (error) {
+      console.error("Error cancelling application: ", error);
+    }
+  };
+
   return (
     <div className="ProjectsApplied">
       <NavigationBar />
@@ -141,7 +200,17 @@ const ProjectsApplied = () => {
       <div className="jl-centered-container">
         <ProjectList projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null} />
       </div>
-      <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} loading={modalLoading} />
+      <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} loading={modalLoading}  user={user} onCancelApplication={handleOpenCancelModal} />
+      <ConfirmationModal isOpen={showCancelApplicationModal} onClose={handleCloseCancelModal} onConfirm={() => handleCancelApplication(selectedProject.id)} />
+      {showSuccessModal && (
+        <div className="success-modal-overlay">
+          <div className="success-modal-content">
+        
+            <p className="delete-message">Delete Successful!</p>
+           
+          </div>
+        </div>
+      )}
     </div>
   );
 };

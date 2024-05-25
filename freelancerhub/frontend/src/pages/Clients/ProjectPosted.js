@@ -77,9 +77,9 @@ const ProjectPosted = () => {
         return (
             <div className="modal-overlay" onClick={onClose}>
                 <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                    <div className="modal-header">
-                        <h2 className='view-application-header'>View Project</h2>
-                        <button className="close-btn" onClick={onClose}><GrFormClose /></button>
+                    <div className="jl-modal-header">
+                        <h2 className='jl-view-project-header'>View Project</h2>
+                        <button className="jl-close-btn" onClick={onClose}><GrFormClose /></button>
                     </div>
                     <ProjectDetails project={project} />
                 </div>
