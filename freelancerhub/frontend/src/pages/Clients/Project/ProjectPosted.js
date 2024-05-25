@@ -24,7 +24,7 @@ const ProjectPosted = () => {
             if (user) {
               console.log(user)
                 const projectsRef = collection(db, 'projects');
-                const q = query(projectsRef, where('clientID', '==', user));
+                const q = query(projectsRef, where('clientID', '==', user.id));
                 const querySnapshot = await getDocs(q);
                 const projectsList = querySnapshot.docs.map(doc => ({
                     id: doc.id,

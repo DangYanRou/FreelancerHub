@@ -13,6 +13,7 @@ const ClientApplicationReceivedPage = () => {
   const history = useHistory();
   const { user } = useUser();
   const location = useLocation();
+  console.log(location);
   const [data, setData] = useState([]);
   const projectID = location.state.projectID;
   const [loading, setLoading] = useState(true);

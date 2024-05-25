@@ -16,9 +16,10 @@ import { useUser } from '../../../context/UserContext';
 
 const ProjectDetails = ({ project }) => {
   const history = useHistory();
+  const {user}=useUser();
   const handleViewApplication = () => {
     history.push('/freelancers/application', {
-      proposal_key: { projectID: "projectID1", freelancerID: "freelancerID1" },
+      proposal_key: { projectID: project.id, freelancerID: user.id },
     });
   };
 
@@ -80,7 +81,7 @@ const ProjectModal = ({ isOpen, onClose, project, loading }) => {
   );
 };
 
-const ProjectsApplied = () => {
+const FreelancerProjectsApplied = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -91,7 +92,7 @@ const ProjectsApplied = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const proposalsQuery = query(collection(db, 'proposals'),where('freelancerID','==',user))
+        const proposalsQuery = query(collection(db, 'proposals'),where('freelancerID','==',user.id))
         const proposalSnapshot = await getDocs(proposalsQuery);
         const projectPromises = proposalSnapshot.docs.map(async (proposalDoc) => {
           const projectId = proposalDoc.data().projectID;
@@ -144,4 +145,4 @@ const ProjectsApplied = () => {
   );
 };
 
-export default ProjectsApplied;
+export default FreelancerProjectsApplied;

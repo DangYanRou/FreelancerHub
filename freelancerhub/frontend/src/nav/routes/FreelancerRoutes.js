@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import FreelancerExplore from '../../pages/Freelancer/Project/FreelancerExplore';
-import ProjectsApplied from '../../pages/Freelancer/Application/FreelancerProjectsApplied';
+import FreelancerProjectsApplied from '../../pages/Freelancer/Application/FreelancerProjectsApplied';
 import ProposalForm from '../../pages/Freelancer/Application/FreelancerApplicationForm';
 import FreelancerProfile from '../../pages/Freelancer/Profile/FreelancerProfile';
 import ApplicationDetails from '../../pages/Freelancer/Application/FreelancerApplicationDetails';
@@ -18,7 +18,7 @@ const FreelancerRoutes = () => {
     <WithNavigation>
       <Routes>
         <Route path="explore" element={<FreelancerExplore />} />
-        <Route path="projects-applied" element={<ProjectsApplied />} />
+        <Route path="projects-applied" element={<FreelancerProjectsApplied />} />
         <Route path="proposal-form" element={<ProposalForm />} />
         <Route path="profile" element={<FreelancerProfile />} />
         <Route path="application" element={<ApplicationDetails />} />
