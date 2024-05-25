@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './statusBar.css';
+import './styles/statusBar.css';
 import { TiTick } from 'react-icons/ti';
 import { db } from '../firebase';  // Adjust the path as necessary
 import { doc, getDoc } from 'firebase/firestore';
