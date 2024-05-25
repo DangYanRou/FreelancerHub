@@ -10,19 +10,19 @@ const LoginPage = () => {
     const { updateUser } = useUser();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const history = useHistory();
-    const { setPathname } = useNotification();
-    updateUser("null");
-    setPathname('null');
+    //const { setPathname } = useNotification();
+    //setPathname(null);
+    updateUser(null);
 
     const handleFreelancerClick = () => {
         setIsLoggedIn(true);
-        setPathname('/freelancers/notifications');
+        //setPathname('/freelancers/notifications');
         history.push('/freelancers/explore');
     };
 
     const handleClientsClick = () => {
         setIsLoggedIn(true);
-        setPathname('/clients/notifications');
+        //setPathname('/clients/notifications');
         history.push('/clients/post-project');
     };
 
@@ -31,10 +31,10 @@ const LoginPage = () => {
         const username = document.querySelector(".username").value;
         const pass = document.querySelector(".pass").value;
         if (username === "freelancer" && pass === "elonmusk") {
-            updateUser("freelancerID1");
+            updateUser({ id: "freelancerID1", type: "freelancer" });
             handleFreelancerClick();
         } else if (username === "client" && pass === "agnes") {
-            updateUser("clientID1");
+            updateUser({ id: "clientID1", type: "client" });
             handleClientsClick();
         }
     };

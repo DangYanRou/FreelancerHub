@@ -6,6 +6,7 @@
 .pdf-preview .previewImage {
   width: 100%;
   height: 100%;
+  transition: transform 0.3s;
 }
 
 .previewImage:hover {
@@ -18,4 +19,5 @@
   font-size: 14px;
   color: #213E60;
   text-align: center;
+  margin-top: 10px;
 }

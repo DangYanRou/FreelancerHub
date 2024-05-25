@@ -12,6 +12,7 @@ import Loading from '../Loading';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { collection, addDoc } from "firebase/firestore";
+import Heading from "../../components/Heading";
 
 const ProposalForm = () => {
   const history = useHistory();
@@ -120,7 +121,7 @@ const ProposalForm = () => {
         type: 2, 
         priority: 2,
         projectID: `${location.state.project_key.projectID}`,
-        clientID: `${location.state.user_key.freelancerID}`,
+        freelancerID: `${location.state.user_key.freelancerID}`,
         to: `${location.state.project_key.clientID}`
       };
       await addDoc(collection(db, 'notifications'), notificationToClientData);
@@ -130,15 +131,6 @@ const ProposalForm = () => {
         history.push('/freelancers/projects-applied');
       }, 2000);
     } catch (error) {
-      console.error("Error submitting proposal: ", error);
-      const errorNotificationData = {
-        message: 'Error submitting proposal. Please try again.',
-        timestamp: new Date(),
-        type: 'error',
-        userID: `${location.state.user_key.freelancerID}`
-      };
-      await addDoc(collection(db, 'notifications'), errorNotificationData);
-  
       toast.error('Error submitting proposal. Please try again.');
     } finally {
       setLoading(false);
@@ -154,10 +146,11 @@ const ProposalForm = () => {
   return (
     <div>
       {loading && <Loading text="Submitting..." />}
-      <NavigationBar />
       <ToastContainer />
-      <h1 className="proposalSubmissionH1">Application</h1>
-
+      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+        Application
+      </Heading>
+      <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
       <form onSubmit={handleSubmit} className="proposalForm">
         <div className="proposal-form">
           <div className="proposal-form-left">

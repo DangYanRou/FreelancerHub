@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import NavigationBarClient from "./NavigationBarClient";
 import "../../styles/Clients/FeedbackPage.css";
 
 function ClientFeedbackPage() {
@@ -29,7 +28,6 @@ function ClientFeedbackPage() {
 
   return (
     <div>
-      <NavigationBarClient />
       <form className="form" onSubmit={handleSubmit}>
         <div className="title">
           <h2>How was your experience?</h2>

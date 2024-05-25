@@ -38,7 +38,7 @@ const NotificationPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const notiQuery = query(collection(db, 'notifications'), orderBy('timestamp', 'desc'), where('to', '==', user));
+        const notiQuery = query(collection(db, 'notifications'), orderBy('timestamp', 'desc'), where('to', '==', user.id));
         const notiSnapshot = await getDocs(notiQuery);
         const notifications = notiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   
@@ -140,10 +140,10 @@ const NotificationPage = () => {
 
   return (
     <div className="notification-page">
-      <NavigationBar />
       <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
         Notifications
       </Heading>
+      <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
       {loading ? ( 
         <Loading />
       ) : (

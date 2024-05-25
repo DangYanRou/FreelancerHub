@@ -1,18 +1,23 @@
-import './ProjectListClient.css'
+import './ProjectListClient.css';
 import React, { useState } from 'react';
 import { SlOptionsVertical } from "react-icons/sl";
 import { Link } from 'react-router-dom';
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { useHistory } from 'react-router-use-history';
+import { GrFormClose } from "react-icons/gr";
 import { BiTimeFive } from "react-icons/bi";
+import visaMaster from "../Gallery/visaMaster.png"; 
+import banks from "../Gallery/banks.jpg"; 
 
 const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMarkAsDone }) => {
     const history = useHistory();
     const [showDropdown, setShowDropdown] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [paymentProcessing, setPaymentProcessing] = useState(false);
     const [paymentSuccess, setPaymentSuccess] = useState(false);
     const [selectedProject, setSelectedProject] = useState(null);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
     const toggleDropDown = (index, e) => {
         e.stopPropagation();
@@ -26,17 +31,29 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
         setShowModal(true);
     };
 
-    const closeModal = () => setShowModal(false);
+    const closeModal = () => {
+        setShowModal(false);
+        setPaymentProcessing(false);
+    };
 
     const handlePayment = (paymentMethod) => {
-        setTimeout(() => {
-            setPaymentSuccess(true);
-            onMarkAsDone(selectedProject); 
+        setSelectedPaymentMethod(paymentMethod);
+    };
+
+    const handlePayButton = () => {
+        if (selectedPaymentMethod) {
+            setPaymentProcessing(true);
             setTimeout(() => {
-                closeModal();
-                history.push('/clients/project-completed');
+                setPaymentSuccess(true);
+                onMarkAsDone(selectedProject);
+                setTimeout(() => {
+                    closeModal();
+                    history.push('/clients/project-completed');
+                }, 1000);
             }, 2000);
-        }, 2000);
+        } else {
+            alert("Please select a payment method first.");
+        }
     };
 
     return (
@@ -72,28 +89,29 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
             {showModal && (
                 <div className='payment-overlay'>
                     <div className='payment-content'>
-                        <h2 className="modal-title">Payment is required before marking the project as completed.</h2>
-                        <h2 className="select">Select Payment Method</h2>
-                        <div className="radioBtn-container">
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="paymentMethod"
-                                    value="creditCard"
-                                    onChange={() => handlePayment('creditCard')}
-                                />
-                                Credit Card
-                            </label>
-                            <label>
-                                <input
-                                    type='radio'
-                                    name='paymentMethod'
-                                    value='onlineBanking'
-                                    onChange={() => handlePayment('onlineBanking')}
-                                />
-                                Online Banking
-                            </label>
-                        </div>
+                        <button className="close-btn" onClick={closeModal}><GrFormClose /></button>
+                        {paymentProcessing ? (
+                            <div className="processing-container">
+                                <div className="spinner"></div>
+                                <h2 className="processing-text">Payment is being processed...</h2>
+                            </div>
+                        ) : (
+                            <>
+                                <h2 className="modal-title">Payment is required before marking the project as completed.</h2>
+                                <h2 className="select">Select Payment Method</h2>
+                                <div className="button-container">
+                                    <button className={`payment-button ${selectedPaymentMethod === 'creditCard' ? 'selected' : ''}`} onClick={() => handlePayment('creditCard')}>
+                                        <span>Credit Card/Debit Card</span>
+                                        <img src={visaMaster} alt="Credit Card" className="card-image"/>
+                                    </button>
+                                    <button className={`payment-button ${selectedPaymentMethod === 'onlineBanking' ? 'selected' : ''}`} onClick={() => handlePayment('onlineBanking')}>
+                                        <span>Online Banking</span>
+                                        <img src={banks} alt="Online Banking" />
+                                    </button>
+                                    <button className="pay-button" onClick={handlePayButton}>Pay</button>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             )}

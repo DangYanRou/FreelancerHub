@@ -22,7 +22,7 @@ const NotificationProvider = ({ children }) => {
       if (!user) return;
 
       try {
-        const notiQuery = query(collection(db, 'notifications'), orderBy('timestamp', 'desc'), where('to', '==', user), where('isPop', '==', false));
+        const notiQuery = query(collection(db, 'notifications'), orderBy('timestamp', 'desc'), where('to', '==', user.id), where('isPop', '==', false));
         const notiSnapshot = await getDocs(notiQuery);
         const notifications = notiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   
