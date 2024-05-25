@@ -13,7 +13,7 @@
     overflow-y: auto;
 }
 
-.modal-overlay {
+.jl-modal-overlay {
     display: flex;
     position: fixed;
     top: 0;
@@ -27,7 +27,7 @@
     
 }
 
-.modal-content {
+.jl-modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -205,4 +205,8 @@
     margin-top: 15%;
     color: green;
     font-size: 18px;
+  }
+
+  .btn-primary:hover,.btn-secondary:hover{
+    box-shadow:rgba(0,0,0,0.24)0px 3px 8px;
   }

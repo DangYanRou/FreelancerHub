@@ -10,7 +10,7 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import Heading from '../../../components/Heading';
 import { db } from '../../../firebase';  // Adjust the path as necessary
-import { collection, query, getDocs, doc, getDoc,where,updateDoc } from 'firebase/firestore';
+import { collection, query, getDocs, doc, getDoc,where,updateDoc,deleteDoc } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
 import { useUser } from '../../../context/UserContext';
 
@@ -18,7 +18,6 @@ import { useUser } from '../../../context/UserContext';
 
 const ProjectDetails = ({ project ,user,onCancelApplication}) => {
   const history = useHistory();
- const {user}=useUser();
   const handleViewApplication = () => {
     history.push('/freelancers/application', {
       proposal_key: { projectID: project.id, freelancerID: user.id },    });
@@ -74,8 +73,8 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
 const ProjectModal = ({ isOpen, onClose, project, loading ,user,onCancelApplication}) => {
   if (!isOpen || !project) return null;
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="jl-modal-overlay" onClick={onClose}>
+      <div className="jl-modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="jl-modal-header">
           <h2 className='jl-view-application-header'>View Application</h2>
           <button className="jl-close-btn" onClick={onClose}><GrFormClose /></button>
@@ -103,7 +102,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
   );
 };
 
-const FrrelancerProjectsApplied = () => {
+const FreelancerProjectsApplied = () => {
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [projects, setProjects] = useState([]);
@@ -117,7 +116,7 @@ const FrrelancerProjectsApplied = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const proposalsQuery = query(collection(db, 'proposals'),where('freelancerID','==',user))
+        const proposalsQuery = query(collection(db, 'proposals'),where('freelancerID','==',user.id))
         
         const proposalSnapshot = await getDocs(proposalsQuery);
         const projectPromises = proposalSnapshot.docs.map(async (proposalDoc) => {
@@ -169,7 +168,7 @@ const FrrelancerProjectsApplied = () => {
     try {
       const proposalsQuery = query(
         collection(db, 'proposals'),
-        where('freelancerID', '==', user),
+        where('freelancerID', '==', user.id),
         where('projectID', '==', projectId)
       );
       const proposalSnapshot = await getDocs(proposalsQuery);
@@ -180,7 +179,7 @@ const FrrelancerProjectsApplied = () => {
         setShowCancelApplicationModal(false); // Close confirmation modal
         setShowSuccessModal(true); // Open success modal
         handleCloseModal();
-        setTimeout(()=>setShowSuccessModal(false),2000);
+        setTimeout(()=>setShowSuccessModal(false),1000);
       }
     } catch (error) {
       console.error("Error cancelling application: ", error);
@@ -189,7 +188,6 @@ const FrrelancerProjectsApplied = () => {
 
   return (
     <div className="ProjectsApplied">
-      <NavigationBar />
       <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
         Applied Projects
       </Heading>
