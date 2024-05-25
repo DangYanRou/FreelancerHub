@@ -1,0 +1,98 @@
+.application-card-container{
+  padding: 50px;
+}
+
+.application-card{
+  border-color: #213E60 !important;
+}
+
+.application-card-name{
+  color: #213E60;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  transition: color 0.3s;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  width: 250px;
+  transition: color 0.3s, scale 0.3s;
+}
+
+
+.application-card-name:hover{
+  color: #90e0ef;
+  scale: 1.02;
+}
+
+.application-card-separator {
+  margin-inline-start: 5px;
+}
+
+.application-card-email{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  transition: color 0.3s, scale 0.3s;
+}
+
+.application-card-email:hover{
+  color: #90e0ef;
+  scale: 1.02;
+}
+
+.application-card-bids{
+  color: #213E60;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 15px;
+}
+
+
+.apllication-card-notes {
+  color: #213E60;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 15px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+
+.application-card-button {
+  border-radius: 0px 0px 7px 7px !important; 
+  transition: background-color 0.3s, color 0.3s, scale 0.3s, border-color 0.3s!important;
+  background-color: #213E60 !important;
+  border-color: #213E60 !important;
+}
+.application-card-horizontal-line{
+  border-color: #213E60 !important;
+}
+
+.application-card-button span {
+  color: #F0F7F9 !important; 
+}
+
+.application-card-button svg {
+  fill: #F0F7F9 !important;
+  transition: fill 0.3s, scale 0.3s;
+}
+
+.application-card-button:hover {
+  border-color: #90e0ef !important; 
+  background-color: #90e0ef !important; 
+}
+
+.application-card-button:hover span {
+  color: #213E60 !important;
+  scale:1.05;
+}
+
+.application-card-button:hover svg {
+  fill: #213E60 !important; 
+  scale:1.05;
+}
