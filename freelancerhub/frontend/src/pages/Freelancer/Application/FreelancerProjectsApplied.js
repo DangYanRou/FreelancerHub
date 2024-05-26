@@ -20,8 +20,8 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
   const history = useHistory();
   const handleViewApplication = () => {
     history.push('/freelancers/application', {
-      proposal_key: { projectID: project.id, freelancerID: user.id },    });
-  };
+      proposal_key: { projectID: project.id, freelancerID: user.id },    });
+  };
 
   const handleCancelApplication=()=>{
     onCancelApplication(project.id)

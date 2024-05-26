@@ -51,16 +51,16 @@ const CreateProjectPreferred = () => {
     navigate("/clients/post-project-invite");
   };
 
-  const [skillInput, setSkillInput] = useState('');
+  const [preferredSkills, setSkillInput] = useState('');
 
 const handleKeyDown = (event) => {
   if (event.key === 'Enter') {
     event.preventDefault();
     const value = event.target.value.trim();
-    if (value && !project.skills.includes(value)) {
+    if (value && !project.preferredSkills.includes(value)) {
       setProject({
         ...project,
-        skills: [...project.skills, value],
+        preferredSkills: [...project.preferredSkills, value],
       });
     }
     setSkillInput('');
@@ -95,11 +95,35 @@ const handleKeywordDelete = (keywordToDelete) => {
     keywords: project.keywords.filter(keyword => keyword !== keywordToDelete),
   });};
 
-const handleInputChange = (event) => {
+
+
+const handleInputChange = (event) => {  
+  
   setProject({
     ...project,
     [event.target.name]: event.target.value,
   });
+};
+
+const handleResKeyDown = (event) => {
+  if (event.key === 'Enter' && event.target.name === 'jobResponsibilities') {
+    event.preventDefault(); // Prevent the default action (creating a new line)
+    const value = `${event.target.value}\n• `; // Add a new line with a bullet point
+
+    setProject({
+      ...project,
+      jobResponsibilities: value,
+    });
+  }
+};
+
+const handleFocus = (event) => {
+  if (event.target.name === 'jobResponsibilities' && event.target.value === '') {
+    setProject({
+      ...project,
+      jobResponsibilities: '• ',
+    });
+  }
 };
 
   return (
@@ -118,16 +142,25 @@ const handleInputChange = (event) => {
 
             <div className="flex justify-left m-4 w-8/10">
             <div className="w-full">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="jobDescription">Job Responsibilities: </label>
-                <textarea style={{ width: '100%' }} className="flex h-[100px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 py-2"
-                id="jobResponsibilities" name="responsibilitiesInput" onChange={handleInputChange} value={project.responsibilitiesInput}></textarea>
-            </div>
+  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="jobDescription">Job Responsibilities: </label>
+  <textarea
+    style={{ width: '100%' }}
+    className="flex h-[100px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 py-2"
+    id="jobResponsibilities"
+    name="jobResponsibilities"
+    onFocus={handleFocus}
+    onChange={handleInputChange}
+    onKeyDown={handleResKeyDown}
+    value={project.jobResponsibilities}
+    placeholder="• Responsibility 1"
+  ></textarea>
+</div>
             </div>
             <div className="flex justify-left m-4 w-8/10">
             <div className="w-full">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="jobDescription">Preferred Qualification: </label>
                 <textarea style={{ width: '100%' }} className="flex h-[100px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 py-2"
-                id="qualification" name="qualificationInput" onChange={handleInputChange} value={project.qualificationInput}></textarea>
+                id="qualification" name="preferredQualification" onChange={handleInputChange} value={project.preferredQualification}></textarea>
             </div>
             </div>
             <div className="flex justify-between w-8/10 m-4">
@@ -136,12 +169,12 @@ const handleInputChange = (event) => {
     <input 
     className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
     id="preferredSkills"
-    value={skillInput}
+    value={preferredSkills}
     onChange={e => setSkillInput(e.target.value)}
     onKeyDown={handleKeyDown}
   />
 <div className="flex flex-wrap">
-{project.skills.map((skill, index) => (
+{project.preferredSkills.map((skill, index) => (
   <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
     <span>#{skill}</span>
     <button 
