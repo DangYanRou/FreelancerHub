@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Switch.css';
+import './styles/Switch.css';
 
 const Switch = ({ initialFreelancerState= true, onToggle, onColor = 'grey'}) => {
   const [isFreelancer, setIsFreelancer] = useState(initialFreelancerState);
