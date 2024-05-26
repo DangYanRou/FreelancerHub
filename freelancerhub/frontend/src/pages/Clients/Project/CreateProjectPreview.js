@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import '../../../styles/Clients/CreateProjectPreview.css';
 import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
-
+import { addProject } from '../../../firebase';
 
 // ProgressBar component to display the stages of project creation
 const ProgressBar = ({ stages }) => {
@@ -28,16 +28,7 @@ const ProgressBar = ({ stages }) => {
 };
 
 
-
-
 const CreateProjectPreview = () => {
-
-  const navigate = useNavigate();
-
-  const handleNextButtonClick = (event) => {
-    event.preventDefault();
-    navigate("/clients/project-posted");
-  };
 
   //edit here to navigate to posted part
   const handlePreviousButtonClick = (event) => {
@@ -57,7 +48,25 @@ const CreateProjectPreview = () => {
   const [projectInfo, setProjectInfo] = useContext(ProjectContext);
   console.log(projectInfo);
 
+  const navigate = useNavigate();
 
+  
+  const handlePostClick = (event) => {
+    event.preventDefault();
+
+    console.log('addProject:', addProject);
+    console.log('projectInfo:', projectInfo);
+    console.log('navigate:', navigate);
+    console.log('handlePostClick called');
+
+    addProject(projectInfo)
+      .then(() => {
+        alert('Project posted successfully!');
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      });
+  };
 
   return (
     <div className="flex flex-col items-start justify-center">
@@ -77,29 +86,29 @@ const CreateProjectPreview = () => {
             <div className="w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Subject: </label>
               <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
- id="duration">{projectInfo.projectName}</p>
+ id="duration">{projectInfo.subject}</p>
             </div>
           </div>
           <div className="flex justify-between w-8/10 m-4">
   <div className="w-1/2 mr-8">
     <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Workplace: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
- id="duration">{projectInfo.workPlaceSelect}</p>
+ id="duration">{projectInfo.workPlace}</p>
  <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Category: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
- id="duration">{projectInfo.jobCateInput}</p>
+ id="duration">{projectInfo.category}</p>
   </div>
   <div className="w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">Location: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
- id="duration">{projectInfo.locationInput}</p>
+ id="duration">{projectInfo.location}</p>
   </div>
 </div>
 <div className="m-4 w-8/10">
   <div className="w-full">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Project Description: </label>
     <div className="w-full rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal" id="projectDescriptionSHow">
-      <p>{projectInfo.descriptionInput}</p>
+      <p>{projectInfo.description}</p>
 </div>
             </div>
           </div>
@@ -107,12 +116,16 @@ const CreateProjectPreview = () => {
   <div className="w-1/2 mr-8">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contractType">Project Start Time: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
- id="duration">{projectInfo.startDate.toLocaleDateString()}</p>
+ id="startTimePreview">{projectInfo.startDate.toLocaleDateString()}</p>
     <label className="block /text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Duration: </label>
-    <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
- id="duration">{projectInfo.duration}</p>
+    <div className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
+ id="durationPreview">{projectInfo.duration}
+   <div>
+    <label className="font ml-10">{projectInfo.durationUnit}</label>
+  </div>
+ </div>
  <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Budget: </label>
- <div className="flex justify-between h-[40px] w-full items-center rounded-[10px] bg-white-A700 px-5 sm:w-full" id="duration">
+ <div className="flex justify-between h-[40px] w-full items-center rounded-[10px] bg-white-A700 px-5 sm:w-full" id="budgetPreview">
   <div>
     <label className="font-bold mr-2">Min:</label>
     <span>{projectInfo.minInput}</span>
@@ -127,9 +140,9 @@ const CreateProjectPreview = () => {
 </div>
   </div>
   <div className="w-1/2">
-    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">Duration: </label>
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">Workload: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2"
- id="duration"></p>
+ id="workload">{projectInfo.workload}</p>
   </div>
 </div>
 
@@ -138,7 +151,7 @@ const CreateProjectPreview = () => {
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Project Responsibilities: </label>
               <div className="w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal"
  id="responsibilityShow">
- <p>{projectInfo.responsibilitiesInput}</p>
+ <p>{projectInfo.jonResponsibilities}</p>
  </div>
             </div>
           </div>
@@ -147,7 +160,7 @@ const CreateProjectPreview = () => {
             <div className="w-full">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Preferred Qualification: </label>
             <div className="w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal" id="qualificationShow">
-            <p>{projectInfo.qualificationInput}</p>
+            <p>{projectInfo.preferredQualification}</p>
 
 </div>
 </div>
@@ -157,20 +170,20 @@ const CreateProjectPreview = () => {
   <div className="w-1/2 mr-8">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contractType">Preferred Skill: </label>
     <div className="flex">
-    {/* {projectInfo && projectInfo.skills.map((skill, index) => (
-  <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
-    <span>{skill}</span>
-  </div>
-))} */}
+    {projectInfo.preferredSkills.map((skill, index) => (
+      <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
+        <span>{skill}</span>
+      </div>
+    ))}
 
 </div>
  <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Keyword: </label>
 <div className="flex">
-{/* {projectInfo && projectInfo.keywords.map((keyword, index) => (
-  <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
-    <span>#{keyword}</span>
-  </div>
-))} */}
+{projectInfo.keywords.map((keyword, index) => (
+      <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
+        <span>#{keyword}</span>
+      </div>
+    ))}
 </div>
  
   </div>
@@ -187,7 +200,7 @@ const CreateProjectPreview = () => {
     </button>
   </div>
   <div className="w-1/4">
-    <button onClick={handleNextButtonClick} type="next2" className="w-full bg-[#213E60] hover:bg-[#69ACC2] text-white font-bold py-2 px-4 rounded-lg">
+    <button onClick={handlePostClick} type="postProject" className="w-full bg-[#213E60] hover:bg-[#69ACC2] text-white font-bold py-2 px-4 rounded-lg">
       Post
     </button>
   </div>
