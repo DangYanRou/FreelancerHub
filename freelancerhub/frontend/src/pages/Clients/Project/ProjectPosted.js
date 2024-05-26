@@ -8,7 +8,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import { db } from '../../../firebase'; // Adjust the path as necessary
-import { collection, query, getDocs, where,doc,updateDoc } from 'firebase/firestore';
+import { collection, query, getDocs, where,doc,updateDoc,deleteDoc} from 'firebase/firestore';
 import { useUser } from '../../../context/UserContext';
 import Loading from '../../../components/Loading';
 
@@ -64,6 +64,19 @@ const ProjectPosted = () => {
           }
       }
   };
+
+  const onDeleteProject = async (project) => {
+    if (project) {
+        const projectRef = doc(db, "projects", project.id);
+        try {
+            await deleteDoc(projectRef);
+            setProjects(prevProjects => prevProjects.filter(p => p.id !== project.id));
+        } catch (error) {
+            console.error("Error deleting project: ", error);
+        }
+    }
+};
+
   
     if (loading) {
       return <div><Loading/></div>;
@@ -122,7 +135,7 @@ const ProjectPosted = () => {
             </Heading>
             <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
             <div className="jl-centered-container">
-                <ProjectListClient projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null } onMarkAsDone={handleMarkAsDone} />
+                <ProjectListClient projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null } onMarkAsDone={handleMarkAsDone} onDeleteProject={onDeleteProject}/>
                 <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} />
             </div>
         </div>

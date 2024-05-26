@@ -73,8 +73,8 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
 const ProjectModal = ({ isOpen, onClose, project, loading ,user,onCancelApplication}) => {
   if (!isOpen || !project) return null;
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="jl-modal-overlay" onClick={onClose}>
+      <div className="jl-modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="jl-modal-header">
           <h2 className='jl-view-application-header'>View Application</h2>
           <button className="jl-close-btn" onClick={onClose}><GrFormClose /></button>
@@ -94,7 +94,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
         <p>Are you sure you want to cancel your application for this project?</p>
         <div className="confirmation-buttons">
           <button className="btn-secondary" onClick={onConfirm}>Confirm</button>
-          <button className="btn-primary" onClick={onClose}>Back</button>
+          <button className="btn-primary" onClick={onClose}>Cancel</button>
         </div>
         </div>
       </div>
@@ -116,7 +116,7 @@ const FreelancerProjectsApplied = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const proposalsQuery = query(collection(db, 'proposals'),where('freelancerID','==',user))
+        const proposalsQuery = query(collection(db, 'proposals'),where('freelancerID','==',user.id))
         
         const proposalSnapshot = await getDocs(proposalsQuery);
         const projectPromises = proposalSnapshot.docs.map(async (proposalDoc) => {
@@ -168,7 +168,7 @@ const FreelancerProjectsApplied = () => {
     try {
       const proposalsQuery = query(
         collection(db, 'proposals'),
-        where('freelancerID', '==', user),
+        where('freelancerID', '==', user.id),
         where('projectID', '==', projectId)
       );
       const proposalSnapshot = await getDocs(proposalsQuery);
@@ -179,7 +179,7 @@ const FreelancerProjectsApplied = () => {
         setShowCancelApplicationModal(false); // Close confirmation modal
         setShowSuccessModal(true); // Open success modal
         handleCloseModal();
-        setTimeout(()=>setShowSuccessModal(false),2000);
+        setTimeout(()=>setShowSuccessModal(false),1000);
       }
     } catch (error) {
       console.error("Error cancelling application: ", error);
