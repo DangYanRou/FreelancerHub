@@ -36,7 +36,6 @@ const FreelancerProfile = () => {
 
   return (
     <div className="FreelancerProfile">
-       <NavigationBarFreelancer/>
       <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
             Profile
           </Heading>

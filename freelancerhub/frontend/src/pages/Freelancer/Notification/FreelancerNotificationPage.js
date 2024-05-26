@@ -140,7 +140,6 @@ const NotificationPage = () => {
 
   return (
     <div className="notification-page">
-       <NavigationBarFreelancer/>
       <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
         Notifications
       </Heading>

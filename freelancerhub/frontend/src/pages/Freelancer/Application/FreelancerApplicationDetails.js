@@ -46,7 +46,6 @@ const ApplicationDetails = () => {
 
     return (
         <div className="applicationDetailsPageContainer">
-             <NavigationBarFreelancer/>
             {proposalDetails ? (
                 <div>
                     <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
