@@ -1,39 +1,63 @@
-import React, { useEffect, useState } from 'react';
-import ProjectList from '../../../components/ProjectList';
-import { useNavigate } from 'react-router-dom';
-import CompletedProjectListClient from '../../../components/CompletedProjectListClient';
-import Heading from '../../../components/Heading';
-import { db , auth } from '../../../firebase';  
-import { collection, query, getDocs, where } from 'firebase/firestore';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import CompletedProjectListClient from "../../../components/CompletedProjectListClient";
+import Heading from "../../../components/Heading";
+import { db, auth } from "../../../firebase";
+import { collection, query, getDocs, where } from "firebase/firestore";
+import { useUser } from "../../../context/UserContext";
+import Loading from "../../../components/Loading";
 
 const ProjectCompletedPageClient = () => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
+  const { user } = useUser();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const projectsCollection = collection(db, 'projects');
-      const completedProjectsQuery = query(projectsCollection, where('statusState', '==', 5));
-      const querySnapshot = await getDocs(completedProjectsQuery);
-      setProjects(querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+      try {
+        if (user) {
+          console.log(user);
+          const projectsCollection = collection(db, "projects");
+          const completedProjectsQuery = query(
+            projectsCollection,
+            where("statusState", "==", 5),
+            where("clientID", "==", user.id)
+          );
+          const querySnapshot = await getDocs(completedProjectsQuery);
+          setProjects(
+            querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching projects: ", error);
+      } finally {
+        setLoading(false);
+      }
     };
-
     fetchProjects();
-  }, []);
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="ProjectCompletedPage">
-    <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
-            Completed Projects
-          </Heading>
+      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+        Completed Projects
+      </Heading>
 
-           {/* Line divider */}
-           <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
-    <div className="jl-centered-container">
-      <CompletedProjectListClient projects={projects} />
+      {/* Line divider */}
+      <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
+      <div className="jl-centered-container">
+        <CompletedProjectListClient projects={projects} />
+      </div>
     </div>
-   
-  </div>
   );
 };
 
