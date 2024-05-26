@@ -33,7 +33,7 @@
 .input-box input{
     width: calc(100% - 30px);
     height: 100%;
-    background: transparent;
+    background: #fff;
     border:2px solid rgba(255, 255, 255, .2);
     outline: none;
     border-radius: 40px;
@@ -44,14 +44,14 @@
 }
 
 .loginPage .input-box input::placeholder{
-    color:#fff;
+    color:grey;
 }
 
 .loginPage .input-box .icon{
     position: absolute;
     left:40px;
     top:50%;
-    color:#fff;
+    color:#213e60;
     transform: translateY(-50%);
     font-size: 16px;
 }
@@ -62,6 +62,7 @@
     font-size: 14.5px;
     margin: -15px 0 15px;
     padding: 10px;
+    margin-right: 30px;
     color: #fff;
 }
 
@@ -117,4 +118,11 @@
     background-color:#213e60;
     color:white;
     transition: 0.3s ease;
+}
+
+.loginPage .identity{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    margin-right: 40px;
 }
