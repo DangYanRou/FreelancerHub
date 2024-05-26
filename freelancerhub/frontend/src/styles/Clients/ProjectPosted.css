@@ -1,0 +1,40 @@
+.page-header{
+    font-size: 28px;
+    font-style: bold;
+    margin-top: 2%;
+    margin-left: 43%;
+}
+.jl-centered-container {
+   margin-top: 1%;
+    display: flex;
+    justify-content: center; /* Aligns items horizontally */
+    align-items: center; /* Aligns items vertically */
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-y: auto;
+    height: 100%;
+    max-width: 600px; /* Limit the maximum width of the modal content */
+   
+}
+.jl-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.jl-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+.jl-view-project-header{
+    font-size: 34px;
+}

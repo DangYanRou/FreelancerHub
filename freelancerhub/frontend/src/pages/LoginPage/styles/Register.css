@@ -34,10 +34,16 @@
 
 .registerPage .switch{
     size-adjust: 20px;
+    transform: translateY(-50%);
 }
+
 
 .remember-forgot label{
     color:white;
+}
+
+.registerPage .input-box input::placeholder{
+    color:grey;
 }
 
 .register-button:hover{

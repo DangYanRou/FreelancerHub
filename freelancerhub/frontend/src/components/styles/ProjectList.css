@@ -1,0 +1,73 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    outline:none;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.jl-centered-container {
+    display: flex;
+    justify-content: center; /* Aligns items horizontally */
+    align-items: center; /* Aligns items vertically */
+    overflow-y: auto;
+}
+
+.card{
+    width:700px;
+    position: relative;
+    flex-direction: column;
+    align-items: flex-start;
+    padding:20px;
+    background-color:#F0F7F9;
+    display: flex;
+    box-shadow: rgba(0,0,0,0.30) 0px 1px 3px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.apply-status{
+    margin-top: 20px;
+    font-style: italic;
+    color: green;
+}
+.apply-date{
+    font-style: italic;
+    color: grey;
+}
+
+.card:hover{
+    box-shadow:rgba(0,0,0,0.24)0px 3px 8px;
+}
+
+.card.selected {
+    background-color:#e7f9ff ;
+    ; /* Updated background color when selected */
+  }
+
+.card h2{
+    font-size: 22px;
+}
+.card p{
+    font-size: 16px;
+    display: flex;
+}
+
+.hover-profileLink {
+    font-size: 18px;
+    color: black; /* Set the text color */
+    text-decoration: none;
+     /* Remove default underline */
+     
+}
+
+.hover-profileLink:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+.icon-style{
+    margin-top: 3px;
+    margin-right: 3px;
+}
+
+

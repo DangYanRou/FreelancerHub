@@ -1,0 +1,212 @@
+
+.jl-page-header{
+    font-size: 28px;
+    font-style: bold;
+    margin-top: 2%;
+    margin-left: 43%;
+}
+.jl-centered-container {
+    margin-top: 2%;
+    display: flex;
+    justify-content: center; /* Aligns items horizontally */
+    align-items: center; /* Aligns items vertically */
+    overflow-y: auto;
+}
+
+.jl-modal-overlay {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: flex-end; /* Align modal to the right */
+    align-items: center;
+    
+}
+
+.jl-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-y: auto;
+    height: 100%;
+    max-width: 600px; /* Limit the maximum width of the modal content */
+   
+}
+.jl-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.jl-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+.pa-project-details{
+    padding: 20px;
+    max-width:600px;
+    border-radius: 10px;
+    overflow-y: auto;
+    
+}
+
+
+.pa-project-details p {
+    margin-bottom: 0.5rem; /* Add spacing between each element inside project details */
+    display: flex;
+}
+
+.pa-project-details a{
+    font-size: 24px;
+}
+
+#about-the-project{
+    font-style: bold;
+    margin-top: 3%;
+    font-size: 18px;
+   
+}
+#key-requirement{
+    font-size: 18px;
+    margin-top: 3%;
+}
+#p-title{
+   font-size: 36px; 
+}
+
+.jl-view-application-header{
+    font-size: 34px;
+    
+}
+
+.kr-list{
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Arrange children vertically */
+    justify-content: flex-start; /* Align children to the start */
+    align-items: flex-start; /* Align children to the start */
+    margin-left: 1rem;
+    list-style-type: disc; /* This will give you filled dots */
+    
+}
+
+.jl-button-container{
+    max-width: 500px;
+    margin-top: 7%;
+    display: flex; /* Use flexbox to arrange buttons horizontally */
+    justify-content: space-evenly; /* Spread buttons apart */
+}
+.btn-primary{
+    background-color: #213E60;
+    padding:9px 28px; /* Adjust padding to increase button size */
+    border: none; /* Remove default border */
+    font-size: 16px;
+    color: white;
+    border-radius: 8px; 
+    cursor: pointer; /* Change cursor to pointer on hover */
+    margin-bottom: 3rem;
+}
+.btn-secondary{
+    background-color: red;
+    padding:9px 28px; /* Adjust padding to increase button size */
+    border: none; /* Remove default border */
+    font-size: 16px;
+    color: white;
+    border-radius: 8px; 
+    cursor: pointer; /* Change cursor to pointer on hover */
+    margin-bottom: 3rem;
+}
+.btn:hover {
+    background-color:#6fb9d1; /* Change background color on hover */
+}
+
+#status{
+   margin-top: 2rem;
+   overflow-x: hidden; /* Hide horizontal overflow */
+}
+.detail-status{
+    font-style: italic;
+    color: green;
+}
+.detail-date{
+  
+    color: grey;
+}
+
+
+.statusbar{
+    max-width: 500px;
+}
+
+.jl-title-pa {
+    font-size: 28px;
+    color: black; /* Change the link color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Add transition for smooth color change on hover */
+  }
+  
+.jl-profileLink-pa{
+    font-size: 24px;
+}
+
+#category{
+   font-size: 18px;
+}
+
+.jl-view-application-header{
+    font-size: 30px;
+}
+
+.confirmation-modal-overlay,.success-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    
+  }
+
+ .confirmation-modal-content,.success-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 560px;
+  height: 220px;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  
+}
+.confirmation-buttons{
+    max-width: 500px;
+    margin-top: 5%;
+    display: flex; /* Use flexbox to arrange buttons horizontally */
+    justify-content: space-evenly; /* Spread buttons apart */
+}
+.confirmation-content{
+    margin-top: 50px;
+}
+
+
+
+  .delete-message{
+    margin-left: 35%;
+    margin-top: 15%;
+    color: green;
+    font-size: 18px;
+  }
+
+  .btn-primary:hover,.btn-secondary:hover{
+    box-shadow:rgba(0,0,0,0.24)0px 3px 8px;
+  }
