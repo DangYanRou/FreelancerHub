@@ -45,13 +45,14 @@
 
 .input-box input::placeholder{
     color:#fff;
+    background-color: #fff;
 }
 
 .loginPage .input-box .icon{
     position: absolute;
     left:40px;
     top:50%;
-    color:#fff;
+    color:#213e60;
     transform: translateY(-50%);
     font-size: 16px;
 }
@@ -62,6 +63,7 @@
     font-size: 14.5px;
     margin: -15px 0 15px;
     padding: 10px;
+    margin-right: 30px;
     color: #fff;
 }
 
@@ -111,4 +113,17 @@
 .register-link p a:hover{
     text-decoration: underline;
     text-underline-offset: 0px;
+}
+
+.login-button:hover{
+    background-color:#213e60;
+    color:white;
+    transition: 0.3s ease;
+}
+
+.loginPage .identity{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    margin-right: 40px;
 }
