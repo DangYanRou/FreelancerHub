@@ -4,39 +4,43 @@ import CompletedProjectListClient from "../../../components/CompletedProjectList
 import Heading from "../../../components/Heading";
 import { db, auth } from "../../../firebase";
 import { collection, query, getDocs, where } from "firebase/firestore";
-import { useUser } from "../../../context/UserContext";
 import Loading from "../../../components/Loading";
 
 const ProjectCompletedPageClient = () => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
-  const { user } = useUser();
+  const user = auth.currentUser;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
     const fetchProjects = async () => {
       try {
         if (user) {
-          console.log(user);
+          console.log(user.uid);
           const projectsCollection = collection(db, "projects");
           const completedProjectsQuery = query(
             projectsCollection,
             where("statusState", "==", 5),
-            where("clientID", "==", user.id)
+            where("clientID", "==", user.uid)        
           );
           const querySnapshot = await getDocs(completedProjectsQuery);
-          setProjects(
-            querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-          );
-        }
-      } catch (error) {
+          const projectsData = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          setProjects(projectsData);
+      }} catch (error) {
         console.error("Error fetching projects: ", error);
       } finally {
         setLoading(false);
       }
     };
     fetchProjects();
-  }, [user]);
+  }, []);
+   // Cleanup function to unsubscribe from the listener when the component unmounts
+   return () => unsubscribe();
+  }, []);
 
   if (loading) {
     return (
