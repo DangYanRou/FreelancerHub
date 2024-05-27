@@ -29,7 +29,7 @@ const ProgressBar = ({ stages }) => {
   );
 };
 
-const durationUnits = ['day', 'week', 'month', 'year'];
+const durationUnits = ['days', 'weeks', 'months', 'years'];
 
 const workloadOptions = [
     'not specified',
@@ -94,7 +94,7 @@ const CreateProjectDescription = () => {
 
   const [project, setProject] = useContext(ProjectContext);
 
-  const [startDate, setStartDate] = useState(new Date());
+  const [date, setDate] = useState(new Date());
   const [jobCateInput, setJobCateInput] = useState('');
   const [jobCateError, setJobCateError] = useState('');
 
@@ -136,7 +136,7 @@ const handleInputChange = (event) => {
 const handleDateChange = (date) => {
   setProject({
     ...project,
-    startDate: date,
+    date: date,
   });
 };
 
@@ -185,7 +185,7 @@ id="projectCategory" name="category" value={project.category} onChange={handleIn
   <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectStartTime">Project Start Time: </label>
     <DatePicker
     required
-      selected={project.startDate}
+      selected={project.date}
       onChange={handleDateChange}
       dateFormat="dd/MM/yyyy"
       className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"

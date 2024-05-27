@@ -34,7 +34,7 @@ export const addProject = async (projectInfo) => {
     // Fetch the current number of projects
     const querySnapshot = await getDocs(collection(db, "projects"));
     const projectCount = querySnapshot.size;
-
+    
     // Generate the new document ID
     const docID = `projectID${projectCount + 1}`; // this will be 'projectID1' for the first project, 'projectID2' for the second, etc.
 
