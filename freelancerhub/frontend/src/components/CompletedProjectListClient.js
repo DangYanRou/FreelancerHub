@@ -25,7 +25,7 @@ const CompletedProjectListClient = ({ projects }) => {
                     <a href="#" className="hover-profileLink">{project.client}</a>
                     <p id="category">{project.category}</p>
                     <p><FaLocationDot className="icon-style"/>{project.location}</p>
-            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.budget}/project</p>
+                    <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.budget}/project</p>
                     <p className="apply-status">{project.status}</p>
                     <div className="bottom-row">
                         <p style={{ flexGrow: 1 }}>Completed on:  <span className="complete-date">{project.completeDate}</span></p>
@@ -39,7 +39,7 @@ const CompletedProjectListClient = ({ projects }) => {
                             ) : '+ Favourite Collaborator'}
                         </button>
 
-                            <button className="feedbackBtn" onClick={() => navigate('../client-feedback-page')}>Submit feedback</button>
+                            <button className="feedbackBtn" onClick={() => navigate('../client-feedback-page', {state: {freelancerID: project.freelancerID}})}>Submit feedback</button>
                         </div>
                     </div>
                 </div>
