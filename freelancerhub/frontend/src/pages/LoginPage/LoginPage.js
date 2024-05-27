@@ -86,6 +86,7 @@ const LoginPage = () => {
     //     history.push('/clients/post-project');
     // };
 
+    // setIsLoggedIn(false);
         return(
         <div className="loginPage">
             <div className="wrapper">
