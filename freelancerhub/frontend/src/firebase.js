@@ -37,7 +37,8 @@ export const addProject = async (projectInfo) => {
     const user = auth.currentUser;
     const uid = user.uid;
     // Generate the new document ID
-    const docID = `projectID2`; // this will be 'projectID1' for the first project, 'projectID2' for the second, etc.
+    const docID = `projectID${projectCount + 1}`; // this will be 'projectID1' for the first project, 'projectID2' for the second, etc.
+
     await setDoc(doc(db, "clients", uid), {
       createdProjects: arrayUnion(docID)
     }, { merge: true });    
