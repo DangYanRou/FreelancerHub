@@ -46,7 +46,7 @@ function FreelancerFeedbackPage() {
   };
 
   return (
-    <div className="feedback-page">
+    <div className="FeedbackPage">
       <form className="form" onSubmit={handleSubmit}>
         <div className="title">
           <h2>How was your experience?</h2>

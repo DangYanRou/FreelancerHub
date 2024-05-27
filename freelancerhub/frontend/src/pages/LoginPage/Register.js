@@ -6,7 +6,7 @@ import { MdEmail } from "react-icons/md";
 import { useState } from 'react';
 import { db, auth } from '../../firebase';
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection } from 'firebase/firestore';
+import { setDoc,doc} from 'firebase/firestore';
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -32,9 +32,8 @@ const Register = () => {
             const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
             const user = userCredential.user;
 
-            // Add user details to Firestore
-            const dbref = collection(db, collectionName);
-            await addDoc(dbref, { uid: user.uid, username: username, email: email });
+            // Set user profile in Firestore with uid as document ID and Add user details to Firestore
+            await setDoc(doc(db, collectionName, user.uid),{ uid: user.uid, username: username, email: email });
 
             console.log(userCredential, "authData");
             alert('User registered successfully!');

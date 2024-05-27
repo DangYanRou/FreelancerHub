@@ -1,11 +1,12 @@
-import React,{useContext} from 'react';
+import React,{useContext, useState, useEffect} from 'react';
 import workImage from '../../../Gallery/work.png';
 import noteImage from '../../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import '../../../styles/Clients/CreateProjectPreview.css';
 import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
-import { addProject } from '../../../firebase';
+import { addProject, auth, db } from '../../../firebase';
+import { collection, getDoc,doc } from "firebase/firestore";
 
 // ProgressBar component to display the stages of project creation
 const ProgressBar = ({ stages }) => {
@@ -50,23 +51,46 @@ const CreateProjectPreview = () => {
 
   const navigate = useNavigate();
 
-  
-  const handlePostClick = (event) => {
-    event.preventDefault();
 
+  
+  const handlePostClick = async (event) => {
+    event.preventDefault();
+    const user=auth.currentUser;
+    if(user){
+
+      const docRef = doc(db, "clients", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      let username='';
+      if (docSnap.exists()) {
+        username = docSnap.data().username;
+      } else {
+        console.log("No such document!");
+      }
+      const projectInfoWithClient={
+        ...projectInfo,
+        clientID:user.uid,
+        client: username,
+      };
+    
     console.log('addProject:', addProject);
-    console.log('projectInfo:', projectInfo);
+    console.log('projectInfo:', projectInfoWithClient);
     console.log('navigate:', navigate);
     console.log('handlePostClick called');
 
-    addProject(projectInfo)
+    addProject(projectInfoWithClient)
       .then(() => {
         alert('Project posted successfully!');
       })
       .catch((error) => {
         console.error("Error adding document: ", error);
       });
+    } else {
+      console.log('No user is signed in');
+    }
   };
+
+   
 
   return (
     <div className="flex flex-col items-start justify-center">
@@ -86,7 +110,7 @@ const CreateProjectPreview = () => {
             <div className="w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Subject: </label>
               <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
- id="duration">{projectInfo.subject}</p>
+ id="duration">{projectInfo.title}</p>
             </div>
           </div>
           <div className="flex justify-between w-8/10 m-4">
@@ -116,7 +140,7 @@ const CreateProjectPreview = () => {
   <div className="w-1/2 mr-8">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contractType">Project Start Time: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
- id="startTimePreview">{projectInfo.startDate.toLocaleDateString()}</p>
+ id="startTimePreview">{projectInfo.date.toLocaleDateString()}</p>
     <label className="block /text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Duration: </label>
     <div className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
  id="durationPreview">{projectInfo.duration}
