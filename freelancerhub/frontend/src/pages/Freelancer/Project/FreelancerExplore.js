@@ -209,7 +209,7 @@ const FreelancerExplore = () => {
               </ul>*/}
             </div>
             <h3 id="preferredQualification">Preferred Qualification:</h3>
-            <p>{project.preferQuali}</p>
+            <p>{project.preferredQualification}</p>
               <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
   
   

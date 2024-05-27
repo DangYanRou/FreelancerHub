@@ -4,8 +4,8 @@ import { ProjectContext } from './ProjectContext';
 export const ProjectInfoProvider = ({ children }) => {
   const [project, setProject] = useState({
     title: '',
-    minInput: '',
-    maxInput: '',
+    minInput: 0,
+    maxInput: 0,
     location: '',
     description: '',
     category: '',
@@ -13,13 +13,13 @@ export const ProjectInfoProvider = ({ children }) => {
     currencyInput: 'MYR',
     date: new Date(),
     workload: '',
-    duration: '',
+    duration: 0,
     durationUnit: 'days',
     preferredQualification: '',
     jobResponsibilities: [],
     preferredSkills: [],
     keywords: [],
-    statusState: '1'
+    statusState: 1
 });
 
   return (
