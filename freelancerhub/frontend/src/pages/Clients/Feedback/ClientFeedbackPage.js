@@ -6,14 +6,14 @@ import { useUser } from '../../../context/UserContext';
 import { useLocation } from 'react-router-dom';
 
 function ClientFeedbackPage() {
-  const {user} = useUser();
+  const user = auth.currentUser;
   const [rating, setRating] = useState(null);
   const [feedback, setFeedback] = useState(""); // Manage textarea input
   const [showSubmitted, setShowSubmitted] = useState(false);
   const location = useLocation();
   const freelancerId = location.state.freelancerID;
 
- console.log('freelaancerid =' , freelancerId);
+ console.log('freelancerid =' , freelancerId);
   const handleRating = (num) => {
     setRating(num);
    
@@ -30,7 +30,7 @@ function ClientFeedbackPage() {
   
       try {
         await addDoc(collection(db, "feedback"), {
-          from: user.id,
+          from: user.uid,
           to: freelancerId,
           rating: rating,
           feedback: feedback,
