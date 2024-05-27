@@ -15,8 +15,8 @@ export const ProjectInfoProvider = ({ children }) => {
     workload: '',
     duration: '',
     durationUnit: 'days',
-    jobResponsibilities: [],
     preferredQualification: '',
+    jobResponsibilities: [],
     preferredSkills: [],
     keywords: [],
     statusState: '1'

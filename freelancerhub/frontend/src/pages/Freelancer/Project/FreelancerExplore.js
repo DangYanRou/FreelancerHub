@@ -254,7 +254,7 @@ const FreelancerExplore = () => {
 </div>
 </div>
 </div>
-      <div className="flex justify-center items-center h-full pt-10">
+      <div className="flex justify-center items-center pt-10">
       <div className="flex flex-row">
             <div className="flex flex-col w-1/4">
       {dropdowns.map((dropdown, index) => (
@@ -317,14 +317,14 @@ const FreelancerExplore = () => {
       ))}
 
     </div>
-    <div className={`FreelancerExplore ${showDetails? 'show-details':''}`}>
+    <div className={`FreelancerExplore ${showDetails? 'show-details':''} `}>
     <div className="parent-container ">
     <ProjectList projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null} />
     <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} />
 
-      
     </div>
     </div>
+
   </div>
   
 </div>
