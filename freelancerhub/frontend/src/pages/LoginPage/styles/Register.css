@@ -11,12 +11,29 @@
 .registerPage .wrapper h1{
     font-size: 36px;
     text-align: center;
+    color: #fff;
 }
 
 .registerPage .icon{
     position:absolute;
     left: 40px;
     top:50%;
+    color:#213e60;
+    transform: translateY(-50%);
+}
+.registerPage .identity{
+    display:flex;
+    justify-content: center;
+    margin-bottom: 10px;;
+}
+
+.identity-label {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+  }
+
+.registerPage .switch{
+    size-adjust: 20px;
     transform: translateY(-50%);
 }
 
@@ -26,7 +43,7 @@
 }
 
 .registerPage .input-box input::placeholder{
-    color:#fff;
+    color:grey;
 }
 
 .register-button:hover{

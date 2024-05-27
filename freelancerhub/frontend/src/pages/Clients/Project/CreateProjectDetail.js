@@ -63,7 +63,7 @@ const handleFormSubmit = (event) => {
 
   let isValid = true;
 
-  if (!project.projectName) {
+  if (!project.subject) {
     setSubjectError('Project name is required');
     isValid = false;
   } else {
@@ -84,7 +84,7 @@ const handleFormSubmit = (event) => {
     setMaxError('');
   }
 
-  if (!project.locationInput) {
+  if (!project.location) {
     setLocationError('Location input is required');
     isValid = false;
   } else {
@@ -135,7 +135,7 @@ const handleInputChange = (event) => {
             <div className="w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Subject: </label>
               <input required style={{ width: '100%' }} className="flex h-[40px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
-               id="projectName" name="projectName" type="text" value={project.projectName} onChange={handleInputChange} />
+               id="projectName" name="subject" type="text" value={project.subject} onChange={handleInputChange} />
                {subjectError && <p className="text-red-500 text-xs italic">{subjectError}</p>}
             </div>
           </div>
@@ -144,7 +144,7 @@ const handleInputChange = (event) => {
     
   <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="workplace">Workplace: </label>
 <select className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="workplace" name="workPlaceSelect" onChange={handleInputChange} value={project.workPlaceSelect}>
+ id="workplace" name="workPlace" onChange={handleInputChange} value={project.workPlace}>
   {workPlace.map((workPlaceSelect, index) => (
     index === 0 
     ? <option key={index} value="" >{workPlaceSelect}</option>
@@ -156,7 +156,7 @@ const handleInputChange = (event) => {
   <div className="w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">Location: </label>
     <input required className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="location" name="locationInput" type="text"  value={project.locationInput} onChange={handleInputChange} />
+ id="location" name="location" type="text"  value={project.location} onChange={handleInputChange} />
  {locationError && <p className="text-red-500 text-xs italic">{locationError}</p>}
   </div>
 </div>

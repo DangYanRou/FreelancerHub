@@ -13,7 +13,7 @@
     overflow-y: auto;
 }
 
-.modal-overlay {
+.jl-modal-overlay {
     display: flex;
     position: fixed;
     top: 0;
@@ -27,7 +27,7 @@
     
 }
 
-.modal-content {
+.jl-modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -36,7 +36,7 @@
     max-width: 600px; /* Limit the maximum width of the modal content */
    
 }
-.modal-header {
+.jl-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -44,7 +44,7 @@
     border-bottom: 1px solid #ccc;
 }
 
-.close-btn {
+.jl-close-btn {
     background: none;
     border: none;
     cursor: pointer;
@@ -83,7 +83,7 @@
    font-size: 36px; 
 }
 
-.view-application-header{
+.jl-view-application-header{
     font-size: 34px;
     
 }
@@ -98,7 +98,7 @@
     
 }
 
-.button-container{
+.jl-button-container{
     max-width: 500px;
     margin-top: 7%;
     display: flex; /* Use flexbox to arrange buttons horizontally */
@@ -141,18 +141,72 @@
     color: grey;
 }
 
-.link {
-    font-size: 34px;
-    color: black; /* Change the link color */
-    text-decoration: none; /* Remove underline */
-    font-weight: bold; /* Make the text bold */
-    transition: color 0.3s; /* Add transition for smooth color change on hover */
-  }
-  
-  .link:hover {
-    text-decoration: underline; /* Change color on hover */
-    
-  }
+
 .statusbar{
     max-width: 500px;
 }
+
+.jl-title-pa {
+    font-size: 28px;
+    color: black; /* Change the link color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Add transition for smooth color change on hover */
+  }
+  
+.jl-profileLink-pa{
+    font-size: 24px;
+}
+
+#category{
+   font-size: 18px;
+}
+
+.jl-view-application-header{
+    font-size: 30px;
+}
+
+.confirmation-modal-overlay,.success-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    
+  }
+
+ .confirmation-modal-content,.success-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 560px;
+  height: 220px;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  
+}
+.confirmation-buttons{
+    max-width: 500px;
+    margin-top: 5%;
+    display: flex; /* Use flexbox to arrange buttons horizontally */
+    justify-content: space-evenly; /* Spread buttons apart */
+}
+.confirmation-content{
+    margin-top: 50px;
+}
+
+
+
+  .delete-message{
+    margin-left: 35%;
+    margin-top: 15%;
+    color: green;
+    font-size: 18px;
+  }
+
+  .btn-primary:hover,.btn-secondary:hover{
+    box-shadow:rgba(0,0,0,0.24)0px 3px 8px;
+  }

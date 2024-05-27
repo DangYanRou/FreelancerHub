@@ -105,7 +105,7 @@ const handleFormSubmit = (event) => {
   let isValid = true;
 
 
-  if (!project.jobCateInput) {
+  if (!project.category) {
     setJobCateError('Job Category is required');
     isValid = false;
   } else {
@@ -157,7 +157,7 @@ const handleDateChange = (date) => {
         <div className="flex flex-col w-1/2 mr-8">
         <label className="block text-gray-700 text-sm font-bold mb-2 " htmlFor="jobCategory">Project Category: </label>
 <select required className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
-id="projectCategory" name="jobCateInput" value={project.jobCateInput} onChange={handleInputChange}>
+id="projectCategory" name="category" value={project.category} onChange={handleInputChange}>
   <option value="">Select a category</option>
   {categories.map((category, index) => (
     <option key={index} value={category}>
@@ -177,7 +177,7 @@ id="projectCategory" name="jobCateInput" value={project.jobCateInput} onChange={
             <div className="w-full">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="jobDescription">Job Description: </label>
                 <textarea style={{ width: '100%' }} className="flex h-[200px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 pt-2"
-                id="jobDescription" name="descriptionInput" value={project.descriptionInput} onChange={handleInputChange}></textarea>
+                id="jobDescription" name="description" value={project.description} onChange={handleInputChange}></textarea>
             </div>
             </div>
             <div className="flex justify-between w-8/10 m-4">
@@ -209,7 +209,7 @@ id="projectCategory" name="jobCateInput" value={project.jobCateInput} onChange={
   <div className="flex flex-col w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="workload">Workload: </label>
     <select className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="workload" name="workloadOptions" onChange={handleInputChange} value={project.workloadOptions} >
+ id="workload" name="workload" onChange={handleInputChange} value={project.workload} >
        {workloadOptions.map((workloadOptions, index) => (
         index===0
         ? <option key={index} value="" >{workloadOptions}</option>
