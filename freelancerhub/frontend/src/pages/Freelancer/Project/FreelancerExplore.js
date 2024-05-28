@@ -186,8 +186,7 @@ const FreelancerExplore = () => {
   
   const ProjectDetails =({project}) => {
     if(!project)return null;
-    const [min, max, currency] = project.budget ? project.budget : [null, null, ''];
-    return(
+        return(
       <div className="project-details">
         <h2 id="detail-title">{project.title}</h2>
         <h2 className="jl-profileLink">{project.client}</h2>
@@ -200,13 +199,10 @@ const FreelancerExplore = () => {
             <h3 id="about-the-project">About the Project:</h3>
             <p>{project.description}</p>
             <div>
-              <h3 id="key-requirement">Job Responsibilities:</h3>
-              <p>{project.jobResponsibilities}</p>
-             {/* <ul className="list">
-                {project.items.map((item,index)=>(
-                  <li key={index}>{item}</li>
-                ))}
-              </ul>*/}
+            <h3 id="key-requirement">Job Responsibilities:</h3>
+              {project.jobResponsibilities.map((responsibility, index) => (
+                <p key={index}>{responsibility}</p>
+              ))}
             </div>
             <h3 id="preferredQualification">Preferred Qualification:</h3>
             <p>{project.preferredQualification}</p>
