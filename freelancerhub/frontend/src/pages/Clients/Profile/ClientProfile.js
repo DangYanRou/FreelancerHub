@@ -35,8 +35,9 @@ const ClientProfile = () => {
     companies: [],
   });
   const [formData, setFormData] = useState({ ...profile });
-  const [companies, setCompanies] = useState([]);
+  const [originalFormData, setOriginalFormData] = useState({});
 
+  const [companies, setCompanies] = useState([]);
   const [newCompanyName, setNewCompanyName] = useState("");
   const [newCompanyImage, setNewCompanyImage] = useState(null);
   
@@ -54,14 +55,16 @@ const ClientProfile = () => {
             setProfile({
               ...userData,
               profilePicture: userData.profilePicture || logo,
-              name: userData.username,
+              name: userData.name,
+              username: userData.username, 
               interests: userData.interests || [],
               companies: userData.companies ||[]
             });
             setFormData({
               ...userData,
               profilePicture: userData.profilePicture || logo,
-              name: userData.username,
+              name: userData.name,
+              username: userData.username, 
               interests: userData.interests || [],
               companies: userData.companies || []
             });
@@ -168,7 +171,13 @@ const ClientProfile = () => {
     }
   };
 
+  const changesMade = () => {
+    return Object.keys(formData).some(key => formData[key] !== originalFormData[key]);
+  };
+  
   const handleEditClick = () => {
+    // Preserve the original name and username values when entering editing mode
+    setOriginalFormData({ ...formData });
     setIsEditing(true);
   };
 
@@ -193,7 +202,10 @@ const ClientProfile = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
-    setFormData(profile); // Revert the changes by resetting the form data to the original profile
+    // Revert the changes only if there were changes made
+    if (changesMade()) {
+      setFormData({ ...originalFormData });
+    }
   };
 
   const handleAddInterest = () => {
@@ -306,7 +318,17 @@ const handleRemoveCompany = (index) => {
               {isEditing ? (
                 <form id="profileForm" onSubmit={handleFormSubmit}>
                   <div className="form-group">
-                    <label htmlFor="username">Name</label>
+                    <label htmlFor="name">Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="username">Userame</label>
                     <input
                       type="text"
                       id="username"
@@ -358,12 +380,13 @@ const handleRemoveCompany = (index) => {
               ) : (
                 <>
               <div className="name-location">
-                    <h2 className="name">{profile.name}</h2>
+                    <h2 className="name">{formData.name}</h2>
                     <div className="location">
                       <FaMapMarkerAlt className="markerIcon" />
                       <span>{profile.location}</span>
                     </div>
-                  </div>
+              </div>
+              <p style={{color:"grey"}}>Username: {profile.username}</p>
                   <p className="job">Company Size: {profile.companySize}</p>
                   <p className="address" style={{ fontSize: 14 }}>
                     {profile.address}

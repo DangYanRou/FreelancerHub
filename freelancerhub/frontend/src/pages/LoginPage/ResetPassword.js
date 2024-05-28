@@ -30,7 +30,7 @@ const ResetPassword=()=>{
                         <h1 style={{ color:'white'}}>Trouble Logging In?</h1>
                         <p style={{ color:'white'}}>Enter your email and we'll send you a link to get back into your account.</p>
                         <div className="input-box">
-                            <MdEmail className="emailIcon"/><input type="text" placeholder="Email" required></input>
+                            <MdEmail className="emailIcon"/><input type="text" id="email" name="email" placeholder="Email" required></input>
                         </div>
                         <button type="submit">Send</button>
                         <div className="register-link">
