@@ -6,7 +6,7 @@ import { MdOutlineModeEdit, MdSchool } from "react-icons/md";
 import ProjectListClient from "../../../components/ProjectListClient";
 import StarRating from "../../../components/Rating";
 import Rating from "./ClientAverageReviewBox";
-import { doc, getDocs, setDoc,collection,where,query,map } from "firebase/firestore";
+import { doc, getDocs, setDoc,collection,where,query} from "firebase/firestore";
 import { db } from "../../../firebase";
 import { getAuth, onAuthStateChanged} from "firebase/auth";
 import Loading from '../../../components/Loading';
@@ -55,15 +55,15 @@ const ClientProfile = () => {
               ...userData,
               profilePicture: userData.profilePicture || logo,
               name: userData.username,
-              interests: userData.interests,
-              companies: userData.companies
+              interests: userData.interests || [],
+              companies: userData.companies ||[]
             });
             setFormData({
               ...userData,
               profilePicture: userData.profilePicture || logo,
               name: userData.username,
-              interests: userData.interests,
-              companies: userData.companies
+              interests: userData.interests || [],
+              companies: userData.companies || []
             });
           } else {
             console.log("No such document!");
@@ -150,6 +150,7 @@ const ClientProfile = () => {
     setFormData({
       ...formData,
       [name]: value,
+      
     });
   };
 
