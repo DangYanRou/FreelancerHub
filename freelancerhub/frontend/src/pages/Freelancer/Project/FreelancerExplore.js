@@ -193,7 +193,7 @@ const FreelancerExplore = () => {
         <h2 className="jl-profileLink">{project.client}</h2>
             <p id="category">{project.category}</p>
             <p><FaLocationDot className="icon-style"/>{project.location}</p>
-            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{min}-{max} {currency}/project</p>
+            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
             <p><BiTimeFive size={20}className='icon-style2' />{project.duration ?`${project.duration[0]} ${project.duration[1]}` : ''}</p> 
             <p>Starting from: {project.date}</p>
            
