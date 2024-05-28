@@ -15,11 +15,11 @@ export const ProjectInfoProvider = ({ children }) => {
     workload: '',
     duration: '',
     durationUnit: 'days',
-    jobResponsibilities: [],
     preferredQualification: '',
+    jobResponsibilities: [],
     preferredSkills: [],
     keywords: [],
-    statusState: '1'
+    statusState: 1
 });
 
   return (

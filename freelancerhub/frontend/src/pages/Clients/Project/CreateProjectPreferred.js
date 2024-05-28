@@ -98,33 +98,37 @@ const handleKeywordDelete = (keywordToDelete) => {
 
 
 const handleInputChange = (event) => {  
-  
+
   setProject({
     ...project,
     [event.target.name]: event.target.value,
   });
 };
 
+const [responsibilities, setResponsibilities] = useState('');
+
 const handleResKeyDown = (event) => {
-  if (event.key === 'Enter' && event.target.name === 'jobResponsibilities') {
-    event.preventDefault(); // Prevent the default action (creating a new line)
-    const value = `${event.target.value}\n• `; // Add a new line with a bullet point
-
-    setProject({
-      ...project,
-      jobResponsibilities: value,
-    });
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    const value = event.target.value.trim();
+    if(value && !project.jobResponsibilities.includes(value)) {
+      setProject({
+        ...project,
+        jobResponsibilities: [...project.jobResponsibilities, value],
+      });
+    }
+    setResponsibilities('');
   }
 };
 
-const handleFocus = (event) => {
-  if (event.target.name === 'jobResponsibilities' && event.target.value === '') {
-    setProject({
-      ...project,
-      jobResponsibilities: '• ',
-    });
-  }
+const handleResDelete = (ResToDelete) => {
+  setProject({
+    ...project,
+    jobResponsibilities: project.jobResponsibilities.filter(responsibility => responsibility !== ResToDelete),
+  });
 };
+
+
 
   return (
     <div className="flex flex-col items-start justify-center">
@@ -142,18 +146,30 @@ const handleFocus = (event) => {
 
             <div className="flex justify-left m-4 w-8/10">
             <div className="w-full">
-  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="jobDescription">Job Responsibilities: </label>
-  <textarea
-    style={{ width: '100%' }}
-    className="flex h-[100px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 py-2"
-    id="jobResponsibilities"
-    name="jobResponsibilities"
-    onFocus={handleFocus}
-    onChange={handleInputChange}
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="responsibilities">
+        Job Responsibilities:
+      </label>
+      <input style={{ width: '100%' }} className="flex h-[40px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 py-2"
+    value={responsibilities}
+    onChange={e => setResponsibilities(e.target.value)}
     onKeyDown={handleResKeyDown}
-    value={project.jobResponsibilities}
-    placeholder="• Responsibility 1"
-  ></textarea>
+    placeholder="Type a responsibility and press Enter"
+
+  />
+    <div className="flex flex-wrap">
+    {project.jobResponsibilities.map((responsibilities, index) => (
+      <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
+        <span>#{responsibilities}</span>
+        <button 
+          onClick={() => handleResDelete(responsibilities)} 
+          className="ml-1 cursor-pointer font-bold items-center"
+          style={{ background: 'none', border: 'none' }}
+        >
+          <IoMdClose />
+        </button>
+      </div>
+    ))}
+    </div>
 </div>
             </div>
             <div className="flex justify-left m-4 w-8/10">
@@ -172,6 +188,8 @@ const handleFocus = (event) => {
     value={preferredSkills}
     onChange={e => setSkillInput(e.target.value)}
     onKeyDown={handleKeyDown}
+    placeholder="Type a skill and press Enter"
+
   />
 <div className="flex flex-wrap">
 {project.preferredSkills.map((skill, index) => (
@@ -195,6 +213,8 @@ const handleFocus = (event) => {
   onChange={e => setKeywordsInput(e.target.value)}
   type="text" 
   onKeyDown={handleKeywordKeyDown}
+  placeholder="Type a keyword and press Enter"
+
 />
 <div className="flex flex-wrap">
 {project.keywords.map((keyword, index) => (

@@ -193,7 +193,7 @@ const FreelancerExplore = () => {
         <h2 className="jl-profileLink">{project.client}</h2>
             <p id="category">{project.category}</p>
             <p><FaLocationDot className="icon-style"/>{project.location}</p>
-            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{min}-{max} {currency}/project</p>
+            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
             <p><BiTimeFive size={20}className='icon-style2' />{project.duration ?`${project.duration[0]} ${project.duration[1]}` : ''}</p> 
             <p>Starting from: {project.date}</p>
            
@@ -209,7 +209,7 @@ const FreelancerExplore = () => {
               </ul>*/}
             </div>
             <h3 id="preferredQualification">Preferred Qualification:</h3>
-            <p>{project.preferQuali}</p>
+            <p>{project.preferredQualification}</p>
               <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
   
   
@@ -254,7 +254,7 @@ const FreelancerExplore = () => {
 </div>
 </div>
 </div>
-      <div className="flex justify-center items-center h-full pt-10">
+      <div className="flex justify-center items-center pt-10">
       <div className="flex flex-row">
             <div className="flex flex-col w-1/4">
       {dropdowns.map((dropdown, index) => (
@@ -317,14 +317,14 @@ const FreelancerExplore = () => {
       ))}
 
     </div>
-    <div className={`FreelancerExplore ${showDetails? 'show-details':''}`}>
+    <div className={`FreelancerExplore ${showDetails? 'show-details':''} `}>
     <div className="parent-container ">
     <ProjectList projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null} />
     <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} />
 
-      
     </div>
     </div>
+
   </div>
   
 </div>
