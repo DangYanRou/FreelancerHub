@@ -328,7 +328,7 @@ const handleRemoveCompany = (index) => {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="username">Userame</label>
+                    <label htmlFor="username">Username</label>
                     <input
                       type="text"
                       id="username"
