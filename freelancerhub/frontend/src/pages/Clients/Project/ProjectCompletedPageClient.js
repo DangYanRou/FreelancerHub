@@ -5,6 +5,7 @@ import Heading from "../../../components/Heading";
 import { db, auth } from "../../../firebase";
 import { collection, query, getDocs, where } from "firebase/firestore";
 import Loading from "../../../components/Loading";
+import '../../../styles/Clients/ClientCompletedProject.css';
 
 const ProjectCompletedPageClient = () => {
   const navigate = useNavigate();

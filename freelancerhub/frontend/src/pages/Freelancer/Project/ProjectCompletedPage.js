@@ -6,6 +6,7 @@ import { db, auth } from "../../../firebase";
 import { collection, query, getDocs, where } from "firebase/firestore";
 import { useUser } from "../../../context/UserContext";
 import Loading from "../../../components/Loading";
+import '../../../styles/Freelancers/FreelancerCompletedProject.css';
 
 const ProjectCompletedPage = () => {
   const navigate = useNavigate();
