@@ -45,7 +45,7 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
   };
 
   if (!project) return null;
-  const [min, max, currency] = project.budget ? project.budget : [null, null, ''];
+  
   const statusMessage = getStatusType(project.statusState);
 
   return (
@@ -54,12 +54,12 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
       <a href="#" className="jl-profileLink-pa">{project.client}</a>
       <p id="category">{project.category}</p>
       <p><FaLocationDot className="icon-style" />{project.location}</p>
-      <p><MdOutlineAttachMoney size={20} className='icon-style2' />{min}-{max} {currency}/project</p>
-      <p><BiTimeFive size={20} className='icon-style2' />{project.duration ?`${project.duration[0]} ${project.duration[1]}` : ''}</p>
+      <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
+      <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
       <p>Starting from: {project.date}</p>
       <h3 id="status">Status:</h3>
       <p className="detail-status">{statusMessage}</p>
-      <p className="detail-date">{project.applyDate}</p>
+      <p className="detail-date">{project.applyDate}</p> {/*rmb add this !! apply btn */}
       <div className="statusbar">
         <StatusBar projectId={project.id}/>
       </div>

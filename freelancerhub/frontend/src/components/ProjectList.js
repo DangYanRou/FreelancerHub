@@ -6,9 +6,7 @@ import { Link } from 'react-router-dom';
 import { BiTimeFive } from "react-icons/bi";
 
 const ProjectList = ({ projects, onProjectClick, selectedProjectId }) => {
-  const handleOptionClick = (event) => {
-    // Handle option click here
-  };
+
 
   const getStatusType = (statusState) => {
     // Convert statusState to a number
@@ -32,8 +30,7 @@ const ProjectList = ({ projects, onProjectClick, selectedProjectId }) => {
     <div>
       {projects.map((blog) => {
         // Destructure the budget array if it exists
-        const [min, max, currency] = blog.budget || [];
-        const [duration,unit] = blog.duration || [];
+        
         const statusMessage= getStatusType(blog.statusState)
         return (
           <div className="jl-centred-container" key={blog.id}>
@@ -42,8 +39,8 @@ const ProjectList = ({ projects, onProjectClick, selectedProjectId }) => {
               <Link to="/freelancers/client-temporary-profile" className="hover-profileLink">{blog.client}</Link>
               <p id="category">{blog.category}</p>
               <p><FaLocationDot className="icon-style" />{blog.location}</p>
-              <p><MdOutlineAttachMoney size={20} className='icon-style2' />{min}-{max} {currency}/project</p>
-              <p><BiTimeFive size={20} className='icon-style2' />{duration} {unit}</p>
+              <p><MdOutlineAttachMoney size={20} className='icon-style2' />  {blog.minInput}-{blog.maxInput} {blog.currencyInput} /project</p>
+              <p><BiTimeFive size={20} className='icon-style2' />{blog.duration} {blog.durationUnit}</p>
               <p className="apply-status">{statusMessage}</p>
               <p className="apply-date">{blog.applyDate}</p>
             </div>

@@ -117,8 +117,7 @@ const FreelancerExplore = () => {
     <div className={`flex flex-col ${selectedProjectId ? 'w-3/5' : 'flex-grow'}`}>
       {projects.map((blog) => {
         // Destructure budget and duration from blog object
-        const [min, max, currency] = blog.budget || [];
-        const [duration, unit] = blog.duration || [];
+       
         return (
           <div
             className={`card ${selectedProjectId === blog.id ? 'selected' : ''} mb-4`}
@@ -131,11 +130,11 @@ const FreelancerExplore = () => {
             <p><FaLocationDot className="icon-style"/>{blog.location}</p>
             <p>
               <MdOutlineAttachMoney size={20} className='icon-style2' />
-              {min} - {max} {currency}/project
+              {blog.minInput}-{blog.maxInput} {blog.currencyInput}/project
             </p>
             <p>
               <BiTimeFive size={20} className='icon-style2' />
-              {duration} {unit}
+              {blog.duration} {blog.durationUnit}
             </p>
             <div className="absolute top-4 right-3 space-x-4 w-8 h-8">
               {bookmarkedProjects[blog.id] ? 
@@ -186,23 +185,26 @@ const FreelancerExplore = () => {
   
   const ProjectDetails =({project}) => {
     if(!project)return null;
-        return(
+    
+    return(
       <div className="project-details">
         <h2 id="detail-title">{project.title}</h2>
         <h2 className="jl-profileLink">{project.client}</h2>
             <p id="category">{project.category}</p>
             <p><FaLocationDot className="icon-style"/>{project.location}</p>
             <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
-            <p><BiTimeFive size={20}className='icon-style2' />{project.duration ?`${project.duration[0]} ${project.duration[1]}` : ''}</p> 
+            <p><BiTimeFive size={20}className='icon-style2' />{project.duration} {project.durationUnit}</p> 
             <p>Starting from: {project.date}</p>
            
             <h3 id="about-the-project">About the Project:</h3>
             <p>{project.description}</p>
             <div>
             <h3 id="key-requirement">Job Responsibilities:</h3>
-              {project.jobResponsibilities.map((responsibility, index) => (
-                <p key={index}>{responsibility}</p>
+              <ul className="list">
+              {(project.jobResponsibilities ?? []).map((item, index) => (
+                <li key={index}>{item}</li>
               ))}
+            </ul>
             </div>
             <h3 id="preferredQualification">Preferred Qualification:</h3>
             <p>{project.preferredQualification}</p>
