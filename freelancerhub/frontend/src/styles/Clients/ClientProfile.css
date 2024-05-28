@@ -43,7 +43,6 @@
 .profile_text .name-location {
     display: flex;
     align-items: baseline;
-    margin-bottom: 5px;
 }
 
 .ClientProfile button {
@@ -125,11 +124,13 @@
    padding-bottom:10px;
 }
 
+#name,
 #username,
 #location,
 #companySize,
 #address,
-#phone {
+#phone,
+#job {
     width: 100%;
     padding: 8px 12px;
     border: none;
@@ -140,19 +141,23 @@
     background-color: #f3f3f3;
 }
 
+#name::placeholder,
 #username::placeholder,
 #location::placeholder,
 #companySize::placeholder,
 #address::placeholder,
-#phone::placeholder {
+#phone::placeholder,
+#job::placeholder{
     color: #999;
 }
 
+#name:focus,
 #username:focus,
 #location:focus,
 #companySize:focus,
 #address:focus,
-#phone:focus {
+#phone:focus,
+#job:focus {
     outline: none;
     background-color: #e0e0e0;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -218,3 +223,4 @@
 .companiesDisplay{
     width:300px;
   }
+  
