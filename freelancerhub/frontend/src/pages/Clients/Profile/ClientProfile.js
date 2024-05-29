@@ -14,11 +14,10 @@ import {
   collection,
   where,
   query,
-} from "firebase/firestore"; 
+} from "firebase/firestore";
 import { db } from "../../../firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Loading from "../../../components/Loading";
-
 
 const ClientProfile = () => {
   const [loading, setLoading] = useState(true);
@@ -80,14 +79,16 @@ const ClientProfile = () => {
 
             //fetch feedbacks
             const feedbacksCollection = collection(db, "feedback");
-            const feedbacksQuery = query(feedbacksCollection, where("to", "==", uid));
+            const feedbacksQuery = query(
+              feedbacksCollection,
+              where("to", "==", uid)
+            );
             const feedbacksSnapshot = await getDocs(feedbacksQuery);
             const feedbacksData = feedbacksSnapshot.docs.map((doc) => ({
               id: doc.id,
               ...doc.data(),
             }));
             setFeedbacks(feedbacksData);
-
           } else {
             console.log("No such document!");
           }
@@ -642,11 +643,13 @@ const ClientProfile = () => {
                 onProjectClick={handleProjectClick}
               />
             </div>
-            <div  id="reviews"
-              style={{ display: showReviews ? "block" : "none" }}>
-                <h2 className="title">Reviews</h2>
-                <Review feedbacks={feedbacks}/>
-              </div>
+            <div
+              id="reviews"
+              style={{ display: showReviews ? "block" : "none" }}
+            >
+              <h2 className="title">Reviews</h2>
+              <Review feedbacks={feedbacks} />
+            </div>
           </div>
         </div>
       </div>

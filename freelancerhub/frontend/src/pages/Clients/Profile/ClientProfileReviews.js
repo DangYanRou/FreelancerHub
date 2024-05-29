@@ -15,7 +15,7 @@ const ClientProfileReviews = ({ feedbacks }) => {
   const [feedbacksWithUserNames, setFeedbacksWithUserNames] = useState([]);
 
   const fetchUserName = async (uid) => {
-    const userSnapshot = await getDocs(query(collection(db, "clients"), where("uid", "==", uid)));
+    const userSnapshot = await getDocs(query(collection(db, "freelancers"), where("uid", "==", uid)));
     if (!userSnapshot.empty) {
       return userSnapshot.docs[0].data().username;
     }
@@ -25,7 +25,7 @@ const ClientProfileReviews = ({ feedbacks }) => {
   useEffect(() => {
     const fetchUserNames = async () => {
       const updatedFeedbacks = await Promise.all(feedbacks.map(async (feedback) => {
-        const name = await fetchUserName(feedback.to);
+        const name = await fetchUserName(feedback.from);
         return { ...feedback, userName: name };
       }));
       setFeedbacksWithUserNames(updatedFeedbacks);
