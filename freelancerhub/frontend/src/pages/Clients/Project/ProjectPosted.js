@@ -11,7 +11,6 @@ import { db } from '../../../firebase'; // Adjust the path as necessary
 import { collection, query, getDocs, where,doc,updateDoc,deleteDoc} from 'firebase/firestore';
 import { useUser } from '../../../context/UserContext';
 import Loading from '../../../components/Loading';
-import { getAuth, onAuthStateChanged} from "firebase/auth";
 import { format } from 'date-fns';
 
 const ProjectPosted = () => {
@@ -22,31 +21,25 @@ const ProjectPosted = () => {
 
 
     useEffect(() => {
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            try {
-                if (user) {
-                    console.log(user.uid);
-                    const projectsRef = collection(db, 'projects');
-                    const q = query(projectsRef, where('clientID', '==', user.uid));
-                    const querySnapshot = await getDocs(q);
-                    const projectsList = querySnapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }));
-                    setProjects(projectsList);
-                } 
-            } catch (error) {
-                console.error("Error fetching projects: ", error);
-            } finally {
-                setLoading(false);
-            }
-        });
-    
-        return () => {
-            unsubscribe(); // Unsubscribe when the component unmounts
+        const fetchProjects = async () => {
+          try {
+            const projectsRef = query(collection(db, 'projects'),where('clientID','==',user.id));
+            console.log("client:"+user.id) // Use the correct method for collection reference
+            const snapshot = await getDocs(projectsRef); // Fetch the documents
+            const projectsData = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+            setProjects(projectsData);
+          } catch (error) {
+            console.error('Error fetching projects: ', error);
+          }finally{
+            setLoading(false);
+          }
         };
-    }, [user]);
+    
+        fetchProjects();
+      }, []);
     
     const handleProjectClick = (project) => {
         setSelectedProject(project);
