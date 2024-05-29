@@ -29,9 +29,9 @@ function AverageReviewBox({ feedbacks }) {
 
     computeRatings();
   }, [feedbacks]);
-  console.log("rating:",ratings)
-  console.log("averageRating:",averageRating)
-  console.log("totalRatings:",totalRatings)
+  console.log("rating:", ratings);
+  console.log("averageRating:", averageRating);
+  console.log("totalRatings:", totalRatings);
 
   return (
     <div className="container">
@@ -52,11 +52,15 @@ function AverageReviewBox({ feedbacks }) {
                 <div className="BarBase">
                   <div
                     className="BarOverlay"
-                    style={{ width: `${totalRatings ? (count / totalRatings) * 100 : 0}%` }}
+                    style={{
+                      width: `${
+                        totalRatings ? (count / totalRatings) * 100 : 0
+                      }%`,
+                    }}
                   ></div>
                 </div>
                 <span className="count">
-                  {count} {count === 1 ? "rate" : "rates"}
+                  {count} {count === 1 || count === 0 ? "rate" : "rates"}
                 </span>
               </div>
             ))}

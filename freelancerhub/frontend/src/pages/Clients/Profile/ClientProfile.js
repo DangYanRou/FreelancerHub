@@ -5,7 +5,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit, MdSchool } from "react-icons/md";
 import ProjectListClient from "../../../components/ProjectListClient";
 import StarRating from "../../../components/Rating";
-import Rating from "./ClientAverageReviewBox";
+import AverageReviewBox from "./ClientAverageReviewBox";
 import Review from "./ClientProfileReviews";
 import {
   doc,
@@ -451,7 +451,7 @@ const ClientProfile = () => {
             )}
           </div>
           <div className="rate">
-            <Rating></Rating>
+          <div className="rate"><AverageReviewBox feedbacks={feedbacks}/></div>
           </div>
         </div>
         <div className="lowerProfile">
