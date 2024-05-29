@@ -2,14 +2,6 @@
     overflow: hidden;
 }
 
-/* .FreelancerProfile h1{
-    padding-top:20px;
-    margin-left: 40px;
-    font-weight: 700;
-    font-size: 40px;
-    margin-bottom: 0px;
-} */
-
 .FreelancerProfile .leftProfile{
     display: block;
 }
@@ -219,12 +211,6 @@ a:hover{
     color:grey
 }
 
-.about_details aboutIcon{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 /* Projects */
 #projects{
     position: relative;
@@ -309,3 +295,37 @@ a:hover{
     font-size: 40px;
     margin-top: 10px;
 }
+
+.FreelancerProfile .profile_text{
+    padding: 20px;
+}
+
+#education_entry input[type="text"],
+.experience_content input[type="text"] {
+    width: 300px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+#education_entry button,
+.experience_content button {
+    margin:10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #213e60;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+#education_entry button:hover,
+.experience_content button:hover {
+    background-color: #69acc2;
+  }
+
+.experience_column{
+    display: flex;
+}
+
