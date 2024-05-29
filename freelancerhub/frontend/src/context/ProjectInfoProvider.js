@@ -11,7 +11,7 @@ export const ProjectInfoProvider = ({ children }) => {
     category: '',
     workPlace: '',
     currencyInput: 'MYR',
-    date: '',
+    date: null,
     workload: '',
     duration: '',
     durationUnit: 'day(s)',

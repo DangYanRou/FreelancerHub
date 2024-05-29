@@ -140,8 +140,8 @@ const CreateProjectPreview = () => {
   <div className="w-1/2 mr-8">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contractType">Project Start Time: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
- id="startTimePreview">{projectInfo.date}</p>
-    <label className="block /text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Duration: </label>
+  id="startTimePreview">{projectInfo.date ? projectInfo.date.toLocaleDateString() : ''}</p>
+   <label className="block /text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Duration: </label>
     <div className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
  id="durationPreview">{projectInfo.duration}
    <div>
