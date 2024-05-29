@@ -1,6 +1,4 @@
-
-  
-  .ClientProfile {
+ .ClientProfile {
     overflow: hidden;
   }
   
@@ -113,12 +111,14 @@
   
   .rate {
     padding-bottom: 30px;
-    width: 80%;
+    width: 89.5%;
+    margin: auto;
   }
   
   .lowerProfile {
     width: 90%; /* This will make the item have the same width as upperProfile */
     margin: auto; /* This will center the item */
+   
   }
   
   .nav-links {
@@ -314,3 +314,14 @@
   margin: 10px 0;
 }
   
+.edit-profile-btn{
+  display: flex;
+  flex-direction:flex-end;
+  align-items:right;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
