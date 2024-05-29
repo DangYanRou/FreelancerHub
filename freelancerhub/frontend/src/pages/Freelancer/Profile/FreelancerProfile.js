@@ -4,7 +4,7 @@ import logo from "../../../Gallery/default-user.jpeg";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
-import Rating from "./FreelancerAverageReviewBox";
+import AverageReviewBox from "./FreelancerAverageReviewBox";
 import StarRating from "../../../components/Rating";
 import Heading from '../../../components/Heading';
 import { doc, getDocs, setDoc,collection,where,query} from "firebase/firestore";
@@ -364,7 +364,7 @@ const FreelancerProfile = () => {
             )}
           </div>
           <div className='rating'>
-            <div className="rate"><Rating></Rating></div>
+            <div className="rate"><AverageReviewBox feedbacks={feedbacks}/></div>
           </div>
         </div>
         <div className='lowerProfile'>
