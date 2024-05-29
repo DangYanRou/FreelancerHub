@@ -11,6 +11,7 @@ import { doc, getDocs, setDoc,collection,where,query} from "firebase/firestore";
 import { db } from "../../../firebase";
 import { getAuth, onAuthStateChanged} from "firebase/auth";
 import Loading from '../../../components/Loading';
+import Review from "./FreelancerProfileReviews";
 
 const FreelancerProfile = () => {
   const [loading, setLoading] = useState(true);
@@ -30,6 +31,7 @@ const FreelancerProfile = () => {
   });
   const [formData, setFormData] = useState({ ...profile });
   const [originalFormData, setOriginalFormData] = useState({});
+  const [feedbacks, setFeedbacks] = useState([]);
 
 
   useEffect(() => {
@@ -59,6 +61,19 @@ const FreelancerProfile = () => {
               backendSkills: userData.backendSkills || [],
               educations: userData.educations || [],
             });
+
+             //fetch feedbacks
+             const feedbacksCollection = collection(db, "feedback");
+             const feedbacksQuery = query(
+               feedbacksCollection,
+               where("to", "==", uid)
+             );
+             const feedbacksSnapshot = await getDocs(feedbacksQuery);
+             const feedbacksData = feedbacksSnapshot.docs.map((doc) => ({
+               id: doc.id,
+               ...doc.data(),
+             }));
+             setFeedbacks(feedbacksData);
           } else {
             console.log("No such document!");
           }
@@ -527,23 +542,12 @@ const FreelancerProfile = () => {
                 </div>
               </div>
             </div> 
-            <div id="reviews" style={{ display: showReviews ? 'block' : 'none' }}>
-              <p className='projects_text'>Let Us Listen To Others</p>
-              <h2 className='title'>Reviews</h2>
-              <div className='reviews_container'>
-                <div className='review_details'>
-                  <h3 className='review_name'>Agnes</h3><StarRating className='review_rating'></StarRating>
-                  <p>Nice Work! Keep it up</p>
-                </div>
-                <div className='review_details'>
-                  <h3 className='review_name'>Bill Gates</h3><StarRating className='review_rating'></StarRating>
-                  <p>Very responsive and work is completed on time. Definitely will work with you again soon!</p>
-                </div>
-                <div className='review_details'>
-                  <h3 className='review_name'>Zus Coffee Sdn. Bhd.</h3><StarRating className='review_rating'></StarRating>
-                  <p></p>
-                </div>
-              </div>
+            <div
+              id="reviews"
+              style={{ display: showReviews ? "block" : "none" }}
+            >
+              <h2 className="title">Reviews</h2>
+              <Review feedbacks={feedbacks} />
             </div>
           </div>
         </div>
