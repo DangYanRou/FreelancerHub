@@ -32,11 +32,12 @@ const FreelancerExplore = () => {
   const [appliedProjects, setAppliedProjects] = useState([]);
 
   const history = useHistory();
-  const handleApply = () => {
+
+  const handleApply = (projectID, clientID) => {
     history.push('/freelancers/proposal-form', {
       user_key: { freelancerID: user.id },
-      project_key: { projectID: "projectID1", clientID: "clientID1" }}
-    );
+      project_key: { projectID: projectID, clientID: clientID }
+    });
   };
 
   useEffect(() => {
@@ -225,7 +226,7 @@ const FreelancerExplore = () => {
             {hasApplied ? (
           <button id="applyButton" className="btn-disabled" disabled>Applied</button>
         ) : (
-          <button id="applyButton" onClick={() => handleApply(project.id)} className="btn btn-primary">Apply</button>
+          <button id="applyButton" onClick={() => handleApply(project.id, project.clientID)} className="btn btn-primary">Apply</button>
         )}
   
   

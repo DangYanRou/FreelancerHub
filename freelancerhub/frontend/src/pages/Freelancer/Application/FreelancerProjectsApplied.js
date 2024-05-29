@@ -10,6 +10,7 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import Heading from '../../../components/Heading';
 import { db } from '../../../firebase';  // Adjust the path as necessary
+import { getStorage, ref, deleteObject } from "firebase/storage";
 import { collection, query, getDocs, doc, getDoc,where,updateDoc,deleteDoc } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
 import { useUser } from '../../../context/UserContext';
@@ -168,25 +169,53 @@ const FreelancerProjectsApplied = () => {
 
   const handleCancelApplication = async (projectId) => {
     try {
-      const proposalsQuery = query(
-        collection(db, 'proposals'),
-        where('freelancerID', '==', user.id),
-        where('projectID', '==', projectId)
-      );
-      const proposalSnapshot = await getDocs(proposalsQuery);
-      const proposalDoc = proposalSnapshot.docs[0];
-      if (proposalDoc) {
-        await deleteDoc(doc(db, 'proposals', proposalDoc.id));
-        setProjects(projects.filter(project => project.id !== projectId));
-        setShowCancelApplicationModal(false); // Close confirmation modal
-        setShowSuccessModal(true); // Open success modal
-        handleCloseModal();
-        setTimeout(()=>setShowSuccessModal(false),1000);
-      }
+        const proposalsQuery = query(
+            collection(db, 'proposals'),
+            where('freelancerID', '==', user.id),
+            where('projectID', '==', projectId)
+        );
+        const proposalSnapshot = await getDocs(proposalsQuery);
+        const proposalDoc = proposalSnapshot.docs[0];
+        if (proposalDoc) {
+            const proposalData = proposalDoc.data();
+            await deleteDoc(doc(db, 'proposals', proposalDoc.id));
+
+            // Delete CV
+            if (proposalData.cvUrl) {
+                const storage = getStorage();
+                const fileRef = ref(storage, proposalData.cvUrl);
+
+                try {
+                    await deleteObject(fileRef);
+                    console.log('CV deleted successfully');
+                } catch (error) {
+                    console.error('Error deleting CV:', error);
+                }
+            }
+
+            // Delete proposal
+            if (proposalData.proposalUrl) {
+                const storage = getStorage();
+                const fileRef = ref(storage, proposalData.proposalUrl);
+
+                try {
+                    await deleteObject(fileRef);
+                    console.log('Proposal deleted successfully');
+                } catch (error) {
+                    console.error('Error deleting proposal:', error);
+                }
+            }
+
+            setProjects(projects.filter(project => project.id !== projectId));
+            setShowCancelApplicationModal(false); // Close confirmation modal
+            setShowSuccessModal(true); // Open success modal
+            handleCloseModal();
+            setTimeout(() => setShowSuccessModal(false), 1000);
+        }
     } catch (error) {
-      console.error("Error cancelling application: ", error);
+        console.error("Error cancelling application: ", error);
     }
-  };
+};
 
   return (
     <div className="ProjectsApplied">

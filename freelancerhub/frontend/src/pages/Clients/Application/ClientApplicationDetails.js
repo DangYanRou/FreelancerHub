@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-use-history';
 import { useLocation } from 'react-router-dom';
 import Loading from '../../../components/Loading';
 import { db } from '../../../firebase';
-import { collection, doc, getDoc,updateDoc,addDoc, deleteDoc } from "firebase/firestore";
+import { collection, doc, getDoc, updateDoc, addDoc, deleteDoc } from "firebase/firestore";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import Heading from '../../../components/Heading';
 import { ButtonGroup, Button } from 'flowbite-react';
@@ -14,6 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const ClientApplicationDetails = () => {
     const location = useLocation();
+    console.log(location.state);
     const history = useHistory();
     const [loading, setLoading] = useState(true);
     const { freelancerID, projectID } = location.state.proposal_key;
@@ -44,7 +45,7 @@ const ClientApplicationDetails = () => {
                         const clientSnap = await getDoc(clientRef);
                         if (clientSnap.exists()) {
                             const clientData = clientSnap.data();
-                            setClientName(clientData.clientName);
+                            setClientName(clientData.username);
                         } else {
                             console.log('No such client document!');
                         }
@@ -65,7 +66,7 @@ const ClientApplicationDetails = () => {
     }, [freelancerID, projectID, user.id]);
 
     if (loading) {
-        return <div><Loading text='Loading...' /></div>;
+        return <div><Loading text={loading} /></div>;
     }
 
     const handleProfileClick = (freelancerID) => {
@@ -81,82 +82,94 @@ const ClientApplicationDetails = () => {
         window.location.href = mailToLink;
     };
 
-    const handleAcceptClick = async() => {
-
+    const handleAcceptClick = async () => {
         const isConfirmed = window.confirm("Are you sure you want to accept this application?");
         if (!isConfirmed) return;
-
-        try{
-            //update project status
+    
+        try {
+            setLoading("Accepting..."); // Set loading to "Accepting..."
+    
+            // Update project status
             if (proposalDetails.projectID) {
                 const projectRef = doc(db, "projects", proposalDetails.projectID);
                 try {
                     await updateDoc(projectRef, {
-                        statusState: 3
+                        statusState: 3,
+                        freelancerID: proposalDetails.freelancerID
                     });
                     console.log("Project status updated successfully");
                 } catch (error) {
                     console.error("Error updating project status: ", error);
                 }
             }
-
-            //notify freelancer
+    
+            // Update Proposals
+            const proposalRef = doc(db, "proposals", proposalDetails.proposalID);
+            try {
+                await updateDoc(proposalRef, {
+                    statusState: 3,
+                });
+                console.log("Proposal status updated successfully");
+            } catch (error) {
+                console.error("Error updating proposal status: ", error);
+            }
+    
+            // Notify freelancer
             const notificationToFreelancerData = {
                 isRead: false,
                 isPop: false,
                 timestamp: new Date(),
-                type: 4, 
+                type: 4,
                 priority: 2,
                 projectID: proposalDetails.projectID,
                 clientID: user.id,
                 to: proposalDetails.freelancerID
             };
             await addDoc(collection(db, 'notifications'), notificationToFreelancerData);
-
-            //notify client
+    
+            // Notify client
             const notificationToClientData = {
                 isRead: false,
                 isPop: false,
                 timestamp: new Date(),
-                type: 3, 
+                type: 3,
                 priority: 2,
                 projectID: proposalDetails.projectID,
                 freelancerID: proposalDetails.freelancerID,
                 to: user.id
             };
             await addDoc(collection(db, 'notifications'), notificationToClientData);
-
+    
             setTimeout(() => {
                 history.push('project-posted');
+                setLoading(false); // Set loading to false after navigation
             }, 2000);
         } catch (error) {
             toast.error('Error accepting application! Please try again.');
+            setLoading(false); // Set loading to false if there is an error
         }
     };
 
-    const handleRejectClick = async() => {
-
+    const handleRejectClick = async () => {
         const isConfirmed = window.confirm("Are you sure you want to reject this application?");
         if (!isConfirmed) return;
-
-        try{
+    
+        try {
+            setLoading("Rejecting...");
             //delete application
-            if (proposalDetails.proposalID) {
-                try{
-                    const proposalID = `${projectID}_${freelancerID}`;
-                    const proposalRef = doc(db, 'proposals', proposalID);
-                    await deleteDoc(proposalRef);
-                }catch(error){
-                    console.log("Error in deleting application!")
-                }
-                
+            try {
+                const proposalID = `${projectID}_${freelancerID}`;
+                const proposalRef = doc(db, 'proposals', proposalID);
+                await deleteDoc(proposalRef);
+            } catch (error) {
+                console.log("Error in deleting application!")
             }
-
+    
             //delete cv
-            if(proposalDetails.cvUrl){
+            if (proposalDetails.cvUrl) {
                 const storage = getStorage();
                 const fileRef = ref(storage, proposalDetails.cvUrl);
-
+    
                 try {
                     await deleteObject(fileRef);
                     console.log('cv deleted successfully');
@@ -164,12 +177,12 @@ const ClientApplicationDetails = () => {
                     console.error('Error deleting cv:', error);
                 }
             }
-
+    
             //delete proposal
-            if(proposalDetails.proposalUrl){
+            if (proposalDetails.proposalUrl) {
                 const storage = getStorage();
                 const fileRef = ref(storage, proposalDetails.proposalUrl);
-
+    
                 try {
                     await deleteObject(fileRef);
                     console.log('proposal deleted successfully');
@@ -177,38 +190,38 @@ const ClientApplicationDetails = () => {
                     console.error('Error deleting proposal:', error);
                 }
             }
-
+    
             //notify freelancer
             const notificationToFreelancerData = {
                 isRead: false,
                 isPop: false,
                 timestamp: new Date(),
-                type: 3.5, 
+                type: 3.5,
                 priority: 2,
                 projectID: proposalDetails.projectID,
                 clientID: user.id,
                 to: proposalDetails.freelancerID
             };
             await addDoc(collection(db, 'notifications'), notificationToFreelancerData);
-
+    
             //notify client
             const notificationToClientData = {
                 isRead: false,
                 isPop: false,
                 timestamp: new Date(),
-                type: 4.5, 
+                type: 4.5,
                 priority: 2,
                 projectID: proposalDetails.projectID,
                 freelancerID: proposalDetails.freelancerID,
                 to: user.id
             };
             await addDoc(collection(db, 'notifications'), notificationToClientData);
-
-            setTimeout(() => {
-                history.push('project-posted');
-            }, 2000);
+    
+            setLoading(false); // Set loading to false before navigating
+            history.push('project-posted');
         } catch (error) {
             toast.error('Error rejecting application! Please try again.');
+            setLoading(false); // Set loading to false if there is an error
         }
     };
     
