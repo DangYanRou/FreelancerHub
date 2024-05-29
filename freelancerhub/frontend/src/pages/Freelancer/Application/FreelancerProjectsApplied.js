@@ -13,6 +13,7 @@ import { db } from '../../../firebase';  // Adjust the path as necessary
 import { collection, query, getDocs, doc, getDoc,where,updateDoc,deleteDoc } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
 import { useUser } from '../../../context/UserContext';
+import { format } from 'date-fns';
 
 
 
@@ -44,7 +45,7 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
   };
 
   if (!project) return null;
-  
+  const formattedDate = project.date ? format(project.date.toDate(), 'dd/MM/yyyy') : '';
   const statusMessage = getStatusType(project.statusState);
 
   return (
@@ -55,7 +56,7 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
       <p><FaLocationDot className="icon-style" />{project.location}</p>
       <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
       <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
-      <p>Starting from: {project.date}</p>
+      <p>Starting from: {formattedDate}</p>
       <h3 id="status">Status:</h3>
       <p className="detail-status">{statusMessage}</p>
       <p className="detail-date">{project.applyDate}</p> {/*rmb add this !! apply btn */}
@@ -113,10 +114,11 @@ const FreelancerProjectsApplied = () => {
   const [status, setStatus] = useState(1); // Add status state here
   const { user } = useUser();
 
-  useEffect(() => {
+  useEffect(() => {   {/*here need to get proposal stateStatus adn update to project state  */}
     const fetchProjects = async () => {
       try {
         const proposalsQuery = query(collection(db, 'proposals'),where('freelancerID','==',user.id))
+        console.log(user.id) ;{/* now is freelancerID havent fetch, but after fetch may cause memory leakage */}
         
         const proposalSnapshot = await getDocs(proposalsQuery);
         const projectPromises = proposalSnapshot.docs.map(async (proposalDoc) => {

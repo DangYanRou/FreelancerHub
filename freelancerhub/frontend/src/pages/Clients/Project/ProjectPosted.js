@@ -12,6 +12,7 @@ import { collection, query, getDocs, where,doc,updateDoc,deleteDoc} from 'fireba
 import { useUser } from '../../../context/UserContext';
 import Loading from '../../../components/Loading';
 import { getAuth, onAuthStateChanged} from "firebase/auth";
+import { format } from 'date-fns';
 
 const ProjectPosted = () => {
     const [selectedProject, setSelectedProject] = useState(null);
@@ -107,6 +108,8 @@ const ProjectPosted = () => {
 
     const ProjectDetails = ({ project }) => {
         if (!project) return null;
+       const formattedDate = project.date ? format(project.date.toDate(), 'dd/MM/yyyy') : '';
+
         
         return (
             <div className="project-details">
@@ -116,7 +119,7 @@ const ProjectPosted = () => {
                 <p><FaLocationDot className="icon-style" />{project.location}</p>
                 <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
                 <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
-                <p>Starting from: {project.date}</p>
+                <p>Starting from: {formattedDate}</p>
                 <h3 id="about-the-project">About the Project:</h3>
                 <p>{project.description}</p>
                 <div>

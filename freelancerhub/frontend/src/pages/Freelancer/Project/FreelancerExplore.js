@@ -17,6 +17,7 @@ import { useUser } from '../../../context/UserContext';
 import { db } from '../../../firebase'; 
 import { getDocs, collection } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
+import { format } from 'date-fns';
 
 
 const FreelancerExplore = () => {  
@@ -28,6 +29,7 @@ const FreelancerExplore = () => {
   const [bookmarkedProjects, setBookmarkedProjects] = useState({});
   const [selectedProject,setSelectedProject]=useState(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [appliedProjects, setAppliedProjects] = useState([]);
 
   const history = useHistory();
   const handleApply = () => {
@@ -47,6 +49,17 @@ const FreelancerExplore = () => {
           ...doc.data()
         }));
         setProjects(projectsData);
+
+        if (user) {
+          const proposalsRef = collection(db, 'proposals');
+          const proposalsSnapshot = await getDocs(proposalsRef);
+          const appliedProjectsData = proposalsSnapshot.docs
+            .filter(doc => doc.id.endsWith(`_${user.id}`))
+            .map(doc => doc.id.split('_')[0]); // Extract projectID from documentID
+
+          setAppliedProjects(appliedProjectsData);
+        }
+
       } catch (error) {
         console.error('Error fetching projects: ', error);
       }finally{
@@ -185,7 +198,8 @@ const FreelancerExplore = () => {
   
   const ProjectDetails =({project}) => {
     if(!project)return null;
-    
+    const hasApplied = appliedProjects.includes(project.id);
+    const formattedDate = project.date ? format(project.date.toDate(), 'dd/MM/yyyy') : '';
     return(
       <div className="project-details">
         <h2 id="detail-title">{project.title}</h2>
@@ -194,7 +208,7 @@ const FreelancerExplore = () => {
             <p><FaLocationDot className="icon-style"/>{project.location}</p>
             <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
             <p><BiTimeFive size={20}className='icon-style2' />{project.duration} {project.durationUnit}</p> 
-            <p>Starting from: {project.date}</p>
+            <p>Starting from: {formattedDate}</p>
            
             <h3 id="about-the-project">About the Project:</h3>
             <p>{project.description}</p>
@@ -208,7 +222,11 @@ const FreelancerExplore = () => {
             </div>
             <h3 id="preferredQualification">Preferred Qualification:</h3>
             <p>{project.preferredQualification}</p>
-              <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
+            {hasApplied ? (
+          <button id="applyButton" className="btn-disabled" disabled>Applied</button>
+        ) : (
+          <button id="applyButton" onClick={() => handleApply(project.id)} className="btn btn-primary">Apply</button>
+        )}
   
   
       </div>
