@@ -51,7 +51,7 @@ const CreateProjectPreferred = () => {
     navigate("/clients/post-project-invite");
   };
 
-  const [preferredSkills, setSkillInput] = useState('');
+const [preferredSkills, setSkillInput] = useState('');
 
 const handleKeyDown = (event) => {
   if (event.key === 'Enter') {
@@ -68,10 +68,13 @@ const handleKeyDown = (event) => {
 };
 
 const handleDelete = (skillToDelete) => {
-  setProject({
-    ...project,
-    skills: project.skills.filter(skill => skill !== skillToDelete),
-  });};
+  if (project.preferredSkills) {
+    setProject({
+      ...project,
+      preferredSkills: project.preferredSkills.filter(skill => skill !== skillToDelete),
+    });
+  }
+};
 
 const [keywordsInput, setKeywordsInput] = useState('');
 
@@ -122,12 +125,13 @@ const handleResKeyDown = (event) => {
 };
 
 const handleResDelete = (ResToDelete) => {
-  setProject({
-    ...project,
-    jobResponsibilities: project.jobResponsibilities.filter(responsibility => responsibility !== ResToDelete),
-  });
+  if (project.jobResponsibilities) {
+    setProject({
+      ...project,
+      jobResponsibilities: project.jobResponsibilities.filter(responsibility => responsibility !== ResToDelete),
+    });
+  }
 };
-
 
 
   return (
@@ -161,6 +165,7 @@ const handleResDelete = (ResToDelete) => {
       <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
         <span>#{responsibilities}</span>
         <button 
+          type="button"
           onClick={() => handleResDelete(responsibilities)} 
           className="ml-1 cursor-pointer font-bold items-center"
           style={{ background: 'none', border: 'none' }}
@@ -196,6 +201,7 @@ const handleResDelete = (ResToDelete) => {
   <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
     <span>#{skill}</span>
     <button 
+      type="button"
       onClick={() => handleDelete(skill)} 
       className="ml-1 cursor-pointer font-bold items-center"
       style={{ background: 'none', border: 'none' }}
@@ -221,6 +227,7 @@ const handleResDelete = (ResToDelete) => {
   <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
     <span>#{keyword}</span>
     <button 
+      type="button"
       onClick={() => handleKeywordDelete(keyword)} 
       className="ml-1 cursor-pointer font-bold items-center"
       style={{ background: 'none', border: 'none' }}
