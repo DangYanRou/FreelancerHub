@@ -171,3 +171,14 @@ margin-bottom: 1.5rem;
     font-size: 30px;
 }
 
+.btn-disabled{
+    background-color: #BEBEBE;
+    padding:9px 28px; /* Adjust padding to increase button size */
+    border: none; /* Remove default border */
+    font-size: 16px;
+    color: black;
+    border-radius: 8px; 
+    cursor: pointer; /* Change cursor to pointer on hover */
+    margin-bottom: 3rem;
+}
+

@@ -12,6 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { collection, addDoc } from "firebase/firestore";
 import Heading from "../../../components/Heading";
+import NavigationBarFreelancer from "../../../nav/NavigationBarFreelancer";
 
 const ApplicationForm = () => {
   const history = useHistory();

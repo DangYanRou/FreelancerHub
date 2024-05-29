@@ -11,7 +11,7 @@ import { db } from '../../../firebase'; // Adjust the path as necessary
 import { collection, query, getDocs, where,doc,updateDoc,deleteDoc} from 'firebase/firestore';
 import { useUser } from '../../../context/UserContext';
 import Loading from '../../../components/Loading';
-import { getAuth, onAuthStateChanged} from "firebase/auth";
+import { format } from 'date-fns';
 
 const ProjectPosted = () => {
     const [selectedProject, setSelectedProject] = useState(null);
@@ -21,31 +21,25 @@ const ProjectPosted = () => {
 
 
     useEffect(() => {
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            try {
-                if (user) {
-                    console.log(user.uid);
-                    const projectsRef = collection(db, 'projects');
-                    const q = query(projectsRef, where('clientID', '==', user.uid));
-                    const querySnapshot = await getDocs(q);
-                    const projectsList = querySnapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }));
-                    setProjects(projectsList);
-                } 
-            } catch (error) {
-                console.error("Error fetching projects: ", error);
-            } finally {
-                setLoading(false);
-            }
-        });
-    
-        return () => {
-            unsubscribe(); // Unsubscribe when the component unmounts
+        const fetchProjects = async () => {
+          try {
+            const projectsRef = query(collection(db, 'projects'),where('clientID','==',user.id));
+            console.log("client:"+user.id) // Use the correct method for collection reference
+            const snapshot = await getDocs(projectsRef); // Fetch the documents
+            const projectsData = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+            setProjects(projectsData);
+          } catch (error) {
+            console.error('Error fetching projects: ', error);
+          }finally{
+            setLoading(false);
+          }
         };
-    }, [user]);
+    
+        fetchProjects();
+      }, []);
     
     const handleProjectClick = (project) => {
         setSelectedProject(project);
@@ -107,6 +101,8 @@ const ProjectPosted = () => {
 
     const ProjectDetails = ({ project }) => {
         if (!project) return null;
+       const formattedDate = project.date ? format(project.date.toDate(), 'dd/MM/yyyy') : '';
+
         
         return (
             <div className="project-details">
@@ -116,7 +112,7 @@ const ProjectPosted = () => {
                 <p><FaLocationDot className="icon-style" />{project.location}</p>
                 <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
                 <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
-                <p>Starting from: {project.date}</p>
+                <p>Starting from: {formattedDate}</p>
                 <h3 id="about-the-project">About the Project:</h3>
                 <p>{project.description}</p>
                 <div>

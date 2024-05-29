@@ -8,6 +8,7 @@ import Rating from "./FreelancerAverageReviewBox";
 import StarRating from "../../../components/Rating";
 import { useHistory } from 'react-router-use-history';
 import Heading from '../../../components/Heading';
+import NavigationBarFreelancer from '../../../nav/NavigationBarFreelancer';
 
 const FreelancerProfile = () => {
   const history = useHistory(); 
