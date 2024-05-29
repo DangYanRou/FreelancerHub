@@ -14,6 +14,7 @@ import { useUser } from '../../../context/UserContext';
 import { db } from "../../../firebase";
 import { collection, query, where, orderBy, getDocs, doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
 import Loading from '../../../components/Loading';
+import NavigationBarFreelancer from '../../../nav/NavigationBarFreelancer';
 
 
 /*
