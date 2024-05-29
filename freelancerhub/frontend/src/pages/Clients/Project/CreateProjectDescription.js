@@ -135,25 +135,10 @@ const handleInputChange = (event) => {
 };
 
 const handleDateChange = (date) => {
-  if(date){
-    let day = date.getDate();
-    let month = date.getMonth() + 1; // Months are zero based
-    let year = date.getFullYear();
-
-    // Pad the day and month with leading zeros if necessary
-    day = day < 10 ? '0' + day : day;
-    month = month < 10 ? '0' + month : month;
-
-    setProject({
-      ...project,
-      date: `${day}/${month}/${year}`,
-    });
-  } else {
-    setProject({
-      ...project,
-      date: '',
-    });
-  }
+  setProject({
+    ...project,
+    date: date || null,
+  });
 };
 
   return (
@@ -201,13 +186,12 @@ id="projectCategory" name="category" value={project.category} onChange={handleIn
   <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectStartTime">Project Start Time: </label>
     <DatePicker
     required
-      selected={project.date}
+    selected={project.date}
       onChange={handleDateChange}
       dateFormat="dd/MM/yyyy"
       placeholderText='dd/mm/yyyy'
       className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
     />
-    {/* ... */}
 
   <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="duration">Duration: </label>
     <div className="flex items-center">
