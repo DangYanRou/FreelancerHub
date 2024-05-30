@@ -11,6 +11,7 @@ import Modal from '@mui/material/Modal';
 import { db } from "../firebase";
 import { collection, query, where, orderBy, getDocs, doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { useEffect, useState } from 'react';
+import { auth } from '../firebase';
 
 
 const headerStyle = {
@@ -42,17 +43,20 @@ export default function BasicTable() {
   const favouriteFreelancerRef = collection(db, "favouriteFreelancer");
   
   const getFavouriteFreelancerList = async () => {
-      try {
-        const data = await getDocs(favouriteFreelancerRef);
-        const filteredData = data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setFavouriteFreelancerList(filteredData);
-      } catch (error) {
-        console.log(error.message);
-      }
-  };
+  try {
+    const userID = auth.currentUser.uid;
+    const q = query(favouriteFreelancerRef, where("clientID", "==", userID));
+
+    const data = await getDocs(q);
+    const filteredData = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setFavouriteFreelancerList(filteredData);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
   useEffect(() => {  
     getFavouriteFreelancerList();
@@ -82,7 +86,7 @@ export default function BasicTable() {
                 {row.name}
               </TableCell>
               <TableCell align="right" style={cellStyle}>{row.email}</TableCell>
-              <TableCell align="right" style={cellStyle}>{row.jobTitle}</TableCell>
+              <TableCell align="right" style={cellStyle}>{row.job}</TableCell>
               <TableCell align="right" style={cellStyle}>{row.rating}</TableCell>
             </TableRow>
           ))}
