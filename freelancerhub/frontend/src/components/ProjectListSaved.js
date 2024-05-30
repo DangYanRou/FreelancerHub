@@ -11,7 +11,7 @@ const ProjectList=({projects,onProjectClick,selectedProjectId}) => {
             <a href="#" className="hover-profileLink">{blog.client}</a>
             <p id="category">{blog.category}</p>
             <p>{blog.location}</p>
-            <p>{blog.budget}/project</p>
+            <p>{blog.minInput}-{ blog.maxInput}/project</p>
   
              <p className="apply-status">{blog.status}</p>
              <p className="apply-date">{blog.applyDate}</p>

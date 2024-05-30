@@ -109,7 +109,7 @@ export default function BioCardClient() {
         <CardActions buttonFlex="1">
           <ButtonGroup variant="outlined" sx={{ bgcolor: 'background.surface' }}>
             <Button>Remove</Button>
-            <Button onClick={()=>navigate('/freelancers/client-temporary-profile')}>Go To Profile</Button>
+            {/* <Button onClick={()=>navigate('/freelancers/client-temporary-profile')}>Go To Profile</Button> */}
           </ButtonGroup>
         </CardActions>
       </CardOverflow>
