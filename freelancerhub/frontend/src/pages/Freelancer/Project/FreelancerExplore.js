@@ -14,7 +14,7 @@ import { BsBookmark } from "react-icons/bs";
 import { BsBookmarkCheckFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import { useUser } from '../../../context/UserContext';
-import { db } from '../../../firebase'; 
+import { db, auth } from '../../../firebase'; 
 import { getDocs, collection, addDoc } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
 import { format } from 'date-fns';
@@ -32,10 +32,12 @@ const FreelancerExplore = () => {
   const [appliedProjects, setAppliedProjects] = useState([]);
 
   //deon
-     const handleSave = async (project) => {
+  const handleSave = async (project) => {
     try {
       const collectionRef = collection(db, 'favouriteProject');
-      await addDoc(collectionRef, project);
+      const userID = auth.currentUser.uid;
+      const projectWithSavedBy = { ...project, savedBy: userID };
+      await addDoc(collectionRef, projectWithSavedBy);
       alert('Project saved successfully!');
     } catch (error) {
       console.error('Error saving project: ', error);
@@ -133,6 +135,7 @@ const FreelancerExplore = () => {
     );
   
   }
+  
   const handleCloseModal = () => {
     setSelectedProject(null);
  }
