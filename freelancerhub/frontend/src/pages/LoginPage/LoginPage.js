@@ -8,8 +8,8 @@ import Switch from "../../components/Switch";
 import { useNotification } from '../../context/NotificationContext';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import {getDocs,collection, where, query} from 'firebase/firestore'
-import { db,auth } from '../../firebase';
-import { get } from 'vant/lib/utils';
+import { db, auth } from '../../firebase';
+// import { get } from 'vant/lib/utils';
 
 
 const LoginPage = () => {

@@ -1,6 +1,6 @@
 import React,{ useState } from 'react'
 import Heading from '../../../components/Heading';
-import BasicTable from '../../../components/BasicTableClient';
+import BasicTable from '../../../components/BasicTable';
 
 const ClientSaved = () => {
 
