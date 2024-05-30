@@ -15,6 +15,7 @@ import { auth } from '../firebase';
 
 
 const headerStyle = {
+  backgroundColor: 'lightblue',
   fontFamily: 'Poppins',
   fontWeight: 'bold'
 };
@@ -70,8 +71,8 @@ export default function BasicTable() {
           <TableRow>
             <TableCell style={headerStyle}>Name</TableCell>
             <TableCell align="right" style={headerStyle}>Email</TableCell>
-            <TableCell align="right" style={headerStyle}>Job Title</TableCell>
-            <TableCell align="right" style={headerStyle}>Rating</TableCell>
+              <TableCell align="right" style={headerStyle}>Job Title</TableCell>
+              <TableCell style={headerStyle} />
           </TableRow>
         </TableHead>
         <TableBody >

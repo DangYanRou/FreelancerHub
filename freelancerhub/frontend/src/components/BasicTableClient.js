@@ -12,7 +12,9 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { useEffect, useState } from 'react';
 import BioCard from './BioCard';
 
+
 const headerStyle = {
+  backgroundColor: 'lightblue',
   fontFamily: 'Poppins',
   fontWeight: 'bold'
 };
@@ -65,7 +67,7 @@ export default function BasicTableClient() {
               <TableCell style={headerStyle}>Name</TableCell>
               <TableCell align="right" style={headerStyle}>Email</TableCell>
               <TableCell align="right" style={headerStyle}>Phone Number</TableCell>
-              <TableCell align="right" style={headerStyle}>Rating</TableCell>
+              <TableCell align="right" style={headerStyle}/>
             </TableRow>
           </TableHead>
           <TableBody>

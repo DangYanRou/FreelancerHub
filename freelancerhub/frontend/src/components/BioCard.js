@@ -12,9 +12,20 @@ import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import SvgIcon from '@mui/joy/SvgIcon';
 import { useNavigate } from 'react-router-dom';
+import { db } from "../firebase";
+import { doc, deleteDoc } from "firebase/firestore";
 
 export default function BioCard({ client}) {
   const navigate = useNavigate();
+
+  const removeClient =async(id)=>{
+	try{
+		const clientDoc= doc(db,"favouriteClient",id);
+		await deleteDoc(clientDoc);
+	}catch(error){
+		console.log(error.message);
+	}
+}
 
   return (
     <div>
@@ -72,7 +83,7 @@ export default function BioCard({ client}) {
           <CardOverflow sx={{ bgcolor: 'background.level1' }}>
             <CardActions buttonFlex="1">
               <ButtonGroup variant="outlined" sx={{ bgcolor: 'background.surface' }}>
-                <Button>Remove</Button>
+                <Button onClick={()=>removeClient(client.id)}>Remove</Button>
                 {/* <Button onClick={() => navigate('/clients/freelancer-temporary-profile')}>Go To Profile</Button> */}
               </ButtonGroup>
             </CardActions>
