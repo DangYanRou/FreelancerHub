@@ -12,11 +12,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { collection, addDoc,getDoc } from "firebase/firestore";
 import Heading from "../../../components/Heading";
+import ConfirmationDialog from "../../../components/ConfirmationDialog";
 
 const ApplicationForm = () => {
   const history = useHistory();
   const location = useLocation();
-  console.log(location);
+  console.log(location.state);
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
+
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -94,10 +97,15 @@ const ApplicationForm = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    const isConfirmed = window.confirm("Are you sure you want to submit?");
-    if (!isConfirmed) return;
+    console.log("confitmation:",location.state);
+    setConfirmationOpen(true);
+  };
 
+  const handleCancelSubmission = async (event) => {
+    setConfirmationOpen(false);
+  };
+
+  const confirmSubmit = async (event) =>{
     setLoading("Submitting...");
     try {
       const { projectID, clientID } = location.state.project_key;
@@ -118,6 +126,7 @@ const ApplicationForm = () => {
         notes: formData.notes || '',
         projectID : location.state.project_key.projectID,
         freelancerID : location.state.user_key.freelancerID,
+        clientID: location.state.project_key.clientID,
         createdAt: new Date(),
         statusState:2
       };
@@ -170,8 +179,16 @@ const ApplicationForm = () => {
       <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
         Application
       </Heading>
+
+      <ConfirmationDialog
+        open={confirmationOpen}
+        onClose={handleCancelSubmission}
+        onConfirm={confirmSubmit}
+        message="Are you sure you want to submit the application?"
+      />
+
       <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
-      <form onSubmit={handleSubmit} className="proposalForm">
+      
         <div className="proposal-form">
           <div className="proposal-form-left">
 
@@ -217,7 +234,7 @@ const ApplicationForm = () => {
               onChange={handleChange}
             />
 
-            <button type="submit" className="proposalSubmitButton">Submit</button>
+            <button className="proposalSubmitButton" onClick={(event) => handleSubmit(event)}>Submit</button>
 
           </div>
 
@@ -303,7 +320,6 @@ const ApplicationForm = () => {
 
           </div>
         </div>
-      </form>
     </div>
   );
 };
