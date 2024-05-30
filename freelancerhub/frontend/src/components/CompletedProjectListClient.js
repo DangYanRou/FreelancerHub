@@ -19,6 +19,7 @@ const CompletedProjectListClient = ({ projects }) => {
     }));
   };
 
+  //deon
   const addFavouriteFreelancer = async (freelancerID, clientID) => {
   // Get freelancer data
   const freelancerRef = doc(db, 'freelancers', freelancerID);
@@ -37,6 +38,7 @@ const CompletedProjectListClient = ({ projects }) => {
     console.log('No such freelancer!');
   }
 };
+  //deon
 
   return (
     <div className="jl-centered-container ">

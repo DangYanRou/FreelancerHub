@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
+import { db } from "../firebase";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 
 const CompletedProjectListClient = ({ projects }) => {
   const navigate = useNavigate();
@@ -16,6 +18,27 @@ const CompletedProjectListClient = ({ projects }) => {
       [projectId]: !prev[projectId], // Toggle true/false upon click
     }));
   };
+
+    //deon
+  const addFavouriteClient = async (clientID, freelancerID) => {
+  // Get client data
+  const clientRef = doc(db, 'clients', clientID);
+  const clientSnap = await getDoc(clientRef);
+
+  if (clientSnap.exists()) {
+    const clientData = clientSnap.data();
+
+    // Save freelancer data in 'favouriteClient' collection
+    const favouriteClientRef = doc(collection(db, 'favouriteClient'));
+    await setDoc(favouriteClientRef, {
+      ...clientData,
+      freelancerID,
+    });
+  } else {
+    console.log('No such client!');
+  }
+};
+  //deon
 
   return (
     <div className="jl-centered-container ">
@@ -44,7 +67,11 @@ const CompletedProjectListClient = ({ projects }) => {
             <div className="buttonContainer">
               <button
                 className="favouriteBtn"
-                onClick={() => toggleFavourite(project.id)}
+                onClick={() => {
+                  toggleFavourite(project.id);
+                  addFavouriteClient(project.clientID, project.freelancerID);
+                }
+                }
                 onMouseEnter={() =>
                   setHover((prev) => ({ ...prev, [project.id]: true }))
                 }
