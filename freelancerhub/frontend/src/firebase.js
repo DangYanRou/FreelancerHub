@@ -31,21 +31,19 @@ export { db, storage,auth,ref, getDownloadURL  };
 export const addProject = async (projectInfo) => {
   console.log('Adding project:', projectInfo);
   try {
-    // Fetch the current number of projects
-    const querySnapshot = await getDocs(collection(db, "projects"));
-    const projectCount = querySnapshot.size;
     const user = auth.currentUser;
     const uid = user.uid;
-    // Generate the new document ID
-    const docID = `projectID${projectCount + 1}`; // this will be 'projectID1' for the first project, 'projectID2' for the second, etc.
+
+    // Generate a new document ID
+    const docRef = doc(collection(db, "projects"));
+    const docID = docRef.id;
+
+    // Add the new project with the custom document ID
+    await setDoc(docRef, projectInfo);
 
     await setDoc(doc(db, "clients", uid), {
       createdProjects: arrayUnion(docID)
     }, { merge: true });    
-    // const docID = `projectID${projectCount + 1}`; // this will be 'projectID1' for the first project, 'projectID2' for the second, etc.
-
-    // Add the new project with the custom document ID
-    await setDoc(doc(db, "projects", docID), projectInfo);
 
     console.log("Document written with ID: ", docID);
   } catch (e) {
