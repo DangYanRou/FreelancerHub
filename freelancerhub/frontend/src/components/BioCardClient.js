@@ -13,11 +13,12 @@ import Typography from '@mui/joy/Typography';
 import SvgIcon from '@mui/joy/SvgIcon';
 import { useNavigate } from 'react-router-dom';
 
-export default function BioCardClient() {
+export default function BioCardClient({ client, onClientClick, selectedClientId }) {
 
   const navigate = useNavigate();
 
   return (
+    
     <Card
       sx={{
         width: 320,
@@ -40,7 +41,7 @@ export default function BioCardClient() {
         >
           PRO
         </Chip>
-        <Typography level="title-lg">Google Inc.</Typography>
+        <Typography level="title-lg">Google.</Typography>
         <Typography level="body-sm" sx={{ maxWidth: '24ch' }}>
         Google LLC is an American multinational corporation and technology company
         </Typography>

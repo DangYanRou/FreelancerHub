@@ -135,6 +135,7 @@ const FreelancerExplore = () => {
     );
   
   }
+  
   const handleCloseModal = () => {
     setSelectedProject(null);
  }
