@@ -215,7 +215,7 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-      
+      history.push("/freelancers/projects-applied",{projectID:item.projectID,freelancerID:item.to});
       //prompt freelancer with the card that contains the status bar, call
       //item.projectID to get projectID
       //item.clientID to get clientID
@@ -250,7 +250,7 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-
+      
       //prompt freelancer with the card that contains the apply button, call
       //item.projectID to get projectID
       //item.clientID to get clientID
