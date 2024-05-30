@@ -9,23 +9,23 @@ import Loading from "../../../components/Loading";
 import '../../../styles/Freelancers/FreelancerCompletedProject.css';
 
 const ProjectCompletedPage = () => {
-  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
-  const user = auth.currentUser;
+  const { user } = useUser();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+  
     const fetchProjects = async () => {
       try {
         if (user) {
-          console.log(user.uid);
+          console.log(user.id);
           const projectsCollection = collection(db, "projects");
           const completedProjectsQuery = query(
             projectsCollection,
             where("statusState", "==", 5),
-            where("freelancerID", "==", user.uid)        
+            where("freelancerID", "==", user.id)        
           );
+          console.log(user.id)
           const querySnapshot = await getDocs(completedProjectsQuery);
           const projectsData = querySnapshot.docs.map((doc) => ({
             id: doc.id,
@@ -41,9 +41,7 @@ const ProjectCompletedPage = () => {
     fetchProjects();
   }, []);
    // Cleanup function to unsubscribe from the listener when the component unmounts
-   return () => unsubscribe();
-  }, []);
-
+ 
   if (loading) {
     return (
       <div>

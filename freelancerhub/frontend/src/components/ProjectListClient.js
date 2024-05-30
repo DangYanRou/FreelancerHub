@@ -52,7 +52,7 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
                 setTimeout(() => {
                     closeModal();
                     history.push('/clients/project-completed');
-                }, 1000);
+                }, 2000);
             }, 2000);
         } else if (selectedPaymentMethod==null){ {/* */}
             alert("Please select a payment method first.");

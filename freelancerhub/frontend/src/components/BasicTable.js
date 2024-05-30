@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import BioCard from './BioCard';
+import BioCardClient from './BioCardClient';
 import Modal from '@mui/material/Modal';
 import { db } from "../firebase";
 import { collection, query, where, orderBy, getDocs, doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
@@ -15,6 +15,7 @@ import { auth } from '../firebase';
 
 
 const headerStyle = {
+  backgroundColor: 'lightblue',
   fontFamily: 'Poppins',
   fontWeight: 'bold'
 };
@@ -27,10 +28,10 @@ const cellStyle = {
 export default function BasicTable() {
 
   const [open, setOpen] = React.useState(false);
-  const [selectedRow, setSelectedRow] = React.useState(null);
+  const [selectedFreelancer, setSelectedFreelancer] = React.useState(null);
 
-  const handleRowClick = (row) => {
-    setSelectedRow(row);
+  const handleFreelancerClick = (freelancer) => {
+    setSelectedFreelancer(freelancer);
     setOpen(true);
   };
 
@@ -70,8 +71,8 @@ export default function BasicTable() {
           <TableRow>
             <TableCell style={headerStyle}>Name</TableCell>
             <TableCell align="right" style={headerStyle}>Email</TableCell>
-            <TableCell align="right" style={headerStyle}>Job Title</TableCell>
-            <TableCell align="right" style={headerStyle}>Rating</TableCell>
+              <TableCell align="right" style={headerStyle}>Job Title</TableCell>
+              <TableCell style={headerStyle} />
           </TableRow>
         </TableHead>
         <TableBody >
@@ -79,7 +80,7 @@ export default function BasicTable() {
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              onClick={() => handleRowClick(row)}
+              onClick={() => handleFreelancerClick(row)}
               style={cellStyle}
             >
               <TableCell component="th" scope="row" style={cellStyle}>
@@ -104,7 +105,7 @@ export default function BasicTable() {
       justifyContent: 'center'
     }}
   >
-    <BioCard row={selectedRow} />
+        <BioCardClient freelancer={ selectedFreelancer} />
   </Modal>
   </>
   );

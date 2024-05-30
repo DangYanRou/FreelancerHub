@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import CompletedProjectListClient from "../../../components/CompletedProjectListClient";
 import Heading from "../../../components/Heading";
 import { db, auth } from "../../../firebase";
 import { collection, query, getDocs, where } from "firebase/firestore";
 import Loading from "../../../components/Loading";
+import { useUser } from '../../../context/UserContext';
 import '../../../styles/Clients/ClientCompletedProject.css';
 
 const ProjectCompletedPageClient = () => {
-  const navigate = useNavigate();
+
   const [projects, setProjects] = useState([]);
-  const user = auth.currentUser;
+  const { user } = useUser();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    
     const fetchProjects = async () => {
       try {
         if (user) {
-          console.log(user.uid);
+          console.log(user.id);
           const projectsCollection = collection(db, "projects");
           const completedProjectsQuery = query(
             projectsCollection,
             where("statusState", "==", 5),
-            where("clientID", "==", user.uid)        
+            where("clientID", "==", user.id)        
           );
           const querySnapshot = await getDocs(completedProjectsQuery);
           const projectsData = querySnapshot.docs.map((doc) => ({
@@ -40,8 +40,7 @@ const ProjectCompletedPageClient = () => {
     fetchProjects();
   }, []);
    // Cleanup function to unsubscribe from the listener when the component unmounts
-   return () => unsubscribe();
-  }, []);
+   
 
   if (loading) {
     return (

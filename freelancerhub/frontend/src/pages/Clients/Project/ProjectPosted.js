@@ -8,7 +8,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import { db } from '../../../firebase'; // Adjust the path as necessary
-import { collection, query, getDocs, where,doc,updateDoc,deleteDoc} from 'firebase/firestore';
+import { collection, addDoc,query,getDoc, getDocs, where,doc,updateDoc,deleteDoc} from 'firebase/firestore';
 import { useUser } from '../../../context/UserContext';
 import Loading from '../../../components/Loading';
 import { format } from 'date-fns';
@@ -49,21 +49,77 @@ const ProjectPosted = () => {
         setSelectedProject(null);
     }
 
-    const handleMarkAsDone = async (project) => {    {/* update statusState=5 for both project and proposal */}
-      if (project) {
-          const projectRef = doc(db, "projects", project.id);
-          console.log(project.id)
-          try {
-              await updateDoc(projectRef, {
-                  statusState: 5
-              });
-              console.log("Project status updated successfully");
-              setProjects(prevProjects => prevProjects.map(p => p.id === project.id ? { ...p, statusState: 5 } : p));
-          } catch (error) {
-              console.error("Error updating project status: ", error);
-          }
-      }
-  }; 
+    const handleMarkAsDone = async (project) => {    
+        if (project) {
+            const projectRef = doc(db, "projects", project.id);
+            console.log(project.id)
+            try {
+                const completionDate = new Date();
+                // Update the project status to 5
+                await updateDoc(projectRef, {
+                    statusState: 5,  completedDate: completionDate
+                });
+                console.log("Project status updated successfully");
+    
+                // Fetch the freelancerID from the project document
+                const projectSnapshot = await getDoc(projectRef);
+                const freelancerID = projectSnapshot.data().freelancerID;
+    
+                if (freelancerID) {
+                
+                    const proposalRef = collection(db, 'proposals');
+                    const proposalQuery = query(proposalRef, 
+                        where('freelancerID', '==', freelancerID), 
+                        where('projectID', '==', project.id)
+                    );
+                    const proposalSnapshot = await getDocs(proposalQuery);
+    
+                    if (!proposalSnapshot.empty) {
+                        const proposalDoc = proposalSnapshot.docs[0];
+                        const proposalRef = proposalDoc.ref;
+    
+                        // Update the statusState of the found proposal to 5
+                        await updateDoc(proposalRef, { statusState: 5 });
+                        console.log("Proposal status updated successfully");
+                    }
+                    const notificationToFreelancerData = {
+                        isRead: false,
+                        isPop: false,
+                        timestamp: new Date(),
+                        type: 6,
+                        priority: 1,
+                        projectID: project.id,
+                        clientID: user.id,
+                        to: freelancerID
+                    };
+                    await addDoc(collection(db, 'notifications'), notificationToFreelancerData);
+                    console.log("Notification to freelancer added successfully");
+    
+                   
+                    const notificationToClientData = {
+                        isRead: false,
+                        isPop: false,
+                        timestamp: new Date(),
+                        type: 5,
+                        priority: 1,
+                        projectID: project.id,
+                        freelancerID: freelancerID,
+                        to: user.id
+                    };
+                    console.log("noti user id"+user.id)
+                    await addDoc(collection(db, 'notifications'), notificationToClientData);
+                    console.log("Notification to client added successfully");
+
+                   
+                }
+    
+                // Update the local state for projects
+                setProjects(prevProjects => prevProjects.map(p => p.id === project.id ? { ...p, statusState: 5,completedDate:completionDate } : p));
+            } catch (error) {
+                console.error("Error updating project status: ", error);
+            }
+        }
+    };
 
   const onDeleteProject = async (project) => {
     if (project) {

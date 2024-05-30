@@ -61,16 +61,16 @@ const CreateProjectPreview = () => {
       const docRef = doc(db, "clients", user.uid);
       const docSnap = await getDoc(docRef);
 
-      let username='';
+      let name='';
       if (docSnap.exists()) {
-        username = docSnap.data().username;
+        name = docSnap.data().name;
       } else {
         console.log("No such document!");
       }
       const projectInfoWithClient={
         ...projectInfo,
         clientID:user.uid,
-        client: username,
+        client: name,
       };
     
     console.log('addProject:', addProject);

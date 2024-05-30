@@ -19,7 +19,9 @@ export const ProjectInfoProvider = ({ children }) => {
     jobResponsibilities: [],
     preferredSkills: [],
     keywords: [],
-    statusState: 1
+    statusState: 1,
+    postedTime: new Date(),
+
 });
 
   return (
