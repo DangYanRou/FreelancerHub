@@ -63,7 +63,7 @@ const handleFormSubmit = (event) => {
 
   let isValid = true;
 
-  if (!project.subject) {
+  if (!project.title) {
     setSubjectError('Project name is required');
     isValid = false;
   } else {
@@ -111,6 +111,7 @@ const handleInputChange = (event) => {
   setProject({
     ...project,
     [event.target.name]: event.target.value,
+    
   });
 };
 
@@ -135,7 +136,7 @@ const handleInputChange = (event) => {
             <div className="w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Subject: </label>
               <input required style={{ width: '100%' }} className="flex h-[40px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
-               id="projectName" name="subject" type="text" value={project.subject} onChange={handleInputChange} />
+               id="projectName" name="title" type="text" value={project.title} onChange={handleInputChange} />
                {subjectError && <p className="text-red-500 text-xs italic">{subjectError}</p>}
             </div>
           </div>
@@ -156,7 +157,7 @@ const handleInputChange = (event) => {
   <div className="w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">Location: </label>
     <input required className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="location" name="location" type="text"  value={project.location} onChange={handleInputChange} />
+ id="locationInput" name="location" type="text"  value={project.location} onChange={handleInputChange} />
  {locationError && <p className="text-red-500 text-xs italic">{locationError}</p>}
   </div>
 </div>

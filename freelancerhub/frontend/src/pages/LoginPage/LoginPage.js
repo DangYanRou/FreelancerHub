@@ -7,10 +7,8 @@ import { useUser } from '../../context/UserContext';
 import Switch from "../../components/Switch";
 import { useNotification } from '../../context/NotificationContext';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import {getDocs,collection, where, query} from 'firebase/firestore'
+import { getDocs, collection, where, query } from 'firebase/firestore';
 import { db, auth } from '../../firebase';
-// import { get } from 'vant/lib/utils';
-
 
 const LoginPage = () => {
     const [username, setUsername] = useState('');
@@ -25,37 +23,38 @@ const LoginPage = () => {
     const handleToggle = (newState) => {
         console.log('Switch is now', newState ? 'FREELANCER' : 'CLIENT');
         setCollectionName(newState ? 'freelancers' : 'clients');
-      };
-      
-      const handleSubmit = async (e) => {
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const dbref = collection(db, collectionName);
         const matchUsername = query(dbref, where('username', '==', email));
         const matchEmail = query(dbref, where('email', '==', email));
         try {
             let userCredential;
+            let matchedUser;
+
             const usernameSnapshot = await getDocs(matchUsername);
-            const usernameArray = usernameSnapshot.docs.map((doc) => doc.data());
+            const usernameArray = usernameSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
             const emailSnapshot = await getDocs(matchEmail);
-            const emailArray = emailSnapshot.docs.map((doc) => doc.data());
-    
+            const emailArray = emailSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
             if (usernameArray.length > 0) {
-                const matchedUser = usernameArray[0];
+                matchedUser = usernameArray[0];
                 userCredential = await signInWithEmailAndPassword(auth, matchedUser.email, pass);
             } else if (emailArray.length > 0) {
-                const matchedUser = emailArray[0];
+                matchedUser = emailArray[0];
                 userCredential = await signInWithEmailAndPassword(auth, matchedUser.email, pass);
             } else {
                 throw new Error('No user found.');
             }
-    
+
             console.log(userCredential, "authData");
             setIsLoggedIn(true);
+            updateUser({ id: matchedUser.id, type: collectionName.slice(0, -1) });
             if (collectionName === 'freelancers') {
-                updateUser({id:"freelancerID1",type:"freelancer"});
                 navigate("/freelancers/explore");
             } else if (collectionName === 'clients') {
-                updateUser({id:"clientID1",type:"client"});
                 navigate("/clients/post-project");
             }
         } catch (error) {
@@ -70,23 +69,7 @@ const LoginPage = () => {
         }
     };
 
-    //const { setPathname } = useNotification();
-    //setPathname(null);
-    // updateUser(null);
-
-    // const handlefreelancersClick = () => {
-    //     setIsLoggedIn(true);
-    //     //setPathname('/freelancers/notifications');
-    //     history.push('/freelancers/explore');
-    // };
-
-    // const handleclientsClick = () => {
-    //     setIsLoggedIn(true);
-    //     //setPathname('/clients/notifications');
-    //     history.push('/clients/post-project');
-    // };
-
-        return(
+    return (
         <div className="loginPage">
             <div className="wrapper">
                 <form onSubmit={handleSubmit}>
@@ -119,7 +102,7 @@ const LoginPage = () => {
                 </form>
             </div>
         </div>
-   );
+    );
 };
 
 export default LoginPage;

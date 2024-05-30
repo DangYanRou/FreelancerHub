@@ -7,6 +7,8 @@ import '../../../styles/ApplicationDetails.css';
 import Loading from '../../../components/Loading';
 import PdfPreview from '../../../components/PdfPreview';
 import Heading from '../../../components/Heading';
+import NavigationBarFreelancer from '../../../nav/NavigationBarFreelancer';
+
 const ApplicationDetails = () => {
     const [proposalDetails, setProposalDetails] = useState(null);
     const history = useHistory();

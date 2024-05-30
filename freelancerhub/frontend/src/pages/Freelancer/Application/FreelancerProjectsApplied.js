@@ -10,9 +10,11 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import Heading from '../../../components/Heading';
 import { db } from '../../../firebase';  // Adjust the path as necessary
+import { getStorage, ref, deleteObject } from "firebase/storage";
 import { collection, query, getDocs, doc, getDoc,where,updateDoc,deleteDoc } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
 import { useUser } from '../../../context/UserContext';
+import { format } from 'date-fns';
 
 
 
@@ -44,7 +46,7 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
   };
 
   if (!project) return null;
-  const [min, max, currency] = project.budget ? project.budget : [null, null, ''];
+  const formattedDate = project.date ? format(project.date.toDate(), 'dd/MM/yyyy') : '';
   const statusMessage = getStatusType(project.statusState);
 
   return (
@@ -53,12 +55,12 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
       <a href="#" className="jl-profileLink-pa">{project.client}</a>
       <p id="category">{project.category}</p>
       <p><FaLocationDot className="icon-style" />{project.location}</p>
-      <p><MdOutlineAttachMoney size={20} className='icon-style2' />{min}-{max} {currency}/project</p>
-      <p><BiTimeFive size={20} className='icon-style2' />{project.duration ?`${project.duration[0]} ${project.duration[1]}` : ''}</p>
-      <p>Starting from: {project.date}</p>
+      <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
+      <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
+      <p>Starting from: {formattedDate}</p>
       <h3 id="status">Status:</h3>
       <p className="detail-status">{statusMessage}</p>
-      <p className="detail-date">{project.applyDate}</p>
+      <p className="detail-date">{project.applyDate}</p> {/*rmb add this !! apply btn */}
       <div className="statusbar">
         <StatusBar projectId={project.id}/>
       </div>
@@ -113,10 +115,11 @@ const FreelancerProjectsApplied = () => {
   const [status, setStatus] = useState(1); // Add status state here
   const { user } = useUser();
 
-  useEffect(() => {
+  useEffect(() => {   {/*here need to get proposal stateStatus adn update to project state  */}
     const fetchProjects = async () => {
       try {
         const proposalsQuery = query(collection(db, 'proposals'),where('freelancerID','==',user.id))
+        console.log(user.id) ;{/* now is freelancerID havent fetch, but after fetch may cause memory leakage */}
         
         const proposalSnapshot = await getDocs(proposalsQuery);
         const projectPromises = proposalSnapshot.docs.map(async (proposalDoc) => {
@@ -166,25 +169,53 @@ const FreelancerProjectsApplied = () => {
 
   const handleCancelApplication = async (projectId) => {
     try {
-      const proposalsQuery = query(
-        collection(db, 'proposals'),
-        where('freelancerID', '==', user.id),
-        where('projectID', '==', projectId)
-      );
-      const proposalSnapshot = await getDocs(proposalsQuery);
-      const proposalDoc = proposalSnapshot.docs[0];
-      if (proposalDoc) {
-        await deleteDoc(doc(db, 'proposals', proposalDoc.id));
-        setProjects(projects.filter(project => project.id !== projectId));
-        setShowCancelApplicationModal(false); // Close confirmation modal
-        setShowSuccessModal(true); // Open success modal
-        handleCloseModal();
-        setTimeout(()=>setShowSuccessModal(false),1000);
-      }
+        const proposalsQuery = query(
+            collection(db, 'proposals'),
+            where('freelancerID', '==', user.id),
+            where('projectID', '==', projectId)
+        );
+        const proposalSnapshot = await getDocs(proposalsQuery);
+        const proposalDoc = proposalSnapshot.docs[0];
+        if (proposalDoc) {
+            const proposalData = proposalDoc.data();
+            await deleteDoc(doc(db, 'proposals', proposalDoc.id));
+
+            // Delete CV
+            if (proposalData.cvUrl) {
+                const storage = getStorage();
+                const fileRef = ref(storage, proposalData.cvUrl);
+
+                try {
+                    await deleteObject(fileRef);
+                    console.log('CV deleted successfully');
+                } catch (error) {
+                    console.error('Error deleting CV:', error);
+                }
+            }
+
+            // Delete proposal
+            if (proposalData.proposalUrl) {
+                const storage = getStorage();
+                const fileRef = ref(storage, proposalData.proposalUrl);
+
+                try {
+                    await deleteObject(fileRef);
+                    console.log('Proposal deleted successfully');
+                } catch (error) {
+                    console.error('Error deleting proposal:', error);
+                }
+            }
+
+            setProjects(projects.filter(project => project.id !== projectId));
+            setShowCancelApplicationModal(false); // Close confirmation modal
+            setShowSuccessModal(true); // Open success modal
+            handleCloseModal();
+            setTimeout(() => setShowSuccessModal(false), 1000);
+        }
     } catch (error) {
-      console.error("Error cancelling application: ", error);
+        console.error("Error cancelling application: ", error);
     }
-  };
+};
 
   return (
     <div className="ProjectsApplied">

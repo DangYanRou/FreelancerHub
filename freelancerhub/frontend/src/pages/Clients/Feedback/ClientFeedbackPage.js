@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import "../../../styles/Clients/FeedbackPage.css";
+import { db, auth } from '../../../firebase';
+import { collection, addDoc, serverTimestamp, FieldValue } from 'firebase/firestore';
+import { useUser } from '../../../context/UserContext';
+import { useLocation } from 'react-router-dom';
 
 function ClientFeedbackPage() {
+  const user = auth.currentUser;
   const [rating, setRating] = useState(null);
   const [feedback, setFeedback] = useState(""); // Manage textarea input
   const [showSubmitted, setShowSubmitted] = useState(false);
- 
+  const location = useLocation();
+  const freelancerId = location.state.freelancerID;
 
+ console.log('freelancerid =' , freelancerId);
   const handleRating = (num) => {
     setRating(num);
    
@@ -16,18 +23,30 @@ function ClientFeedbackPage() {
     setFeedback(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (rating && feedback) {
-      // Check both rating and feedback are provided
       setShowSubmitted(true);
+  
+      try {
+        await addDoc(collection(db, "feedback"), {
+          from: user.uid,
+          to: freelancerId,
+          rating: rating,
+          feedback: feedback,
+          timestamp: serverTimestamp(),
+        });
+        console.log("Feedback submitted!");
+      } catch (error) {
+        console.error("Error submitting feedback: ", error);
+      }
     } else {
       alert("Please provide both a rating and your feedback!");
     }
   };
 
   return (
-    <div>
+    <div className="FeedbackPage">
       <form className="form" onSubmit={handleSubmit}>
         <div className="title">
           <h2>How was your experience?</h2>

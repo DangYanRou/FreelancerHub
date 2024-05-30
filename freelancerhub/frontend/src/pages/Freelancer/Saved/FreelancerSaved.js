@@ -1,5 +1,5 @@
 import React,{ useState } from 'react'
-import NavigationBar from '../../../nav/NavigationBarFreelancer';
+import NavigationBarFreelancer from '../../../nav/NavigationBarFreelancer';
 import Heading from '../../../components/Heading';
 import ProjectList from '../../../components/ProjectListSaved';
 import List from '../../../components/List';
@@ -10,15 +10,15 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import '../../../styles/Freelancers/FreelancerSaved.css'
 import { duration } from '@mui/material';
-import { useHistory } from 'react-router-use-history';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 
 const FreelancerSaved = () => {
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleApply = () => {
-    history.push('/freelancers/proposal-form');
+    navigate('/freelancers/proposal-form');
     };
 
   const [selectedProject,setSelectedProject]=useState(null);

@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore,  collection, getDocs, doc, setDoc  } from 'firebase/firestore';
+import { getFirestore, arrayUnion, collection, getDocs, doc, setDoc  } from 'firebase/firestore';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { getAuth } from 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -34,9 +34,15 @@ export const addProject = async (projectInfo) => {
     // Fetch the current number of projects
     const querySnapshot = await getDocs(collection(db, "projects"));
     const projectCount = querySnapshot.size;
-
+    const user = auth.currentUser;
+    const uid = user.uid;
     // Generate the new document ID
     const docID = `projectID${projectCount + 1}`; // this will be 'projectID1' for the first project, 'projectID2' for the second, etc.
+
+    await setDoc(doc(db, "clients", uid), {
+      createdProjects: arrayUnion(docID)
+    }, { merge: true });    
+    // const docID = `projectID${projectCount + 1}`; // this will be 'projectID1' for the first project, 'projectID2' for the second, etc.
 
     // Add the new project with the custom document ID
     await setDoc(doc(db, "projects", docID), projectInfo);

@@ -103,8 +103,8 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
                         <a href="#" className="hover-profileLink">{project.client}</a>
                         <p id="category">{project.category}</p>
                         <p><FaLocationDot className="icon-style" />{project.location}</p>
-                        <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.budget ? `${project.budget[0]}-${project.budget[1]} ${project.budget[2]}` : ''}/project</p>
-                        <p><BiTimeFive size={20} className='icon-style2' />{project.duration ? `${project.duration[0]} ${project.duration[1]}` : ''}</p>
+                        <p><MdOutlineAttachMoney size={20} className='icon-style2'/>{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
+                        <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
                     </div>
                 </div>
             ))}

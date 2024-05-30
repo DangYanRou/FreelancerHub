@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NavigationBar from "../../../nav/NavigationBarFreelancer";
-import logo from "../../../Gallery/google-logo.jpeg";
+import logo from "../../../Gallery/default-user.jpeg";
 import googleImage from "../../../Gallery/google-fulllogo.jpg";
 import "../../../styles/Clients/ClientProfile.css";
 import { FaMapMarkerAlt } from "react-icons/fa";

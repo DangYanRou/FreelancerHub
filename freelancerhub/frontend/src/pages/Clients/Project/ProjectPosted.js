@@ -11,6 +11,7 @@ import { db } from '../../../firebase'; // Adjust the path as necessary
 import { collection, query, getDocs, where,doc,updateDoc,deleteDoc} from 'firebase/firestore';
 import { useUser } from '../../../context/UserContext';
 import Loading from '../../../components/Loading';
+import { format } from 'date-fns';
 
 const ProjectPosted = () => {
     const [selectedProject, setSelectedProject] = useState(null);
@@ -18,29 +19,28 @@ const ProjectPosted = () => {
     const { user } = useUser();
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         const fetchProjects = async () => {
-          try{
-            if (user) {
-              console.log(user)
-                const projectsRef = collection(db, 'projects');
-                const q = query(projectsRef, where('clientID', '==', user.id));
-                const querySnapshot = await getDocs(q);
-                const projectsList = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                setProjects(projectsList);
-            } 
-          }catch (error) {
-              console.error("Error fetching projects: ", error);
-            } finally {
-              setLoading(false);
-            }
+          try {
+            const projectsRef = query(collection(db, 'projects'),where('clientID','==',user.id));
+            console.log("client:"+user.id) // Use the correct method for collection reference
+            const snapshot = await getDocs(projectsRef); // Fetch the documents
+            const projectsData = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+            setProjects(projectsData);
+          } catch (error) {
+            console.error('Error fetching projects: ', error);
+          }finally{
+            setLoading(false);
+          }
         };
+    
         fetchProjects();
-    }, [user]);
-
+      }, []);
+    
     const handleProjectClick = (project) => {
         setSelectedProject(project);
     }
@@ -63,7 +63,7 @@ const ProjectPosted = () => {
               console.error("Error updating project status: ", error);
           }
       }
-  };
+  }; 
 
   const onDeleteProject = async (project) => {
     if (project) {
@@ -89,7 +89,7 @@ const ProjectPosted = () => {
         return (
             <div className="modal-overlay" onClick={onClose}>
                 <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                    <div className="jl-modal-header">
+                    <div className="modal-header">
                         <h2 className='jl-view-project-header'>View Project</h2>
                         <button className="jl-close-btn" onClick={onClose}><GrFormClose /></button>
                     </div>
@@ -101,6 +101,8 @@ const ProjectPosted = () => {
 
     const ProjectDetails = ({ project }) => {
         if (!project) return null;
+       const formattedDate = project.date ? format(project.date.toDate(), 'dd/MM/yyyy') : '';
+
         
         return (
             <div className="project-details">
@@ -108,19 +110,18 @@ const ProjectPosted = () => {
                 <Link to="/freelancers/client-temporary-profile" className="hover-profileLink">{project.client}</Link>
                 <p id="category">{project.category}</p>
                 <p><FaLocationDot className="icon-style" />{project.location}</p>
-                <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.budget ?`${project.budget[0]}-${project.budget[1]} ${project.budget[2]}` : ''}/project</p>
-                <p><BiTimeFive size={20} className='icon-style2' />{project.duration ?`${project.duration[0]} ${project.duration[1]}` : ''}</p>
-                <p>Starting from: {project.date}</p>
+                <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
+                <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
+                <p>Starting from: {formattedDate}</p>
                 <h3 id="about-the-project">About the Project:</h3>
                 <p>{project.description}</p>
                 <div>
                     <h3 id="key-requirement">Job Responsibilities:</h3>
                     <ul className="list">
-                        {/*{project.items.map((item, index) => (
-                            <li key={index}>{item}</li>
-                        ))}*/}
-                        {project.jobResponsibilities}
-                    </ul>
+              {(project.jobResponsibilities ?? []).map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
                 </div>
                 <h3 id="preferredQualification">Preferred Qualification:</h3>
                 <p>{project.preferQuali}</p>

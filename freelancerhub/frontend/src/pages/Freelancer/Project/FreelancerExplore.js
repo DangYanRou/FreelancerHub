@@ -17,6 +17,7 @@ import { useUser } from '../../../context/UserContext';
 import { db } from '../../../firebase'; 
 import { getDocs, collection } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
+import { format } from 'date-fns';
 
 
 const FreelancerExplore = () => {  
@@ -28,13 +29,15 @@ const FreelancerExplore = () => {
   const [bookmarkedProjects, setBookmarkedProjects] = useState({});
   const [selectedProject,setSelectedProject]=useState(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [appliedProjects, setAppliedProjects] = useState([]);
 
   const history = useHistory();
-  const handleApply = () => {
+
+  const handleApply = (projectID, clientID) => {
     history.push('/freelancers/proposal-form', {
       user_key: { freelancerID: user.id },
-      project_key: { projectID: "projectID1", clientID: "clientID1" }}
-    );
+      project_key: { projectID: projectID, clientID: clientID }
+    });
   };
 
   useEffect(() => {
@@ -47,6 +50,17 @@ const FreelancerExplore = () => {
           ...doc.data()
         }));
         setProjects(projectsData);
+
+        if (user) {
+          const proposalsRef = collection(db, 'proposals');
+          const proposalsSnapshot = await getDocs(proposalsRef);
+          const appliedProjectsData = proposalsSnapshot.docs
+            .filter(doc => doc.id.endsWith(`_${user.id}`))
+            .map(doc => doc.id.split('_')[0]); // Extract projectID from documentID
+
+          setAppliedProjects(appliedProjectsData);
+        }
+
       } catch (error) {
         console.error('Error fetching projects: ', error);
       }finally{
@@ -117,8 +131,7 @@ const FreelancerExplore = () => {
     <div className={`flex flex-col ${selectedProjectId ? 'w-3/5' : 'flex-grow'}`}>
       {projects.map((blog) => {
         // Destructure budget and duration from blog object
-        const [min, max, currency] = blog.budget || [];
-        const [duration, unit] = blog.duration || [];
+       
         return (
           <div
             className={`card ${selectedProjectId === blog.id ? 'selected' : ''} mb-4`}
@@ -131,11 +144,11 @@ const FreelancerExplore = () => {
             <p><FaLocationDot className="icon-style"/>{blog.location}</p>
             <p>
               <MdOutlineAttachMoney size={20} className='icon-style2' />
-              {min} - {max} {currency}/project
+              {blog.minInput}-{blog.maxInput} {blog.currencyInput}/project
             </p>
             <p>
               <BiTimeFive size={20} className='icon-style2' />
-              {duration} {unit}
+              {blog.duration} {blog.durationUnit}
             </p>
             <div className="absolute top-4 right-3 space-x-4 w-8 h-8">
               {bookmarkedProjects[blog.id] ? 
@@ -186,31 +199,35 @@ const FreelancerExplore = () => {
   
   const ProjectDetails =({project}) => {
     if(!project)return null;
-    const [min, max, currency] = project.budget ? project.budget : [null, null, ''];
+    const hasApplied = appliedProjects.includes(project.id);
+    const formattedDate = project.date ? format(project.date.toDate(), 'dd/MM/yyyy') : '';
     return(
       <div className="project-details">
         <h2 id="detail-title">{project.title}</h2>
         <h2 className="jl-profileLink">{project.client}</h2>
             <p id="category">{project.category}</p>
             <p><FaLocationDot className="icon-style"/>{project.location}</p>
-            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{min}-{max} {currency}/project</p>
-            <p><BiTimeFive size={20}className='icon-style2' />{project.duration ?`${project.duration[0]} ${project.duration[1]}` : ''}</p> 
-            <p>Starting from: {project.date}</p>
+            <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
+            <p><BiTimeFive size={20}className='icon-style2' />{project.duration} {project.durationUnit}</p> 
+            <p>Starting from: {formattedDate}</p>
            
             <h3 id="about-the-project">About the Project:</h3>
             <p>{project.description}</p>
             <div>
-              <h3 id="key-requirement">Job Responsibilities:</h3>
-              <p>{project.jobResponsibilities}</p>
-             {/* <ul className="list">
-                {project.items.map((item,index)=>(
-                  <li key={index}>{item}</li>
-                ))}
-              </ul>*/}
+            <h3 id="key-requirement">Job Responsibilities:</h3>
+              <ul className="list">
+              {(project.jobResponsibilities ?? []).map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
             </div>
             <h3 id="preferredQualification">Preferred Qualification:</h3>
-            <p>{project.preferQuali}</p>
-              <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
+            <p>{project.preferredQualification}</p>
+            {hasApplied ? (
+          <button id="applyButton" className="btn-disabled" disabled>Applied</button>
+        ) : (
+          <button id="applyButton" onClick={() => handleApply(project.id, project.clientID)} className="btn btn-primary">Apply</button>
+        )}
   
   
       </div>
@@ -254,7 +271,7 @@ const FreelancerExplore = () => {
 </div>
 </div>
 </div>
-      <div className="flex justify-center items-center h-full pt-10">
+      <div className="flex justify-center items-center pt-10">
       <div className="flex flex-row">
             <div className="flex flex-col w-1/4">
       {dropdowns.map((dropdown, index) => (
@@ -317,14 +334,14 @@ const FreelancerExplore = () => {
       ))}
 
     </div>
-    <div className={`FreelancerExplore ${showDetails? 'show-details':''}`}>
+    <div className={`FreelancerExplore ${showDetails? 'show-details':''} `}>
     <div className="parent-container ">
     <ProjectList projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null} />
     <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} />
 
-      
     </div>
     </div>
+
   </div>
   
 </div>

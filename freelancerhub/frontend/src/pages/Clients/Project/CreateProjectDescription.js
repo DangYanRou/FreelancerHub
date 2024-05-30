@@ -29,7 +29,7 @@ const ProgressBar = ({ stages }) => {
   );
 };
 
-const durationUnits = ['day', 'week', 'month', 'year'];
+const durationUnits = ['day(s)', 'week(s)', 'month(s)', 'year(s)'];
 
 const workloadOptions = [
     'not specified',
@@ -94,7 +94,7 @@ const CreateProjectDescription = () => {
 
   const [project, setProject] = useContext(ProjectContext);
 
-  const [startDate, setStartDate] = useState(new Date());
+  const [date, setDate] = useState(new Date());
   const [jobCateInput, setJobCateInput] = useState('');
   const [jobCateError, setJobCateError] = useState('');
 
@@ -133,10 +133,11 @@ const handleInputChange = (event) => {
     [event.target.name]: event.target.value,
   });
 };
+
 const handleDateChange = (date) => {
   setProject({
     ...project,
-    startDate: date,
+    date: date || null,
   });
 };
 
@@ -185,12 +186,12 @@ id="projectCategory" name="category" value={project.category} onChange={handleIn
   <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectStartTime">Project Start Time: </label>
     <DatePicker
     required
-      selected={project.startDate}
+    selected={project.date}
       onChange={handleDateChange}
       dateFormat="dd/MM/yyyy"
+      placeholderText='dd/mm/yyyy'
       className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
     />
-    {/* ... */}
 
   <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="duration">Duration: </label>
     <div className="flex items-center">

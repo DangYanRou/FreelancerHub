@@ -5,7 +5,7 @@
     grid-template-columns: auto 1fr; /* Change the order of columns to display project list first and then project details */
     gap: 20px; /* Add some gap between the columns */
     padding: 0px 20px 20px ; /* Add padding for spacing */
-    height: 100vh; /* Make the container fill the height of the viewport */
+    min-height: 100vh; /* Make the container fill the height of the viewport */
     overflow: hidden; /* Hide any overflow content */
 }
 
@@ -169,5 +169,16 @@ margin-bottom: 1.5rem;
 
 .view-application-header{
     font-size: 30px;
+}
+
+.btn-disabled{
+    background-color: #BEBEBE;
+    padding:9px 28px; /* Adjust padding to increase button size */
+    border: none; /* Remove default border */
+    font-size: 16px;
+    color: black;
+    border-radius: 8px; 
+    cursor: pointer; /* Change cursor to pointer on hover */
+    margin-bottom: 3rem;
 }
 

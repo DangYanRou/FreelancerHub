@@ -1,314 +1,327 @@
-.ClientProfile{
+ .ClientProfile {
     overflow: hidden;
-}
-
-.upperProfile{
+  }
+  
+  .upperProfile {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
-   
-    
-}
-
-.profileCard{
+  }
+  
+  .profileCard {
     display: flex;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 6px;
     align-items: center;
-    margin: 30px 40px 30px 40px;
-    width:80%;
-}
-
-.profileCard img{
+    margin: 30px 40px;
+    width: 80%;
+  }
+  
+  .profileCard img {
     border-radius: 100%;
     padding: 50px;
-    background:white;
-}
-
-ClientProfile.profile_text{
+    background: white;
+    width: 300px;
+    height: 300px;
+  }
+  
+  .profileCard form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .ClientProfile.profile_text {
     text-align: left;
     margin-bottom: 0px;
-
-}
-
-.profile_text .name-location {
+  }
+  
+  .pic_container {
+    width: 330px;
+  }
+  
+  .profile_text .name-location {
     display: flex;
     align-items: baseline;
-    margin-bottom: 5px;
-}
-
-.profileCard button {
-    margin: 50px 50px 0px auto; /* Change this line */
+  }
+  
+  .ClientProfile button {
+    margin: 30px 20px 0px;
     align-self: baseline;
-    border: rgb(255,255,255);
+    border: rgb(255, 255, 255);
     font-size: 14px;
     font-weight: 600;
     border-radius: 4px;
-    padding: 10px 15px 10px 15px;
+    padding: 10px 15px;
     display: flex;
     justify-content: baseline;
     align-items: baseline;
-}
-
-.profileCard button:hover{
+  }
+  
+  .ClientProfile button:hover {
     cursor: pointer;
-    background: rgb(105,172,194);
-
-}
-
-.clientAbout_details{
-    margin:20px;
+    background: rgb(105, 172, 194);
+  }
+  
+  .clientAbout_details {
+    margin: 20px;
     padding: 24px;
-    flex:1;
+    flex: 1;
     background: white;
-    border-top:2px solid rgba(53, 53, 53, .2);
-    border-color: (163,163,163);
+    border-top: 2px solid rgba(53, 53, 53, 0.2);
+    border-color: rgb(163, 163, 163);
     text-align: center;
-} 
-
-.ClientProfile .Card2 img{
-    width:100px;
-}
-
-.ClientProfile .Card2 h4{
+  }
+  
+  .ClientProfile .Card2 img {
+    width: 100px;
+  }
+  
+  .ClientProfile .Card2 h4 {
     font-weight: 100;
-}
-
-.language_details{
-    margin:20px;
+  }
+  
+  .language_details {
+    margin: 20px;
     padding: 24px;
-    flex:1;
+    flex: 1;
     background: white;
     border-radius: 32px;
-    border:2px solid rgba(53, 53, 53, .2);
-    border-color: (163,163,163);
+    border: 2px solid rgba(53, 53, 53, 0.2);
+    border-color: rgb(163, 163, 163);
     text-align: center;
-}
-
-.interest_container{
-    margin-bottom:32px;
-    margin-top:32px;
+  }
+  
+  .interest_container {
+    margin-bottom: 32px;
+    margin-top: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.interest_details{
+  }
+  
+  .interest_details {
     padding: 30px;
     background: white;
-    border-right:2px solid rgba(53, 53, 53, .2);
-    border-color: (163,163,163);
+    border-right: 2px solid rgba(53, 53, 53, 0.2);
+    border-color: rgb(163, 163, 163);
     text-align: center;
-} 
-
-.rate {
+  }
+  
+  .rate {
     padding-bottom: 30px;
-    width:80%;
-}
-.lowerProfile {
+    width: 89.5%;
+    margin: auto;
+  }
+  
+  .lowerProfile {
     width: 90%; /* This will make the item have the same width as upperProfile */
     margin: auto; /* This will center the item */
-}
-
-.nav-links{
-   width:96%;
-   margin:auto;
-   padding-bottom:10px;
-}
-
-/* .client_content{
-    overflow: hidden;
-} */
-
-/* .backgroundPic{
-    background: url("../../Gallery/backgroundCover.jpg") no-repeat;
-    height: 300px;
-    background-size:cover;
-} */
-
-/*.profile h2{
-    color: #213e60;
-}
-
-.text p{
-    font-size: 14px;
-}
-
-.text .address{
-    margin-top: 30px;
-}
-
-.text .name-location {
-    margin-top: 20px;
-    display: flex;
-    align-items: baseline;
-    margin-bottom: 5px;
-}
-
-.name{
-    font-size:24px;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.job{
-    font: size 12px;
-    color: #69acc2;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-.rating{
-    margin-top: 50px;
-    font-size: 12px;
-}
-
- .rate {
+   
+  }
+  
+  .nav-links {
+    width: 96%;
+    margin: auto;
     padding-bottom: 10px;
-}
-
-.location{
-    display: flex;
-    font-size: 12px;
-    text-align: left;
-    align-items: center;
-    padding-left: 20px;
-}
-
-.location .markerIcon{
-    font-size: 10px;
-    padding-right: 2px;
-}
-
-/*Lower Profile*/
-/* .lowerProfile{
-    width: 100vw;
-}  */
-
-/* .Card2 .title{
-    padding: 10px;
-    color:#213e60
-}
-
-.nav-links{
-    display:flex;
-    gap: 32px;
-    list-style: none;
-    font-size: 24px;
-}
-
-a {
-    color: #213e60;
-    text-decoration: none;
-    text-decoration-color: white;
-    border-radius: 8px;
-    justify-content: space-around;
-}
-
-a:hover{
-    color:grey;
-    text-decoration: underline;
-    text-underline-offset: 16px;
-    text-decoration-color: rgb(181,181,181);
-}
-.profileNav{
-    padding-left: 30px;
-}
-
-.profileNav h3{
-    text-align: left;
-    padding:20px 0px 0px 20px;
-}
-
-.profileNav p{
-    text-align: left;
-    padding: 0px 40px 0px 40px;
-} 
-
-/* About */
-/* #about{
-    position: relative;
-    padding: 20px;
-    padding-left: calc(100vw-20px);
-    justify-content: center;
-    align-items: center;
-    margin: 0px 40px;
-    width:100%;
-}
-
-.about_text{
-    margin:0px;
-    padding:0px;
-}
-
-.about_container{
-    gap:32px;
-    margin-bottom:32px;
-    margin-top:32px;
-}
-
-/* Projects */
-/* #projects{
-    position:absolute;
-    transform: translateX(100vw);
-    margin: 0px 40px;
-    width:100vw;
-    padding: 40px;
-}
-
-.projects_container{
-    display: flex;
-    justify-content: center;
-}
-
-.project_name{
-    margin: 16px;
-    color: black;
-}
-
-.btn_project{
-    color:white;
-    background:#213e60;
-    border:2px solid rgba(53, 53, 53, .2);
-    padding:12px;
-    width:128px;
-    border-radius: 32px;
-    font-weight: 600;
-}
-
-.btn_project:hover{
-    color:#213e60;
-    background:white;
-    border:2px solid rgba(53, 53, 53, .2);
-}
-
-/* Review */
-/* #reviews {
-    text-align: left;
-    position: absolute;
-    transform: translateX(200vw);
-    margin: 0px 40px;
-    width:100vw;
-    padding: 40px;
-}
-
-.reviews_container {
+  }
+  
+  #name,
+  #username,
+  #location,
+  #companySize,
+  #address,
+  #phone,
+  #job {
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #f3f3f3;
+  }
+  
+  #name::placeholder,
+  #username::placeholder,
+  #location::placeholder,
+  #companySize::placeholder,
+  #address::placeholder,
+  #phone::placeholder,
+  #job::placeholder {
+    color: #999;
+  }
+  
+  #name:focus,
+  #username:focus,
+  #location:focus,
+  #companySize:focus,
+  #address:focus,
+  #phone:focus,
+  #job:focus {
+    outline: none;
+    background-color: #e0e0e0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 1rem; /* Adjust margin between form groups */
+    width: 100%;
+  }
+  
+  label {
+    display: block; /* Make labels block-level for better spacing */
+    margin-bottom: 0.5rem; /* Adjust margin below labels */
+  }
+  
+  #aboutDescription {
+    width: 100%; /* Make textarea expand to fill its container */
+    height: 50px;
+    padding: 0.5rem; /* Add padding for better appearance */
+    font-size: 16px; /* Adjust font size */
+    border: 1px solid #ccc; /* Add a border for clarity */
+    border-radius: 4px; /* Add border radius for a softer look */
+  }
+  
+  .Card2 .interest-item input {
+    width: 70%;
+    margin-right: 10px;
+    background-color: #e0e0e0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
+  
+  .add_company_form {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    border: 2px solid rgba(53, 53, 53, 0.2);
+    border-color: rgb(163, 163, 163);
+    border-radius: 32px;
+  }
+  
+  .add_company_form input[type="text"] {
+    padding: 5px;
+    font-size: 16px;
+    width: 200px;
+  }
+  
+  .add_company_form input[type="file"] {
+    padding: 5px;
+    font-size: 16px;
+  }
+  
+  .add_company_form button {
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    align-self: center;
+  }
+  
+  .companiesDisplay {
+    width: 300px;
+  }
+  
+  .review-rating {
+    width: 120px;
+    padding-left:5px;
+    padding-right:5px;
+    font-size: 14px;
+    color:whitesmoke;
+    border-radius: 20px;
+    background-color: #82afe1;
+  }
+
+  .review-rating p{
+    margin-left:5px;
+  }
+  
+  .review_name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #213e60;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    line-height: 1; /* Add this line */
+  }
+  
+  .review_time {
+    color: #999;
+    font-size: 14px;
+    margin-top: 0px;
+    padding-top: 0px;
+    font-weight: thin;
+    line-height: 1; /* Add this line */
+  }
+  
+  .review_user_image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+
+.reviews-container {
+  margin-top: 20px;
+  display:flex;
+  flex-direction:column;
+
 }
 
-.review_name,
-.about_name {
-    text-align: left;
+.review-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 15px;
+
+  
 }
 
-.btn_container {
-    text-align: left;
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
-.review_details{
-    border-bottom:2px solid rgba(53, 53, 53, .2);
-    margin:20px;
-    padding: 24px;
-}     */
+.review-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.review-title {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.review-date {
+  color: #999999;
+  font-size: 14px;
+}
+
+.review-body p {
+  font-size: 16px;
+  margin: 10px 0;
+}
+  
+.edit-profile-btn{
+  display: flex;
+  flex-direction:flex-end;
+  align-items:right;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
