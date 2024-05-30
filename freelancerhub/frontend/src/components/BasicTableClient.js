@@ -8,6 +8,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import BioCard from './BioCardClient';
 import Modal from '@mui/material/Modal';
+import { db } from "../firebase";
+import { collection, query, where, orderBy, getDocs, doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
+import { useEffect, useState } from 'react';
 
 function createData(name, email, phone_number, rating) {
   return { name, email, phone_number, rating};
@@ -56,6 +59,8 @@ const rows = [
   createData('Stanfield Wedderburn', 'swedderburnt@yolasite.com', '408-354-8644', 0.4)
 ];
 
+
+
 export default function BasicTableClient() {
 
   const [open, setOpen] = React.useState(false);
@@ -70,6 +75,28 @@ export default function BasicTableClient() {
     setOpen(false);
   };
 
+  const [favouriteClientList, setFavouriteClientList] = useState([]);
+  
+  const favouriteClientRef = collection(db, "favouriteClient");
+  
+  const getFavouriteClientList = async () => {
+      try {
+        const data = await getDocs(favouriteClientRef);
+        const filteredData = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setFavouriteClientList(filteredData);
+      } catch (error) {
+        console.log(error.message);
+      }
+  };
+
+  useEffect(() => {  
+    getFavouriteClientList();
+  }, []);
+
+
   return (
     <>
     <TableContainer component={Paper} className='font-poppin'>
@@ -83,7 +110,7 @@ export default function BasicTableClient() {
           </TableRow>
         </TableHead>
         <TableBody >
-          {rows.map((row) => (
+          {favouriteClientList.map((row) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -94,7 +121,7 @@ export default function BasicTableClient() {
                 {row.name}
               </TableCell>
               <TableCell align="right" style={cellStyle}>{row.email}</TableCell>
-              <TableCell align="right" style={cellStyle}>{row.phone_number}</TableCell>
+              <TableCell align="right" style={cellStyle}>{row.phoneNumber}</TableCell>
               <TableCell align="right" style={cellStyle}>{row.rating}</TableCell>
             </TableRow>
           ))}

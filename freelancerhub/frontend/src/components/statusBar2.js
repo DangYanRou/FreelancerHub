@@ -1,31 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './styles/statusBar.css';
 import { TiTick } from 'react-icons/ti';
-import { db } from '../firebase';  // Adjust the path as necessary
-import { doc, getDoc } from 'firebase/firestore';
 
-const StatusBar = ({ projectId }) => {
+
+const StatusBar = ({ statusState }) => {
     const steps = ['Applied', 'Assigned', 'In Progress', 'Completed'];
     const [currentStep, setCurrentStep] = useState(0); // Default to 0 or an appropriate initial value
 
+   
     useEffect(() => {
-        const fetchStatus = async () => {
-            try {
-                const projectDocRef = doc(db, 'projects', projectId);
-                const projectDoc = await getDoc(projectDocRef);
-                if (projectDoc.exists()) {
-                    const data = projectDoc.data();
-                    setCurrentStep(data.statusState);  // Assuming the status field is a number representing the current step
-                } else {
-                    console.log("No such document!");
-                }
-            } catch (error) {
-                console.error("Error fetching status: ", error);
-            }
-        };
+        setCurrentStep(statusState);
+    }, [statusState]);// Only re-run the effect if stateStatus changes
 
-        fetchStatus();
-    }, [projectId]);
 
     return (
         <div className="statusBar-container">

@@ -15,7 +15,7 @@ import { BsBookmarkCheckFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import { useUser } from '../../../context/UserContext';
 import { db } from '../../../firebase'; 
-import { getDocs, collection } from 'firebase/firestore';
+import { getDocs, collection, addDoc } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
 import { format } from 'date-fns';
 
@@ -31,12 +31,26 @@ const FreelancerExplore = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [appliedProjects, setAppliedProjects] = useState([]);
 
+  //deon
+     const handleSave = async (project) => {
+    try {
+      const collectionRef = collection(db, 'favouriteProject');
+      await addDoc(collectionRef, project);
+      alert('Project saved successfully!');
+    } catch (error) {
+      console.error('Error saving project: ', error);
+      alert('Failed to save project');
+    }
+  };
+  //deon
+
   const history = useHistory();
-  const handleApply = () => {
+
+  const handleApply = (projectID, clientID) => {
     history.push('/freelancers/proposal-form', {
       user_key: { freelancerID: user.id },
-      project_key: { projectID: "projectID1", clientID: "clientID1" }}
-    );
+      project_key: { projectID: projectID, clientID: clientID }
+    });
   };
 
   useEffect(() => {
@@ -157,6 +171,7 @@ const FreelancerExplore = () => {
                   onClick={(e) => {
                     e.stopPropagation();
                     handleClick(blog.id);
+                    
                   }} 
                 /> 
                 : 
@@ -166,6 +181,7 @@ const FreelancerExplore = () => {
                   onClick={(e) => {
                     e.stopPropagation();
                     handleClick(blog.id);
+                    handleSave(blog); 
                   }} 
                 />
               }
@@ -225,7 +241,7 @@ const FreelancerExplore = () => {
             {hasApplied ? (
           <button id="applyButton" className="btn-disabled" disabled>Applied</button>
         ) : (
-          <button id="applyButton" onClick={() => handleApply(project.id)} className="btn btn-primary">Apply</button>
+          <button id="applyButton" onClick={() => handleApply(project.id, project.clientID)} className="btn btn-primary">Apply</button>
         )}
   
   

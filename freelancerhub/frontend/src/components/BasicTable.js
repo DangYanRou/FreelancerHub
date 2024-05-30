@@ -8,10 +8,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import BioCard from './BioCard';
 import Modal from '@mui/material/Modal';
+import { db } from "../firebase";
+import { collection, query, where, orderBy, getDocs, doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
+import { useEffect, useState } from 'react';
+import { auth } from '../firebase';
 
-function createData(name, email, job_title, rating) {
-  return { name, email, job_title, rating};
-}
 
 const headerStyle = {
   fontFamily: 'Poppins',
@@ -22,15 +23,6 @@ const cellStyle = {
   fontFamily: 'Poppins',
   cursor: 'pointer'
 };
-
-const rows = [
-  createData('Elon Musk','elonmusk@gmail.com','Software Engineer', 4.0),
-  createData('Ollie Bearman','ollie38@gmail.com','Software Engineer', 5.0),
-  createData('Charles Leclerc','charles16@gmail.com','Data Science Engineer', 4.5),
-  createData('Carlos Sainz','sainz55@gmail.com','Frontend Developer', 4.0),
-    createData('Max Verstappen','max1@gmail.com','Backend Developer', 5.0),
-    createData('Lewis Hamilton','lewis44@gmail.com','Full Stack Developer', 5.0),
-];
 
 export default function BasicTable() {
 
@@ -46,6 +38,30 @@ export default function BasicTable() {
     setOpen(false);
   };
 
+  const [favouriteFreelancerList, setFavouriteFreelancerList] = useState([]);
+  
+  const favouriteFreelancerRef = collection(db, "favouriteFreelancer");
+  
+  const getFavouriteFreelancerList = async () => {
+  try {
+    const userID = auth.currentUser.uid;
+    const q = query(favouriteFreelancerRef, where("clientID", "==", userID));
+
+    const data = await getDocs(q);
+    const filteredData = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setFavouriteFreelancerList(filteredData);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+  useEffect(() => {  
+    getFavouriteFreelancerList();
+  }, []);
+
   return (
     <>
     <TableContainer component={Paper} className='font-poppin ml-[70px] ' style={{maxWidth:1500}}>
@@ -59,7 +75,7 @@ export default function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody >
-          {rows.map((row) => (
+          {favouriteFreelancerList.map((row) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -70,7 +86,7 @@ export default function BasicTable() {
                 {row.name}
               </TableCell>
               <TableCell align="right" style={cellStyle}>{row.email}</TableCell>
-              <TableCell align="right" style={cellStyle}>{row.job_title}</TableCell>
+              <TableCell align="right" style={cellStyle}>{row.job}</TableCell>
               <TableCell align="right" style={cellStyle}>{row.rating}</TableCell>
             </TableRow>
           ))}

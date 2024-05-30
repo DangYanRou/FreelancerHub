@@ -12,7 +12,7 @@ import CreateProjectPreview from '../../pages/Clients/Project/CreateProjectPrevi
 import ClientProfile from '../../pages/Clients/Profile/ClientProfile';
 import ClientFeedbackPage from '../../pages/Clients/Feedback/ClientFeedbackPage';
 import ClientAverageReviewBox from '../../pages/Clients/Profile/ClientAverageReviewBox';
-import ClientNotificationPage from '../../pages/Clients/Notification/ClientNotificationPage';
+import NotificationPage from '../../pages/NotificationPage';
 import FreelancerTemporaryProfile from '../../pages/Freelancer/Profile/FreelancerTemporaryProfile';
 import ClientSaved from '../../pages/Clients/Saved/ClientSaved';
 import WithNavigation from './WithNavigation';
@@ -35,7 +35,7 @@ const ClientRoutes = () => {
         <Route path="profile" element={<ClientProfile />} />
         <Route path="client-feedback-page" element={<ClientFeedbackPage />} />
         <Route path="client-average-review-box" element={<ClientAverageReviewBox />} />
-        <Route path="notifications" element={<ClientNotificationPage />} />
+        <Route path="notifications" element={<NotificationPage />} />
         <Route path="freelancer-temporary-profile" element={<FreelancerTemporaryProfile />} />
         <Route path="saved" element={<ClientSaved />} />
         <Route path="*" element={<Navigate to="/" />} />
