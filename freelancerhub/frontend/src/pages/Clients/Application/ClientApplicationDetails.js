@@ -11,7 +11,6 @@ import Heading from '../../../components/Heading';
 import { ButtonGroup, Button } from 'flowbite-react';
 import { useUser } from '../../../context/UserContext';
 import { ToastContainer, toast } from 'react-toastify';
-import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
 const ClientApplicationDetails = () => {
     const location = useLocation();
@@ -23,9 +22,6 @@ const ClientApplicationDetails = () => {
     const { user } = useUser();
     const [projectName, setProjectName] = useState('');
     const [clientName, setClientName] = useState('');
-    const [currency, setCurrency] = useState(null);
-    const [rejectConfirmationOpen, setRejectConfirmationOpen] =useState(false);
-    const [accpetConfirmationOpen, setAcceptConfirmationOpen] = useState(false);
 
     useEffect(() => {
         const fetchProposalDetails = async () => {
@@ -43,7 +39,6 @@ const ClientApplicationDetails = () => {
                     if (projectSnap.exists()) {
                         const projectData = projectSnap.data();
                         setProjectName(projectData.title);
-                        setCurrency(projectData.currencyInput);
 
                         console.log(user.id);
                         const clientRef = doc(db, 'clients', user.id);
@@ -87,14 +82,26 @@ const ClientApplicationDetails = () => {
         window.location.href = mailToLink;
     };
 
-
     const handleAcceptClick = async () => {
-        setAcceptConfirmationOpen(true);
-    };
-
-    const confirmAccept = async () => {
+        const isConfirmed = window.confirm("Are you sure you want to accept this application?");
+        if (!isConfirmed) return;
+    
         try {
             setLoading("Accepting..."); 
+    
+            // Update project status
+            if (proposalDetails.projectID) {
+                const projectRef = doc(db, "projects", proposalDetails.projectID);
+                try {
+                    await updateDoc(projectRef, {
+                        statusState: 3,
+                        freelancerID: proposalDetails.freelancerID
+                    });
+                    console.log("Project status updated successfully");
+                } catch (error) {
+                    console.error("Error updating project status: ", error);
+                }
+            }
 
             const proposalID = `${projectID}_${freelancerID}`;
             console.log("proposalID",proposalID);
@@ -102,7 +109,7 @@ const ClientApplicationDetails = () => {
             const proposalRef = doc(db, "proposals", proposalID);
             try {
                 await updateDoc(proposalRef, {
-                    statusState: 2.5,
+                    statusState: 3,
                 });
                 console.log("Proposal status updated successfully");
             } catch (error) {
@@ -145,12 +152,10 @@ const ClientApplicationDetails = () => {
         }
     };
 
-
     const handleRejectClick = async () => {
-        setRejectConfirmationOpen(true);
-    };
-
-    const confirmReject = async () => {
+        const isConfirmed = window.confirm("Are you sure you want to reject this application?");
+        if (!isConfirmed) return;
+    
         try {
             setLoading("Rejecting...");
             //delete application
@@ -193,7 +198,7 @@ const ClientApplicationDetails = () => {
                 isRead: false,
                 isPop: false,
                 timestamp: new Date(),
-                type: 4.5,
+                type: 3.5,
                 priority: 2,
                 projectID: proposalDetails.projectID,
                 clientID: user.id,
@@ -206,7 +211,7 @@ const ClientApplicationDetails = () => {
                 isRead: false,
                 isPop: false,
                 timestamp: new Date(),
-                type: 3.5,
+                type: 4.5,
                 priority: 2,
                 projectID: proposalDetails.projectID,
                 freelancerID: proposalDetails.freelancerID,
@@ -221,12 +226,6 @@ const ClientApplicationDetails = () => {
             setLoading(false); // Set loading to false if there is an error
         }
     };
-
-    const handleCancel = async () => {
-        setRejectConfirmationOpen(false);
-        setAcceptConfirmationOpen(false);
-    };
-    
     
 
     return (
@@ -237,21 +236,6 @@ const ClientApplicationDetails = () => {
                     <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
                         Application
                     </Heading>
-
-                    <ConfirmationDialog
-                        open={accpetConfirmationOpen}
-                        onClose={handleCancel}
-                        onConfirm={confirmAccept}
-                        message="Are you sure you want to accept this application?"
-                    />
-
-                    <ConfirmationDialog
-                        open={rejectConfirmationOpen}
-                        onClose={handleCancel}
-                        onConfirm={confirmReject}
-                        message="Are you sure you want to reject this application?"
-                    />
-
                     <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
                     <div className="applicationDetailsContainer">
                         <div className="application-left-side">
@@ -262,7 +246,7 @@ const ClientApplicationDetails = () => {
                                 <label className="applicationLabel" htmlFor="email">Email</label>
                                 <p className="applicationInputted">{proposalDetails.email}</p>
 
-                                <label className="applicationLabel" htmlFor="bids">Bids({currency})</label>
+                                <label className="applicationLabel" htmlFor="bids">Bids(RM)</label>
                                 <p className="applicationInputted">{proposalDetails.bids}</p>
 
                                 <label className="applicationLabel" htmlFor="notes">Notes</label>
@@ -274,14 +258,10 @@ const ClientApplicationDetails = () => {
                                     onClick={() => handleProfileClick(proposalDetails.freelancerID)}>Check Profile</Button>
                                 <Button className="application-contact-button"
                                     onClick={() => handleEmailClick(proposalDetails.email, projectName, clientName)}>Contact via Email</Button>
-
-                            {proposalDetails.statusState < 3 && (
-                            <>
-                                <Button className="application-accept-button" onClick={() => handleAcceptClick()}>Accept</Button>
-                                <Button className="application-reject-button" onClick={() => handleRejectClick()}>Reject</Button>
-                            </>
-                            )}
-
+                                <Button className="application-accept-button"
+                                    onClick={() => handleAcceptClick()}>Accept</Button>
+                                <Button className="application-reject-button"
+                                onClick={() => handleRejectClick()}>Reject</Button>
                             </ButtonGroup>
                         </div>
                         <div className="application-middle-side">

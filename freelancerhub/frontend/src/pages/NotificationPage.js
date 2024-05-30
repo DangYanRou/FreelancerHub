@@ -21,13 +21,10 @@ type 2 = client received application priority = 2
 type 3 = client accepted application priority = 2
 type 3.5 = client rejected application priority = 2
 type 4 = freelancer received assignment priority = 2
-type 4.1 = freelancer accept assignment priority = 1
-type 4.2 = notify client that freelancer accept assignment priority = 1
 type 4.5 = freelancer received rejection priority = 2
 type 5 = client marked project as completed priority = 1
 type 6 = freelancer reveiced project completeness priority = 1
 */
-
 const NotificationPage = () => {
   const { user } = useUser();
   const [data, setData] = useState([]);
@@ -59,7 +56,7 @@ const NotificationPage = () => {
               const freelancerRef = doc(db, 'freelancers', notification.freelancerID);
               const freelancerDoc = await getDoc(freelancerRef);
               if (freelancerDoc.exists()) {
-                return { ...notification, freelancerName: freelancerDoc.data().username };
+                return { ...notification, freelancerName: freelancerDoc.data().freelancerName };
               }
             }
             return notification;
@@ -70,7 +67,7 @@ const NotificationPage = () => {
               const clientRef = doc(db, 'clients', notification.clientID);
               const clientDoc = await getDoc(clientRef);
               if (clientDoc.exists()) {
-                return { ...notification, clientName: clientDoc.data().username };
+                return { ...notification, clientName: clientDoc.data().clientName };
               }
             }
             return notification;
@@ -103,198 +100,57 @@ const NotificationPage = () => {
     fetchData();
   }, [user]);
 
-  const handleInvitation = async (event, item) => { //type=0
+  const handleApplicationCheck = async (event, notificationId) => {
     try {
-      setLoading(true);
-      const notificationRef = doc(db, 'notifications', item.id);
+      const notificationRef = doc(db, 'notifications', notificationId);
       await updateDoc(notificationRef, {
         isRead: true
       });
       
-      //prompt freelancer to apply the project invited, call
-      //item.projectID to get projectID
-      //item.clientID to get clientID
-      //item.to to get freelancerID
-
+      history.push("/freelancers/projects-applied");//prompt to check application
     } catch (error) {
       console.error("Error updating priority: ", error);
     }
-    finally{
-      setLoading(false);
-    }
   };
-  
-  const handleFreelanerCheckApplication = async (event, item) => { //type=1
+
+  const handleInvitation = async (event, notificationId) => {
     try {
-      setLoading(true);
-      const notificationRef = doc(db, 'notifications', item.id);
+      const notificationRef = doc(db, 'notifications', notificationId);
       await updateDoc(notificationRef, {
         isRead: true
       });
       
-      //prompt freelancer with the card that contains the view application
-      //and cancel applictaion button, call
-      //item.projectID to get projectID
-      //item.clientID to get clientID
-      //item.to to get freelancerID
+      history.push("/freelancers/projects-applied");//prompt to apply
     } catch (error) {
       console.error("Error updating priority: ", error);
     }
-    finally{
-      setLoading(false);
-    }
+  };
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const [currentNotificationId, setCurrentNotificationId] = useState(null);
+
+  const handleAssignment = (event, notificationId) => {
+    console.log("notificatinId:",notificationId);
+    setCurrentNotificationId(notificationId);
+    setConfirmationOpen(true);
   };
 
-  const handleClientApplicationView = async (event, item) => { //type=2
+  const handleConfirmAssignment = async () => {
     try {
-      setLoading(true);
-      const notificationRef = doc(db, 'notifications', item.id);
-      await updateDoc(notificationRef, {
-        isRead: true
-      });
-
-      history.push("/clients/proposal-details",{proposal_key:{projectID:item.projectID, freelancerID:item.freelancerID}});
+      const notificationRef = doc(db, 'notifications', currentNotificationId);
+      await updateDoc(notificationRef, { isRead: true });
+      //history.push("/freelancers/projects-applied");
     } catch (error) {
       console.error("Error updating priority: ", error);
-    }
-    finally{
-      setLoading(false);
+    } finally {
+      setConfirmationOpen(false);
     }
   };
 
-  const handleClientAccept = async (event, item) => { //type=3
-    try {
-      setLoading(true);
-      const notificationRef = doc(db, 'notifications', item.id);
-      await updateDoc(notificationRef, {
-        isRead: true
-      });
-      history.push("/clients/proposal-details",{proposal_key:{projectID:item.projectID, freelancerID:item.freelancerID}});
-    } catch (error) {
-      console.error("Error updating priority: ", error);
-    }
-    finally{
-      setLoading(false);
-    }
-  };
-
-  const handleClientReject = async (event, item) => { //type=3.5
-    try {
-      const notificationRef = doc(db, 'notifications', item.id);
-      await updateDoc(notificationRef, {
-        isRead: true
-      });
-      
-      history.push("/clients/proposal-received",{projectID:item.projectID});
-    } catch (error) {
-      console.error("Error updating priority: ", error);
-    }
-  };
-
-  const handleFreelancerReceiveAssignment = async (event, item) => { //type=4
-    try {
-      setLoading(true);
-      const notificationRef = doc(db, 'notifications', item.id);
-      await updateDoc(notificationRef, {
-        isRead: true
-      });
-
-      history.push("/freelancers/application",{proposal_key:{projectID:item.projectID,freelancerID:item.to}});
-    } catch (error) {
-      console.error("Error updating priority: ", error);
-    }finally{
-      setLoading(false);
-    }
+  const handleCancelAssignment = () => {
+    setConfirmationOpen(false);
   };
 
 
-  const handleFreelancerCheckProjectAssigned = async (event, item) => { //type=4.1
-    try {
-      setLoading(true);
-      const notificationRef = doc(db, 'notifications', item.id);
-      await updateDoc(notificationRef, {
-        isRead: true
-      });
-      
-      //prompt freelancer with the card that contains the status bar, call
-      //item.projectID to get projectID
-      //item.clientID to get clientID
-      //item.to to get freelancerID
-    } catch (error) {
-      console.error("Error updating priority: ", error);
-    }finally{
-      setLoading(false);
-    }
-  };
-
-  const handleClientCheckAssignment = async (event, item) => { //type=4.2
-    try {
-      setLoading(true);
-      const notificationRef = doc(db, 'notifications', item.id);
-      await updateDoc(notificationRef, {
-        isRead: true
-      });
-      
-      history.push("/clients/project-posted");//prompt to check application
-    } catch (error) {
-      console.error("Error updating priority: ", error);
-    }finally{
-      setLoading(false);
-    }
-  };
-
-  const handleFreelancerReceiveRejection = async (event, item) => { //type=4.5
-    try {
-      setLoading(true);
-      const notificationRef = doc(db, 'notifications', item.id);
-      await updateDoc(notificationRef, {
-        isRead: true
-      });
-
-      //prompt freelancer with the card that contains the apply button, call
-      //item.projectID to get projectID
-      //item.clientID to get clientID
-      //item.to to get freelancerID
-    } catch (error) {
-      console.error("Error updating priority: ", error);
-    }finally{
-      setLoading(false);
-    }
-  };
-
-  const handleClientMarkAsDone = async (event, item) => { //type=5
-    try {
-      setLoading(true);
-      const notificationRef = doc(db, 'notifications', item.id);
-      await updateDoc(notificationRef, {
-        isRead: true
-      });
-
-      history.push("/clients/project-completed");
-    } catch (error) {
-      console.error("Error updating priority: ", error);
-    }finally{
-      setLoading(false);
-    }
-  };
-
-  const handleFreelancerDone = async (event, item) => { //type=6
-    try {
-      setLoading(true);
-      const notificationRef = doc(db, 'notifications', item.id);
-      await updateDoc(notificationRef, {
-        isRead: true
-      });
-
-      history.push("/freelancers/project-completed-page");
-    } catch (error) {
-      console.error("Error updating priority: ", error);
-    }finally{
-      setLoading(false);
-    }
-  };
-
-  
   
   const getPriority = (priority) => {
     return priority === 1 ? 'info' : 'warning';
@@ -314,12 +170,19 @@ const NotificationPage = () => {
         <Loading />
       ) : (
         <div className="notification-container">
+
+          <ConfirmationDialog
+            open={confirmationOpen}
+            onClose={handleCancelAssignment}
+            onConfirm={handleConfirmAssignment}
+            message="Are you sure you want to assign this project?"
+          />
           
           {data.map(item => {
 
             if (item.type === 0) { //project invitation
               return (
-                <Alert key={item.id} severity="info" onClick={(event) => handleInvitation(event, item)} 
+                <Alert key={item.id} severity="info" onClick={(event) => handleInvitation(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
                   <AlertTitle>You have received an invitation for {item.projectName || 'the project'}</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
@@ -329,7 +192,7 @@ const NotificationPage = () => {
 
             if (item.type === 1) { //project applied
               return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleFreelanerCheckApplication(event, item)} 
+                <Alert key={item.id} severity="success" onClick={(event) => handleInvitation(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
                   <AlertTitle>You have successfully submitted an application for {item.projectName || 'the project'}</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
@@ -339,7 +202,7 @@ const NotificationPage = () => {
 
             if (item.type === 2) { //receive application
               return (
-                <Alert key={item.id} severity="info" onClick={(event) => handleClientApplicationView(event, item)} 
+                <Alert key={item.id} severity="info" onClick={(event) => handleAssignment(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
                   <AlertTitle>You have received an application for {item.projectName || 'the project'}</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
@@ -349,9 +212,9 @@ const NotificationPage = () => {
 
             if (item.type === 3) { //accept application
               return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleClientAccept(event, item)} 
+                <Alert key={item.id} severity="success" onClick={(event) => handleAssignment(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have assigned {item.projectName || 'the project'} to {item.freelancerName || 'the freelancer'}.</AlertTitle>
+                  <AlertTitle>You have assigned {item.projectName || 'the project'} to {item.freelancerName || 'the freelancer'}</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -359,9 +222,9 @@ const NotificationPage = () => {
 
             if (item.type === 3.5) { //reject application
               return (
-                <Alert key={item.id} severity="warning" onClick={(event) => handleClientReject(event, item)} 
+                <Alert key={item.id} severity="warning" onClick={(event) => handleInvitation(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have rejected the application for {item.projectName || 'the project'} from {item.freelancerName || 'the freelancer'}. Click here to assign your project to other freelancers.</AlertTitle>
+                  <AlertTitle>You have rejected the application for {item.projectName || 'the project'} from {item.freelancerName || 'the freelancer'}</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -369,7 +232,7 @@ const NotificationPage = () => {
 
             if (item.type === 4) { //receive assignment
               return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerReceiveAssignment(event, item)} 
+                <Alert key={item.id} severity="success" onClick={(event) => handleAssignment(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
                   <AlertTitle>You have been assigned to {item.projectName || 'the project'} by {item.clientName || 'the client'}</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
@@ -377,31 +240,11 @@ const NotificationPage = () => {
               );
             }
 
-            if (item.type === 4.1) { //accept assignment(freelancer)
-              return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerCheckProjectAssigned(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have accpet the assignment of {item.projectName || 'the project'} from {item.clientName || 'the client'}</AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 4.2) { //accept assignment (client)
-              return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleClientCheckAssignment(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>Your assignment of {item.projectName || 'the project'} has been accepted by {item.freelancerName || 'the freelancer'}</AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
             if (item.type === 4.5) { //receive rejection
               return (
-                <Alert key={item.id} severity="warning" onClick={(event) => handleFreelancerReceiveRejection(event, item)} 
+                <Alert key={item.id} severity="warning" onClick={(event) => handleInvitation(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>Your application for {item.projectName || 'the project'} has been rejected. Revise your proposal and click here to apply again.</AlertTitle>
+                  <AlertTitle>Your application for {item.projectName || 'the project'} has been rejected</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -409,7 +252,7 @@ const NotificationPage = () => {
 
             if (item.type === 5) { //marked as completed
               return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleClientMarkAsDone(event, item)} 
+                <Alert key={item.id} severity="success" onClick={(event) => handleInvitation(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
                   <AlertTitle>Your have successfully marked {item.projectName || 'the project'} as completed</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
@@ -419,7 +262,7 @@ const NotificationPage = () => {
 
             if (item.type === 6) { //project completeness
               return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerDone(event, item)} 
+                <Alert key={item.id} severity="success" onClick={(event) => handleInvitation(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
                   <AlertTitle>Your {item.projectName || 'project'} was completed</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
