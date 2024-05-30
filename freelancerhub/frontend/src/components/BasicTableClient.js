@@ -100,7 +100,7 @@ export default function BasicTableClient() {
       >
         {/* <BioCard client={ favouriteClientList} onClientClick={handleClientClick} selectedClientId={selectedClient ? selectedClient.id : null} />
          */}
-        <BioCard client={ selectedClient} onClientClick={handleClientClick} />
+        <BioCard client={ selectedClient}  />
       </Modal>
     </>
   );

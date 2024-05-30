@@ -13,7 +13,7 @@ import Typography from '@mui/joy/Typography';
 import SvgIcon from '@mui/joy/SvgIcon';
 import { useNavigate } from 'react-router-dom';
 
-export default function BioCard({ client, onClientClick, selectedClientId }) {
+export default function BioCard({ client}) {
   const navigate = useNavigate();
 
   return (
