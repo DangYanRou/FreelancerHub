@@ -9,7 +9,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import Heading from '../../../components/Heading';
-import { db } from '../../../firebase';  // Adjust the path as necessary
+import { db } from '../../../firebase';  
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { collection, query, getDocs, doc, getDoc,where,updateDoc,deleteDoc } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
@@ -62,7 +62,7 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
       <p className="detail-status">{statusMessage}</p>
       <p className="detail-date">{project.applyDate}</p> {/*rmb add this !! apply btn */}
       <div className="statusbar">
-        <StatusBar projectId={project.id}/>
+        <StatusBar statusState={project.statusState}/>
       </div>
       <div className='jl-button-container'>
         <button className="btn-primary" onClick={handleViewApplication}>View Application</button>
@@ -112,38 +112,76 @@ const FreelancerProjectsApplied = () => {
   const [showCancelApplicationModal, setShowCancelApplicationModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false); // Loading state for the modal content
-  const [status, setStatus] = useState(1); // Add status state here
+  const [status, setStatus] = useState(null); // Add status state here
   const { user } = useUser();
 
-  useEffect(() => {   {/*here need to get proposal stateStatus adn update to project state  */}
+  useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const proposalsQuery = query(collection(db, 'proposals'),where('freelancerID','==',user.id))
-        console.log(user.id) ;{/* now is freelancerID havent fetch, but after fetch may cause memory leakage */}
-        
+        if (!user?.id) {
+          console.error('User ID is not available');
+          return;
+        }
+
+        const proposalsQuery = query(collection(db, 'proposals'), where('freelancerID', '==', user.id));
+        console.log('Fetching proposals for freelancerID:', user.id);
+
         const proposalSnapshot = await getDocs(proposalsQuery);
+        if (proposalSnapshot.empty) {
+          console.log('No proposals found for this freelancer');
+          setLoading(false);
+          return;
+        }
+
         const projectPromises = proposalSnapshot.docs.map(async (proposalDoc) => {
-          const projectId = proposalDoc.data().projectID;
-          const projectRef = doc(db, 'projects', projectId);
-          const projectDoc = await getDoc(projectRef);
-          return { id: projectDoc.id, ...projectDoc.data() };
+          const proposalData = proposalDoc.data();
+          const statusState = proposalData.statusState;
+          const projectId = proposalData.projectID;
+
+          console.log('Proposal Data:', proposalData);
+          console.log('stateStatus:', statusState);
+          console.log('projectID:', projectId);
+
+          if (statusState) {
+            setStatus(statusState);
+          } else {
+            console.warn('stateStatus is undefined for proposal:', proposalDoc.id);
+          }
+
+          if (projectId) {
+            const projectRef = doc(db, 'projects', projectId);
+            const projectDoc = await getDoc(projectRef);
+            if (projectDoc.exists()) {
+              return { id: projectDoc.id, ...projectDoc.data() ,statusState};
+            } else {
+              console.warn('No project found for ID:', projectId);
+              return null;
+            }
+          } else {
+            console.warn('projectID is undefined for proposal:', proposalDoc.id);
+            return null;
+          }
         });
+
         const projectData = await Promise.all(projectPromises);
-        setProjects(projectData);
+        setProjects(projectData.filter(project => project !== null));
+
       } catch (error) {
-        console.error("Error fetching projects: ", error);
+        console.error('Error fetching projects:', error);
       } finally {
         setLoading(false);
       }
     };
+
     fetchProjects();
-  }, []);
+  }, [user]);
+
 
   const handleProjectClick = async (project) => {
     setModalLoading(true); // Start modal loading
     try {
       setSelectedProject(project);
-      setStatus(project.statusState); // Update status based on the selected project
+      //setStatus(project.statusState); // Update status based on the selected project
     } catch (error) {
       console.error("Error fetching project details: ", error);
     } finally {
