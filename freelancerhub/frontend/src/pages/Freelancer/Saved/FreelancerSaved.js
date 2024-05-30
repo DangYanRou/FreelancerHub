@@ -11,8 +11,8 @@ import { BiTimeFive } from "react-icons/bi";
 import '../../../styles/Freelancers/FreelancerSaved.css';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { db } from '../../../firebase';
-import { collection, getDocs } from "firebase/firestore";
+import { db , auth} from '../../../firebase';
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 const FreelancerSaved = () => {
   const navigate = useNavigate();
@@ -25,10 +25,13 @@ const FreelancerSaved = () => {
 
   const collectionRef = collection(db, "favouriteProject");
 
-  const getFavProjects = async () => {
+    const getFavProjects = async () => {
     try {
-      const data = await getDocs(collectionRef);
-       const filteredData = data.docs.map((doc) => {
+      const userID = auth.currentUser.uid;
+      const q = query(collectionRef, where("savedBy", "==", userID));
+
+      const data = await getDocs(q);
+      const filteredData = data.docs.map((doc) => {
         const projectData = doc.data();
         // Convert Firestore timestamps to string
         if (projectData.date) {
