@@ -123,7 +123,7 @@ const FreelancerProjectsApplied = () => {
           return;
         }
 
-        const proposalsQuery = query(collection(db, 'proposals'), where('freelancerID', '==', user.id));
+        const proposalsQuery = query(collection(db, 'proposals'), where('freelancerID', '==', user.id),where('statusState','!=',5));
         console.log('Fetching proposals for freelancerID:', user.id);
 
         const proposalSnapshot = await getDocs(proposalsQuery);
