@@ -16,7 +16,7 @@ const ClientApplicationDetails = () => {
     const location = useLocation();
     console.log(location.state);
     const history = useHistory();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState("Loading...");
     const { freelancerID, projectID } = location.state.proposal_key;
     const [proposalDetails, setProposalDetails] = useState(null);
     const { user } = useUser();
@@ -87,7 +87,7 @@ const ClientApplicationDetails = () => {
         if (!isConfirmed) return;
     
         try {
-            setLoading("Accepting..."); // Set loading to "Accepting..."
+            setLoading("Accepting..."); 
     
             // Update project status
             if (proposalDetails.projectID) {
@@ -102,9 +102,11 @@ const ClientApplicationDetails = () => {
                     console.error("Error updating project status: ", error);
                 }
             }
-    
+
+            const proposalID = `${projectID}_${freelancerID}`;
+            console.log("proposalID",proposalID);
             // Update Proposals
-            const proposalRef = doc(db, "proposals", proposalDetails.proposalID);
+            const proposalRef = doc(db, "proposals", proposalID);
             try {
                 await updateDoc(proposalRef, {
                     statusState: 3,
