@@ -23,7 +23,7 @@ const ProjectPosted = () => {
     useEffect(() => {
         const fetchProjects = async () => {
           try {
-            const projectsRef = query(collection(db, 'projects'),where('clientID','==',user.id));
+            const projectsRef = query(collection(db, 'projects'),where('clientID','==',user.id),  where('statusState', '!=', 5));
             console.log("client:"+user.id) // Use the correct method for collection reference
             const snapshot = await getDocs(projectsRef); // Fetch the documents
             const projectsData = snapshot.docs.map((doc) => ({
@@ -49,7 +49,7 @@ const ProjectPosted = () => {
         setSelectedProject(null);
     }
 
-    const handleMarkAsDone = async (project) => {
+    const handleMarkAsDone = async (project) => {    {/* update statusState=5 for both project and proposal */}
       if (project) {
           const projectRef = doc(db, "projects", project.id);
           console.log(project.id)
@@ -132,7 +132,7 @@ const ProjectPosted = () => {
     return (
         <div className="ProjectPosted">
             <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
-                Project Posted
+                Posted Project
             </Heading>
             <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
             <div className="jl-centered-container">
