@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
+import { BiTimeFive } from "react-icons/bi";
 import { db } from "../firebase";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -58,6 +59,7 @@ const CompletedProjectListClient = ({ projects }) => {
             {project.minInput}-{project.maxInput} {project.currencyInput}
             /project
           </p>
+          <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
           <p className="apply-status">{project.status}</p>
           <div className="bottom-row">
             <p style={{ flexGrow: 1 }}>

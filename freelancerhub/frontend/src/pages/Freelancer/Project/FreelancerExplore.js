@@ -18,6 +18,7 @@ import { db, auth } from '../../../firebase';
 import { getDocs, collection, addDoc } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
 import { format } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 
 
 const FreelancerExplore = () => {  
@@ -147,7 +148,9 @@ const FreelancerExplore = () => {
     <div className={`flex flex-col ${selectedProjectId ? 'w-3/5' : 'flex-grow'}`}>
       {projects.map((blog) => {
         // Destructure budget and duration from blog object
-       
+        const postedTime = blog.postedTime?.toDate();
+        const timeAgo = postedTime ? formatDistanceToNow(postedTime, { addSuffix: true }) : '';
+
         return (
           <div
             className={`card ${selectedProjectId === blog.id ? 'selected' : ''} mb-4`}
@@ -166,6 +169,8 @@ const FreelancerExplore = () => {
               <BiTimeFive size={20} className='icon-style2' />
               {blog.duration} {blog.durationUnit}
             </p>
+            <div className="absolute bottom-4 right-3  w-50 h-8"  style={{ color: 'grey' }}>
+            <p id="posted-time">Posted {timeAgo}</p></div>
             <div className="absolute top-4 right-3 space-x-4 w-8 h-8">
               {bookmarkedProjects[blog.id] ? 
                 <BsBookmarkCheckFill 
