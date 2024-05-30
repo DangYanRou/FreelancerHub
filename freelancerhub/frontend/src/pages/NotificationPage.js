@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import '../../../styles/Freelancers/FreelancerNotificationPage.css';
-import { Link } from 'react-router-dom';
-import { GrFormClose } from "react-icons/gr";
-import { FaLocationDot } from "react-icons/fa6";
-import { MdOutlineAttachMoney } from "react-icons/md";
-import { BiTimeFive } from "react-icons/bi";
+import '../styles/NotificationPage.css';
 import { useHistory } from 'react-router-use-history';
-import Heading from '../../../components/Heading';
+import Heading from '../components/Heading';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import { Button } from '@mui/material';
-import { useUser } from '../../../context/UserContext';
-import { db } from "../../../firebase";
+import { useUser } from '../context/UserContext';
+import { db } from "../firebase";
 import { collection, query, where, orderBy, getDocs, doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
-import Loading from '../../../components/Loading';
-import NavigationBarFreelancer from '../../../nav/NavigationBarFreelancer';
+import Loading from '../components/Loading';
+import { Button, Modal } from "flowbite-react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+import ConfirmationDialog from '../components/ConfirmationDialog';
 
 
 /*
@@ -129,7 +125,33 @@ const NotificationPage = () => {
       console.error("Error updating priority: ", error);
     }
   };
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const [currentNotificationId, setCurrentNotificationId] = useState(null);
 
+  const handleAssignment = (event, notificationId) => {
+    console.log("notificatinId:",notificationId);
+    setCurrentNotificationId(notificationId);
+    setConfirmationOpen(true);
+  };
+
+  const handleConfirmAssignment = async () => {
+    try {
+      const notificationRef = doc(db, 'notifications', currentNotificationId);
+      await updateDoc(notificationRef, { isRead: true });
+      history.push("/freelancers/projects-applied");
+    } catch (error) {
+      console.error("Error updating priority: ", error);
+    } finally {
+      setConfirmationOpen(false);
+    }
+  };
+
+  const handleCancelAssignment = () => {
+    setConfirmationOpen(false);
+  };
+
+
+  
   const getPriority = (priority) => {
     return priority === 1 ? 'info' : 'warning';
   };
@@ -148,6 +170,14 @@ const NotificationPage = () => {
         <Loading />
       ) : (
         <div className="notification-container">
+
+          <ConfirmationDialog
+            open={confirmationOpen}
+            onClose={handleCancelAssignment}
+            onConfirm={handleConfirmAssignment}
+            message="Are you sure you want to assign this project?"
+          />
+          
           {data.map(item => {
 
             if (item.type === 0) { //project invitation
@@ -202,7 +232,7 @@ const NotificationPage = () => {
 
             if (item.type === 4) { //receive assignment
               return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleInvitation(event, item.id)} 
+                <Alert key={item.id} severity="success" onClick={(event) => handleAssignment(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
                   <AlertTitle>You have been assigned to {item.projectName || 'the project'} by {item.clientName || 'the client'}</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
