@@ -138,7 +138,7 @@ const NotificationPage = () => {
     try {
       const notificationRef = doc(db, 'notifications', currentNotificationId);
       await updateDoc(notificationRef, { isRead: true });
-      history.push("/freelancers/projects-applied");
+      //history.push("/freelancers/projects-applied");
     } catch (error) {
       console.error("Error updating priority: ", error);
     } finally {
@@ -202,7 +202,7 @@ const NotificationPage = () => {
 
             if (item.type === 2) { //receive application
               return (
-                <Alert key={item.id} severity="info" onClick={(event) => handleInvitation(event, item.id)} 
+                <Alert key={item.id} severity="info" onClick={(event) => handleAssignment(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
                   <AlertTitle>You have received an application for {item.projectName || 'the project'}</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
@@ -212,7 +212,7 @@ const NotificationPage = () => {
 
             if (item.type === 3) { //accept application
               return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleInvitation(event, item.id)} 
+                <Alert key={item.id} severity="success" onClick={(event) => handleAssignment(event, item.id)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
                   <AlertTitle>You have assigned {item.projectName || 'the project'} to {item.freelancerName || 'the freelancer'}</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
