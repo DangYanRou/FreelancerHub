@@ -8,6 +8,7 @@ import { ProjectContext } from '../../../context/ProjectContext';
 import { addProject, auth, db } from '../../../firebase';
 import { collection, getDoc,doc, query, where, getDocs, addDoc } from "firebase/firestore";
 import EmailContext from '../../../context/ProjectInvitationContext';
+import { useParams } from 'react-router-dom';
 
 
 
@@ -36,7 +37,8 @@ const ProgressBar = ({ stages }) => {
 
 
 
-const CreateProjectPreview = () => {
+const EditProjectPreview = () => {
+  const { projectId } = useParams();
 
   //edit here to navigate to posted part
   const handlePreviousButtonClick = (event) => {
@@ -346,4 +348,4 @@ const CreateProjectPreview = () => {
   );
 };
 
-export default CreateProjectPreview;
+export default EditProjectPreview;

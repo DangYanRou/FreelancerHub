@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import backgroundHome from "../../../Gallery/backgroundHome.png"; 
-import search from "../../../Gallery/img_search.svg";
-import location from "../../../Gallery/img_iconoir_pin_alt.svg";
-import catergory from "../../../Gallery/catergory_icon.svg";
+import searchImg from "../../../Gallery/img_search.svg";
+import locationImg from "../../../Gallery/img_iconoir_pin_alt.svg";
+import catergoryImg from "../../../Gallery/catergory_icon.svg";
 import dropdownArrow from "../../../Gallery/dropdownArrow_icon.svg";
 import '../../../styles/Freelancers/FreelancerExplore.css'
 import { useHistory } from 'react-router-use-history';
@@ -15,10 +15,11 @@ import { BsBookmarkCheckFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import { useUser } from '../../../context/UserContext';
 import { db, auth } from '../../../firebase'; 
-import { getDocs, collection, addDoc } from 'firebase/firestore';
+import { getDocs, collection, addDoc, query, where, getFirestore } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
 import { format } from 'date-fns';
 import { formatDistanceToNow } from 'date-fns';
+import { categories,workloadOptions } from '../../../components/ProjectOptions.js';
 
 
 const FreelancerExplore = () => {  
@@ -31,6 +32,9 @@ const FreelancerExplore = () => {
   const [selectedProject,setSelectedProject]=useState(null);
   const [showDetails, setShowDetails] = useState(false);
   const [appliedProjects, setAppliedProjects] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [category, setCategory] = useState('');
+  const [location, setLocation] = useState('');
 
   //deon
   const handleSave = async (project) => {
@@ -108,18 +112,6 @@ const FreelancerExplore = () => {
     { title: 'Budget', min: minBudget, max: maxBudget }
   ];
 
-  const categories = [
-    'Marketing',
-    'Sales',
-    'Development',
-    'Design',
-    'Human Resources',
-    'Finance',
-    'IT',
-    'Operations',
-    'Product',
-    'Other'
-  ];
 
   function validateBudget(min, max) {
     if (min && max) {
@@ -257,46 +249,90 @@ const FreelancerExplore = () => {
     );
   };
 
+  const handleSearch = async() => {
+    try {
+      let q = collection(db, 'projects');
+      if (searchTerm) {
+        // Split the search term into words
+        const searchWords = searchTerm.toLowerCase().split(' ');
+  
+        // Create a compound query with a where clause for each search word
+        for (const word of searchWords) {
+          q = query(q, where('titleWords', 'array-contains', word));
+        }
+      }
+
+      if (category) {
+        q = query(q, where('category', '==', category));
+      }
+      if (location) {
+        q = query(q, where('location', '==', location.toLowerCase()));
+      }
+      const querySnapshot = await getDocs(q);
+  
+      if (querySnapshot.empty) {
+        console.log("No matching documents.");
+        setProjects([]); // Set projects to an empty array if no documents are found
+        return;
+      }
+  
+      const filteredProjects = querySnapshot.docs.map((doc) => ({
+        id: doc.id, // Ensure to get the document ID
+        ...doc.data()
+      }));
+  
+      console.log("Filtered Projects:", filteredProjects);
+      setProjects(filteredProjects);
+    } catch (error) {
+      console.error("Error searching projects:", error);
+    }
+  };
+
+  const InputField = ({ imgSrc, altText, placeholder, value, onChange }) => (
+    <div className="flex items-center gap-4">
+      <img src={imgSrc} alt={altText} className="h-[33px] align-middle" />
+      <input type="text" placeholder={placeholder} className="!text-[21.03px] border-none outline-none flex-grow py-2" value={value} onChange={onChange} />
+    </div>
+  );
+  
+  const SelectField = ({ imgSrc, altText, value, onChange, options }) => (
+    <div className="flex items-center gap-4">
+      <img src={imgSrc} alt={altText} className="h-[33px] align-middle" />
+      <select className="!text-[21.03px] border-none outline-none flex-grow" value={value} onChange={onChange}>
+        <option value="">Select a category...</option>
+        {options.map((option, index) => (
+          <option key={index} value={option}>{option}</option>
+        ))}
+      </select>
+    </div>
+  );
+
   return (
 
     <div>
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 ">
       
     <div className="relative ">
-      <img src={backgroundHome} alt="Background" className="w-screen object-cover h-1/2" />
-      <div className="absolute bottom-[30%] left-0 right-0 m-auto flex w-full max-w-[1070px] flex-col items-center gap-[66px] md:p-5 sm:gap-[33px]">
-        <h1 className="text-shadow-ts tracking-[-1.20px] text-5xl font-bold mb-5 text-white">
-  Search Project
-</h1>
-<div className="flex items-center justify-between self-stretch rounded-[39px] bg-white px-5 py-2">
-<div className="flex items-center gap-4">
-  <img src={search} alt="search_one" className="h-[42px] w-[42px] align-middle" />
-  <input type="text" placeholder="Job title or keyword" className="!text-[21.03px] border-none outline-none flex-grow h-[30px] py-2" />
-</div>
-<div className="flex items-center gap-4">
-    <img src={catergory} alt="iconoirpinalt" className="h-[33px] w-[33px] align-middle" />
-    <select className="!text-[21.03px] border-none outline-none flex-grow h-[30px] ">
-      <option value="">Select a category...</option>
-      {categories.map((category, index) => (
-        <option key={index} value={category.toLowerCase()}>{category}</option>
-      ))}
-    </select>
+  <img src={backgroundHome} alt="Background" className="w-screen object-cover h-1/2" />
+  <div className="absolute bottom-[30%] left-0 right-0 m-auto flex w-full max-w-[1350px] flex-col items-center gap-[66px] md:p-5 sm:gap-[33px]">
+    <h1 className="text-shadow-ts tracking-[-1.20px] text-5xl font-bold mb-5 text-white">
+      Search Project
+    </h1>
+    <div className="flex items-center justify-between self-stretch rounded-[39px] bg-white px-5 py-2">
+      <InputField imgSrc={searchImg} altText="search_one" placeholder="Job title or keyword" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+      <SelectField imgSrc={catergoryImg} altText="iconoirpinalt" value={category} onChange={(e) => setCategory(e.target.value)} options={categories} />
+      <InputField imgSrc={locationImg} altText="iconoirpinalt" placeholder="Johor, Malaysia" value={location} onChange={(e) => setLocation(e.target.value)} />
+      <button 
+        onClick={handleSearch} 
+        className="ml-[33px] md:ml-0 sm:px-5 bg-[#214E60] hover:bg-[#69ACC2] text-white font-bold py-2 px-4 rounded-full">
+        Search
+      </button>
+    </div>
   </div>
-<div className="flex items-center gap-4">
-  <img src={location} alt="iconoirpinalt" className="h-[33px] w-[33px] align-middle" />
-  <input type="text" placeholder="Johor, Malaysia" className="!text-[21.03px] border-none outline-none flex-grow h-[30px] py-2" />
 </div>
-<button 
-  // onClick={handleSearch} 
-  className="ml-[33px] md:ml-0 sm:px-5 bg-[#214E60] hover:bg-[#69ACC2] text-white font-bold py-2 px-4 rounded-full">
-  Search
-</button>
-</div>
-</div>
-</div>
-      <div className="flex justify-center items-center pt-10">
-      <div className="flex flex-row">
-            <div className="flex flex-col w-1/4">
+<div className="flex justify-start items-start pt-10">
+        <div className="flex flex-row w-full">
+        <div className="flex flex-col w-1/4">
       {dropdowns.map((dropdown, index) => (
   <details key={index} open className="mb-4 rounded-xl bg-white shadow overflow-hidden" onToggle={(e) => {
     const arrow = e.target.querySelector('.arrow');
@@ -358,12 +394,15 @@ const FreelancerExplore = () => {
 
     </div>
     <div className={`FreelancerExplore ${showDetails? 'show-details':''} `}>
-    <div className="parent-container ">
-    <ProjectList projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null} />
+    <div className="parent-container">
+    {projects.length > 0 ? (
+        <ProjectList projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null} />
+    ) : (
+        <div className="noprojectcard">No project Found</div>
+    )}
     <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} />
-
-    </div>
-    </div>
+</div>
+    </div> 
 
   </div>
   

@@ -31,7 +31,7 @@ const ProgressBar = ({ stages }) => {
 const durationUnits = ['day(s)', 'week(s)', 'month(s)', 'year(s)'];
 
   
-const CreateProjectDescription = () => {
+const EditProjectDescription = () => {
   // Define the stages of project creation
   const stages = [
     { title: 'Project Details', step: 'Step 1/5' },
@@ -200,4 +200,4 @@ id="projectCategory" name="category" value={project.category} onChange={handleIn
   );
 };
 
-export default CreateProjectDescription;
+export default EditProjectDescription;

@@ -27,7 +27,7 @@ const ProgressBar = ({ stages }) => {
   );
 };
 
-const CreateProjectPreferred = () => {
+const EditProjectPreferred = () => {
   // Define the stages of project creation
   const stages = [
     { title: 'Project Details', step: 'Step 1/5' },
@@ -48,7 +48,7 @@ const CreateProjectPreferred = () => {
 
   const handleNextButtonClick = (event) => {
     event.preventDefault();
-    navigate("/clients/post-project-preview");
+    navigate("/clients/post-project-invite");
   };
 
 const [preferredSkills, setSkillInput] = useState('');
@@ -260,4 +260,4 @@ const handleResDelete = (ResToDelete) => {
   );
 };
 
-export default CreateProjectPreferred;
+export default EditProjectPreferred;
