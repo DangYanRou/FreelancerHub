@@ -24,7 +24,6 @@
 .registerPage .identity{
     display:flex;
     justify-content: center;
-    margin-bottom: 10px;;
 }
 
 .identity-label {

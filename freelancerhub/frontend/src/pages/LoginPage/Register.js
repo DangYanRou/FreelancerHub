@@ -74,14 +74,11 @@ const Register = () => {
                                 />
                             </label>
                         </div>
-                        <div className="remember-forgot" style={{ color: 'white' }}>
-                            <label><input type="checkbox" />I agree to the terms & conditions</label>
+                        <div className="button_container">
+                            <button id="submit" className="register-button" type="submit" style={{ marginTop: 10 }}>Register</button>
                         </div>
-
-                        <button id="submit" className="register-button" type="submit" style={{ margin: 10 }}>Register</button>
-
                         <div className="register-link">
-                            <p style={{ color: 'white', marginLeft: 20 }}>Already have an account? <Link to="/">Login</Link></p>
+                            <p style={{ color: 'white'}}>Already have an account? <Link to="/">Login</Link></p>
                         </div>
                     </form>
                 </div>

@@ -32,9 +32,11 @@ const ResetPassword=()=>{
                         <div className="input-box">
                             <MdEmail className="emailIcon"/><input type="text" id="email" name="email" placeholder="Email" required></input>
                         </div>
-                        <button type="submit">Send</button>
+                        <div className='button_container'>
+                            <button type="submit">Send</button>
+                        </div>
                         <div className="register-link">
-                            <p style={{marginTop:10, marginLeft:100}}><Link to="/">Back to Login</Link></p>
+                            <p><Link to="/">Back to Login</Link></p>
                         </div>
                     </form>
             </div>
