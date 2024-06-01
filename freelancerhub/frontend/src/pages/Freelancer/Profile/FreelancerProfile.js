@@ -401,6 +401,7 @@ const FreelancerProfile = () => {
                               <input
                                 type="text"
                                 value={skill.name}
+                                placeholder="Skill"
                                 onChange={(e) => {
                                   const updatedSkills = [...formData.frontendSkills];
                                   updatedSkills[index].name = e.target.value;
@@ -410,6 +411,7 @@ const FreelancerProfile = () => {
                               <input
                                 type="text"
                                 value={skill.level}
+                                placeholder='Level'
                                 onChange={(e) => {
                                   const updatedSkills = [...formData.frontendSkills];
                                   updatedSkills[index].level = e.target.value;
