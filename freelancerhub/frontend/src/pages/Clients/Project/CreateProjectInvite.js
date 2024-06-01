@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import workImage from '../../../Gallery/work.png';
 import noteImage from '../../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,9 @@ import user from '../../../Gallery/user.jpg';
 import NavigationBarClients from '../../../nav/NavigationBarClient';
 import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
-
+import { db, auth } from '../../../firebase'; 
+import { collection, query, where, getDocs, getDoc, doc} from "firebase/firestore";
+import EmailContext from '../../../context/ProjectInvitationContext';
 
 // ProgressBar component to display the stages of project creation
 const ProgressBar = ({ stages }) => {
@@ -39,6 +41,42 @@ const CreateProjectInvite= () => {
     { title: 'Preview', step: 'Step 5/5' },
   ];
 
+  const { emailSubject, setEmailSubject, emailContent, setEmailContent, emailClient, setEmailClient, selectedUsers, setSelectedUsers } = useContext(EmailContext);
+
+  const fetchFavouriteFreelancers = async () => {
+    // // Fetch favourite freelancers from the database
+    const favouriteFreelancers = [];
+    // const user = auth.currentUser;
+    // const clientID = user.uid;
+    // const collectionRef = collection(db, 'favouriteFreelancer');
+    // const q = query(collectionRef, where('clientID', '==', clientID));
+    // const snapshot = await getDocs(q);
+    // for (let docSnapshot of snapshot.docs) {
+    //   const data = docSnapshot.data();
+    //   if (data.uid) {
+    //     const freelancerDoc = doc(db, 'freelancers', data.uid);
+    //     const freelancerSnapshot = await getDoc(freelancerDoc);
+    //     if (freelancerSnapshot.exists()) {
+    //       const freelancerData = freelancerSnapshot.data();
+    //       favouriteFreelancers.push({
+    //         uid: data.uid,
+    //         profilePicture: freelancerData.profilePicture,
+    //         name: freelancerData.name,
+    //         email: freelancerData.email,
+    //         selected:false
+    //       });
+    //     }
+    //   }
+    // }
+    
+    return favouriteFreelancers;
+  };
+
+  // Usage
+  fetchFavouriteFreelancers().then(favouriteFreelancers => {
+    setUsers(favouriteFreelancers);
+  });
+
   const navigate = useNavigate();
   
   const handlePreviousButtonClick = (event) => {
@@ -48,35 +86,48 @@ const CreateProjectInvite= () => {
 
   const handleNextButtonClick = (event) => {
     event.preventDefault();
+    console.log(emailContent)
     navigate("/clients/post-project-preview");
   };
 
-  const [selectedUsers, setSelectedUsers] = useState([]);
-
-  const [users, setUsers] = useState([
-    { profilePhoto: user, username: 'User1' },
-    { profilePhoto: user, username: 'User2' },
-    { profilePhoto: user, username: 'User3' },
-    // Add more users as needed
-  ]);
-
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [users, setUsers] = useState([]);
 
   const handleUserClick = (index) => {
-    if (selectedUsers.includes(index)) {
-      setSelectedUsers(selectedUsers.filter(userIndex => userIndex !== index));
+    const user = users[index];
+    if (!selectedUsers.some(selectedUser => selectedUser.uid === user.uid)) {
+      setSelectedUsers(prevSelectedUsers => {
+        const newSelectedUsers = [...prevSelectedUsers, user];
+        newSelectedUsers[index].selected = !newSelectedUsers[index].selected;
+        console.log('Added user:', user);
+        console.log('New selected users:', newSelectedUsers);
+        return newSelectedUsers;
+      });
     } else {
-      setSelectedUsers([...selectedUsers, index]);
+      setSelectedUsers(prevSelectedUsers => {
+        const newSelectedUsers = prevSelectedUsers.filter(selectedUser => selectedUser.uid !== user.uid);
+        console.log('Removed user:', user);
+        console.log('New selected users:', newSelectedUsers);
+        return newSelectedUsers;
+      });
     }
   };
 
-  const [project, setProject] = useContext(ProjectContext);
+  useEffect(() => {
+    console.log('Current selected users:', selectedUsers);
+  }, [selectedUsers]);
 
-  const handleInputChange = (event) => {
-    setProject({
-      ...project,
-      [event.target.name]: event.target.value,
-    });
+
+  const fecthClientInfo = async () => {
+    const user = auth.currentUser;
+    const docRef = doc(db, "clients", user.uid);
+    const docSnap = await getDoc(docRef);
+    let email = '';
+    if (docSnap.exists()) {
+      email = docSnap.data().email;
+      setEmailClient(email);
+    } else {
+      console.log("No such document!");
+    }
   };
   
   return (
@@ -97,27 +148,27 @@ const CreateProjectInvite= () => {
 
  <label className="block text-gray-700 text-sm font-bold mb-2 " htmlFor="projectStartTime">Subject: </label>
     <input className="flex h-[40px] w-full items-center justify-center rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 sm:w-full"
-    id="subject" name="subjectInput" onChange={handleInputChange} value={project.subjectInput} type="text" />
+    id="subject" name="emailSubject"  onChange={(e) => setEmailSubject(e.target.value)} value={emailSubject} type="text" />
     <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="duration">Content: </label>
     <textarea style={{ width: '100%' }} className="flex h-[300px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5 py-2"
-    id="content" name="contentInput" onChange={handleInputChange} value={project.contentInput}></textarea>
+    id="content" name="emailContent"  onChange={(e) => setEmailContent(e.target.value)} value={emailContent}></textarea>
   </div>
 
   <div className="flex flex-col w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="favouriteCollaborator">Favourite Collaborator: </label>
     <div className="rounded-[10px] overflow-hidden border border-solid border-gray-500 bg-white-A700 ">
-      <table className="w-full">
-        <tbody>
-        {users.map((user, index) => (
-  <tr key={index} onClick={() => handleUserClick(index)}>
-    <td className={`rounded-[10px] border border-solid border-gray-500 w-4/5 m-auto my-2 p-2 flex items-center ${selectedUsers.includes(index) ? 'bg-blue-200' : 'bg-gray-100'} ${selectedUsers.includes(index) ? '' : 'hover:bg-gray-200'} transition-colors duration-200`}>
-      <img src={user.profilePhoto} alt={user.username} className="w-8 h-8 rounded-full mr-2" />
-      <span className="font-bold text-gray-700">{user.username}</span>
-    </td>
-  </tr>
+    <table className="w-full">
+  <tbody>
+  {users.map((user, index) => (
+    <tr key={index} onClick={() => handleUserClick(index)}>
+  <td className={`rounded-[10px] border border-solid border-gray-500 w-4/5 m-auto my-2 p-2 flex items-center ${user.selected ? 'bg-green-200' : 'bg-red-100'} ${user.selected ? '' : 'hover:bg-gray-200'} transition-colors duration-200`}>
+    <img src={user.profilePicture} alt={user.name} className="w-8 h-8 rounded-full mr-2" />
+    <span className="font-bold text-gray-700">{user.name}</span>
+  </td>
+</tr>
 ))}
-        </tbody>
-      </table>
+  </tbody>
+</table>
 </div>
   </div>
     

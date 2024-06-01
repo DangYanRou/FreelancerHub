@@ -20,7 +20,7 @@ export const ProjectInfoProvider = ({ children }) => {
     preferredSkills: [],
     keywords: [],
     statusState: 1,
-    postedTime: new Date(),
+    postedTime: new Date()
 
 });
 
