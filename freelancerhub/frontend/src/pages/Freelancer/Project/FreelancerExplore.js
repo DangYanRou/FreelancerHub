@@ -340,9 +340,9 @@ const FreelancerExplore = () => {
 
   
   const SelectField = ({ imgSrc, altText, value, onChange, options }) => (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3">
       <img src={imgSrc} alt={altText} className="h-[33px] align-middle" />
-      <select className="!text-[21.03px] border-none outline-none flex-grow" value={value} onChange={onChange}>
+      <select className="!text-[19px] border-none outline-none flex-grow text-center" value={value} onChange={onChange}>
         <option value="">Select a category...</option>
         {options.map((option, index) => (
           <option key={index} value={option}>{option}</option>
@@ -378,19 +378,19 @@ const FreelancerExplore = () => {
       
     <div className="relative ">
   <img src={backgroundHome} alt="Background" className="w-screen object-cover h-1/2" />
-  <div className="absolute bottom-[30%] left-0 right-0 m-auto flex w-full max-w-[1350px] flex-col items-center gap-[66px] md:p-5 sm:gap-[33px]">
+  <div className="absolute bottom-[30%] left-0 right-0 m-auto flex w-full max-w-[1250px] flex-col items-center gap-[66px] md:p-5 sm:gap-[33px]">
     <h1 className="text-shadow-ts tracking-[-1.20px] text-5xl font-bold mb-5 text-white">
       Search Project
     </h1>
     <div className="flex items-center justify-between self-stretch rounded-[39px] bg-white px-5 py-2">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
   <img src={searchImg} alt="search_one" className="h-[42px] w-[42px] align-middle" />
-  <input type="text" placeholder="Job title or keyword" className="!text-[21.03px] border-none outline-none flex-grow h-[30px] py-2" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
+  <input type="text" placeholder="Job title or keyword" className="!text-[19px] border-none outline-none flex-grow h-[30px] py-2" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
 </div>
       <SelectField imgSrc={catergoryImg} altText="iconoirpinalt" value={category} onChange={(e) => setCategory(e.target.value)} options={categories} />
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
   <img src={locationImg} alt="iconoirpinalt" className="h-[33px] w-[33px] align-middle" />
-  <input type="text" placeholder="Johor, Malaysia" className="!text-[21.03px] border-none outline-none flex-grow h-[30px] py-2"  value={location} onChange={(e) => setLocation(e.target.value)}/>
+  <input type="text" placeholder="Johor, Malaysia" className="!text-[19px] border-none outline-none flex-grow h-[30px] py-2"  value={location} onChange={(e) => setLocation(e.target.value)}/>
 </div>
      
       <button 
@@ -403,7 +403,7 @@ const FreelancerExplore = () => {
 </div>
 <div className="flex justify-center items-center p-10 pl-20 pr-20 w-full ">
         <div className="flex flex-row justify-center w-full">
-        <div className="FreelancerExplore.dropdown-container">
+        <div className="flex flex-col justify-start pr-20 ">
         <p className="text-2xl font-bold text-gray-700 mb-4">Filter by:</p>
       {dropdowns.map((dropdown, index) => (
   <details key={index} open className="mb-4 rounded-xl bg-white shadow overflow-hidden" onToggle={(e) => {
