@@ -20,9 +20,7 @@ export const ProjectInfoProvider = ({ children }) => {
     preferredSkills: [],
     keywords: [],
     statusState: 1,
-    postedTime: new Date(),
-    freelancerID: []
-
+    postedTime: new Date()
 
 });
 

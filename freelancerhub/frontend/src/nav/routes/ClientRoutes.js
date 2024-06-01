@@ -9,10 +9,7 @@ import CreateProjectDescription from '../../pages/Clients/Project/CreateProjectD
 import CreateProjectPreferred from '../../pages/Clients/Project/CreateProjectPreferred';
 import CreateProjectInvite from '../../pages/Clients/Project/CreateProjectInvite';
 import CreateProjectPreview from '../../pages/Clients/Project/CreateProjectPreview';
-import EditProjectPreview from '../../pages/Clients/Project/EditProjectPreview';
-import EditProjectDetail from '../../pages/Clients/Project/EditProjectDetail';
-import EditProjectDescription from '../../pages/Clients/Project/EditProjectDescription';
-import EditProjectPreferred from '../../pages/Clients/Project/EditProjectPreferred';
+import EditProject from '../../pages/Clients/Project/EditProject';
 import ClientProfile from '../../pages/Clients/Profile/ClientProfile';
 import ClientFeedbackPage from '../../pages/Clients/Feedback/ClientFeedbackPage';
 import ClientAverageReviewBox from '../../pages/Clients/Profile/ClientAverageReviewBox';
@@ -38,10 +35,7 @@ const ClientRoutes = () => {
         <Route path="post-project-preferred" element={<CreateProjectPreferred />} />
         <Route path="post-project-invite" element={<CreateProjectInvite />} />
         <Route path="post-project-preview" element={<CreateProjectPreview />} />
-        <Route path="edit-project-preview" element={<EditProjectPreview />} />
-        <Route path="edit-project/:projectId" element={<EditProjectDetail />} />        
-        <Route path="edit-project-description" element={<EditProjectDescription />} />
-        <Route path="edit-project-preferred" element={<EditProjectPreferred />} />
+        <Route path="edit-project/:projectId" element={<EditProject/>} />        
         <Route path="profile" element={<ClientProfile />} />
         <Route path="client-feedback-page" element={<ClientFeedbackPage />} />
         <Route path="client-average-review-box" element={<ClientAverageReviewBox />} />

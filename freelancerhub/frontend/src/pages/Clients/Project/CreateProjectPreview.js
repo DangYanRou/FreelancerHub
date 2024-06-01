@@ -61,7 +61,9 @@ const CreateProjectPreview = () => {
   const navigate = useNavigate();
 
   const freelancerid = selectedUsers.map(user => user.uid);
-
+  function clearContext() {
+    setProjectInfo({}); // or set to initial state
+  }
   const handlePostClick = async (event) => {
     event.preventDefault();
     const user=auth.currentUser;
@@ -72,7 +74,7 @@ const CreateProjectPreview = () => {
 
       let name='';
       if (docSnap.exists()) {
-        name = docSnap.data().name;
+        name = docSnap.data().name || null; // If `name` is `undefined`, use `null` instead
       } else {
         console.log("No such document!");
       }
@@ -114,6 +116,8 @@ const CreateProjectPreview = () => {
     })
     .then(() => {
         console.log('Notification added successfully!');
+        navigate('/clients/project-posted');
+        clearContext(); 
     })
     .catch((error) => {
         console.error("Error adding document: ", error);
