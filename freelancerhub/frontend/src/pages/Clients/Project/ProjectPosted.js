@@ -180,7 +180,15 @@ const ProjectPosted = () => {
             </ul>
                 </div>
                 <h3 id="preferredQualification">Preferred Qualification:</h3>
-                <p>{project.preferQuali}</p>
+                <p>{project.preferredQualification}</p>
+                <div>
+            <h3 id="key-requirement">Preferred Skills:</h3>
+              <ul className="list">
+              {(project.preferredSkills ?? []).map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+            </div>
             </div>
         );
     };

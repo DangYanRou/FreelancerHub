@@ -49,6 +49,7 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
   if (!project) return null;
   const formattedDate = project.date ? format(project.date.toDate(), 'dd/MM/yyyy') : '';
   const statusMessage = getStatusType(project.statusState);
+  console.log(project.statusState)
 
   return (
     <div className="pa-project-details">

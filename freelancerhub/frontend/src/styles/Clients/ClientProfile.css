@@ -325,3 +325,46 @@
     scroll-behavior: smooth;
   }
 }
+.modal-overlay {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: flex-end; /* Align modal to the right */
+  align-items: center;
+  
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  overflow-y: auto;
+  height: 100%;
+  max-width: 600px; /* Limit the maximum width of the modal content */
+ 
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+}
+
+
+.jl-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.jl-view-project-header{
+  font-size: 34px;
+}

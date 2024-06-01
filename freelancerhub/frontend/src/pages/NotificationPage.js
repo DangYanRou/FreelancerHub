@@ -131,6 +131,7 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
+      history.push("/freelancers/project-applied")
       
       //prompt freelancer with the card that contains the view application
       //and cancel applictaion button, call
@@ -251,6 +252,7 @@ const NotificationPage = () => {
         isRead: true
       });
       
+      history.push("/freelancers/project-applied")
       //prompt freelancer with the card that contains the apply button, call
       //item.projectID to get projectID
       //item.clientID to get clientID
