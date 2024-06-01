@@ -316,6 +316,15 @@ const FreelancerExplore = () => {
             </div>
             <h3 id="preferredQualification">Preferred Qualification:</h3>
             <p>{project.preferredQualification}</p>
+            <div>
+            <h3 id="key-requirement">Preferred Skills:</h3>
+              <ul className="list">
+              {(project.preferredSkills ?? []).map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+            </div>
+
             {hasApplied ? (
           <button id="applyButton" className="btn-disabled" disabled>Applied</button>
         ) : (

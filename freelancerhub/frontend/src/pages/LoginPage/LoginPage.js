@@ -81,6 +81,7 @@ const LoginPage = () => {
                         <FaLock className="icon" /><input name="pass" className="pass" type="password" placeholder="Password" onChange={(e) => setPass(e.target.value)} required />
                     </div>
                     <div className="identity" style={{ color: 'white' }}>
+                    <Link to="/resetPassword" id="forgotPass">Forgot password?</Link>
                         <label className="identity-label">
                             <Switch
                                 id="role"
@@ -91,11 +92,9 @@ const LoginPage = () => {
                             />
                         </label>
                     </div>
-                    <div className="remember-forgot">
-                        <label style={{ color: 'white' }}><input type="checkbox" />Remember Me</label>
-                        <Link to="/resetPassword">Forgot password?</Link>
+                    <div className='button_container' style={{paddingTop:10}}>
+                        <button className='login-button' type="submit">Login</button>
                     </div>
-                    <button className='login-button' type="submit">Login</button>
                     <div className="register-link">
                         <p style={{ color: 'white' }}>Don't have an account? <Link to="/register">Register</Link></p>
                     </div>
