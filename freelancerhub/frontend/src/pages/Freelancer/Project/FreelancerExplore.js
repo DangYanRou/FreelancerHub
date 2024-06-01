@@ -23,11 +23,13 @@ import { categories,workloadOptions } from '../../../components/ProjectOptions.j
 
 
 const FreelancerExplore = () => {  
+  
+
   const { user } = useUser();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [minBudget, setMinBudget] = useState('');
-  const [maxBudget, setMaxBudget] = useState('');
+  const [minInput, setMinInput] = useState('');
+  const [maxInput, setMaxInput] = useState('');
   const [bookmarkedProjects, setBookmarkedProjects] = useState({});
   const [selectedProject,setSelectedProject]=useState(null);
   const [showDetails, setShowDetails] = useState(false);
@@ -35,7 +37,92 @@ const FreelancerExplore = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [currencyInput, setCurrency] = useState('');
+  const handleCurrencyChange = (event) => {
+    setCurrency(event.target.value);
+  };
 
+  const handleSearch = async () => {
+    try {
+      let q = collection(db, 'projects');
+
+      if (category) {
+        q = query(q, where('category', '==', category));
+      }
+
+
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        console.log("No matching documents.");
+        setProjects([]); // Set projects to an empty array if no documents are found
+        return;
+      }
+
+      let filteredProjects = querySnapshot.docs.map((doc) => ({
+        id: doc.id, // Ensure to get the document ID
+        ...doc.data()
+      }));
+
+      if (searchTerm) {
+        const searchWords = searchTerm.toLowerCase().split(' ');
+
+        filteredProjects = filteredProjects.filter((project) =>
+          searchWords.every((word) => project.title.toLowerCase().includes(word))
+        );
+      }
+
+      if (location) {
+        const locationWords = location.toLowerCase().split(' ');
+
+        filteredProjects = filteredProjects.filter((project) =>
+          locationWords.every((word) => project.location.toLowerCase().includes(word))
+        );
+      }
+      if (minInput ) {
+        filteredProjects = filteredProjects.filter((project) => {
+          const projectMax = maxInput ? Number(project.maxInput) : null;
+          const projectMin = minInput ? Number(project.minInput) : null;
+          if (minInput) {
+            return projectMin >= minInput || projectMax >= minInput;      
+          }
+        });
+      }
+      
+      if (currencyInput) {
+        filteredProjects = filteredProjects.filter((project) => project.currencyInput === currencyInput);
+      }
+
+      for (const [filter, options] of Object.entries(selectedOptions)) {
+        if (filter !== 'Budget') {
+          let propertyName;
+          if(filter === 'Workplace') {
+            propertyName = 'workPlace';
+          } else if (filter === 'Workload') {
+            propertyName = 'workload';
+          } 
+          console.log("Filtering by", filter, "with options", options);
+          filteredProjects = filteredProjects.filter((project) =>
+            options.includes(project[[propertyName]])
+          );
+        }
+      }
+
+      console.log("Filtered Projects:", filteredProjects);
+      setProjects(filteredProjects);
+    } catch (error) {
+      console.error("Error searching projects:", error);
+    }
+
+  };
+
+  useEffect(() => {
+    handleSearch();
+  }, [minInput, maxInput, currencyInput, selectedOptions]);
+
+  
+  
   //deon
   const handleSave = async (project) => {
     try {
@@ -109,17 +196,8 @@ const FreelancerExplore = () => {
   const dropdowns = [
     { title: 'Workplace', options: ['Onsite', 'Remote', 'Hybrid'] },
     { title: 'Workload', options: ['20% (1 day per week)', '40% (2 days per week)', '60% (3 days per week)','80% (4 days per week)','100% (5 days per week)','not specified'] },
-    { title: 'Budget', min: minBudget, max: maxBudget }
+    { title: 'Budget', min: minInput, currency: currencyInput }
   ];
-
-
-  function validateBudget(min, max) {
-    if (min && max) {
-      return Number(min) <= Number(max);
-    }
-    return true;
-  }
-
 
   
   const handleProjectClick=(project)=>{
@@ -249,51 +327,8 @@ const FreelancerExplore = () => {
     );
   };
 
-  const handleSearch = async() => {
-    try {
-      let q = collection(db, 'projects');
-      if (searchTerm) {
-        // Split the search term into words
-        const searchWords = searchTerm.toLowerCase().split(' ');
-  
-        // Create a compound query with a where clause for each search word
-        for (const word of searchWords) {
-          q = query(q, where('titleWords', 'array-contains', word));
-        }
-      }
 
-      if (category) {
-        q = query(q, where('category', '==', category));
-      }
-      if (location) {
-        q = query(q, where('location', '==', location.toLowerCase()));
-      }
-      const querySnapshot = await getDocs(q);
-  
-      if (querySnapshot.empty) {
-        console.log("No matching documents.");
-        setProjects([]); // Set projects to an empty array if no documents are found
-        return;
-      }
-  
-      const filteredProjects = querySnapshot.docs.map((doc) => ({
-        id: doc.id, // Ensure to get the document ID
-        ...doc.data()
-      }));
-  
-      console.log("Filtered Projects:", filteredProjects);
-      setProjects(filteredProjects);
-    } catch (error) {
-      console.error("Error searching projects:", error);
-    }
-  };
 
-  const InputField = ({ imgSrc, altText, placeholder, value, onChange }) => (
-    <div className="flex items-center gap-4">
-      <img src={imgSrc} alt={altText} className="h-[33px] align-middle" />
-      <input type="text" placeholder={placeholder} className="!text-[21.03px] border-none outline-none flex-grow py-2" value={value} onChange={onChange} />
-    </div>
-  );
   
   const SelectField = ({ imgSrc, altText, value, onChange, options }) => (
     <div className="flex items-center gap-4">
@@ -306,6 +341,26 @@ const FreelancerExplore = () => {
       </select>
     </div>
   );
+  
+  const handleFilterChange = (dropdownTitle, option, isChecked) => {
+    setSelectedOptions((prevState) => {
+      const updatedOptions = { ...prevState };
+      if (isChecked) {
+        if (!updatedOptions[dropdownTitle]) {
+          updatedOptions[dropdownTitle] = [];
+        }
+        updatedOptions[dropdownTitle].push(option);
+      } else {
+        updatedOptions[dropdownTitle] = updatedOptions[dropdownTitle].filter(opt => opt !== option);
+        if (updatedOptions[dropdownTitle].length === 0) {
+          delete updatedOptions[dropdownTitle];
+        }
+      }
+      return updatedOptions;
+    });
+  };
+
+
 
   return (
 
@@ -319,9 +374,16 @@ const FreelancerExplore = () => {
       Search Project
     </h1>
     <div className="flex items-center justify-between self-stretch rounded-[39px] bg-white px-5 py-2">
-      <InputField imgSrc={searchImg} altText="search_one" placeholder="Job title or keyword" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+      <div className="flex items-center gap-4">
+  <img src={searchImg} alt="search_one" className="h-[42px] w-[42px] align-middle" />
+  <input type="text" placeholder="Job title or keyword" className="!text-[21.03px] border-none outline-none flex-grow h-[30px] py-2" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
+</div>
       <SelectField imgSrc={catergoryImg} altText="iconoirpinalt" value={category} onChange={(e) => setCategory(e.target.value)} options={categories} />
-      <InputField imgSrc={locationImg} altText="iconoirpinalt" placeholder="Johor, Malaysia" value={location} onChange={(e) => setLocation(e.target.value)} />
+      <div className="flex items-center gap-4">
+  <img src={locationImg} alt="iconoirpinalt" className="h-[33px] w-[33px] align-middle" />
+  <input type="text" placeholder="Johor, Malaysia" className="!text-[21.03px] border-none outline-none flex-grow h-[30px] py-2"  value={location} onChange={(e) => setLocation(e.target.value)}/>
+</div>
+     
       <button 
         onClick={handleSearch} 
         className="ml-[33px] md:ml-0 sm:px-5 bg-[#214E60] hover:bg-[#69ACC2] text-white font-bold py-2 px-4 rounded-full">
@@ -330,9 +392,10 @@ const FreelancerExplore = () => {
     </div>
   </div>
 </div>
-<div className="flex justify-start items-start pt-10">
-        <div className="flex flex-row w-full">
-        <div className="flex flex-col w-1/4">
+<div className="flex justify-center items-center p-10 pl-20 pr-20 w-full ">
+        <div className="flex flex-row justify-center w-full">
+        <div className="FreelancerExplore.dropdown-container">
+        <p className="text-2xl font-bold text-gray-700 mb-4">Filter by:</p>
       {dropdowns.map((dropdown, index) => (
   <details key={index} open className="mb-4 rounded-xl bg-white shadow overflow-hidden" onToggle={(e) => {
     const arrow = e.target.querySelector('.arrow');
@@ -355,36 +418,30 @@ const FreelancerExplore = () => {
                 <input
                   type="number"
                   value={dropdown.min}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (validateBudget(value, dropdown.max)) {
-                      setMinBudget(value);
-                    }
-                  }}
+                  onChange={(e) => setMinInput(Number(e.target.value))}
                   className="mt-1 w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
               <div className="flex items-center mb-2 justify-between">
                 <label className="text-sm ml-2 font-bold text-gray-700">
-                  Max:
+                  Currency:
                 </label>
-                <input
-                  type="number"
-                  value={dropdown.max}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (validateBudget(dropdown.min, value)) {
-                      setMaxBudget(value);
-                    }
-                  }}
-                  className="mt-1 w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
+                <select required className="flex h-[40px] w-3/4 items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
+                id="currency" name="currencyInput"  onChange={(e) => setCurrency(e.target.value)} value={currencyInput}>
+                <option value="MYR">MYR</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="JPY">JPY</option>
+                <option value="CNY">CNY</option>
+              </select>
               </div>
             </div>
           ) : (
             dropdown.options.map((option,i) => (
               <div key={i} className="flex items-center p-2 hover:bg-gray-200">
-                <input type="checkbox" id={`option-${index}-${i}`} name={`option-${index}-${i}`} className="form-checkbox rounded-xl h-5 w-5 text-blue-600"/>
+                <input type="checkbox" id={`option-${index}-${i}`} name={`option-${index}-${i}`} className="form-checkbox rounded-xl h-5 w-5 text-blue-600"
+                onChange={(e) => handleFilterChange(dropdown.title, option, e.target.checked)}
+                />
                 <label htmlFor={`option-${index}-${i}`} className="ml-2 text-gray-700">{option}</label>
               </div>
             ))
@@ -394,6 +451,7 @@ const FreelancerExplore = () => {
 
     </div>
     <div className={`FreelancerExplore ${showDetails? 'show-details':''} `}>
+      
     <div className="parent-container">
     {projects.length > 0 ? (
         <ProjectList projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null} />
