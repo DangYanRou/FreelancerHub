@@ -9,6 +9,7 @@ import { GrFormClose } from "react-icons/gr";
 import { BiTimeFive } from "react-icons/bi";
 import visaMaster from "../Gallery/visaMaster.png"; 
 import banks from "../Gallery/banks.jpg"; 
+import ConfirmationDialog from '../components/ConfirmationDialog';
 
 const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMarkAsDone,onDeleteProject  }) => {
     const history = useHistory();
@@ -149,18 +150,16 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
             )}
 
             {showConfirmDeleteModal && (
-                <div className='confirmation-modal-overlay' onClick={closeConfirmDeleteModal}>
-                <div className='confirmation-modal-content' onClick={(e) => e.stopPropagation()}>
-                <div className="confirmation-content">
-                   <p id="confirm-message">Are you sure you want to delete this project?</p>
-                    <div className="confirmation-buttons">
-                        <button className="btn-secondary" onClick={handleConfirmDelete}>Confirm</button>
-                        <button className="btn-primary" onClick={closeConfirmDeleteModal}>Cancel</button>
-                        </div>
+               
+                        <ConfirmationDialog
+                        open={showConfirmDeleteModal}
+                        onClose={closeConfirmDeleteModal}
+                        onConfirm={handleConfirmDelete} 
+                        message="Are you sure you want to delete this project?"
+                    />
+
                         
-                    </div>
-                </div>
-            </div>
+              
             )}
 
             {showSuccessModal && (

@@ -15,6 +15,7 @@ import { collection, query, getDocs, doc, getDoc,where,updateDoc,deleteDoc } fro
 import Loading from '../../../components/Loading';
 import { useUser } from '../../../context/UserContext';
 import { format } from 'date-fns';
+import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
 
 
@@ -107,13 +108,15 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
 const FreelancerProjectsApplied = () => {
 
   const [selectedProject, setSelectedProject] = useState(null);
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showCancelApplicationModal, setShowCancelApplicationModal] = useState(false);
+  const[deleteLoading,setDeleteLoading]=useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false); // Loading state for the modal content
   const [status, setStatus] = useState(null); // Add status state here
   const { user } = useUser();
+
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -197,15 +200,30 @@ const FreelancerProjectsApplied = () => {
     return <div><Loading/></div>;
   }
 
+  if (deleteLoading) {
+    return (
+      <div className='success-modal-overlay'>
+        <div className='success-modal-content'>
+          <div className="processing-container">
+            <div className="spinner"></div>
+            <h2 className="processing-text">Deleting...</h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+
   const handleOpenCancelModal = (project) => {
-    setShowCancelApplicationModal(true);
+    setDeleteConfirmationOpen(true);
   };
 
   const handleCloseCancelModal = () => {
-    setShowCancelApplicationModal(false);
+    setDeleteConfirmationOpen(false)
   };
 
   const handleCancelApplication = async (projectId) => {
+    setDeleteLoading(true); // Start loading
     try {
         const proposalsQuery = query(
             collection(db, 'proposals'),
@@ -245,13 +263,15 @@ const FreelancerProjectsApplied = () => {
             }
 
             setProjects(projects.filter(project => project.id !== projectId));
-            setShowCancelApplicationModal(false); // Close confirmation modal
+            setDeleteConfirmationOpen(false); // Close confirmation modal
             setShowSuccessModal(true); // Open success modal
             handleCloseModal();
             setTimeout(() => setShowSuccessModal(false), 1000);
         }
     } catch (error) {
         console.error("Error cancelling application: ", error);
+    } finally {
+      setDeleteLoading(false);
     }
 };
 
@@ -265,7 +285,13 @@ const FreelancerProjectsApplied = () => {
         <ProjectList projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null} />
       </div>
       <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} loading={modalLoading}  user={user} onCancelApplication={handleOpenCancelModal} />
-      <ConfirmationModal isOpen={showCancelApplicationModal} onClose={handleCloseCancelModal} onConfirm={() => handleCancelApplication(selectedProject.id)} />
+      <ConfirmationDialog
+                        open={deleteConfirmationOpen}
+                        onClose={handleCloseCancelModal}
+                        onConfirm={() => handleCancelApplication(selectedProject.id)} 
+                        message="Are you sure you want to cancel your application for this project?"
+                    />
+
       {showSuccessModal && (
         <div className="success-modal-overlay">
           <div className="success-modal-content">
