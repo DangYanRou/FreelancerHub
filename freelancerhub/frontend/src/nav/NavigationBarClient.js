@@ -6,7 +6,7 @@ const NavigationBarClient = () => {
     const pathname = location.pathname;
 
     return (
-        <nav className="bg-white border-gray-200 dark:bg-gray-900 border-b">
+        <nav className="bg-white border-gray-200 dark:bg-gray-900 border-b fixed top-0 w-full z-50">
             <div className="max-w-screen-xl flex flex-wrap mx-auto p-4 justify-between items-center">
                 <span className="text-2xl font-semibold whitespace-nowrap dark:text-white">Freelancer hub</span>
                 <div className="items-center justify-between w-1500px md:flex md:order-1 md:justify-start" id="navbar-user">

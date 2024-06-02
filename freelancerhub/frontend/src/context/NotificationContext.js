@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-use-history';
 import { useUser } from './UserContext';
 import { db } from "../firebase";
-import { collection, query, where, orderBy, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, query, where, orderBy, getDocs, doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,13 +18,13 @@ const NotificationProvider = ({ children }) => {
   const history = useHistory();
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!user) return;
+    if (!user) return;
 
+    const notiQuery = query(collection(db, 'notifications'), orderBy('timestamp', 'desc'), where('to', '==', user.id), where('isPop', '==', false));
+    const unsubscribe = onSnapshot(notiQuery, async (snapshot) => {
       try {
-        const notiQuery = query(collection(db, 'notifications'), orderBy('timestamp', 'desc'), where('to', '==', user.id), where('isPop', '==', false));
-        const notiSnapshot = await getDocs(notiQuery);
-        const notifications = notiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        console.log("fetching noti...")
+        const notifications = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   
         const fetchRelatedData = async (notifications) => {
           const projectFetchPromises = notifications.map(async (notification) => {
@@ -74,13 +74,13 @@ const NotificationProvider = ({ children }) => {
         };
         const notificationsWithAllData = await fetchRelatedData(notifications);
         setData(notificationsWithAllData);
-  
-
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
-    };
-    fetchData();
+    });
+
+    return () => unsubscribe();
+
   }, [user, pathname, history]);
 
   useEffect(() => {
