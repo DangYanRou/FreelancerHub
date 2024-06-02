@@ -106,7 +106,8 @@ const ClientApplicationDetails = () => {
             const projectRef = doc(db, "projects",proposalDetails.projectID);
             try {
                 await updateDoc(proposalRef, {
-                    statusState: 3
+                    statusState: 3,
+                    statusTime: new Date(),
                 });
                 console.log("Proposal status updated successfully");
 

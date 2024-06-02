@@ -101,7 +101,7 @@ const ApplicationDetails = () => {
             //update proposal
             const proposal_key = `${proposalDetails.projectID}_${proposalDetails.freelancerID}`
             const proposalRef = doc(db, 'proposals',proposal_key);
-            await updateDoc(proposalRef, { statusState: 4 });
+            await updateDoc(proposalRef, { statusState: 4, statusTime: new Date(),});
 
         } catch (error) {
           console.error("Error updating priority: ", error);
