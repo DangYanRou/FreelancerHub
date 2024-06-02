@@ -144,6 +144,11 @@
   scale: 1.1;
 }
 
+.application-details-status-bar{
+  width: 400px;
+  max-width: 400px;
+}
+
 .FilesAttachedContainer{
   display: flex;
   flex-direction: column;
