@@ -1,21 +1,15 @@
-// backend/src/routes/projectRoutes.js
 const express = require('express');
 const router = express.Router();
-const admin = require('firebase-admin');
-
-const db = admin.firestore();
+const projectService = require('../services/projectService');
 
 router.get('/:projectId', async (req, res) => {
   try {
-    const projectRef = db.collection('projects').doc(req.params.projectId);
-    const doc = await projectRef.get();
-    if (!doc.exists) {
-      return res.status(404).send('Project not found');
-    }
-    res.send(doc.data());
+    const project = await projectService.getProjectById(req.params.projectId);
+    res.json(project);
   } catch (error) {
-    res.status(500).send('Error getting project data: ' + error.message);
+    res.status(500).json({ message: 'Error retrieving project', error: error.message });
   }
 });
+
 
 module.exports = router;

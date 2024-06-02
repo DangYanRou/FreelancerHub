@@ -17,7 +17,6 @@ import ConfirmationDialog from "../../../components/ConfirmationDialog";
 const ApplicationForm = () => {
   const history = useHistory();
   const location = useLocation();
-  console.log(location.state);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -43,10 +42,9 @@ const ApplicationForm = () => {
     const fetchData = async () => {
       try {
         setLoading("Loading");
-        const response = await axios.get(`http://localhost:5000/projects/${location.state.project_key.projectID}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/projects/${location.state.project_key.projectID}`);
         if (response.status === 200) {
           const data = response.data;
-          console.log("Project data:", data);
           setCurrency(data.currencyInput);
         } else {
           console.error("No such document!");
@@ -102,7 +100,6 @@ const ApplicationForm = () => {
       event.stopPropagation();
       return;
     }
-    console.log("confitmation:", location.state);
     setConfirmationOpen(true);
   };
 
@@ -114,10 +111,8 @@ const ApplicationForm = () => {
     try {
       setConfirmationOpen(false);
       setLoading("Submitting...");
-      const { projectID, clientID } = location.state.project_key;
-      const { freelancerID } = location.state.user_key;
-      const cvUrl = formData.cv ? await uploadFile(formData.cv, 'cvs') : '';
-      const proposalUrl = formData.proposal ? await uploadFile(formData.proposal, 'proposals') : '';
+      const cvUrl = formData.cv ? await uploadFileToBackend(formData.cv, 'cvs', location.state.project_key.projectID, location.state.user_key.freelancerID, formData.cv.type) : '';
+      const proposalUrl = formData.proposal ? await uploadFileToBackend(formData.proposal, 'proposals', location.state.project_key.projectID, location.state.user_key.freelancerID, formData.proposal.type) : '';
       const cvName = formData.cv ? formData.cvName : '';
       const proposalName = formData.proposal ? formData.proposalName : '';
 
@@ -160,9 +155,8 @@ const ApplicationForm = () => {
         }
       ];
 
-      await axios.post('http://localhost:5000/submit-proposal', { proposalData, notifications });
+      await axios.post(`${process.env.REACT_APP_API_URL}/applications`,{ proposalData, notifications });
 
-      // Redirect user to next page after successful submission
       history.push('/freelancers/projects-applied');
     } catch (error) {
       toast.error('Error submitting proposal. Please try again.');
@@ -171,11 +165,26 @@ const ApplicationForm = () => {
     }
   };
 
-  const uploadFile = async (file, folder) => {
-    const storageRef = ref(storage, `${folder}/${location.state.project_key.projectID}_${location.state.user_key.freelancerID}`);
-    await uploadBytes(storageRef, file);
-    return await getDownloadURL(storageRef);
-  };
+  const uploadFileToBackend = async (file, folder, projectID, freelancerID, fileType) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('folder', folder);
+    formData.append('projectID', projectID);
+    formData.append('freelancerID', freelancerID);
+    formData.append('fileType', fileType);
+
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/files/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data.url;
+    } catch (error) {
+      console.error('Error uploading file: ', error);
+      throw error;
+    }
+};
 
   return (
     <div>

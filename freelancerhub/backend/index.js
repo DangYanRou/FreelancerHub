@@ -26,11 +26,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Import routes
 const projectRoutes = require('./src/routes/projectRoutes');
-const proposalRoutes = require('./src/routes/proposalRoutes');
+const applicationRoutes = require('./src/routes/applicationRoutes');
+const filesRoutes = require('./src/routes/filesRoutes');
 
 // Use routes
 app.use('/projects', projectRoutes);
-app.use('/submit-proposal', proposalRoutes);
+app.use('/applications', applicationRoutes);
+app.use('/files',filesRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
