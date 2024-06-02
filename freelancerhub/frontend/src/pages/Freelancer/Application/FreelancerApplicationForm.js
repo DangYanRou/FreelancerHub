@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import Loading from '../../../components/Loading';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { collection, addDoc,getDoc } from "firebase/firestore";
+import { collection, addDoc, getDoc } from "firebase/firestore";
 import Heading from "../../../components/Heading";
 import ConfirmationDialog from "../../../components/ConfirmationDialog";
 
@@ -97,7 +97,12 @@ const ApplicationForm = () => {
   };
 
   const handleSubmit = async (event) => {
-    console.log("confitmation:",location.state);
+    event.preventDefault(); // Prevent the default form submission behavior
+    if (event.target.checkValidity() === false) {
+      event.stopPropagation();
+      return;
+    }
+    console.log("confitmation:", location.state);
     setConfirmationOpen(true);
   };
 
@@ -105,9 +110,10 @@ const ApplicationForm = () => {
     setConfirmationOpen(false);
   };
 
-  const confirmSubmit = async (event) =>{
-    setLoading("Submitting...");
+  const confirmSubmit = async (event) => {
     try {
+      setConfirmationOpen(false);
+      setLoading("Submitting...");
       const { projectID, clientID } = location.state.project_key;
       const { freelancerID } = location.state.user_key;
       const cvUrl = formData.cv ? await uploadFile(formData.cv, 'cvs') : '';
@@ -124,11 +130,11 @@ const ApplicationForm = () => {
         cvName,
         proposalName,
         notes: formData.notes || '',
-        projectID : location.state.project_key.projectID,
-        freelancerID : location.state.user_key.freelancerID,
+        projectID: location.state.project_key.projectID,
+        freelancerID: location.state.user_key.freelancerID,
         clientID: location.state.project_key.clientID,
         createdAt: new Date(),
-        statusState:2
+        statusState: 2
       };
 
       const docId = `${projectID}_${freelancerID}`;
@@ -172,6 +178,7 @@ const ApplicationForm = () => {
     await uploadBytes(storageRef, file);
     return await getDownloadURL(storageRef);
   };
+
   return (
     <div>
       {loading && <Loading text={loading} />}
@@ -188,10 +195,9 @@ const ApplicationForm = () => {
       />
 
       <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
-      
+      <form onSubmit={handleSubmit}>
         <div className="proposal-form">
           <div className="proposal-form-left">
-
             <label className="proposalLabel" htmlFor="fullName">*Full Name</label>
             <input
               className="proposalInput"
@@ -234,12 +240,10 @@ const ApplicationForm = () => {
               onChange={handleChange}
             />
 
-            <button className="proposalSubmitButton" onClick={(event) => handleSubmit(event)}>Submit</button>
-
+            <button className="proposalSubmitButton" type="submit">Submit</button>
           </div>
 
           <div className="proposal-form-right">
-
             <label className="proposalLabel" style={{ fontSize: '26px' }}>Files Attachment</label>
 
             {previewUrls.cvUrl && (
@@ -317,9 +321,9 @@ const ApplicationForm = () => {
                 />
               </label>
             )}
-
           </div>
         </div>
+      </form>
     </div>
   );
 };

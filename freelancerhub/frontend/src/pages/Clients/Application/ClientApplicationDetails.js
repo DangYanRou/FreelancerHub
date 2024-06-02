@@ -12,6 +12,7 @@ import { ButtonGroup, Button } from 'flowbite-react';
 import { useUser } from '../../../context/UserContext';
 import { ToastContainer, toast } from 'react-toastify';
 import ConfirmationDialog from '../../../components/ConfirmationDialog';
+import StatusBarClient from '../../../components/statusBarClient';
 
 const ClientApplicationDetails = () => {
     const location = useLocation();
@@ -22,6 +23,7 @@ const ClientApplicationDetails = () => {
     const [proposalDetails, setProposalDetails] = useState(null);
     const { user } = useUser();
     const [projectName, setProjectName] = useState('');
+    const [projectState, setProjectState] = useState(null);
     const [clientName, setClientName] = useState('');
     const [currency, setCurrency] = useState(null);
     const [rejectConfirmationOpen, setRejectConfirmationOpen] =useState(false);
@@ -44,6 +46,7 @@ const ClientApplicationDetails = () => {
                         const projectData = projectSnap.data();
                         setProjectName(projectData.title);
                         setCurrency(projectData.currencyInput);
+                        setProjectState(projectData.statusState);
 
                         console.log(user.id);
                         const clientRef = doc(db, 'clients', user.id);
@@ -100,11 +103,16 @@ const ClientApplicationDetails = () => {
             console.log("proposalID",proposalID);
             // Update Proposals
             const proposalRef = doc(db, "proposals", proposalID);
+            const projectRef = doc(db, "projects",proposalDetails.projectID);
             try {
                 await updateDoc(proposalRef, {
-                    statusState: 2.5,
+                    statusState: 3
                 });
                 console.log("Proposal status updated successfully");
+
+                await updateDoc(projectRef, {
+                    statusState: 3,
+                });
             } catch (error) {
                 console.error("Error updating proposal status: ", error);
             }
@@ -137,11 +145,11 @@ const ClientApplicationDetails = () => {
     
             setTimeout(() => {
                 history.push('project-posted');
-                setLoading(false); // Set loading to false after navigation
+                setLoading(false);
             }, 2000);
         } catch (error) {
             toast.error('Error accepting application! Please try again.');
-            setLoading(false); // Set loading to false if there is an error
+            setLoading(false); 
         }
     };
 
@@ -269,13 +277,18 @@ const ClientApplicationDetails = () => {
                                 <p className="applicationInputted">{proposalDetails.notes || "-"}</p>
                             </form>
 
+                            {proposalDetails.statusState>2 &&(
+                                <StatusBarClient className="application-details-status-bar" statusState={projectState}></StatusBarClient>
+                            )}
+
+
                             <ButtonGroup className="application-profile-button-group">
                                 <Button className="application-profile-button"
                                     onClick={() => handleProfileClick(proposalDetails.freelancerID)}>Check Profile</Button>
                                 <Button className="application-contact-button"
                                     onClick={() => handleEmailClick(proposalDetails.email, projectName, clientName)}>Contact via Email</Button>
 
-                            {proposalDetails.statusState < 3 && (
+                            {projectState < 3 && (
                             <>
                                 <Button className="application-accept-button" onClick={() => handleAcceptClick()}>Accept</Button>
                                 <Button className="application-reject-button" onClick={() => handleRejectClick()}>Reject</Button>
