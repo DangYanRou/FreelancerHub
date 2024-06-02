@@ -22,7 +22,7 @@ function App() {
   return (
     <div className="App">
       <UserProvider>
-        <Layout>
+      <Layout>
           <Routes>
             <Route path="/" element={<PublicElement><LoginPage /></PublicElement>} />
           </Routes>
@@ -34,6 +34,11 @@ function App() {
             </Routes>
           </Layout>
      </UserProvider>
+              <Route path="/freelancers/*" element={<FreelancerRoutes />} />
+              <Route path="/clients/*" element={<ClientRoutes />} />
+            </Routes>
+          </Layout>
+      </UserProvider>
     </div>
   );
 }

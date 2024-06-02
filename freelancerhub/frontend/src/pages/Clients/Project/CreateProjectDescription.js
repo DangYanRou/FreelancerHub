@@ -6,8 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
-
-
+import { categories,workloadOptions } from '../../../components/ProjectOptions.js';
 
 // ProgressBar component to display the stages of project creation
 const ProgressBar = ({ stages }) => {
@@ -29,59 +28,16 @@ const ProgressBar = ({ stages }) => {
   );
 };
 
-const durationUnits = ['day', 'week', 'month', 'year'];
+const durationUnits = ['day(s)', 'week(s)', 'month(s)', 'year(s)'];
 
-const workloadOptions = [
-    'not specified',
-    '20% (1 day per week)',
-    '40% (2 days per week)',
-    '60% (3 days per week)',
-    '80% (4 days per week)',
-    '100% (5 days per week)'
-  ];
-
-  const categories = [
-    'Accounting',
-    'Administration & Office Support',
-    'Advertising, Arts & Media',
-    'Banking & Financial Services',
-    'Call Centre & Customer Service',
-    'CEO & General Management',
-    'Community Services & Development',
-    'Construction',
-    'Consulting & Strategy',
-    'Design & Architecture',
-    'Education & Training',
-    'Engineering',
-    'Farming, Animals & Conservation',
-    'Government & Defence',
-    'Healthcare & Medical',
-    'Hospitality & Tourism',
-    'Human Resources & Recruitment',
-    'Information & Communication Technology',
-    'Insurance & Superannuation',
-    'Legal',
-    'Manufacturing, Transport & Logistics',
-    'Marketing & Communications',
-    'Mining, Resources & Energy',
-    'Real Estate & Property',
-    'Retail & Consumer Products',
-    'Sales',
-    'Science & Technology',
-    'Self Employment',
-    'Sport & Recreation',
-    'Trades & Services',
-    'Other'
-  ];
   
 const CreateProjectDescription = () => {
   // Define the stages of project creation
   const stages = [
-    { title: 'Project Details', step: 'Step 1/5' },
-    { title: 'Project Description', step: 'Step 2/5' },
-    { title: 'Preferred', step: 'Step 3/5' },
-    { title: 'Invite', step: 'Step 4/5' },
-    { title: 'Preview', step: 'Step 5/5' },
+    { title: 'Project Details', step: 'Step 1/4' },
+    { title: 'Project Description', step: 'Step 2/4' },
+    { title: 'Preferred', step: 'Step 3/4' },
+    { title: 'Preview', step: 'Step 4/4' }
   ];
 
   const navigate = useNavigate();
@@ -94,7 +50,7 @@ const CreateProjectDescription = () => {
 
   const [project, setProject] = useContext(ProjectContext);
 
-  const [startDate, setStartDate] = useState(new Date());
+  const [date, setDate] = useState(new Date());
   const [jobCateInput, setJobCateInput] = useState('');
   const [jobCateError, setJobCateError] = useState('');
 
@@ -133,10 +89,11 @@ const handleInputChange = (event) => {
     [event.target.name]: event.target.value,
   });
 };
+
 const handleDateChange = (date) => {
   setProject({
     ...project,
-    startDate: date,
+    date: date || null,
   });
 };
 
@@ -185,12 +142,12 @@ id="projectCategory" name="category" value={project.category} onChange={handleIn
   <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectStartTime">Project Start Time: </label>
     <DatePicker
     required
-      selected={project.startDate}
+    selected={project.date}
       onChange={handleDateChange}
       dateFormat="dd/MM/yyyy"
+      placeholderText='dd/mm/yyyy'
       className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
     />
-    {/* ... */}
 
   <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="duration">Duration: </label>
     <div className="flex items-center">

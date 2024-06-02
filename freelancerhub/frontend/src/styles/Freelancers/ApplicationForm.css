@@ -83,7 +83,16 @@
   border-radius: 5px;
   font-weight: bold;
   margin-bottom: 50px;
+  transition: all 0.3s;
 }
+
+.proposalSubmitButton:hover{
+  background-color: #90e0ef !important;
+  color: #213E60 !important;
+}
+
+
+
   
 .longtextinput {
   display: block;
@@ -138,6 +147,11 @@
   width: 400px;
   height: 75px;
   margin-bottom: 20px;
+  transition: all 0.3s;
+}
+
+.file-upload-label:hover {
+  scale: 1.1;
 }
   
   

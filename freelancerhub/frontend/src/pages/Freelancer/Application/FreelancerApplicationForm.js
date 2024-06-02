@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-use-history';
 import { db, storage } from '../../../firebase';
 import { setDoc, doc } from 'firebase/firestore';
@@ -10,13 +10,16 @@ import { useLocation } from "react-router-dom";
 import Loading from '../../../components/Loading';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDoc } from "firebase/firestore";
 import Heading from "../../../components/Heading";
+import ConfirmationDialog from "../../../components/ConfirmationDialog";
 
 const ApplicationForm = () => {
   const history = useHistory();
   const location = useLocation();
-  console.log(location);
+  console.log(location.state);
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
+
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -33,7 +36,30 @@ const ApplicationForm = () => {
     cvUrl: null,
     proposalUrl: null
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // Set initial loading state to false
+  const [currency, setCurrency] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const docRef = doc(db, 'projects', location.state.project_key.projectID);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          console.log("Document data:", data);
+          setCurrency(data.currencyInput);
+        } else {
+          console.error("No such document!");
+        }
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [location.state.project_key.projectID]); // Add location state as a dependency for useEffect
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;
@@ -71,19 +97,30 @@ const ApplicationForm = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    const isConfirmed = window.confirm("Are you sure you want to submit?");
-    if (!isConfirmed) return;
-  
-    setLoading(true);
+    event.preventDefault(); // Prevent the default form submission behavior
+    if (event.target.checkValidity() === false) {
+      event.stopPropagation();
+      return;
+    }
+    console.log("confitmation:", location.state);
+    setConfirmationOpen(true);
+  };
+
+  const handleCancelSubmission = async (event) => {
+    setConfirmationOpen(false);
+  };
+
+  const confirmSubmit = async (event) => {
     try {
+      setConfirmationOpen(false);
+      setLoading("Submitting...");
       const { projectID, clientID } = location.state.project_key;
       const { freelancerID } = location.state.user_key;
       const cvUrl = formData.cv ? await uploadFile(formData.cv, 'cvs') : '';
       const proposalUrl = formData.proposal ? await uploadFile(formData.proposal, 'proposals') : '';
       const cvName = formData.cv ? formData.cvName : '';
       const proposalName = formData.proposal ? formData.proposalName : '';
-  
+
       const proposalData = {
         fullname: formData.fullname,
         email: formData.email,
@@ -93,19 +130,21 @@ const ApplicationForm = () => {
         cvName,
         proposalName,
         notes: formData.notes || '',
-        projectID : location.state.project_key.projectID,
-        freelancerID : location.state.user_key.freelancerID,
-        createdAt: new Date()
+        projectID: location.state.project_key.projectID,
+        freelancerID: location.state.user_key.freelancerID,
+        clientID: location.state.project_key.clientID,
+        statusTime: new Date(),
+        statusState: 2
       };
-  
+
       const docId = `${projectID}_${freelancerID}`;
       await setDoc(doc(db, 'proposals', docId), proposalData);
-  
+
       const notificationToFreelancerData = {
         isRead: false,
         isPop: false,
         timestamp: new Date(),
-        type: 1, 
+        type: 1,
         priority: 1,
         projectID: `${location.state.project_key.projectID}`,
         clientID: `${location.state.project_key.clientID}`,
@@ -117,22 +156,20 @@ const ApplicationForm = () => {
         isRead: false,
         isPop: false,
         timestamp: new Date(),
-        type: 2, 
+        type: 2,
         priority: 2,
         projectID: `${location.state.project_key.projectID}`,
         freelancerID: `${location.state.user_key.freelancerID}`,
         to: `${location.state.project_key.clientID}`
       };
       await addDoc(collection(db, 'notifications'), notificationToClientData);
-  
-  
-      setTimeout(() => {
-        history.push('/freelancers/projects-applied');
-      }, 2000);
+
+      // Redirect user to next page after successful submission
+      history.push('/freelancers/projects-applied');
     } catch (error) {
       toast.error('Error submitting proposal. Please try again.');
     } finally {
-      setLoading(false);
+      setLoading(false); // Set loading to false after submission
     }
   };
 
@@ -144,16 +181,23 @@ const ApplicationForm = () => {
 
   return (
     <div>
-      {loading && <Loading text="Submitting..." />}
+      {loading && <Loading text={loading} />}
       <ToastContainer />
       <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
         Application
       </Heading>
+
+      <ConfirmationDialog
+        open={confirmationOpen}
+        onClose={handleCancelSubmission}
+        onConfirm={confirmSubmit}
+        message="Are you sure you want to submit the application?"
+      />
+
       <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
-      <form onSubmit={handleSubmit} className="proposalForm">
+      <form onSubmit={handleSubmit}>
         <div className="proposal-form">
           <div className="proposal-form-left">
-
             <label className="proposalLabel" htmlFor="fullName">*Full Name</label>
             <input
               className="proposalInput"
@@ -176,7 +220,7 @@ const ApplicationForm = () => {
               required
             />
 
-            <label className="proposalLabel" htmlFor="bids">*Bids(RM)</label>
+            <label className="proposalLabel" htmlFor="bids">*Bids({currency})</label>
             <input
               className="proposalInput"
               type="number"
@@ -196,12 +240,10 @@ const ApplicationForm = () => {
               onChange={handleChange}
             />
 
-            <button type="submit" className="proposalSubmitButton">Submit</button>
-
+            <button className="proposalSubmitButton" type="submit">Submit</button>
           </div>
 
           <div className="proposal-form-right">
-
             <label className="proposalLabel" style={{ fontSize: '26px' }}>Files Attachment</label>
 
             {previewUrls.cvUrl && (
@@ -279,7 +321,6 @@ const ApplicationForm = () => {
                 />
               </label>
             )}
-
           </div>
         </div>
       </form>

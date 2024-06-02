@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore,  collection, getDocs, doc, setDoc  } from 'firebase/firestore';
+import { getFirestore, arrayUnion, collection, getDocs, doc, setDoc  } from 'firebase/firestore';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { getAuth } from 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -10,13 +10,13 @@ import { getAuth } from 'firebase/auth';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBlH47mkhqoRCkUsEvcFV8-Cl_IxJP69Gc",
-  authDomain: "freelancerhub1-b4edc.firebaseapp.com",
-  projectId: "freelancerhub1-b4edc",
-  storageBucket: "freelancerhub1-b4edc.appspot.com",
-  messagingSenderId: "745268650319",
-  appId: "1:745268650319:web:420ded40994421cf88653a",
-  measurementId: "G-L2HM1KG7WN"
+  apiKey: "AIzaSyChqjZ5SNRVgeTYD-LKq_Pp_WJgmhXY56M",
+  authDomain: "freelancerhub-eb28a.firebaseapp.com",
+  projectId: "freelancerhub-eb28a",
+  storageBucket: "freelancerhub-eb28a.appspot.com",
+  messagingSenderId: "112857416885",
+  appId: "1:112857416885:web:651b1d63a534c8ad106afc",
+  measurementId: "G-9KCL2NWNFF"
 };
 
 // Initialize Firebase
@@ -31,15 +31,19 @@ export { db, storage,auth,ref, getDownloadURL  };
 export const addProject = async (projectInfo) => {
   console.log('Adding project:', projectInfo);
   try {
-    // Fetch the current number of projects
-    const querySnapshot = await getDocs(collection(db, "projects"));
-    const projectCount = querySnapshot.size;
+    const user = auth.currentUser;
+    const uid = user.uid;
 
-    // Generate the new document ID
-    const docID = `projectID${projectCount + 1}`; // this will be 'projectID1' for the first project, 'projectID2' for the second, etc.
+    // Generate a new document ID
+    const docRef = doc(collection(db, "projects"));
+    const docID = docRef.id;
 
     // Add the new project with the custom document ID
-    await setDoc(doc(db, "projects", docID), projectInfo);
+    await setDoc(docRef, projectInfo);
+
+    await setDoc(doc(db, "clients", uid), {
+      createdProjects: arrayUnion(docID)
+    }, { merge: true });    
 
     console.log("Document written with ID: ", docID);
   } catch (e) {

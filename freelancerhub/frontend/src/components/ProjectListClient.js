@@ -9,6 +9,8 @@ import { GrFormClose } from "react-icons/gr";
 import { BiTimeFive } from "react-icons/bi";
 import visaMaster from "../Gallery/visaMaster.png"; 
 import banks from "../Gallery/banks.jpg"; 
+import ConfirmationDialog from '../components/ConfirmationDialog';
+import { formatDistanceToNow } from 'date-fns';
 
 const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMarkAsDone,onDeleteProject  }) => {
     const history = useHistory();
@@ -20,6 +22,7 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
     const[showConfirmDeleteModal,setShowConfirmDeleteModal]=useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+   
 
 
     const toggleDropDown = (index, e) => {
@@ -52,7 +55,7 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
                 setTimeout(() => {
                     closeModal();
                     history.push('/clients/project-completed');
-                }, 1000);
+                }, 2000);
             }, 2000);
         } else if (selectedPaymentMethod==null){ {/* */}
             alert("Please select a payment method first.");
@@ -76,10 +79,15 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
             setTimeout(()=>setShowSuccessModal(false),2000)
         }
     }
+    
 
     return (
+        
         <div className="main-container">
-            {projects.map((project, index) => (
+            {projects.map((project, index) => {
+                 const postedTime = project.postedTime?.toDate();
+                 const timeAgo = postedTime ? formatDistanceToNow(postedTime, { addSuffix: true }) : '';
+                 return(
                 <div className="card-container" key={project.id}>
                     <div className={`card ${selectedProjectId === project.id ? 'selected' : ''}`} onClick={() => onProjectClick(project)}>
                         <div className='optionBtn-container'>
@@ -89,8 +97,7 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
                             {showDropdown[index] && (
                                 <div className="pa-options-dropdown">
                                     <ul className="pa-options">
-                                        <li><Link to="/clients/edit-project">Edit Project</Link></li>
-                                        <li onClick={(e) => { e.stopPropagation(); openConfirmDeleteModal(project); }}>Delete Project</li>
+                                        <li> <Link to={`/clients/edit-project/${project.id}`}>Edit Project</Link></li>                                           <li onClick={(e) => { e.stopPropagation(); openConfirmDeleteModal(project); }}>Delete Project</li>
 
                                         <li><Link to={{ pathname: "/clients/proposal-received"}} state={{ projectID: project.id }} >
                                             View Applications</Link></li>
@@ -103,11 +110,15 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
                         <a href="#" className="hover-profileLink">{project.client}</a>
                         <p id="category">{project.category}</p>
                         <p><FaLocationDot className="icon-style" />{project.location}</p>
-                        <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.budget ? `${project.budget[0]}-${project.budget[1]} ${project.budget[2]}` : ''}/project</p>
-                        <p><BiTimeFive size={20} className='icon-style2' />{project.duration ? `${project.duration[0]} ${project.duration[1]}` : ''}</p>
+                        <p><MdOutlineAttachMoney size={20} className='icon-style2'/>{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
+                        <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
+                        <div className="absolute bottom-4 right-3  w-50 h-8"  style={{ color: 'grey' }}>
+                         <p id="posted-time">Posted {timeAgo}</p></div>
+
                     </div>
                 </div>
-            ))}
+                 );
+            })}
 
             {showModal && (
                 <div className='payment-overlay'>
@@ -149,18 +160,16 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
             )}
 
             {showConfirmDeleteModal && (
-                <div className='confirmation-modal-overlay' onClick={closeConfirmDeleteModal}>
-                <div className='confirmation-modal-content' onClick={(e) => e.stopPropagation()}>
-                <div className="confirmation-content">
-                   <p id="confirm-message">Are you sure you want to delete this project?</p>
-                    <div className="confirmation-buttons">
-                        <button className="btn-secondary" onClick={handleConfirmDelete}>Confirm</button>
-                        <button className="btn-primary" onClick={closeConfirmDeleteModal}>Cancel</button>
-                        </div>
+               
+                        <ConfirmationDialog
+                        open={showConfirmDeleteModal}
+                        onClose={closeConfirmDeleteModal}
+                        onConfirm={handleConfirmDelete} 
+                        message="Are you sure you want to delete this project?"
+                    />
+
                         
-                    </div>
-                </div>
-            </div>
+              
             )}
 
             {showSuccessModal && (
@@ -175,5 +184,6 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
         </div>
     );
 };
+
 
 export default ProjectListClient;

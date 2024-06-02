@@ -52,7 +52,7 @@ const ClientApplicationReceivedPage = () => {
             const clientRef = doc(db, 'clients', user.id);
             const clientDoc = await getDoc(clientRef);
             if (clientDoc.exists()) {
-              return { ...application, clientName: clientDoc.data().clientName };
+              return { ...application, clientName: clientDoc.data().username };
             }
             
             return application;
@@ -89,8 +89,6 @@ const ClientApplicationReceivedPage = () => {
   }
 
   const handleEmailClick = (emailAddress, projectName, clientName) => {
-    console.log("projectName:",projectName);
-    console.log("clientName:",clientName);
     const subject = `Regarding your application for ${projectName}`;
     const body = `Hello,\n\nI am writing to discuss the project application you submitted for ${projectName}. Please let me know when you are available to talk.\n\nBest regards, ${clientName}`;
     

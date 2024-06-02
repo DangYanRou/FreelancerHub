@@ -5,11 +5,22 @@
     grid-template-columns: auto 1fr; /* Change the order of columns to display project list first and then project details */
     gap: 20px; /* Add some gap between the columns */
     padding: 0px 20px 20px ; /* Add padding for spacing */
-    height: 100vh; /* Make the container fill the height of the viewport */
+    min-height: 100vh; /* Make the container fill the height of the viewport */
     overflow: hidden; /* Hide any overflow content */
 }
 
-  
+.FreelancerExplore.dropdown-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start */
+    justify-content: flex-start; /* Justify content to the start */
+    min-height: 100vh; /* Make the container fill the height of the viewport */
+    padding-top: 10px; /* Add some padding at the top */
+}
+
+
+
+
 .card{
     position: relative;
     flex-direction: column;
@@ -25,6 +36,21 @@
    
 }
 
+.noprojectcard{
+    position: relative;
+    display: flex; /* Add this */
+    flex-direction: column;
+    justify-content: center; /* Add this */
+    align-items: center; /* Modify this */
+    padding:2%;
+    background-color:#F0F7F9;
+    box-shadow: rgba(0,0,0,0.30) 0px 1px 3px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    width: 700px;
+    height:230px;
+}
 
 .card:hover{
     box-shadow:rgba(0,0,0,0.24)0px 3px 8px;
@@ -138,6 +164,7 @@ margin-bottom: 1.5rem;
     display: flex;
     justify-content: flex-end; /* Align modal to the right */
     align-items: center;
+    z-index: 99999;
     
 }
 
@@ -169,5 +196,16 @@ margin-bottom: 1.5rem;
 
 .view-application-header{
     font-size: 30px;
+}
+
+.btn-disabled{
+    background-color: #BEBEBE;
+    padding:9px 28px; /* Adjust padding to increase button size */
+    border: none; /* Remove default border */
+    font-size: 16px;
+    color: black;
+    border-radius: 8px; 
+    cursor: pointer; /* Change cursor to pointer on hover */
+    margin-bottom: 3rem;
 }
 

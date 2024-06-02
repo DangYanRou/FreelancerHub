@@ -1,11 +1,16 @@
-import React,{useContext} from 'react';
+import React,{useContext, useState, useEffect} from 'react';
 import workImage from '../../../Gallery/work.png';
 import noteImage from '../../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import '../../../styles/Clients/CreateProjectPreview.css';
 import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
-import { addProject } from '../../../firebase';
+import { addProject, auth, db } from '../../../firebase';
+import { collection, getDoc,doc, query, where, getDocs, addDoc } from "firebase/firestore";
+import Loading from '../../../components/Loading';
+import ConfirmationDialog from '../../../components/ConfirmationDialog';
+
+
 
 // ProgressBar component to display the stages of project creation
 const ProgressBar = ({ stages }) => {
@@ -28,45 +33,179 @@ const ProgressBar = ({ stages }) => {
 };
 
 
+
+
+
 const CreateProjectPreview = () => {
 
   //edit here to navigate to posted part
   const handlePreviousButtonClick = (event) => {
     event.preventDefault();
-    navigate("/clients/post-project-invite");
+    navigate("/clients/post-project-preferred");
   };
 
   // Define the stages of project creation
   const stages = [
-    { title: 'Project Details', step: 'Step 1/5' },
-    { title: 'Project Description', step: 'Step 2/5' },
-    { title: 'Preferred', step: 'Step 3/5' },
-    { title: 'Invite', step: 'Step 4/5' },
-    { title: 'Preview', step: 'Step 5/5' },
+    { title: 'Project Details', step: 'Step 1/4' },
+    { title: 'Project Description', step: 'Step 2/4' },
+    { title: 'Preferred', step: 'Step 3/4' },
+    { title: 'Preview', step: 'Step 4/4' }
   ];
 
   const [projectInfo, setProjectInfo] = useContext(ProjectContext);
-  console.log(projectInfo);
-
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
   const navigate = useNavigate();
 
-  
-  const handlePostClick = (event) => {
-    event.preventDefault();
+  const freelancerid = selectedUsers.map(user => user.uid);
+  function clearContext() {
+    setProjectInfo({}); // or set to initial state
+  }
 
+  const handlePostClick = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const user=auth.currentUser;
+    if(user){
+
+      const docRef = doc(db, "clients", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      let name='';
+      if (docSnap.exists()) {
+        name = docSnap.data().name || null; // If `name` is `undefined`, use `null` instead
+      } else {
+        console.log("No such document!");
+      }
+      const projectInfoWithClient={
+        ...projectInfo,
+        clientID:user.uid,
+        client: name,
+      };
+    
     console.log('addProject:', addProject);
-    console.log('projectInfo:', projectInfo);
+    console.log('projectInfo:', projectInfoWithClient);
     console.log('navigate:', navigate);
     console.log('handlePostClick called');
+    addProject(projectInfoWithClient)
+    .then(() => {
+        // alert('Project posted successfully!');
+        const projectID = docRef.id;
+        // Use map to create an array of promises
+        const promises = freelancerid.map(freelancerid => {
+          if(freelancerid.length > 0){
 
-    addProject(projectInfo)
-      .then(() => {
-        alert('Project posted successfully!');
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
+            const notificationToFreelancerData = {
+                isRead: false,
+                isPop: false,
+                timestamp: new Date(),
+                type: 0,
+                priority: 2,
+                projectID: projectID,
+                clientID: user.uid,
+                to: freelancerid
+            };
+            console.log('Notification UID:', freelancerid);
+          
+            // Return the promise from addDoc
+            return addDoc(collection(db, 'notifications'), notificationToFreelancerData);
+    }});
+      
+        // Use Promise.all to wait for all promises to complete
+        return Promise.all(promises);
+    })
+    .then(() => {
+        console.log('Notification added successfully!');
+        navigate('/clients/project-posted');
+        clearContext(); 
+    }).finally(() => {
+      setLoading(false);
+    }).catch((error) => {
+      console.error("Error adding document: ", error);
+    });
+} else {
+    console.log('No user is signed in');
+}
   };
+
+  const fetchFavouriteFreelancers = async () => {
+    try {
+      const user = auth.currentUser;
+      const clientID = user.uid;
+      const collectionRef = collection(db, 'favouriteFreelancer');
+      const q = query(collectionRef, where('clientID', '==', clientID));
+      const snapshot = await getDocs(q);
+      const favouriteFreelancers = [];
+
+      for (let docSnapshot of snapshot.docs) {
+        const data = docSnapshot.data();
+        if (data.uid) {
+          const freelancerDoc = doc(db, 'freelancers', data.uid);
+          const freelancerSnapshot = await getDoc(freelancerDoc);
+          if (freelancerSnapshot.exists()) {
+            const freelancerData = freelancerSnapshot.data();
+            favouriteFreelancers.push({
+              uid: data.uid,
+              profilePicture: freelancerData.profilePicture,
+              name: freelancerData.name,
+              email: freelancerData.email,
+              selected:false
+            });
+          }
+        }
+      }
+
+      return favouriteFreelancers;
+    } catch (error) {
+      console.error('Error fetching favourite freelancers: ', error);
+    }finally{
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFavouriteFreelancers().then(favouriteFreelancers => {
+      setUsers(favouriteFreelancers);
+    });
+  }, []);
+
+  
+  const handleUserClick = (index) => {
+    const updatedUsers = users.map((user, idx) => {
+      if (idx === index) {
+        return { ...user, selected: !user.selected };
+      }
+      return user;
+    });
+    setUsers(updatedUsers);
+
+    const selectedUser = updatedUsers[index];
+    if (selectedUser.selected) {
+      setSelectedUsers([...selectedUsers, selectedUser]);
+    } else {
+      setSelectedUsers(selectedUsers.filter(user => user.uid !== selectedUser.uid));
+    }
+  };
+
+    useEffect(() => {
+      console.log('Current selected users:', selectedUsers);
+    }, [selectedUsers]);
+
+  // const HandleConfirmationOpen = () => {
+  //   setConfirmationOpen(true);
+  // };
+
+
+  // const handleCancelSubmission = async (event) => {
+  //   setConfirmationOpen(false);
+  // };
+
+
+    if (loading) {
+      return <Loading />;
+    }
 
   return (
     <div className="flex flex-col items-start justify-center">
@@ -86,7 +225,7 @@ const CreateProjectPreview = () => {
             <div className="w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Subject: </label>
               <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
- id="duration">{projectInfo.subject}</p>
+ id="duration">{projectInfo.title}</p>
             </div>
           </div>
           <div className="flex justify-between w-8/10 m-4">
@@ -116,8 +255,8 @@ const CreateProjectPreview = () => {
   <div className="w-1/2 mr-8">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contractType">Project Start Time: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
- id="startTimePreview">{projectInfo.startDate.toLocaleDateString()}</p>
-    <label className="block /text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Duration: </label>
+  id="startTimePreview">{projectInfo.date ? projectInfo.date.toLocaleDateString() : ''}</p>
+   <label className="block /text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Duration: </label>
     <div className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
  id="durationPreview">{projectInfo.duration}
    <div>
@@ -191,6 +330,23 @@ const CreateProjectPreview = () => {
     
   </div>
 </div>
+<div className="flex flex-col w-1/2">
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="favouriteCollaborator">Favourite Collaborator: </label>
+    <div className="rounded-[10px] overflow-hidden border border-solid border-gray-500 bg-white-A700 ">
+    <table className="w-full">
+  <tbody>
+                      {users.map((user, index) => (
+                        <tr key={index} onClick={() => handleUserClick(index)}>
+                          <td className={`rounded-[10px] border border-solid border-gray-500 w-4/5 m-auto my-2 p-2 flex items-center ${user.selected ? 'bg-green-200' : 'bg-red-100'} ${user.selected ? '' : 'hover:bg-gray-200'} transition-colors duration-200`}>
+                            <img src={user.profilePicture} alt={user.name} className="w-8 h-8 rounded-full mr-2" />
+                            <span className="font-bold text-gray-700">{user.name}</span>
+                          </td>
+                        </tr>
+                      ))}
+  </tbody>
+</table>
+</div>
+  </div>
 
 <div className="pt-5">
 <div className="flex justify-between w-8/10 m-4" >
@@ -210,6 +366,12 @@ const CreateProjectPreview = () => {
           </form>
         </div>
       </div>
+      {/* <ConfirmationDialog
+        open={confirmationOpen}
+        message="Are you sure you want to add this project?"
+        onConfirm={handlePostClick}
+        onCancel={handleCancelSubmission}
+      /> */}
     </div>
   );
 };

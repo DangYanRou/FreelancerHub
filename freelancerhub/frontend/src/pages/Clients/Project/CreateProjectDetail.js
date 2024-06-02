@@ -33,11 +33,10 @@ const CreateProjectDetail = () => {
 
   // Define the stages of project creation
   const stages = [
-    { title: 'Project Details', step: 'Step 1/5' },
-    { title: 'Project Description', step: 'Step 2/5' },
-    { title: 'Preferred', step: 'Step 3/5' },
-    { title: 'Invite', step: 'Step 4/5' },
-    { title: 'Preview', step: 'Step 5/5' },
+    { title: 'Project Details', step: 'Step 1/4' },
+    { title: 'Project Description', step: 'Step 2/4' },
+    { title: 'Preferred', step: 'Step 3/4' },
+    { title: 'Preview', step: 'Step 4/4' }
   ];
 
   const workPlace = [
@@ -63,7 +62,7 @@ const handleFormSubmit = (event) => {
 
   let isValid = true;
 
-  if (!project.subject) {
+  if (!project.title) {
     setSubjectError('Project name is required');
     isValid = false;
   } else {
@@ -111,6 +110,7 @@ const handleInputChange = (event) => {
   setProject({
     ...project,
     [event.target.name]: event.target.value,
+    
   });
 };
 
@@ -119,7 +119,7 @@ const handleInputChange = (event) => {
     <div>
     <div className="flex flex-col items-start justify-center">
         
-        <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
+    <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px', marginLeft: '50px'  }}>
                       Create Project
           </Heading>
 
@@ -135,7 +135,7 @@ const handleInputChange = (event) => {
             <div className="w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Subject: </label>
               <input required style={{ width: '100%' }} className="flex h-[40px] items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
-               id="projectName" name="subject" type="text" value={project.subject} onChange={handleInputChange} />
+               id="projectName" name="title" type="text" value={project.title} onChange={handleInputChange} />
                {subjectError && <p className="text-red-500 text-xs italic">{subjectError}</p>}
             </div>
           </div>
@@ -156,7 +156,7 @@ const handleInputChange = (event) => {
   <div className="w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">Location: </label>
     <input required className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="location" name="location" type="text"  value={project.location} onChange={handleInputChange} />
+ id="locationInput" name="location" type="text"  value={project.location} onChange={handleInputChange} />
  {locationError && <p className="text-red-500 text-xs italic">{locationError}</p>}
   </div>
 </div>
