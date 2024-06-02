@@ -6,7 +6,11 @@ import '../../../styles/Clients/CreateProjectPreview.css';
 import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
 import { addProject, auth, db } from '../../../firebase';
-import { collection, getDoc,doc } from "firebase/firestore";
+import { collection, getDoc,doc, query, where, getDocs, addDoc } from "firebase/firestore";
+import EmailContext from '../../../context/ProjectInvitationContext';
+
+
+
 
 // ProgressBar component to display the stages of project creation
 const ProgressBar = ({ stages }) => {
@@ -29,6 +33,9 @@ const ProgressBar = ({ stages }) => {
 };
 
 
+
+
+
 const CreateProjectPreview = () => {
 
   //edit here to navigate to posted part
@@ -47,12 +54,16 @@ const CreateProjectPreview = () => {
   ];
 
   const [projectInfo, setProjectInfo] = useContext(ProjectContext);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [users, setUsers] = useState([]);
   console.log(projectInfo);
 
   const navigate = useNavigate();
 
-
-  
+  const freelancerid = selectedUsers.map(user => user.uid);
+  function clearContext() {
+    setProjectInfo({}); // or set to initial state
+  }
   const handlePostClick = async (event) => {
     event.preventDefault();
     const user=auth.currentUser;
@@ -63,7 +74,7 @@ const CreateProjectPreview = () => {
 
       let name='';
       if (docSnap.exists()) {
-        name = docSnap.data().name;
+        name = docSnap.data().name || null; // If `name` is `undefined`, use `null` instead
       } else {
         console.log("No such document!");
       }
@@ -77,20 +88,104 @@ const CreateProjectPreview = () => {
     console.log('projectInfo:', projectInfoWithClient);
     console.log('navigate:', navigate);
     console.log('handlePostClick called');
-
     addProject(projectInfoWithClient)
-      .then(() => {
+    .then(() => {
         alert('Project posted successfully!');
-      })
-      .catch((error) => {
+        const projectID = docRef.id;
+
+        // Use map to create an array of promises
+        const promises = freelancerid.map(freelancerid => {
+            const notificationToFreelancerData = {
+                isRead: false,
+                isPop: false,
+                timestamp: new Date(),
+                type: 0,
+                priority: 2,
+                projectID: projectID,
+                clientID: user.uid,
+                to: freelancerid
+            };
+            console.log('Notification UID:', freelancerid);
+
+            // Return the promise from addDoc
+            return addDoc(collection(db, 'notifications'), notificationToFreelancerData);
+        });
+
+        // Use Promise.all to wait for all promises to complete
+        return Promise.all(promises);
+    })
+    .then(() => {
+        console.log('Notification added successfully!');
+        navigate('/clients/project-posted');
+        clearContext(); 
+    })
+    .catch((error) => {
         console.error("Error adding document: ", error);
-      });
-    } else {
-      console.log('No user is signed in');
+    });
+} else {
+    console.log('No user is signed in');
+}
+  };
+
+  const fetchFavouriteFreelancers = async () => {
+    try {
+      const user = auth.currentUser;
+      const clientID = user.uid;
+      const collectionRef = collection(db, 'favouriteFreelancer');
+      const q = query(collectionRef, where('clientID', '==', clientID));
+      const snapshot = await getDocs(q);
+      const favouriteFreelancers = [];
+
+      for (let docSnapshot of snapshot.docs) {
+        const data = docSnapshot.data();
+        if (data.uid) {
+          const freelancerDoc = doc(db, 'freelancers', data.uid);
+          const freelancerSnapshot = await getDoc(freelancerDoc);
+          if (freelancerSnapshot.exists()) {
+            const freelancerData = freelancerSnapshot.data();
+            favouriteFreelancers.push({
+              uid: data.uid,
+              profilePicture: freelancerData.profilePicture,
+              name: freelancerData.name,
+              email: freelancerData.email,
+              selected:false
+            });
+          }
+        }
+      }
+
+      return favouriteFreelancers;
+    } catch (error) {
+      console.error('Error fetching favourite freelancers: ', error);
     }
   };
 
-   
+  useEffect(() => {
+    fetchFavouriteFreelancers().then(favouriteFreelancers => {
+      setUsers(favouriteFreelancers);
+    });
+  }, []);
+  
+  const handleUserClick = (index) => {
+    const updatedUsers = users.map((user, idx) => {
+      if (idx === index) {
+        return { ...user, selected: !user.selected };
+      }
+      return user;
+    });
+    setUsers(updatedUsers);
+
+    const selectedUser = updatedUsers[index];
+    if (selectedUser.selected) {
+      setSelectedUsers([...selectedUsers, selectedUser]);
+    } else {
+      setSelectedUsers(selectedUsers.filter(user => user.uid !== selectedUser.uid));
+    }
+  };
+
+    useEffect(() => {
+      console.log('Current selected users:', selectedUsers);
+    }, [selectedUsers]);
 
   return (
     <div className="flex flex-col items-start justify-center">
@@ -215,6 +310,23 @@ const CreateProjectPreview = () => {
     
   </div>
 </div>
+<div className="flex flex-col w-1/2">
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="favouriteCollaborator">Favourite Collaborator: </label>
+    <div className="rounded-[10px] overflow-hidden border border-solid border-gray-500 bg-white-A700 ">
+    <table className="w-full">
+  <tbody>
+ {users.map((user, index) => (
+                        <tr key={index} onClick={() => handleUserClick(index)}>
+                          <td className={`rounded-[10px] border border-solid border-gray-500 w-4/5 m-auto my-2 p-2 flex items-center ${user.selected ? 'bg-green-200' : 'bg-red-100'} ${user.selected ? '' : 'hover:bg-gray-200'} transition-colors duration-200`}>
+                            <img src={user.profilePicture} alt={user.name} className="w-8 h-8 rounded-full mr-2" />
+                            <span className="font-bold text-gray-700">{user.name}</span>
+                          </td>
+                        </tr>
+                      ))}
+  </tbody>
+</table>
+</div>
+  </div>
 
 <div className="pt-5">
 <div className="flex justify-between w-8/10 m-4" >
