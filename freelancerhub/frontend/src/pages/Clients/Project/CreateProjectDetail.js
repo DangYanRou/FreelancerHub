@@ -33,11 +33,10 @@ const CreateProjectDetail = () => {
 
   // Define the stages of project creation
   const stages = [
-    { title: 'Project Details', step: 'Step 1/5' },
-    { title: 'Project Description', step: 'Step 2/5' },
-    { title: 'Preferred', step: 'Step 3/5' },
-    { title: 'Invite', step: 'Step 4/5' },
-    { title: 'Preview', step: 'Step 5/5' },
+    { title: 'Project Details', step: 'Step 1/4' },
+    { title: 'Project Description', step: 'Step 2/4' },
+    { title: 'Preferred', step: 'Step 3/4' },
+    { title: 'Preview', step: 'Step 4/4' }
   ];
 
   const workPlace = [

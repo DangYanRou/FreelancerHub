@@ -7,8 +7,7 @@ import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
 import { addProject, auth, db } from '../../../firebase';
 import { collection, getDoc,doc, query, where, getDocs, addDoc } from "firebase/firestore";
-import EmailContext from '../../../context/ProjectInvitationContext';
-
+import Loading from '../../../components/Loading';
 
 
 
@@ -46,26 +45,26 @@ const CreateProjectPreview = () => {
 
   // Define the stages of project creation
   const stages = [
-    { title: 'Project Details', step: 'Step 1/5' },
-    { title: 'Project Description', step: 'Step 2/5' },
-    { title: 'Preferred', step: 'Step 3/5' },
-    { title: 'Invite', step: 'Step 4/5' },
-    { title: 'Preview', step: 'Step 5/5' },
+    { title: 'Project Details', step: 'Step 1/4' },
+    { title: 'Project Description', step: 'Step 2/4' },
+    { title: 'Preferred', step: 'Step 3/4' },
+    { title: 'Preview', step: 'Step 4/4' }
   ];
 
   const [projectInfo, setProjectInfo] = useContext(ProjectContext);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [users, setUsers] = useState([]);
-  console.log(projectInfo);
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const freelancerid = selectedUsers.map(user => user.uid);
   function clearContext() {
     setProjectInfo({}); // or set to initial state
   }
+
   const handlePostClick = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const user=auth.currentUser;
     if(user){
 
@@ -118,6 +117,7 @@ const CreateProjectPreview = () => {
         console.log('Notification added successfully!');
         navigate('/clients/project-posted');
         clearContext(); 
+        setLoading(false);
     })
     .catch((error) => {
         console.error("Error adding document: ", error);

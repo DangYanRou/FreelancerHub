@@ -43,6 +43,7 @@ const FreelancerExplore = () => {
     setCurrency(event.target.value);
   };
 
+
   const handleSearch = async () => {
     try {
       let q = collection(db, 'projects');
