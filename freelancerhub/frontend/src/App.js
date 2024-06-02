@@ -22,22 +22,17 @@ function App() {
   return (
     <div className="App">
       <UserProvider>
-      <Layout>
+        <Layout>
           <Routes>
             <Route path="/" element={<PublicElement><LoginPage /></PublicElement>} />
           </Routes>
-            <Routes> 
-              <Route path="/resetPassword" element={<ResetPassword />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/freelancers/*" element={<FreelancerElement><FreelancerRoutes /></FreelancerElement>} />
-              <Route path="/clients/*" element={<ClientElement><ClientRoutes /></ClientElement>} />
-            </Routes>
-          </Layout>
-     </UserProvider>
-              <Route path="/freelancers/*" element={<FreelancerRoutes />} />
-              <Route path="/clients/*" element={<ClientRoutes />} />
-            </Routes>
-          </Layout>
+          <Routes> 
+            <Route path="/resetPassword" element={<ResetPassword />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/freelancers/*" element={<FreelancerElement><FreelancerRoutes /></FreelancerElement>} />
+            <Route path="/clients/*" element={<ClientElement><ClientRoutes /></ClientElement>} />
+          </Routes>
+        </Layout> 
       </UserProvider>
     </div>
   );
