@@ -7,7 +7,7 @@ import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
 import { addProject, auth, db } from '../../../firebase';
 import { collection, getDoc,doc, query, where, getDocs, addDoc } from "firebase/firestore";
-import Loading from '../../../components/Loading';
+import Loading from '../components/Loading';
 
 
 
@@ -40,7 +40,7 @@ const CreateProjectPreview = () => {
   //edit here to navigate to posted part
   const handlePreviousButtonClick = (event) => {
     event.preventDefault();
-    navigate("/clients/post-project-invite");
+    navigate("/clients/post-project-preferred");
   };
 
   // Define the stages of project creation
