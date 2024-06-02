@@ -48,7 +48,7 @@ const CreateProjectPreferred = () => {
 
   const handleNextButtonClick = (event) => {
     event.preventDefault();
-    navigate("/clients/post-project-invite");
+    navigate("/clients/post-project-preview");
   };
 
 const [preferredSkills, setSkillInput] = useState('');

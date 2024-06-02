@@ -49,6 +49,7 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
   if (!project) return null;
   const formattedDate = project.date ? format(project.date.toDate(), 'dd/MM/yyyy') : '';
   const statusMessage = getStatusType(project.statusState);
+  console.log(project.statusState)
 
   return (
     <div className="pa-project-details">
@@ -88,22 +89,7 @@ const ProjectModal = ({ isOpen, onClose, project, loading ,user,onCancelApplicat
   );
 };
 
-const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
-  if (!isOpen) return null;
-  return (
-    <div className="confirmation-modal-overlay">
-      <div className="confirmation-modal-content">
-        <div className="confirmation-content">
-        <p>Are you sure you want to cancel your application for this project?</p>
-        <div className="confirmation-buttons">
-          <button className="btn-secondary" onClick={onConfirm}>Confirm</button>
-          <button className="btn-primary" onClick={onClose}>Cancel</button>
-        </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+
 
 const FreelancerProjectsApplied = () => {
 
