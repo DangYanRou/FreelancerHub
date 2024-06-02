@@ -130,7 +130,9 @@ const FreelancerExplore = () => {
       const userID = auth.currentUser.uid;
       const projectWithSavedBy = { ...project, savedBy: userID };
       await addDoc(collectionRef, projectWithSavedBy);
+      setBookmarkedProjects((prev) => ({ ...prev, [project.id]: true }));
       alert('Project saved successfully!');
+      
     } catch (error) {
       console.error('Error saving project: ', error);
       alert('Failed to save project');
@@ -166,6 +168,14 @@ const FreelancerExplore = () => {
             .map(doc => doc.id.split('_')[0]); // Extract projectID from documentID
 
           setAppliedProjects(appliedProjectsData);
+
+          const favouritesRef = collection(db, 'favouriteProject');
+          const favouritesSnapshot = await getDocs(query(favouritesRef, where('savedBy', '==', user.id)));
+          const bookmarkedProjectsData = favouritesSnapshot.docs.reduce((acc, doc) => {
+            acc[doc.data().id] = true;
+            return acc;
+          }, {});
+          setBookmarkedProjects(bookmarkedProjectsData);
         }
 
       } catch (error) {
@@ -176,7 +186,7 @@ const FreelancerExplore = () => {
     };
 
     fetchProjects();
-  }, []);
+  }, [user]);
 
  
   if (loading) {
@@ -187,10 +197,15 @@ const FreelancerExplore = () => {
 
 
   const handleClick = (projectId) => {
-    setBookmarkedProjects({
-      ...bookmarkedProjects,
-      [projectId]: !bookmarkedProjects[projectId]
-    });
+    const isBookmarked = bookmarkedProjects[projectId];
+    setBookmarkedProjects((prev) => ({
+      ...prev,
+      [projectId]: !isBookmarked
+    }));
+
+    if (!isBookmarked) {
+      handleSave(projects.find(project => project.id === projectId));
+    }
   };
 
   const dropdowns = [
@@ -242,27 +257,19 @@ const FreelancerExplore = () => {
             <div className="absolute bottom-4 right-3  w-50 h-8"  style={{ color: 'grey' }}>
             <p id="posted-time">Posted {timeAgo}</p></div>
             <div className="absolute top-4 right-3 space-x-4 w-8 h-8">
-              {bookmarkedProjects[blog.id] ? 
-                <BsBookmarkCheckFill 
-                  size={20} 
-                  className="cursor-pointer" 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleClick(blog.id);
-                    
-                  }} 
-                /> 
-                : 
-                <BsBookmark 
-                  size={20} 
-                  className="cursor-pointer" 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleClick(blog.id);
-                    handleSave(blog); 
-                  }} 
+              {bookmarkedProjects[blog.id] ? (
+                <BsBookmarkCheckFill
+                  size={30}
+                  className="bookmark-icon text-green-500"
+                  onClick={() => handleClick(blog.id)}
                 />
-              }
+              ) : (
+                <BsBookmark
+                  size={30}
+                  className="bookmark-icon text-gray-500"
+                  onClick={() => handleClick(blog.id)}
+                />
+              )}
             </div>
           </div>
         );

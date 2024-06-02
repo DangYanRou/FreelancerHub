@@ -4,7 +4,7 @@ import React from 'react';
 const ProjectList=({projects,onProjectClick,selectedProjectId}) => {
 
     return(
-      <div className='flex gap-x-4 overflow-x-auto justify-start align-start'>
+      <div className='flex gap-x-4 overflow-x-auto justify-start align-start w-full'>
           {projects.map((blog)=>(
             <div className={`card ${selectedProjectId === blog.id ? 'selected' : ''}`} key={blog.id} onClick={()=>onProjectClick(blog)}> 
              <h2>{blog.title}</h2>
