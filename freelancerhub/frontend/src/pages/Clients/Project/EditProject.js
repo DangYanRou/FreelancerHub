@@ -12,11 +12,12 @@ import { categories,workloadOptions } from '../../../components/ProjectOptions.j
 import { IoMdClose } from 'react-icons/io';
 import DatePicker from 'react-datepicker';
 import Loading from '../../../components/Loading';
+import ConfirmationDialog from '../../../components/ConfirmationDialog.js';
+import '../../../styles/Clients/EditProject.css';
 
 
 const CreateProjectPreview = () => {
-    const { projectId } = useParams();
-
+  const { projectId } = useParams();
   const [loading, setLoading] = useState(true);
   const [projectInfo, setProjectInfo] = useContext(ProjectContext);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -27,6 +28,9 @@ const CreateProjectPreview = () => {
   const [maxError, setMaxError] = useState('');
   const [locationError, setLocationError] = useState('');
   const [jobCateError, setJobCateError] = useState('');
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  // const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const freelancerid = selectedUsers.map(user => user.uid);
@@ -91,9 +95,9 @@ const CreateProjectPreview = () => {
 
         updateDoc(projectRef, projectInfo)
             .then(() => {
-                alert('Project editted successfully!');
-                const projectID = docRef.id;
-
+              const projectID = docRef.id;
+              // setIsDialogOpen(true);
+              // console.log('isDialogOpen should be true now');
         // Use map to create an array of promises
         const promises = freelancerid.map(freelancerid => {
             const notificationToFreelancerData = {
@@ -118,6 +122,8 @@ const CreateProjectPreview = () => {
     .then(() => {
         console.log('Notification added successfully!');
         navigate('/clients/project-posted');
+        clearContext(); 
+
                 })
             .catch((error) => {
                 console.error("Error updating document: ", error);
@@ -128,6 +134,10 @@ const CreateProjectPreview = () => {
         window.alert('All fields must be filled!');
     }
 };
+
+function clearContext() {
+  setProjectInfo({}); // or set to initial state
+}
 
 const handleInputChange = (event) => {
     setProjectInfo(prevProject => ({
@@ -219,6 +229,7 @@ const handleInputChange = (event) => {
                 data.date = null; // or set it to a default value
               }            setProjectInfo(prevState => ({ ...prevState, ...data }));
             setLoading(false);
+            
           } else {
             console.log('No such document!');
           }
@@ -304,6 +315,15 @@ const handleKeywordDelete = (keywordToDelete) => {
     return <Loading />
   }
 
+  const HandleConfirmationOpen = () => {
+    setConfirmationOpen(true);
+  };
+
+
+  const handleCancelSubmission = async (event) => {
+    setConfirmationOpen(false);
+  };
+
   return (
     <div className="flex flex-col items-start justify-center">
 
@@ -311,7 +331,8 @@ const handleKeywordDelete = (keywordToDelete) => {
                       Edit Project
           </Heading>
 
-           {/* Line divider */}
+
+
            <hr className="border-gray-700 my-8 w-[93%] mx-auto" />
       <div style={{ backgroundColor: '#69ACC2' }} className="w-screen max-w-full h-8/10">
         <div className="bg-white w-4/5 rounded-md my-12 mx-auto text-left">
@@ -549,7 +570,7 @@ id="projectCategory" name="category" value={projectInfo.category} onChange={hand
 
   </div>
   <div className="w-1/4">
-    <button onClick={handlePostClick} type="postProject" className="w-full bg-[#213E60] hover:bg-[#69ACC2] text-white font-bold py-2 px-4 rounded-lg">
+    <button onClick={HandleConfirmationOpen} type="postProject" className="w-full bg-[#213E60] hover:bg-[#69ACC2] text-white font-bold py-2 px-4 rounded-lg">
       Edit
     </button>
   </div>
@@ -559,7 +580,22 @@ id="projectCategory" name="category" value={projectInfo.category} onChange={hand
           </form>
         </div>
       </div>
+        <ConfirmationDialog
+        open={confirmationOpen}
+        message="Are you sure you want to edit this project?"
+        onConfirm={handlePostClick}
+        onCancel={handleCancelSubmission}
+      />
+      {/* {isDialogOpen && (
+    <div className="edittedSuccess-overlay">
+        <div className="edittedSuccess-content">
+            <h2>Project edited successfully!</h2>
+            <button onClick={() => setIsDialogOpen(false)}>Close</button>
+        </div>
     </div>
+)} */}
+    </div>
+    
   );
 };
 

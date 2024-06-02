@@ -8,6 +8,7 @@ import { ProjectContext } from '../../../context/ProjectContext';
 import { addProject, auth, db } from '../../../firebase';
 import { collection, getDoc,doc, query, where, getDocs, addDoc } from "firebase/firestore";
 import Loading from '../../../components/Loading';
+import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
 
 
@@ -55,6 +56,7 @@ const CreateProjectPreview = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
   const navigate = useNavigate();
 
   const freelancerid = selectedUsers.map(user => user.uid);
@@ -89,11 +91,12 @@ const CreateProjectPreview = () => {
     console.log('handlePostClick called');
     addProject(projectInfoWithClient)
     .then(() => {
-        alert('Project posted successfully!');
+        // alert('Project posted successfully!');
         const projectID = docRef.id;
-
         // Use map to create an array of promises
         const promises = freelancerid.map(freelancerid => {
+          if(freelancerid.length > 0){
+
             const notificationToFreelancerData = {
                 isRead: false,
                 isPop: false,
@@ -105,11 +108,11 @@ const CreateProjectPreview = () => {
                 to: freelancerid
             };
             console.log('Notification UID:', freelancerid);
-
+          
             // Return the promise from addDoc
             return addDoc(collection(db, 'notifications'), notificationToFreelancerData);
-        });
-
+    }});
+      
         // Use Promise.all to wait for all promises to complete
         return Promise.all(promises);
     })
@@ -189,6 +192,15 @@ const CreateProjectPreview = () => {
     useEffect(() => {
       console.log('Current selected users:', selectedUsers);
     }, [selectedUsers]);
+
+  // const HandleConfirmationOpen = () => {
+  //   setConfirmationOpen(true);
+  // };
+
+
+  // const handleCancelSubmission = async (event) => {
+  //   setConfirmationOpen(false);
+  // };
 
 
     if (loading) {
@@ -323,7 +335,7 @@ const CreateProjectPreview = () => {
     <div className="rounded-[10px] overflow-hidden border border-solid border-gray-500 bg-white-A700 ">
     <table className="w-full">
   <tbody>
- {users.map((user, index) => (
+                      {users.map((user, index) => (
                         <tr key={index} onClick={() => handleUserClick(index)}>
                           <td className={`rounded-[10px] border border-solid border-gray-500 w-4/5 m-auto my-2 p-2 flex items-center ${user.selected ? 'bg-green-200' : 'bg-red-100'} ${user.selected ? '' : 'hover:bg-gray-200'} transition-colors duration-200`}>
                             <img src={user.profilePicture} alt={user.name} className="w-8 h-8 rounded-full mr-2" />
@@ -354,6 +366,12 @@ const CreateProjectPreview = () => {
           </form>
         </div>
       </div>
+      {/* <ConfirmationDialog
+        open={confirmationOpen}
+        message="Are you sure you want to add this project?"
+        onConfirm={handlePostClick}
+        onCancel={handleCancelSubmission}
+      /> */}
     </div>
   );
 };
