@@ -6,6 +6,7 @@ import "../components/styles/ConfirmationDialog.css"
 const ConfirmationDialog = ({ open, onClose, onConfirm, message }) => {
   return (
     <div className={`confirmation-dialog-container ${open ? 'open' : 'hidden'}`}>
+      
     <Modal show={open} onClose={onClose} popup className="confirmation-dialog-modal">
       <Modal.Header className="confirmation-dialog-modal-header" />
       <Modal.Body className="confirmation-dialog-modal-body">
