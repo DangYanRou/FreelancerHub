@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-use-history';
+import axios from 'axios';
 import { db, storage } from '../../../firebase';
 import { setDoc, doc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -10,7 +11,6 @@ import { useLocation } from "react-router-dom";
 import Loading from '../../../components/Loading';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { collection, addDoc, getDoc } from "firebase/firestore";
 import Heading from "../../../components/Heading";
 import ConfirmationDialog from "../../../components/ConfirmationDialog";
 
@@ -36,18 +36,17 @@ const ApplicationForm = () => {
     cvUrl: null,
     proposalUrl: null
   });
-  const [loading, setLoading] = useState(false); // Set initial loading state to false
+  const [loading, setLoading] = useState(false);
   const [currency, setCurrency] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const docRef = doc(db, 'projects', location.state.project_key.projectID);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          console.log("Document data:", data);
+        setLoading("Loading");
+        const response = await axios.get(`http://localhost:5000/projects/${location.state.project_key.projectID}`);
+        if (response.status === 200) {
+          const data = response.data;
+          console.log("Project data:", data);
           setCurrency(data.currencyInput);
         } else {
           console.error("No such document!");
@@ -58,8 +57,9 @@ const ApplicationForm = () => {
         setLoading(false);
       }
     };
+
     fetchData();
-  }, [location.state.project_key.projectID]); // Add location state as a dependency for useEffect
+  }, [location.state.project_key.projectID]);
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;
@@ -97,7 +97,7 @@ const ApplicationForm = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();
     if (event.target.checkValidity() === false) {
       event.stopPropagation();
       return;
@@ -137,39 +137,37 @@ const ApplicationForm = () => {
         statusState: 2
       };
 
-      const docId = `${projectID}_${freelancerID}`;
-      await setDoc(doc(db, 'proposals', docId), proposalData);
+      const notifications = [
+        {
+          isRead: false,
+          isPop: false,
+          timestamp: new Date(),
+          type: 1,
+          priority: 1,
+          projectID: `${location.state.project_key.projectID}`,
+          clientID: `${location.state.project_key.clientID}`,
+          to: `${location.state.user_key.freelancerID}`
+        },
+        {
+          isRead: false,
+          isPop: false,
+          timestamp: new Date(),
+          type: 2,
+          priority: 2,
+          projectID: `${location.state.project_key.projectID}`,
+          freelancerID: `${location.state.user_key.freelancerID}`,
+          to: `${location.state.project_key.clientID}`
+        }
+      ];
 
-      const notificationToFreelancerData = {
-        isRead: false,
-        isPop: false,
-        timestamp: new Date(),
-        type: 1,
-        priority: 1,
-        projectID: `${location.state.project_key.projectID}`,
-        clientID: `${location.state.project_key.clientID}`,
-        to: `${location.state.user_key.freelancerID}`
-      };
-      await addDoc(collection(db, 'notifications'), notificationToFreelancerData);
-
-      const notificationToClientData = {
-        isRead: false,
-        isPop: false,
-        timestamp: new Date(),
-        type: 2,
-        priority: 2,
-        projectID: `${location.state.project_key.projectID}`,
-        freelancerID: `${location.state.user_key.freelancerID}`,
-        to: `${location.state.project_key.clientID}`
-      };
-      await addDoc(collection(db, 'notifications'), notificationToClientData);
+      await axios.post('http://localhost:5000/submit-proposal', { proposalData, notifications });
 
       // Redirect user to next page after successful submission
       history.push('/freelancers/projects-applied');
     } catch (error) {
       toast.error('Error submitting proposal. Please try again.');
     } finally {
-      setLoading(false); // Set loading to false after submission
+      setLoading(false);
     }
   };
 
