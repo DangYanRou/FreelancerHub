@@ -17,12 +17,10 @@ function App() {
   return (
     <div className="App">
       <UserProvider>
-        
+      <Layout>
           <Routes>
             <Route path="/" element={<LoginPage />} />
           </Routes>
-
-          <Layout>
             <Routes> 
               <Route path="/resetPassword" element={<ResetPassword />} />
               <Route path="/register" element={<Register />} />
@@ -30,6 +28,7 @@ function App() {
               <Route path="/clients/*" element={<ClientRoutes />} />
             </Routes>
           </Layout>
+         
           
       </UserProvider>
     </div>
