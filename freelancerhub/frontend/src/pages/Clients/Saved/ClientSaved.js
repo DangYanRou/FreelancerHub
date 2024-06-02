@@ -10,7 +10,7 @@ const ClientSaved = () => {
         {/* favorite projects header section */}
         <div className=" flex w-[100%] flex-col items-start  md:w-full md:p-5">
           {/* favorite projects title section */}
-          <Heading as="h1" className="ml-[20px] tracking-[-0.90px]">
+          <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px' , marginLeft: '40px' }}>
             Your Favourite
           </Heading>
 

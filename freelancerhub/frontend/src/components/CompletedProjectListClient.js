@@ -22,23 +22,23 @@ const CompletedProjectListClient = ({ projects }) => {
 
   //deon
   const addFavouriteFreelancer = async (freelancerID, clientID) => {
-  // Get freelancer data
-  const freelancerRef = doc(db, 'freelancers', freelancerID);
-  const freelancerSnap = await getDoc(freelancerRef);
+    // Get freelancer data
+    const freelancerRef = doc(db, "freelancers", freelancerID);
+    const freelancerSnap = await getDoc(freelancerRef);
 
-  if (freelancerSnap.exists()) {
-    const freelancerData = freelancerSnap.data();
+    if (freelancerSnap.exists()) {
+      const freelancerData = freelancerSnap.data();
 
-    // Save freelancer data in 'favouriteFreelancer' collection
-    const favouriteFreelancerRef = doc(collection(db, 'favouriteFreelancer'));
-    await setDoc(favouriteFreelancerRef, {
-      ...freelancerData,
-      clientID,
-    });
-  } else {
-    console.log('No such freelancer!');
-  }
-};
+      // Save freelancer data in 'favouriteFreelancer' collection
+      const favouriteFreelancerRef = doc(collection(db, "favouriteFreelancer"));
+      await setDoc(favouriteFreelancerRef, {
+        ...freelancerData,
+        clientID,
+      });
+    } else {
+      console.log("No such freelancer!");
+    }
+  };
   //deon
 
   return (
@@ -59,21 +59,30 @@ const CompletedProjectListClient = ({ projects }) => {
             {project.minInput}-{project.maxInput} {project.currencyInput}
             /project
           </p>
-          <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
+          <p>
+            <BiTimeFive size={20} className="icon-style2" />
+            {project.duration} {project.durationUnit}
+          </p>
           <p className="apply-status">{project.status}</p>
           <div className="bottom-row">
             <p style={{ flexGrow: 1 }}>
               Completed on:{" "}
-              <span className="complete-date"> {project.completedDate.toDate().toLocaleDateString("en-GB")}</span>
+              <span className="complete-date">
+                {project.completedDate
+                  ? project.completedDate.toDate().toLocaleDateString("en-GB")
+                  : "N/A"}
+              </span>
             </p>
             <div className="buttonContainer">
               <button
                 className="favouriteBtn"
                 onClick={() => {
                   toggleFavourite(project.id);
-                  addFavouriteFreelancer(project.freelancerID, project.clientID);
-                }
-                }
+                  addFavouriteFreelancer(
+                    project.freelancerID,
+                    project.clientID
+                  );
+                }}
                 onMouseEnter={() =>
                   setHover((prev) => ({ ...prev, [project.id]: true }))
                 }
