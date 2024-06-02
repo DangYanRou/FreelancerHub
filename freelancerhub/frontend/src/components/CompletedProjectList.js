@@ -64,7 +64,11 @@ const CompletedProjectListClient = ({ projects }) => {
           <div className="bottom-row">
             <p style={{ flexGrow: 1 }}>
               Completed on:{" "}
-              <span className="complete-date"> {project.completedDate.toDate().toLocaleDateString("en-GB")}</span>
+              <span className="complete-date">
+                {project.completedDate
+                  ? project.completedDate.toDate().toLocaleDateString("en-GB")
+                  : "N/A"}
+              </span>
             </p>
             <div className="buttonContainer">
               <button
