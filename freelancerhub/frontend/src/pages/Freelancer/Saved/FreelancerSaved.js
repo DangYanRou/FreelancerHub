@@ -33,7 +33,6 @@ const FreelancerSaved = () => {
       const data = await getDocs(q);
       const filteredData = data.docs.map((doc) => {
         const projectData = doc.data();
-        // Convert Firestore timestamps to string
         if (projectData.date) {
           projectData.date = projectData.date.toDate().toLocaleDateString();
         }
@@ -117,7 +116,17 @@ const FreelancerSaved = () => {
               className="overflow-x-auto flex gap-x-6 w-full max-w-screen-lg mx-auto ml-[50px]"
               orientation="horizontal"
             >
-              <ProjectList projects={favProjects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null} />
+              {favProjects.length > 0 ? (
+                favProjects.map((project) => (
+                  <ProjectList
+                    projects={project}
+                    onProjectClick={handleProjectClick}
+                    selectedProjectId={selectedProject ? selectedProject.id : null}
+                  />
+                ))
+              ) : (
+                <div>No favourite project at the moment</div>
+              )}
               <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} />
             </List>
             <div className="font-poppin border-4 border-grey rounded-lg p-3">

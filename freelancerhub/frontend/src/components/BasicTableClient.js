@@ -71,7 +71,8 @@ export default function BasicTableClient() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {favouriteClientList.map((row) => (
+          {favouriteClientList.length > 0 ? (
+            favouriteClientList.map((row) => (
               <TableRow
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -85,8 +86,15 @@ export default function BasicTableClient() {
                 <TableCell align="right" style={cellStyle}>{row.phone}</TableCell>
                 <TableCell align="right" style={cellStyle}>{row.rating}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell style={cellStyle} component="th" scope="row" colSpan={4} align="center">
+                No favourite collaborator at the moment
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
         </Table>
       </TableContainer>
       <Modal
