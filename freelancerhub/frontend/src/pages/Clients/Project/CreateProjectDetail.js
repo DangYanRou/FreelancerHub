@@ -119,7 +119,7 @@ const handleInputChange = (event) => {
     <div>
     <div className="flex flex-col items-start justify-center">
         
-        <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
+    <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px', marginLeft: '50px'  }}>
                       Create Project
           </Heading>
 

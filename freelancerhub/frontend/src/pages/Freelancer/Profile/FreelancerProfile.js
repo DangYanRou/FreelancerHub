@@ -263,7 +263,8 @@ const FreelancerProfile = () => {
 
   return (
     <div className="FreelancerProfile">
-      <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">Profile</Heading>
+          <Heading as="h1" className="tracking-[-0.90px]" style={{ fontSize: '26px', marginLeft: '40px' }}>Profile</Heading>
+  
            {/* Line divider */}
            <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
       <div className="content">

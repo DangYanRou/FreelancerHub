@@ -52,7 +52,7 @@ const ProjectCompletedPageClient = () => {
 
   return (
     <div className="ProjectCompletedPage">
-      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+       <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px' }}>
         Completed Projects
       </Heading>
 

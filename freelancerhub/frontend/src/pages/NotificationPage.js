@@ -342,7 +342,7 @@ const NotificationPage = () => {
 
   return (
     <div className="notification-page">
-      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+       <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px' }}>
         Notifications
       </Heading>
       <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
