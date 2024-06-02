@@ -123,7 +123,7 @@ const FreelancerSaved = () => {
                   selectedProjectId={selectedProject ? selectedProject.id : null}
                 />
               ) : (
-                <div>No favourite project at the moment</div>
+                <div style={{ fontFamily: 'Poppins' }}>No favourite project at the moment</div>
               )}
               <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} />
             </List>
