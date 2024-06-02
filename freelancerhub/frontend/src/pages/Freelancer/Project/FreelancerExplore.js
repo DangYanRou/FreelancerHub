@@ -150,7 +150,7 @@ const FreelancerExplore = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const projectsRef = collection(db, 'projects'); // Use the correct method for collection reference
+        const projectsRef = query(collection(db, 'projects'),where('statusState','!=',5)); // Use the correct method for collection reference
         const snapshot = await getDocs(projectsRef); // Fetch the documents
         const projectsData = snapshot.docs.map((doc) => ({
           id: doc.id,

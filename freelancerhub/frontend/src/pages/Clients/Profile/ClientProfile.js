@@ -116,7 +116,7 @@ const ClientProfile = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const projectsRef = query(collection(db, 'projects'),where('clientID','==',user.id),  where('statusState', '!=', 5));
+        const projectsRef = query(collection(db, 'projects'),where('clientID','==',user.id));
         console.log("client:"+user.id) // Use the correct method for collection reference
         const snapshot = await getDocs(projectsRef); // Fetch the documents
         const projectsData = snapshot.docs.map((doc) => ({
