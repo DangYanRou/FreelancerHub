@@ -48,7 +48,9 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
 
   if (!project) return null;
   const formattedDate = project.date ? format(project.date.toDate(), 'dd/MM/yyyy') : '';
+  const statusTime = project.statusTime ? format(project.statusTime.toDate(), 'dd/MM/yyyy') : '';
   const statusMessage = getStatusType(project.statusState);
+  console.log(project.statusState)
 
   return (
     <div className="pa-project-details">
@@ -61,7 +63,7 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
       <p>Starting from: {formattedDate}</p>
       <h3 id="status">Status:</h3>
       <p className="detail-status">{statusMessage}</p>
-      <p className="detail-date">{project.applyDate}</p> {/*rmb add this !! apply btn */}
+      <p className="detail-date">{statusTime}</p> {/*rmb add this !! apply btn */}
       <div className="statusbar">
         <StatusBar statusState={project.statusState}/>
       </div>
@@ -88,22 +90,7 @@ const ProjectModal = ({ isOpen, onClose, project, loading ,user,onCancelApplicat
   );
 };
 
-const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
-  if (!isOpen) return null;
-  return (
-    <div className="confirmation-modal-overlay">
-      <div className="confirmation-modal-content">
-        <div className="confirmation-content">
-        <p>Are you sure you want to cancel your application for this project?</p>
-        <div className="confirmation-buttons">
-          <button className="btn-secondary" onClick={onConfirm}>Confirm</button>
-          <button className="btn-primary" onClick={onClose}>Cancel</button>
-        </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+
 
 const FreelancerProjectsApplied = () => {
 
@@ -139,11 +126,14 @@ const FreelancerProjectsApplied = () => {
         const projectPromises = proposalSnapshot.docs.map(async (proposalDoc) => {
           const proposalData = proposalDoc.data();
           const statusState = proposalData.statusState;
-          const projectId = proposalData.projectID;
+          const statusTime=proposalData.createdAt;
+          const projectId = proposalData.projectID
+          
 
           console.log('Proposal Data:', proposalData);
           console.log('stateStatus:', statusState);
           console.log('projectID:', projectId);
+          console.log('status time:',statusTime);
 
           if (statusState) {
             setStatus(statusState);
@@ -155,7 +145,7 @@ const FreelancerProjectsApplied = () => {
             const projectRef = doc(db, 'projects', projectId);
             const projectDoc = await getDoc(projectRef);
             if (projectDoc.exists()) {
-              return { id: projectDoc.id, ...projectDoc.data() ,statusState};
+              return { id: projectDoc.id, ...projectDoc.data() ,statusState,statusTime};
             } else {
               console.warn('No project found for ID:', projectId);
               return null;
@@ -277,7 +267,7 @@ const FreelancerProjectsApplied = () => {
 
   return (
     <div className="ProjectsApplied">
-      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+   <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px' }}>
         Applied Projects
       </Heading>
       <hr className="border-gray-700 my-8 w-[95%] mx-auto" />

@@ -15,7 +15,7 @@
   .confirmation-dialog-modal {
     width: 50% !important; 
     margin-left: 25%;
-    z-index: 1001;
+    z-index: 9999 !important;
   }
 
   .confirmation-dialog-modal-header{

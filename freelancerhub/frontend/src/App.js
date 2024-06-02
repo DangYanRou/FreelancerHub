@@ -9,6 +9,7 @@ import { UserProvider, useUser } from './context/UserContext.js';
 import NotificationProvider from './context/NotificationContext.js';
 import WithNavigation from './nav/routes/WithNavigation';
 import './tailwind.css';
+import Layout from './components/Layout.js';
 
 
 
@@ -16,16 +17,19 @@ function App() {
   return (
     <div className="App">
       <UserProvider>
+      <Layout>
           <Routes>
             <Route path="/" element={<LoginPage />} />
           </Routes>
-
-          <Routes> 
-            <Route path="/resetPassword" element={<ResetPassword />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/freelancers/*" element={<FreelancerRoutes />} />
-            <Route path="/clients/*" element={<ClientRoutes />} />
-          </Routes>
+            <Routes> 
+              <Route path="/resetPassword" element={<ResetPassword />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/freelancers/*" element={<FreelancerRoutes />} />
+              <Route path="/clients/*" element={<ClientRoutes />} />
+            </Routes>
+          </Layout>
+         
+          
       </UserProvider>
     </div>
   );

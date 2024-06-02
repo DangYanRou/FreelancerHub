@@ -180,15 +180,23 @@ const ProjectPosted = () => {
             </ul>
                 </div>
                 <h3 id="preferredQualification">Preferred Qualification:</h3>
-                <p>{project.preferQuali}</p>
+                <p>{project.preferredQualification}</p>
+                <div>
+            <h3 id="key-requirement">Preferred Skills:</h3>
+              <ul className="list">
+              {(project.preferredSkills ?? []).map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+            </div>
             </div>
         );
     };
 
     return (
         <div className="ProjectPosted">
-            <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
-                Posted Project
+            <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px' }}>
+                Posted Projects
             </Heading>
             <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
             <div className="jl-centered-container">

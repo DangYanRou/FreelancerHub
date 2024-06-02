@@ -23,6 +23,8 @@ type 3.5 = client rejected application priority = 2
 type 4 = freelancer received assignment priority = 2
 type 4.1 = freelancer accept assignment priority = 1
 type 4.2 = notify client that freelancer accept assignment priority = 1
+type 4.3 = freelancer reject assignment priority = 1
+type 4.4 = notify client that freelancer reject assignment priority = 1
 type 4.5 = freelancer received rejection priority = 2
 type 5 = client marked project as completed priority = 1
 type 6 = freelancer reveiced project completeness priority = 1
@@ -59,7 +61,7 @@ const NotificationPage = () => {
               const freelancerRef = doc(db, 'freelancers', notification.freelancerID);
               const freelancerDoc = await getDoc(freelancerRef);
               if (freelancerDoc.exists()) {
-                return { ...notification, freelancerName: freelancerDoc.data().username };
+                return { ...notification, freelancerName: freelancerDoc.data().name };
               }
             }
             return notification;
@@ -70,7 +72,7 @@ const NotificationPage = () => {
               const clientRef = doc(db, 'clients', notification.clientID);
               const clientDoc = await getDoc(clientRef);
               if (clientDoc.exists()) {
-                return { ...notification, clientName: clientDoc.data().username };
+                return { ...notification, clientName: clientDoc.data().name };
               }
             }
             return notification;
@@ -131,6 +133,7 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
+      history.push("/freelancers/project-applied")
       
       //prompt freelancer with the card that contains the view application
       //and cancel applictaion button, call
@@ -215,7 +218,7 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-      history.push("/freelancers/projects-applied",{projectID:item.projectID,freelancerID:item.to});
+      history.push("/freelancers/projects-applied",{selectedProjectId:{projectID:item.projectID}});
       //prompt freelancer with the card that contains the status bar, call
       //item.projectID to get projectID
       //item.clientID to get clientID
@@ -235,7 +238,39 @@ const NotificationPage = () => {
         isRead: true
       });
       
-      history.push("/clients/project-posted");//prompt to check application
+      history.push("/clients/proposal-received",{proposal_key:{projectID:item.projectID, freelancerID:item.freelancerID}});
+    } catch (error) {
+      console.error("Error updating priority: ", error);
+    }finally{
+      setLoading(false);
+    }
+  };
+
+  const handleFreelancerRejectAssignment = async (event, item) => { //type=4.3
+    try {
+      setLoading(true);
+      const notificationRef = doc(db, 'notifications', item.id);
+      await updateDoc(notificationRef, {
+        isRead: true
+      });
+      
+      history.push("/freelancers/explore");
+    } catch (error) {
+      console.error("Error updating priority: ", error);
+    }finally{
+      setLoading(false);
+    }
+  };
+
+  const handleClientReceiveRejection = async (event, item) => { //type=4.4
+    try {
+      setLoading(true);
+      const notificationRef = doc(db, 'notifications', item.id);
+      await updateDoc(notificationRef, {
+        isRead: true
+      });
+      
+      history.push("/clients/proposal-received",{proposal_key:{projectID:item.projectID, freelancerID:item.freelancerID}});//prompt to check application
     } catch (error) {
       console.error("Error updating priority: ", error);
     }finally{
@@ -251,6 +286,7 @@ const NotificationPage = () => {
         isRead: true
       });
       
+      history.push("/freelancers/project-applied")
       //prompt freelancer with the card that contains the apply button, call
       //item.projectID to get projectID
       //item.clientID to get clientID
@@ -306,7 +342,7 @@ const NotificationPage = () => {
 
   return (
     <div className="notification-page">
-      <Heading as="h1" className="text-center tracking-[-0.90px] md:p-5 mt-5">
+       <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px' }}>
         Notifications
       </Heading>
       <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
@@ -321,7 +357,7 @@ const NotificationPage = () => {
               return (
                 <Alert key={item.id} severity="info" onClick={(event) => handleInvitation(event, item)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have received an invitation for {item.projectName || 'the project'}</AlertTitle>
+                  <AlertTitle>You have been invited to join <b>{item.projectName || 'a project'}. </b></AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -331,7 +367,7 @@ const NotificationPage = () => {
               return (
                 <Alert key={item.id} severity="success" onClick={(event) => handleFreelanerCheckApplication(event, item)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have successfully submitted an application for {item.projectName || 'the project'}</AlertTitle>
+                  <AlertTitle>Your application for <b>{item.projectName || 'a project'}</b> has been submitted successfully.</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -341,7 +377,7 @@ const NotificationPage = () => {
               return (
                 <Alert key={item.id} severity="info" onClick={(event) => handleClientApplicationView(event, item)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have received an application for {item.projectName || 'the project'}</AlertTitle>
+                  <AlertTitle>You have received a new application for <b>{item.projectName || 'a project'}.</b></AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -351,7 +387,7 @@ const NotificationPage = () => {
               return (
                 <Alert key={item.id} severity="success" onClick={(event) => handleClientAccept(event, item)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have assigned {item.projectName || 'the project'} to {item.freelancerName || 'the freelancer'}.</AlertTitle>
+                  <AlertTitle>You have assigned <b>{item.projectName || 'a project'}</b> to <b>{item.freelancerName || 'a freelancer'}.</b></AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -361,7 +397,7 @@ const NotificationPage = () => {
               return (
                 <Alert key={item.id} severity="warning" onClick={(event) => handleClientReject(event, item)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have rejected the application for {item.projectName || 'the project'} from {item.freelancerName || 'the freelancer'}. Click here to assign your project to other freelancers.</AlertTitle>
+                  <AlertTitle>You have rejected the application for <b>{item.projectName || 'a project'}</b> from <b>{item.freelancerName || 'a freelancer'}</b>. Click here to assign your project to other freelancers.</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -371,7 +407,7 @@ const NotificationPage = () => {
               return (
                 <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerReceiveAssignment(event, item)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have been assigned to {item.projectName || 'the project'} by {item.clientName || 'the client'}</AlertTitle>
+                  <AlertTitle>You have been assigned to <b>{item.projectName || 'a project'}</b> by <b>{item.clientName || 'a client'}</b>.</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -381,7 +417,7 @@ const NotificationPage = () => {
               return (
                 <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerCheckProjectAssigned(event, item)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have accpet the assignment of {item.projectName || 'the project'} from {item.clientName || 'the client'}</AlertTitle>
+                  <AlertTitle>You have accepted the assignment of <b>{item.projectName || 'a project'}</b> from <b>{item.clientName || 'a client'}.</b></AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -391,7 +427,27 @@ const NotificationPage = () => {
               return (
                 <Alert key={item.id} severity="success" onClick={(event) => handleClientCheckAssignment(event, item)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>Your assignment of {item.projectName || 'the project'} has been accepted by {item.freelancerName || 'the freelancer'}</AlertTitle>
+                  <AlertTitle><b>{item.freelancerName || 'A freelancer'}</b> has accepted your assignment for <b>{item.projectName || 'a project'}.</b></AlertTitle>
+                  {new Date(item.timestamp?.toDate()).toLocaleString()}
+                </Alert>
+              );
+            }
+
+            if (item.type === 4.3) { //reject assignment (freelancer)
+              return (
+                <Alert key={item.id} severity="warning" onClick={(event) => handleFreelancerRejectAssignment(event, item)} 
+                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
+                  <AlertTitle>You have rejected the assignment of <b>{item.projectName || 'a project'}</b> from <b>{item.clientName || 'a client'}</b>. Click here to explore more projects that you might like.</AlertTitle>
+                  {new Date(item.timestamp?.toDate()).toLocaleString()}
+                </Alert>
+              );
+            }
+
+            if (item.type === 4.4) { //reject assignment (client)
+              return (
+                <Alert key={item.id} severity="info" onClick={(event) => handleClientReceiveRejection(event, item)} 
+                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
+                  <AlertTitle><b>{item.freelancerName || 'A freelancer'}</b> has rejected your assignment for <b>{item.projectName || 'a project'}</b>. Click here to assign your project to another talented freelancer.</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -401,7 +457,7 @@ const NotificationPage = () => {
               return (
                 <Alert key={item.id} severity="warning" onClick={(event) => handleFreelancerReceiveRejection(event, item)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>Your application for {item.projectName || 'the project'} has been rejected. Revise your proposal and click here to apply again.</AlertTitle>
+                  <AlertTitle>Your application for <b>{item.projectName || 'a project'}</b> has been rejected. Revise your proposal and click here to apply again.</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -411,7 +467,7 @@ const NotificationPage = () => {
               return (
                 <Alert key={item.id} severity="success" onClick={(event) => handleClientMarkAsDone(event, item)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>Your have successfully marked {item.projectName || 'the project'} as completed</AlertTitle>
+                  <AlertTitle>You have successfully marked <b>{item.projectName || 'a project'}</b> as completed.</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
@@ -421,13 +477,11 @@ const NotificationPage = () => {
               return (
                 <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerDone(event, item)} 
                 variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>Your {item.projectName || 'project'} was completed</AlertTitle>
+                  <AlertTitle>Your <b>{item.projectName || 'project'}</b> has been completed.</AlertTitle>
                   {new Date(item.timestamp?.toDate()).toLocaleString()}
                 </Alert>
               );
             }
-
-
             return null;
           })}
         </div>
