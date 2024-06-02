@@ -7,7 +7,7 @@ import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
 import { addProject, auth, db } from '../../../firebase';
 import { collection, getDoc,doc, query, where, getDocs, addDoc } from "firebase/firestore";
-import Loading from '../components/Loading';
+import Loading from '../../../components/Loading';
 
 
 
@@ -54,7 +54,7 @@ const CreateProjectPreview = () => {
   const [projectInfo, setProjectInfo] = useContext(ProjectContext);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const freelancerid = selectedUsers.map(user => user.uid);
@@ -117,10 +117,10 @@ const CreateProjectPreview = () => {
         console.log('Notification added successfully!');
         navigate('/clients/project-posted');
         clearContext(); 
-        setLoading(false);
-    })
-    .catch((error) => {
-        console.error("Error adding document: ", error);
+    }).finally(() => {
+      setLoading(false);
+    }).catch((error) => {
+      console.error("Error adding document: ", error);
     });
 } else {
     console.log('No user is signed in');
@@ -157,6 +157,8 @@ const CreateProjectPreview = () => {
       return favouriteFreelancers;
     } catch (error) {
       console.error('Error fetching favourite freelancers: ', error);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -165,6 +167,7 @@ const CreateProjectPreview = () => {
       setUsers(favouriteFreelancers);
     });
   }, []);
+
   
   const handleUserClick = (index) => {
     const updatedUsers = users.map((user, idx) => {
@@ -186,6 +189,11 @@ const CreateProjectPreview = () => {
     useEffect(() => {
       console.log('Current selected users:', selectedUsers);
     }, [selectedUsers]);
+
+
+    if (loading) {
+      return <Loading />;
+    }
 
   return (
     <div className="flex flex-col items-start justify-center">

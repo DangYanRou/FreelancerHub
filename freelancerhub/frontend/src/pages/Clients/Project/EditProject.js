@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { categories,workloadOptions } from '../../../components/ProjectOptions.js';
 import { IoMdClose } from 'react-icons/io';
 import DatePicker from 'react-datepicker';
+import Loading from '../../../components/Loading';
 
 
 const CreateProjectPreview = () => {
@@ -42,6 +43,7 @@ const CreateProjectPreview = () => {
 
 
   const handlePostClick = async (event) => {
+    setLoading(true);
     event.preventDefault();
     const user = auth.currentUser;
     
@@ -119,6 +121,8 @@ const CreateProjectPreview = () => {
                 })
             .catch((error) => {
                 console.error("Error updating document: ", error);
+            }).finally(() => {
+                setLoading(false);
             });
     } else {
         window.alert('All fields must be filled!');
@@ -295,6 +299,10 @@ const handleKeywordDelete = (keywordToDelete) => {
     ...projectInfo,
     keywords: projectInfo.keywords.filter(keyword => keyword !== keywordToDelete),
   });};
+
+  if(loading){
+    return <Loading />
+  }
 
   return (
     <div className="flex flex-col items-start justify-center">
