@@ -164,6 +164,7 @@ margin-bottom: 1.5rem;
     display: flex;
     justify-content: flex-end; /* Align modal to the right */
     align-items: center;
+    z-index: 99999;
     
 }
 

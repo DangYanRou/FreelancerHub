@@ -75,8 +75,9 @@ export default function BasicTable() {
               <TableCell style={headerStyle} />
           </TableRow>
         </TableHead>
-        <TableBody >
-          {favouriteFreelancerList.map((row) => (
+          <TableBody >
+          {favouriteFreelancerList.length > 0 ? (
+          favouriteFreelancerList.map((row) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -90,7 +91,14 @@ export default function BasicTable() {
               <TableCell align="right" style={cellStyle}>{row.job}</TableCell>
               <TableCell align="right" style={cellStyle}>{row.rating}</TableCell>
             </TableRow>
-          ))}
+          ))
+          ) : (
+               <TableRow>
+              <TableCell style={cellStyle} component="th" scope="row" colSpan={4} align="center">
+                No favourite collaborator at the moment
+              </TableCell>
+            </TableRow> 
+          )}
         </TableBody>
       </Table>
     </TableContainer>

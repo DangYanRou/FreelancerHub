@@ -68,8 +68,8 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
         <StatusBar statusState={project.statusState}/>
       </div>
       <div className='jl-button-container'>
-        <button className="btn-primary" onClick={handleViewApplication}>View Application</button>
-        <button className="btn-secondary" onClick={handleCancelApplication}>Cancel Application</button>
+        <button className="jl-btn-primary" onClick={handleViewApplication}>View Application</button>
+        <button className="jl-btn-secondary" onClick={handleCancelApplication}>Cancel Application</button>
       </div>
     </div>
   );

@@ -24,6 +24,7 @@
     display: flex;
     justify-content: flex-end; /* Align modal to the right */
     align-items: center;
+    z-index: 99999;
     
 }
 
@@ -35,6 +36,7 @@
     height: 100%;
     max-width: 600px; /* Limit the maximum width of the modal content */
    
+
 }
 .jl-modal-header {
     display: flex;
@@ -104,9 +106,9 @@
     display: flex; /* Use flexbox to arrange buttons horizontally */
     justify-content: space-evenly; /* Spread buttons apart */
 }
-.btn-primary{
+.jl-btn-primary{
     background-color: #213E60;
-    padding:9px 28px; /* Adjust padding to increase button size */
+    padding:9px 22px; /* Adjust padding to increase button size */
     border: none; /* Remove default border */
     font-size: 16px;
     color: white;
@@ -114,9 +116,9 @@
     cursor: pointer; /* Change cursor to pointer on hover */
     margin-bottom: 3rem;
 }
-.btn-secondary{
+.jl-btn-secondary{
     background-color: red;
-    padding:9px 28px; /* Adjust padding to increase button size */
+    padding:9px 20px; /* Adjust padding to increase button size */
     border: none; /* Remove default border */
     font-size: 16px;
     color: white;
