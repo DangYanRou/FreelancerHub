@@ -11,7 +11,7 @@ import { BiTimeFive } from "react-icons/bi";
 import '../../../styles/Freelancers/FreelancerSaved.css';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { db , auth} from '../../../firebase';
+import { db, auth } from '../../../firebase';
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 const FreelancerSaved = () => {
@@ -25,7 +25,7 @@ const FreelancerSaved = () => {
 
   const collectionRef = collection(db, "favouriteProject");
 
-    const getFavProjects = async () => {
+  const getFavProjects = async () => {
     try {
       const userID = auth.currentUser.uid;
       const q = query(collectionRef, where("savedBy", "==", userID));
@@ -72,7 +72,7 @@ const FreelancerSaved = () => {
         <Link to="/freelancers/client-temporary-profile" className="hover-profileLink">{project.client}</Link>
         <p id="category">{project.category}</p>
         <p><FaLocationDot className="icon-style" />{project.location}</p>
-        <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.minInput}-{ project.maxInput}/project</p>
+        <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.minInput}-{project.maxInput}/project</p>
         <p><BiTimeFive size={20} className='icon-style2' />{project.duration}</p>
         <p>Starting from: {project.date}</p>
         <h3 id="about-the-project">About the Project:</h3>
@@ -104,7 +104,7 @@ const FreelancerSaved = () => {
     <div>
       <div className="flex w-full justify-end bg-white-A700 py-[63px] md:py-5">
         <div className="flex w-[100%] flex-col items-start md:w-full md:p-5">
-        <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px' , marginLeft: '40px' }}>
+          <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px', marginLeft: '40px' }}>
             Your Favourite
           </Heading>
           <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
@@ -117,13 +117,11 @@ const FreelancerSaved = () => {
               orientation="horizontal"
             >
               {favProjects.length > 0 ? (
-                favProjects.map((project) => (
-                  <ProjectList
-                    projects={project}
-                    onProjectClick={handleProjectClick}
-                    selectedProjectId={selectedProject ? selectedProject.id : null}
-                  />
-                ))
+                <ProjectList
+                  projects={favProjects}
+                  onProjectClick={handleProjectClick}
+                  selectedProjectId={selectedProject ? selectedProject.id : null}
+                />
               ) : (
                 <div>No favourite project at the moment</div>
               )}
