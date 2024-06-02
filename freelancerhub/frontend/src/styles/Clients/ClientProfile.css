@@ -368,3 +368,13 @@
 .jl-view-project-header{
   font-size: 34px;
 }
+
+.no-reviews{
+  font-size: 20px;
+  color: #999;
+  padding-top:10px;
+  text-align: center;
+  border-top: 1px solid grey;
+  
+}
+
