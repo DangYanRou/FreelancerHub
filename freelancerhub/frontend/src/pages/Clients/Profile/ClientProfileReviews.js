@@ -40,7 +40,8 @@ const ClientProfileReviews = ({ feedbacks }) => {
 
   return (
     <div className="reviews-container">
-      {feedbacksWithUserNames
+      {feedbacksWithUserNames.length > 0 ? (
+       feedbacksWithUserNames
         .sort((a, b) => b.timestamp.toDate() - a.timestamp.toDate())
         .map((feedback, index) => (
           <div className="review-card" key={feedback.id}>
@@ -59,7 +60,12 @@ const ClientProfileReviews = ({ feedbacks }) => {
               <p>{feedback.feedback}</p>
             </div>
           </div>
-        ))}
+        ))
+      ) : ( 
+        <div className="no-reviews">
+          <h2>No reviews available</h2>
+        </div>
+      )}
     </div>
   );
 };

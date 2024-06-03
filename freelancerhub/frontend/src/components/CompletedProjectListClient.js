@@ -1,17 +1,26 @@
 import "./styles/CompletedProjectList.css";
-import React, { useState } from "react";
+import React, { useEffect, useState , useRef} from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FaLocationDot } from "react-icons/fa6";
 import { BiTimeFive } from "react-icons/bi";
 import { MdOutlineAttachMoney } from "react-icons/md";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { db } from "../firebase";
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc,onSnapshot } from "firebase/firestore";
+import { formatDistanceToNow } from "date-fns";
+import { getDocs, query, where } from "firebase/firestore";
+import { useUser } from "../context/UserContext";
 
 const CompletedProjectListClient = ({ projects }) => {
   const navigate = useNavigate();
   const [favourites, setFavourites] = useState({});
   const [hover, setHover] = useState({});
+  const { user } = useUser();
+  const [feedback, setFeedback] = useState({});
+  const [showFeedback, setShowFeedback] = useState({});
+  const feedbackRef = useRef(null);
+  const [feedbackMaxHeight, setFeedbackMaxHeight] = useState({});
 
   const toggleFavourite = (projectId) => {
     setFavourites((prev) => ({
@@ -20,16 +29,90 @@ const CompletedProjectListClient = ({ projects }) => {
     }));
   };
 
-  //deon
+  const toggleFeedback = (projectId) => {
+    setShowFeedback((prev) => {
+      const newState = { ...prev, [projectId]: !prev[projectId] };
+      if (newState[projectId]) {
+        setFeedbackMaxHeight((prevMaxHeight) => ({
+          ...prevMaxHeight,
+          [projectId]: `${feedbackRef.current.scrollHeight}px`,
+        }));
+      }
+      return newState;
+    });
+  };
+
+  // useEffect(() => {
+  //   const fetchFeedback = async () => {
+  //     const feedbackRef = collection(db, "feedback");
+  
+  //     // Loop over each project
+  //     projects.forEach(async (project) => {
+  //       // Create a query for the feedback of the current project
+  //       const feedbackQuery = query(feedbackRef, where("from", "==", user.id), where ("projectID", "==", project.id));
+  //       const feedbackSnapshot = await getDocs(feedbackQuery);
+  
+  //       feedbackSnapshot.forEach((doc) => {
+  //         console.log(doc.id, " => ", doc.data());
+  //       });
+  
+  //       if (!feedbackSnapshot.empty) {
+  //         const feedbackDoc = feedbackSnapshot.docs[0];
+  //         // Store the feedback in the state using the project ID as the key
+  //         setFeedback(prev => ({
+  //           ...prev,
+  //           [project.id]: {
+  //             id: feedbackDoc.id,
+  //             ...feedbackDoc.data(),
+  //           },
+  //         }));
+  //       }
+  //     });
+  //   };
+  //   fetchFeedback();
+  // }, [user.id, projects]); // Add projects to the dependency array
+  useEffect(() => {
+    const feedbackRef = collection(db, "feedback");
+    const unsubscribes = []; // Array to store the unsubscribe functions
+  
+    // Loop over each project
+    projects.forEach((project) => {
+      // Create a query for the feedback of the current project
+      const feedbackQuery = query(feedbackRef, where("from", "==", user.id), where ("projectID", "==", project.id));
+      
+      // Set up a real-time listener
+      const unsubscribe = onSnapshot(feedbackQuery, (snapshot) => {
+        if (!snapshot.empty) {
+          const feedbackDoc = snapshot.docs[0];
+          // Store the feedback in the state using the project ID as the key
+          setFeedback(prev => ({
+            ...prev,
+            [project.id]: {
+              id: feedbackDoc.id,
+              ...feedbackDoc.data(),
+            },
+          }));
+        }
+      });
+  
+      unsubscribes.push(unsubscribe); // Store the unsubscribe function
+    });
+  
+    // Return a cleanup function that calls all the unsubscribe functions
+    return () => {
+      unsubscribes.forEach(unsubscribe => unsubscribe());
+    };
+  }, [user.id, projects]);
+
+  console.log("Your Feedback = " , feedback);
+
   const addFavouriteFreelancer = async (freelancerID, clientID) => {
-    // Get freelancer data
     const freelancerRef = doc(db, "freelancers", freelancerID);
     const freelancerSnap = await getDoc(freelancerRef);
 
     if (freelancerSnap.exists()) {
       const freelancerData = freelancerSnap.data();
 
-      // Save freelancer data in 'favouriteFreelancer' collection
       const favouriteFreelancerRef = doc(collection(db, "favouriteFreelancer"));
       await setDoc(favouriteFreelancerRef, {
         ...freelancerData,
@@ -39,10 +122,9 @@ const CompletedProjectListClient = ({ projects }) => {
       console.log("No such freelancer!");
     }
   };
-  //deon
 
   return (
-    <div className="jl-centered-container ">
+    <div className="jl-centered-container">
       {projects.map((project) => (
         <div className="card" key={project.id}>
           <h2>{project.title}</h2>
@@ -108,18 +190,67 @@ const CompletedProjectListClient = ({ projects }) => {
                 )}
               </button>
 
-              <button
-                className="feedbackBtn"
-                onClick={() =>
-                  navigate("../client-feedback-page", {
-                    state: { freelancerID: project.freelancerID },
-                  })
-                }
-              >
-                Submit feedback
-              </button>
+              {!feedback[project.id] && (
+                <button
+                  className="feedbackBtn"
+                  onClick={() =>
+                    navigate("../client-feedback-page", {
+                      state: { freelancerID: project.freelancerID , projectID: project.id},
+                    })
+                  }
+                >
+                  Submit feedback
+                </button>
+              )}
             </div>
           </div>
+
+          {feedback[project.id] && (
+            <>
+              <div
+                className="feedback-toggle"
+                onClick={() => toggleFeedback(project.id)}
+              >
+                <span>View your feedback</span>
+                {showFeedback[project.id] ? (
+                  <IoIosArrowUp />
+                ) : (
+                  <IoIosArrowDown />
+                )}
+              </div>
+
+              <div
+                ref={feedbackRef}
+                className="review-container"
+                style={{
+                  maxHeight: showFeedback[project.id]
+                    ? feedbackMaxHeight[project.id]
+                    : "0px",
+                  overflow: "hidden",
+                  transition: "max-height 0.3s ease-in-out",
+                }}
+              >
+                <div className="review-card">
+                  <div className="review-header">
+                    <h3>Your feedback</h3>
+                    <span className="review-date">
+                      {feedback[project.id] &&
+                        feedback[project.id].timestamp &&
+                        formatDistanceToNow(feedback[project.id].timestamp.toDate(), {
+                          addSuffix: true,
+                        })}
+                    </span>
+                  </div>
+                  <div className="review-body">
+                    <span className="review-rating">
+                      Rating: {feedback[project.id].rating}/5
+                    </span>
+                    <p className="review-content">{feedback[project.id].feedback}</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       ))}
     </div>
