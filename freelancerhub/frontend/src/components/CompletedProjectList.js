@@ -1,17 +1,26 @@
 import "./styles/CompletedProjectList.css";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { BiTimeFive } from "react-icons/bi";
 import { db } from "../firebase";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { formatDistanceToNow } from "date-fns";
+import { getDocs, query, where } from "firebase/firestore";
+import { useUser } from "../context/UserContext";
 
 const CompletedProjectListClient = ({ projects }) => {
   const navigate = useNavigate();
   const [favourites, setFavourites] = useState({});
   const [hover, setHover] = useState({});
+  const { user } = useUser();
+  const [feedback, setFeedback] = useState({});
+  const [showFeedback, setShowFeedback] = useState({});
+  const feedbackRef = useRef(null);
+  const [feedbackMaxHeight, setFeedbackMaxHeight] = useState({});
 
   const toggleFavourite = (projectId) => {
     setFavourites((prev) => ({
@@ -20,25 +29,59 @@ const CompletedProjectListClient = ({ projects }) => {
     }));
   };
 
-    //deon
-  const addFavouriteClient = async (clientID, freelancerID) => {
-  // Get client data
-  const clientRef = doc(db, 'clients', clientID);
-  const clientSnap = await getDoc(clientRef);
-
-  if (clientSnap.exists()) {
-    const clientData = clientSnap.data();
-
-    // Save freelancer data in 'favouriteClient' collection
-    const favouriteClientRef = doc(collection(db, 'favouriteClient'));
-    await setDoc(favouriteClientRef, {
-      ...clientData,
-      freelancerID,
+  const toggleFeedback = (projectId) => {
+    setShowFeedback((prev) => {
+      const newState = { ...prev, [projectId]: !prev[projectId] };
+      if (newState[projectId]) {
+        setFeedbackMaxHeight((prevMaxHeight) => ({
+          ...prevMaxHeight,
+          [projectId]: `${feedbackRef.current.scrollHeight}px`,
+        }));
+      }
+      return newState;
     });
-  } else {
-    console.log('No such client!');
-  }
-};
+  };
+
+  useEffect(() => {
+    const fetchFeedback = async () => {
+      const feedbackRef = collection(db, "feedback");
+      const feedbackQuery = query(feedbackRef, where("from", "==", user.id));
+      const feedbackSnapshot = await getDocs(feedbackQuery);
+
+      feedbackSnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+      });
+
+      if (!feedbackSnapshot.empty) {
+        const feedbackDoc = feedbackSnapshot.docs[0];
+        setFeedback({
+          id: feedbackDoc.id,
+          ...feedbackDoc.data(),
+        });
+      }
+    };
+    fetchFeedback();
+  }, [user.id]);
+
+  //deon
+  const addFavouriteClient = async (clientID, freelancerID) => {
+    // Get client data
+    const clientRef = doc(db, "clients", clientID);
+    const clientSnap = await getDoc(clientRef);
+
+    if (clientSnap.exists()) {
+      const clientData = clientSnap.data();
+
+      // Save freelancer data in 'favouriteClient' collection
+      const favouriteClientRef = doc(collection(db, "favouriteClient"));
+      await setDoc(favouriteClientRef, {
+        ...clientData,
+        freelancerID,
+      });
+    } else {
+      console.log("No such client!");
+    }
+  };
   //deon
 
   return (
@@ -59,7 +102,10 @@ const CompletedProjectListClient = ({ projects }) => {
             {project.minInput}-{project.maxInput} {project.currencyInput}
             /project
           </p>
-          <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
+          <p>
+            <BiTimeFive size={20} className="icon-style2" />
+            {project.duration} {project.durationUnit}
+          </p>
           <p className="apply-status">{project.status}</p>
           <div className="bottom-row">
             <p style={{ flexGrow: 1 }}>
@@ -76,8 +122,7 @@ const CompletedProjectListClient = ({ projects }) => {
                 onClick={() => {
                   toggleFavourite(project.id);
                   addFavouriteClient(project.clientID, project.freelancerID);
-                }
-                }
+                }}
                 onMouseEnter={() =>
                   setHover((prev) => ({ ...prev, [project.id]: true }))
                 }
@@ -102,19 +147,66 @@ const CompletedProjectListClient = ({ projects }) => {
                   "+ Favourite Collaborator"
                 )}
               </button>
-
-              <button
-                className="feedbackBtn"
-                onClick={() =>
-                  navigate("../freelancer-feedback-page", {
-                    state: { clientID: project.clientID },
-                  })
-                }
-              >
-                Submit feedback
-              </button>
+              {!feedback && (
+                <button
+                  className="feedbackBtn"
+                  onClick={() =>
+                    navigate("../freelancer-feedback-page", {
+                      state: { clientID: project.clientID , projectID : project.id},
+                    })
+                  }
+                >
+                  Submit feedback
+                </button>
+              )}
             </div>
           </div>
+          {feedback && (
+            <>
+              <div
+                className="feedback-toggle"
+                onClick={() => toggleFeedback(project.id)}
+              >
+                <span>View your feedback</span>
+                {showFeedback[project.id] ? (
+                  <IoIosArrowUp />
+                ) : (
+                  <IoIosArrowDown />
+                )}
+              </div>
+
+              <div
+                ref={feedbackRef}
+                className="review-container"
+                style={{
+                  maxHeight: showFeedback[project.id]
+                    ? feedbackMaxHeight[project.id]
+                    : "0px",
+                  overflow: "hidden",
+                  transition: "max-height 0.3s ease-in-out",
+                }}
+              >
+                <div className="review-card">
+                  <div className="review-header">
+                    <h3>Your feedback</h3>
+                    <span className="review-date">
+                      {feedback &&
+                        feedback.timestamp &&
+                        formatDistanceToNow(feedback.timestamp.toDate(), {
+                          addSuffix: true,
+                        })}
+                    </span>
+                  </div>
+                  <div className="review-body">
+                    <span className="review-rating">
+                      Rating: {feedback.rating}/5
+                    </span>
+                    <p className="review-content">{feedback.feedback}</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       ))}
     </div>
