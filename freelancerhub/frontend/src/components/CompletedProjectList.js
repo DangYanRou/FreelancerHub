@@ -42,6 +42,19 @@ const CompletedProjectListClient = ({ projects }) => {
     });
   };
 
+  //sort projects
+  const sortedProjects = [...projects].sort((a, b) => {
+    if (a.completedDate && b.completedDate) {
+      return b.completedDate.toDate() - a.completedDate.toDate();
+    } else if (a.completedDate) {
+      return -1; // a has a completedDate, but b doesn't, so a goes first
+    } else if (b.completedDate) {
+      return 1; // b has a completedDate, but a doesn't, so b goes first
+    } else {
+      return 0; // neither a nor b have a completedDate, so they're considered equal
+    }
+  });
+
   // 
   useEffect(() => {
     const feedbackRef = collection(db, "feedback");
@@ -101,7 +114,7 @@ const CompletedProjectListClient = ({ projects }) => {
 
   return (
     <div className="jl-centered-container ">
-      {projects.map((project) => (
+      {sortedProjects.map((project) => (
         <div className="card" key={project.id}>
           <h2>{project.title}</h2>
           <a href="#" className="hover-profileLink">
@@ -124,7 +137,7 @@ const CompletedProjectListClient = ({ projects }) => {
           <p className="apply-status">{project.status}</p>
           <div className="bottom-row">
             <p style={{ flexGrow: 1 }}>
-              Completed on:{" "}
+              Completed on: {" "}
               <span className="complete-date">
                 {project.completedDate
                   ? project.completedDate.toDate().toLocaleDateString("en-GB")
