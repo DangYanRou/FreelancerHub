@@ -39,6 +39,7 @@ const FreelancerExplore = () => {
   const [location, setLocation] = useState('');
   const [selectedOptions, setSelectedOptions] = useState({});
   const [currencyInput, setCurrency] = useState('');
+  const [projectSearch, setProjectSearch] = useState(false);
   const handleCurrencyChange = (event) => {
     setCurrency(event.target.value);
   };
@@ -112,6 +113,7 @@ const FreelancerExplore = () => {
 
       console.log("Filtered Projects:", filteredProjects);
       setProjects(filteredProjects);
+      setProjectSearch(false);
     } catch (error) {
       console.error("Error searching projects:", error);
     }
@@ -122,8 +124,7 @@ const FreelancerExplore = () => {
     handleSearch();
   }, [minInput, maxInput, currencyInput, selectedOptions]);
 
-  
-  
+      
   
 
   const history = useHistory();
@@ -383,6 +384,8 @@ const handleClick = (projectId) => {
   );
   
   const handleFilterChange = (dropdownTitle, option, isChecked) => {
+    setProjectSearch(true);
+
     setSelectedOptions((prevState) => {
       const updatedOptions = { ...prevState };
       if (isChecked) {
@@ -491,7 +494,8 @@ const handleClick = (projectId) => {
 
     </div>
     <div className={`FreelancerExplore ${showDetails? 'show-details':''} `}>
-      
+    <p className="text-2xl font-bold text-gray-700 mb-4 ml-4" >{projectSearch ? 'Applying Filters...' : 'Projects Filtered:'}</p>
+
     <div className="parent-container">
     {projects.length > 0 ? (
         <ProjectList projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null} />

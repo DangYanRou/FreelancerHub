@@ -1,9 +1,10 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import workImage from '../../../Gallery/work.png';
 import noteImage from '../../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
+import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 
 // ProgressBar component to display the stages of project creation
 const ProgressBar = ({ stages }) => {
@@ -46,6 +47,7 @@ const CreateProjectDetail = () => {
     'Hybrid',
     'Other'
   ];
+  const geocodingClient = mbxGeocoding({ accessToken: 'pk.eyJ1IjoiY2hpbnh0IiwiYSI6ImNsd3l0enBndTAwY2kyaXIydTZzbTc0MHYifQ.mCHFL_hvwi_U8THCTnUDjQ' });
 
   
   const [project, setProject] = useContext(ProjectContext);
@@ -54,7 +56,9 @@ const CreateProjectDetail = () => {
   const [subjectError, setSubjectError] = useState('');
   const [minError, setMinError] = useState('');
   const [maxError, setMaxError] = useState('');
-  const [locationError, setLocationError] = useState('');
+  const [locationError, setLocationError] = useState(null);
+  const [locationResults, setLocationResults] = useState([]);
+  const locationInputRef = useRef(null);
 
 
 const handleFormSubmit = (event) => {
@@ -107,13 +111,48 @@ const handleButtonClick = async (event) => {
 
 // Update the project state when the input fields change
 const handleInputChange = (event) => {
+  const { value } = event.target;
   setProject({
     ...project,
     [event.target.name]: event.target.value,
     
   });
 };
+const HandleGeoChange = (event) => {
+  const { value } = event.target;
 
+  handleInputChange(event);
+
+  if (value.length >= 1) {
+    geocodingClient
+      .forwardGeocode({
+        query: value,
+        autocomplete: true,
+        limit: 5,
+      })
+      .send()
+      .then((response) => {
+        const { features } = response.body;
+        setLocationResults(features);
+        setLocationError(null);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLocationError('Error fetching location suggestions');
+        setLocationResults([]);
+      });
+  } else {
+    setLocationResults([]);
+  }
+};
+
+const handleSuggestionClick = (suggestion) => {
+  setProject((prevProject) => ({
+    ...prevProject,
+    location: suggestion.place_name,
+  }));
+  setLocationResults([]);
+};
 
   return (
     <div>
@@ -155,9 +194,30 @@ const handleInputChange = (event) => {
   </div>
   <div className="w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">Location: </label>
-    <input required className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="locationInput" name="location" type="text"  value={project.location} onChange={handleInputChange} />
- {locationError && <p className="text-red-500 text-xs italic">{locationError}</p>}
+    <input
+        ref={locationInputRef}
+        required
+        className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
+        id="locationInput"
+        name="location"
+        type="text"
+        value={project.location}
+        onChange={HandleGeoChange}
+      />
+      {locationError && <p className="text-red-500 text-xs italic">{locationError}</p>}
+      {locationResults.length > 0 && (
+        <ul className="border border-gray-500 bg-white rounded mt-2">
+          {locationResults.map((result) => (
+            <li
+              key={result.id}
+              className="p-2 cursor-pointer hover:bg-gray-200"
+              onClick={() => handleSuggestionClick(result)}
+            >
+              {result.place_name}
+            </li>
+          ))}
+        </ul>
+      )}
   </div>
 </div>
 <div className="w-8/10 m-4">
