@@ -20,6 +20,7 @@ import Loading from '../../../components/Loading';
 import { format } from 'date-fns';
 import { formatDistanceToNow } from 'date-fns';
 import { categories,workloadOptions } from '../../../components/ProjectOptions.js';
+import { useLocation } from 'react-router-dom';
 import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 
 
@@ -172,9 +173,11 @@ const FreelancerExplore = () => {
   }, [minInput, maxInput, currencyInput, selectedOptions]);
 
       
-  
+    //YR Noti used
+    const locationState = useLocation();
+    const projectIdFromState = locationState.state?.projectId;
 
-  const history = useHistory();
+    const history = useHistory();
 
   const handleApply = (projectID, clientID) => {
     history.push('/freelancers/proposal-form', {
@@ -221,6 +224,17 @@ const FreelancerExplore = () => {
 
   fetchProjects();
 }, [user]);
+
+//YR Noti used
+useEffect(() => {
+  if (projectIdFromState && projects.length > 0) {
+    const selected = projects.find(project => project.id === projectIdFromState);
+    if (selected) {
+      setSelectedProject(selected);
+    }
+  }
+}, [projects, projectIdFromState]);
+
 
 if (loading) {
   return <div><Loading /></div>;
@@ -326,7 +340,7 @@ const handleClick = (projectId) => {
               <BiTimeFive size={20} className='icon-style2' />
               {blog.duration} {blog.durationUnit}
             </p>
-            <div className="absolute bottom-4 right-3  w-50 h-8"  style={{ color: 'grey' }}>
+            <div className="absolute bottom-2 right-3  w-50 h-8"  style={{ color: 'grey' }}>
             <p id="posted-time">Posted {timeAgo}</p></div>
             <div className="absolute top-4 right-3 space-x-4 w-8 h-8">
               {bookmarkedProjects[blog.id] ? (

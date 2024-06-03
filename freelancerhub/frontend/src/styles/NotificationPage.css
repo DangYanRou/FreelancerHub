@@ -10,6 +10,11 @@
 .notification-item {
   margin-bottom: 15px;
   animation: slideIn 0.5s ease-out;
+  transition: all 0.3s !important;
+}
+
+.notification-item:hover{
+  scale: 1.03;
 }
 
 @keyframes slideIn {
@@ -21,4 +26,38 @@
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+.seen-notifications{
+  margin-top: 30px;
+}
+
+.read-noti,
+.unread-noti{
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #213e60;
+}
+
+@keyframes breathing {
+  0% {
+    scale:1.02;
+  }
+  50% {
+    scale:1.01;
+  }
+  100% {
+    scale:1.02;
+  }
+}
+
+.breathing-animation {
+  animation: breathing 2s infinite;
+  transition: all 0.3s !important;
+}
+
+.breathing-animation:hover {
+  animation: none;
+  scale: 1.03;
 }

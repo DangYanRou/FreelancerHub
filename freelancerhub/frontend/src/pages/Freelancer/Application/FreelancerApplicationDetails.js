@@ -107,7 +107,7 @@ const ApplicationDetails = () => {
           console.error("Error updating priority: ", error);
         } finally {
           setLoading(false);
-          history.push("/freelancers/projects-applied",{projectID:proposalDetails.projectID,freelancerID:proposalDetails.freelancerID});
+          history.push('/freelancers/projects-applied', { projectId: proposalDetails.projectID });
         }
     };
 
@@ -160,9 +160,9 @@ const ApplicationDetails = () => {
         } catch (error) {
             console.error("Error updating priority: ", error);
         } finally {
-            setLoading(false);
             setRejectConfirmationOpen(false);
-            history.push("/freelancers/projects-applied");
+            history.push("/freelancers/explore");
+            setLoading(false);
         }
     };
     

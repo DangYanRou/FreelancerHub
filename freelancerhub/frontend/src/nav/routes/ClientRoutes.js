@@ -19,6 +19,7 @@ import ClientSaved from '../../pages/Clients/Saved/ClientSaved';
 import WithNavigation from './WithNavigation';
 import { ProjectInfoProvider } from '../../context/ProjectInfoProvider'; 
 import { EmailProvider } from '../../context/ProjectInvitationContext'; 
+import FreelancerProfile from '../../pages/Freelancer/Profile/FreelancerTemporaryProfile';
 
 const ClientRoutes = () => {
   return (
@@ -40,7 +41,7 @@ const ClientRoutes = () => {
         <Route path="client-feedback-page" element={<ClientFeedbackPage />} />
         <Route path="client-average-review-box" element={<ClientAverageReviewBox />} />
         <Route path="notifications" element={<NotificationPage />} />
-        <Route path="freelancer-temporary-profile" element={<FreelancerTemporaryProfile />} />
+        <Route path="client-view-profile" element={<FreelancerProfile />} />
         <Route path="saved" element={<ClientSaved />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
