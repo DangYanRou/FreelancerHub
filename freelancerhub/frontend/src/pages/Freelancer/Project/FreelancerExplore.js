@@ -15,7 +15,7 @@ import { BsBookmarkCheckFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import { useUser } from '../../../context/UserContext';
 import { db, auth } from '../../../firebase'; 
-import { getDocs, collection, addDoc, query, where, getFirestore } from 'firebase/firestore';
+import { getDocs, collection, addDoc, query, where, getFirestore, doc, deleteDoc } from 'firebase/firestore';
 import Loading from '../../../components/Loading';
 import { format } from 'date-fns';
 import { formatDistanceToNow } from 'date-fns';
@@ -42,6 +42,7 @@ const FreelancerExplore = () => {
   const handleCurrencyChange = (event) => {
     setCurrency(event.target.value);
   };
+
 
   const handleSearch = async () => {
     try {
@@ -123,22 +124,7 @@ const FreelancerExplore = () => {
 
   
   
-  //deon
-  const handleSave = async (project) => {
-    try {
-      const collectionRef = collection(db, 'favouriteProject');
-      const userID = auth.currentUser.uid;
-      const projectWithSavedBy = { ...project, savedBy: userID };
-      await addDoc(collectionRef, projectWithSavedBy);
-      setBookmarkedProjects((prev) => ({ ...prev, [project.id]: true }));
-      alert('Project saved successfully!');
-      
-    } catch (error) {
-      console.error('Error saving project: ', error);
-      alert('Failed to save project');
-    }
-  };
-  //deon
+  
 
   const history = useHistory();
 
@@ -150,63 +136,101 @@ const FreelancerExplore = () => {
   };
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const projectsRef = query(collection(db, 'projects'),where('statusState','!=',5)); // Use the correct method for collection reference
-        const snapshot = await getDocs(projectsRef); // Fetch the documents
-        const projectsData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setProjects(projectsData);
+  const fetchProjects = async () => {
+    try {
+      const projectsRef = query(collection(db, 'projects'), where('statusState', '!=', 5)); // Use the correct method for collection reference
+      const snapshot = await getDocs(projectsRef); // Fetch the documents
+      const projectsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setProjects(projectsData);
 
-        if (user) {
-          const proposalsRef = collection(db, 'proposals');
-          const proposalsSnapshot = await getDocs(proposalsRef);
-          const appliedProjectsData = proposalsSnapshot.docs
-            .filter(doc => doc.id.endsWith(`_${user.id}`))
-            .map(doc => doc.id.split('_')[0]); // Extract projectID from documentID
+      if (user) {
+        const proposalsRef = collection(db, 'proposals');
+        const proposalsSnapshot = await getDocs(proposalsRef);
+        const appliedProjectsData = proposalsSnapshot.docs
+          .filter(doc => doc.id.endsWith(`_${user.id}`))
+          .map(doc => doc.id.split('_')[0]); // Extract projectID from documentID
 
-          setAppliedProjects(appliedProjectsData);
+        setAppliedProjects(appliedProjectsData);
 
-          const favouritesRef = collection(db, 'favouriteProject');
-          const favouritesSnapshot = await getDocs(query(favouritesRef, where('savedBy', '==', user.id)));
-          const bookmarkedProjectsData = favouritesSnapshot.docs.reduce((acc, doc) => {
-            acc[doc.data().id] = true;
-            return acc;
-          }, {});
-          setBookmarkedProjects(bookmarkedProjectsData);
-        }
-
-      } catch (error) {
-        console.error('Error fetching projects: ', error);
-      }finally{
-        setLoading(false);
+        const favouritesRef = collection(db, 'favouriteProject');
+        const favouritesSnapshot = await getDocs(query(favouritesRef, where('savedBy', '==', user.id)));
+        const bookmarkedProjectsData = favouritesSnapshot.docs.reduce((acc, doc) => {
+          acc[doc.data().id] = doc.id; // Store the document ID
+          return acc;
+        }, {});
+        setBookmarkedProjects(bookmarkedProjectsData);
       }
-    };
 
-    fetchProjects();
-  }, [user]);
-
- 
-  if (loading) {
-    return <div><Loading/></div>;
-  }
-
-  
-
-
-  const handleClick = (projectId) => {
-    const isBookmarked = bookmarkedProjects[projectId];
-    setBookmarkedProjects((prev) => ({
-      ...prev,
-      [projectId]: !isBookmarked
-    }));
-
-    if (!isBookmarked) {
-      handleSave(projects.find(project => project.id === projectId));
+    } catch (error) {
+      console.error('Error fetching projects: ', error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  fetchProjects();
+}, [user]);
+
+if (loading) {
+  return <div><Loading /></div>;
+}
+
+//deon
+const handleSave = async (project) => {
+  try {
+    const collectionRef = collection(db, 'favouriteProject');
+    const userID = auth.currentUser.uid;
+    const projectWithSavedBy = { ...project, savedBy: userID };
+    await addDoc(collectionRef, projectWithSavedBy);
+    setBookmarkedProjects((prev) => ({ ...prev, [project.id]: true }));
+    alert('Project saved successfully!');
+  } catch (error) {
+    console.error('Error saving project: ', error);
+    alert('Failed to save project');
+  }
+};
+
+const handleDelete = async (projectId) => {
+  const docId = bookmarkedProjects[projectId]; // Get the document ID
+
+  if (docId) {
+    try {
+      const docRef = doc(db, 'favouriteProject', docId);
+      await deleteDoc(docRef);
+
+      setBookmarkedProjects((prev) => {
+        const newState = { ...prev };
+        delete newState[projectId];
+        return newState;
+      });
+
+      alert('Project removed successfully!');
+    } catch (error) {
+      console.error('Error removing project: ', error);
+      alert('Failed to remove project');
+    }
+  }
+};
+
+//deon
+const handleClick = (projectId) => {
+  const isBookmarked = bookmarkedProjects[projectId];
+
+  if (isBookmarked) {
+    handleDelete(projectId);
+  } else {
+    handleSave(projects.find(project => project.id === projectId));
+  }
+
+  setBookmarkedProjects((prev) => ({
+    ...prev,
+    [projectId]: !isBookmarked
+  }));
+};
+//deon
 
   const dropdowns = [
     { title: 'Workplace', options: ['Onsite', 'Remote', 'Hybrid'] },
