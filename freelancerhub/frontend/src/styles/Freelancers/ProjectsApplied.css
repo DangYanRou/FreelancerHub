@@ -6,12 +6,12 @@
     margin-left: 43%;
 }
 .jl-centered-container {
-    margin-top: 2%;
-    display: flex;
-    justify-content: center; /* Aligns items horizontally */
-    align-items: center; /* Aligns items vertically */
-    overflow-y: auto;
-}
+    margin-top: 1%;
+     display: flex;
+     justify-content: center; /* Aligns items horizontally */
+     align-items: center; /* Aligns items vertically */
+     overflow-y: auto;
+ }
 
 .jl-modal-overlay {
     display: flex;
@@ -199,7 +199,6 @@
 .confirmation-content{
     margin-top: 50px;
 }
-
 
 
   .delete-message{

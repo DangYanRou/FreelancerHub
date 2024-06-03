@@ -13,7 +13,7 @@
     overflow-y: auto;
 }
 
-.card{
+.jl-card{
     width:700px;
     position: relative;
     flex-direction: column;
