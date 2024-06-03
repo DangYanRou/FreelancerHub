@@ -121,7 +121,11 @@ export default function BioCardClient({ freelancer }) {
         <CardActions buttonFlex="1">
           <ButtonGroup variant="outlined" sx={{ bgcolor: 'background.surface' }}>
             <Button onClick={() => removeFreelancer(freelancer.id)}>Remove</Button>
-            {/* <Button onClick={()=>navigate('/freelancers/client-temporary-profile')}>Go To Profile</Button> */}
+            <Button 
+              onClick={() => window.location.href = `mailto:${freelancer.email}`}
+            >
+              Message
+            </Button>
           </ButtonGroup>
         </CardActions>
       </CardOverflow>
