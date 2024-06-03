@@ -3,7 +3,7 @@ import "../../../styles/Clients/FeedbackPage.css";
 import { db, auth } from '../../../firebase';
 import { collection, addDoc, serverTimestamp, FieldValue } from 'firebase/firestore';
 import { useUser } from '../../../context/UserContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation , useNavigate } from 'react-router-dom';
 
 function ClientFeedbackPage() {
   const user = auth.currentUser;
@@ -13,6 +13,7 @@ function ClientFeedbackPage() {
   const location = useLocation();
   const freelancerId = location.state.freelancerID;
   const projectId = location.state.projectID;
+  const navigate = useNavigate();
 
  console.log('freelancerid =' , freelancerId);
   const handleRating = (num) => {
@@ -39,6 +40,7 @@ function ClientFeedbackPage() {
           timestamp: serverTimestamp(),
         });
         console.log("Feedback submitted!");
+        navigate('/clients/project-completed'); 
       } catch (error) {
         console.error("Error submitting feedback: ", error);
       }

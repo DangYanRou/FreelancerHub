@@ -333,18 +333,22 @@ const CreateProjectPreview = () => {
 <div className="flex flex-col w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="favouriteCollaborator">Favourite Collaborator: </label>
     <div className="rounded-[10px] overflow-hidden border border-solid border-gray-500 bg-white-A700 ">
-    <table className="w-full">
-  <tbody>
-                      {users.map((user, index) => (
-                        <tr key={index} onClick={() => handleUserClick(index)}>
-                          <td className={`rounded-[10px] border border-solid border-gray-500 w-4/5 m-auto my-2 p-2 flex items-center ${user.selected ? 'bg-green-200' : 'bg-red-100'} ${user.selected ? '' : 'hover:bg-gray-200'} transition-colors duration-200`}>
-                            <img src={user.profilePicture} alt={user.name} className="w-8 h-8 rounded-full mr-2" />
-                            <span className="font-bold text-gray-700">{user.name}</span>
-                          </td>
-                        </tr>
-                      ))}
-  </tbody>
-</table>
+    {users.length > 0 ? (
+  <table className="w-full">
+    <tbody>
+      {users.map((user, index) => (
+        <tr key={index} onClick={() => handleUserClick(index)}>
+          <td className={`rounded-[10px] border border-solid border-gray-500 w-4/5 m-auto my-2 p-2 flex items-center ${user.selected ? 'bg-green-200' : 'bg-red-100'} ${user.selected ? '' : 'hover:bg-gray-200'} transition-colors duration-200`}>
+            <img src={user.profilePicture} alt={user.name} className="w-8 h-8 rounded-full mr-2" />
+            <span className="font-bold text-gray-700">{user.name}</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+) : (
+  <p className="text-center text-gray-700 py-4">No favourite collaborators</p>
+)}
 </div>
   </div>
 
