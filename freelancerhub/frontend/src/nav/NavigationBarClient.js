@@ -5,6 +5,11 @@ const NavigationBarClient = () => {
     const location = useLocation(); // Get current location
     const pathname = location.pathname;
 
+    const handleLogout = async () => {
+        localStorage.removeItem("user");
+      };
+  
+      
     return (
         <nav className="bg-white border-gray-200 dark:bg-gray-900 border-b fixed top-0 w-full z-50">
             <div className="max-w-screen-xl flex flex-wrap mx-auto p-4 justify-between items-center">
@@ -63,7 +68,7 @@ const NavigationBarClient = () => {
                             <Link 
                                 to="/" 
                                 className={`block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 ${pathname === '/' ? 'md:bg-transparent md:text-blue-700 bg-blue-700 text-white' : ''}`}
-                            >
+                                onClick={handleLogout}>
                                 Sign Out
                             </Link>
                         </li>
