@@ -3,7 +3,7 @@ import "../../../styles/Clients/FeedbackPage.css";
 import { db, auth } from '../../../firebase';
 import { collection, addDoc, serverTimestamp, FieldValue } from 'firebase/firestore';
 import { useUser } from '../../../context/UserContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function FreelancerFeedbackPage() {
   const user = auth.currentUser;
@@ -12,6 +12,9 @@ function FreelancerFeedbackPage() {
   const [showSubmitted, setShowSubmitted] = useState(false);
   const location = useLocation();
   const clientId = location.state.clientID;
+  const projectId = location.state.projectID;
+  const navigate = useNavigate();
+  
 
  console.log('clientId =' , clientId);
 
@@ -25,6 +28,7 @@ function FreelancerFeedbackPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     if (rating && feedback) {
       setShowSubmitted(true);
   
@@ -34,9 +38,12 @@ function FreelancerFeedbackPage() {
           to: clientId,
           rating: rating,
           feedback: feedback,
+          projectID: projectId,
           timestamp: serverTimestamp(),
         });
         console.log("Feedback submitted!");
+        navigate('/freelancers/project-completed-page'); 
+        
       } catch (error) {
         console.error("Error submitting feedback: ", error);
       }

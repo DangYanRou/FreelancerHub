@@ -13,6 +13,11 @@
     overflow-y: auto;
 }
 
+#category{
+    font-size: 17px;
+}
+
+
 .card{
     width:700px;
     position: relative;
@@ -25,6 +30,11 @@
     border-radius: 10px;
     cursor: pointer;
     margin-bottom: 1rem;
+}
+
+.card h2{
+    font-size: 22px;
+    font-weight: bold;
 }
 
 .apply-status{

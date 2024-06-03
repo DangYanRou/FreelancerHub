@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mapbox/mapbox-sdk": "^0.16.0",
     "@mui/joy": "^5.0.0-beta.32",
     "@mui/material": "^5.15.15",
     "@tanstack/react-table": "^8.16.0",
@@ -29,6 +30,7 @@
     "react-router-use-history": "^1.1.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^10.0.5",
+    "react-transition-group": "^4.4.5",
     "styled-components": "^6.1.8",
     "util": "^0.12.5",
     "vant": "^4.9.0",

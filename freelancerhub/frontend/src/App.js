@@ -22,7 +22,7 @@ function App() {
   return (
     <div className="App">
       <UserProvider>
-      <Layout>
+        <Layout>
           <Routes>
             <Route path="/" element={<PublicElement><LoginPage /></PublicElement>} />
           </Routes>

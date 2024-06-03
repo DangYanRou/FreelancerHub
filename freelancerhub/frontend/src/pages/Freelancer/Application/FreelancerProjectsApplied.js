@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../../styles/Freelancers/ProjectsApplied.css';
+import '../../../styles/Freelancers/ProjectsApplied.css'
 import ProjectList from '../../../components/ProjectList';
 import { GrFormClose } from "react-icons/gr";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
@@ -16,6 +16,7 @@ import Loading from '../../../components/Loading';
 import { useUser } from '../../../context/UserContext';
 import { format } from 'date-fns';
 import ConfirmationDialog from '../../../components/ConfirmationDialog';
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -25,6 +26,8 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
     history.push('/freelancers/application', {
       proposal_key: { projectID: project.id, freelancerID: user.id },    });
   };
+
+
 
   const handleCancelApplication=()=>{
     onCancelApplication(project.id)
@@ -104,6 +107,10 @@ const FreelancerProjectsApplied = () => {
   const [status, setStatus] = useState(null); // Add status state here
   const { user } = useUser();
 
+  //YR Noti used
+  const locationState = useLocation();
+  const projectIdFromState = locationState.state?.projectId;
+
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -168,6 +175,16 @@ const FreelancerProjectsApplied = () => {
 
     fetchProjects();
   }, [user]);
+
+  //YR NotiUsed
+  useEffect(() => {
+    if (projectIdFromState && projects.length > 0) {
+      const selected = projects.find(project => project.id === projectIdFromState);
+      if (selected) {
+        setSelectedProject(selected);
+      }
+    }
+  }, [projects, projectIdFromState]);
 
 
   const handleProjectClick = async (project) => {

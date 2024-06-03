@@ -1,11 +1,9 @@
-import React,{useContext, useState, useEffect} from 'react';
-import workImage from '../../../Gallery/work.png';
-import noteImage from '../../../Gallery/note.png';
+import React,{useContext, useState, useEffect, useRef} from 'react';
 import { useNavigate } from "react-router-dom";
 import '../../../styles/Clients/CreateProjectPreview.css';
 import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
-import { addProject, auth, db } from '../../../firebase';
+import { auth, db } from '../../../firebase';
 import { collection, getDoc,doc, docRef, query, where, getDocs, addDoc,updateDoc } from "firebase/firestore";
 import { useParams } from 'react-router-dom';
 import { categories,workloadOptions } from '../../../components/ProjectOptions.js';
@@ -14,6 +12,7 @@ import DatePicker from 'react-datepicker';
 import Loading from '../../../components/Loading';
 import ConfirmationDialog from '../../../components/ConfirmationDialog.js';
 import '../../../styles/Clients/EditProject.css';
+import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 
 
 const CreateProjectPreview = () => {
@@ -26,10 +25,12 @@ const CreateProjectPreview = () => {
   const [subjectError, setSubjectError] = useState('');
   const [minError, setMinError] = useState('');
   const [maxError, setMaxError] = useState('');
-  const [locationError, setLocationError] = useState('');
   const [jobCateError, setJobCateError] = useState('');
   const [confirmationOpen, setConfirmationOpen] = useState(false);
-  // const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [locationError, setLocationError] = useState(null);
+  const [locationResults, setLocationResults] = useState([]);
+    const locationInputRef = useRef(null);
+    const dropdownRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -44,7 +45,58 @@ const CreateProjectPreview = () => {
   ];
   const durationUnits = ['day(s)', 'week(s)', 'month(s)', 'year(s)'];
 
+  const geocodingClient = mbxGeocoding({ accessToken: 'pk.eyJ1IjoiY2hpbnh0IiwiYSI6ImNsd3l0enBndTAwY2kyaXIydTZzbTc0MHYifQ.mCHFL_hvwi_U8THCTnUDjQ' });
 
+  const HandleGeoChange = (event) => {
+    const { value } = event.target;
+  
+    handleInputChange(event);
+  
+    if (value.length >= 1) {
+      geocodingClient
+        .forwardGeocode({
+          query: value,
+          autocomplete: true,
+          limit: 5,
+        })
+        .send()
+        .then((response) => {
+          const { features } = response.body;
+          setLocationResults(features);
+          setLocationError(null);
+        })
+        .catch((error) => {
+          console.error(error);
+          setLocationError('Error fetching location suggestions');
+          setLocationResults([]);
+        });
+    } else {
+      setLocationResults([]);
+    }
+  };
+  
+  const handleSuggestionClick = (suggestion) => {
+    setProjectInfo((prevProject) => ({
+      ...prevProject,
+      location: suggestion.place_name,
+    }));
+    setLocationResults([]);
+  };
+
+  
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setLocationResults([]);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  
 
   const handlePostClick = async (event) => {
     setLoading(true);
@@ -132,6 +184,8 @@ const CreateProjectPreview = () => {
             });
     } else {
         window.alert('All fields must be filled!');
+        setLoading(false);
+
     }
 };
 
@@ -372,9 +426,32 @@ id="projectCategory" name="category" value={projectInfo.category} onChange={hand
   </div>
   <div className="w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="location">Location: </label>
-    <input required className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
- id="locationInput" name="location" type="text"  value={projectInfo.location} onChange={handleInputChange} />
- {locationError && <p className="text-red-500 text-xs italic">{locationError}</p>}
+    <input
+        ref={locationInputRef}
+        required
+        className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
+        id="locationInput"
+        name="location"
+        type="text"
+        value={projectInfo.location}
+        onChange={HandleGeoChange}
+      />
+      {locationError && <p className="text-red-500 text-xs italic">{locationError}</p>}
+      <div className="relative" ref={dropdownRef}>
+      {locationResults && locationResults.length > 0 && (
+          <ul className="border border-gray-500 bg-white rounded mt-2 absolute z-10 w-full">
+            {locationResults.map((result) => (
+              <li
+                key={result.id}
+                className="p-2 cursor-pointer hover:bg-gray-200"
+                onClick={() => handleSuggestionClick(result)}
+              >
+                {result.place_name}
+              </li>
+            ))}
+          </ul>
+        )}
+        </div>
   </div>
 </div>
 <div className="m-4 w-8/10">

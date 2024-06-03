@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import { db, auth } from '../../../firebase';
 import { collection, getDocs, query, where } from "firebase/firestore";
 
+
 const FreelancerSaved = () => {
   const navigate = useNavigate();
   const handleApply = () => {

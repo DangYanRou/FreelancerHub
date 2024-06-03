@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import backgroundHome from "../../../Gallery/backgroundHome.png"; 
 import searchImg from "../../../Gallery/img_search.svg";
 import locationImg from "../../../Gallery/img_iconoir_pin_alt.svg";
@@ -20,6 +20,8 @@ import Loading from '../../../components/Loading';
 import { format } from 'date-fns';
 import { formatDistanceToNow } from 'date-fns';
 import { categories,workloadOptions } from '../../../components/ProjectOptions.js';
+import { useLocation } from 'react-router-dom';
+import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 
 
 const FreelancerExplore = () => {  
@@ -39,10 +41,53 @@ const FreelancerExplore = () => {
   const [location, setLocation] = useState('');
   const [selectedOptions, setSelectedOptions] = useState({});
   const [currencyInput, setCurrency] = useState('');
-  const handleCurrencyChange = (event) => {
-    setCurrency(event.target.value);
+  const [projectSearch, setProjectSearch] = useState(false);
+  const [locationResults, setLocationResults] = useState([]);
+  const locationInputRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const geocodingClient = mbxGeocoding({ accessToken: 'pk.eyJ1IjoiY2hpbnh0IiwiYSI6ImNsd3l0enBndTAwY2kyaXIydTZzbTc0MHYifQ.mCHFL_hvwi_U8THCTnUDjQ' });
+
+  const HandleGeoChange = (event) => {
+    const { value } = event.target;
+    setLocation(value);
+    if (value.length >= 1) {
+      geocodingClient
+        .forwardGeocode({
+          query: value,
+          autocomplete: true,
+          limit: 3,
+        })
+        .send()
+        .then((response) => {
+          const { features } = response.body;
+          setLocationResults(features);
+        })
+        .catch((error) => {
+          console.error(error);
+          setLocationResults([]);
+        });
+    } else {
+      setLocationResults([]);
+    }
+  };
+  
+  const handleSuggestionClick = (suggestion) => {
+    setLocation(suggestion.place_name);  
+    setLocationResults([]);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setLocationResults([]);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleSearch = async () => {
     try {
@@ -112,6 +157,7 @@ const FreelancerExplore = () => {
 
       console.log("Filtered Projects:", filteredProjects);
       setProjects(filteredProjects);
+      setProjectSearch(false);
     } catch (error) {
       console.error("Error searching projects:", error);
     }
@@ -122,11 +168,12 @@ const FreelancerExplore = () => {
     handleSearch();
   }, [minInput, maxInput, currencyInput, selectedOptions]);
 
-  
-  
-  
+      
+    //YR Noti used
+    const locationState = useLocation();
+    const projectIdFromState = locationState.state?.projectId;
 
-  const history = useHistory();
+    const history = useHistory();
 
   const handleApply = (projectID, clientID) => {
     history.push('/freelancers/proposal-form', {
@@ -173,6 +220,17 @@ const FreelancerExplore = () => {
 
   fetchProjects();
 }, [user]);
+
+//YR Noti used
+useEffect(() => {
+  if (projectIdFromState && projects.length > 0) {
+    const selected = projects.find(project => project.id === projectIdFromState);
+    if (selected) {
+      setSelectedProject(selected);
+    }
+  }
+}, [projects, projectIdFromState]);
+
 
 if (loading) {
   return <div><Loading /></div>;
@@ -278,7 +336,7 @@ const handleClick = (projectId) => {
               <BiTimeFive size={20} className='icon-style2' />
               {blog.duration} {blog.durationUnit}
             </p>
-            <div className="absolute bottom-4 right-3  w-50 h-8"  style={{ color: 'grey' }}>
+            <div className="absolute bottom-2 right-3  w-50 h-8"  style={{ color: 'grey' }}>
             <p id="posted-time">Posted {timeAgo}</p></div>
             <div className="absolute top-4 right-3 space-x-4 w-8 h-8">
               {bookmarkedProjects[blog.id] ? (
@@ -383,6 +441,8 @@ const handleClick = (projectId) => {
   );
   
   const handleFilterChange = (dropdownTitle, option, isChecked) => {
+    setProjectSearch(true);
+
     setSelectedOptions((prevState) => {
       const updatedOptions = { ...prevState };
       if (isChecked) {
@@ -419,10 +479,33 @@ const handleClick = (projectId) => {
   <input type="text" placeholder="Job title or keyword" className="!text-[19px] border-none outline-none flex-grow h-[30px] py-2" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
 </div>
       <SelectField imgSrc={catergoryImg} altText="iconoirpinalt" value={category} onChange={(e) => setCategory(e.target.value)} options={categories} />
-      <div className="flex items-center gap-3">
-  <img src={locationImg} alt="iconoirpinalt" className="h-[33px] w-[33px] align-middle" />
-  <input type="text" placeholder="Johor, Malaysia" className="!text-[19px] border-none outline-none flex-grow h-[30px] py-2"  value={location} onChange={(e) => setLocation(e.target.value)}/>
-</div>
+      <div className="relative flex items-center gap-3">
+        <img src={locationImg} alt="iconoirpinalt" className="h-[33px] w-[33px] align-middle" />
+        <div className="relative w-full">
+          <input 
+            type="text" 
+            placeholder="Johor, Malaysia" 
+            className="!text-[19px] border-none outline-none flex-grow h-[30px] py-2"  
+            value={location} 
+            onChange={HandleGeoChange}
+          />
+          {locationResults && locationResults.length > 0 && (
+            <div className="absolute left-0 mt-2 w-full" ref={dropdownRef}>
+              <ul className="border border-gray-500 rounded z-10 w-full bg-white">
+                {locationResults.map((result) => (
+                  <li
+                    key={result.id}
+                    className="p-2 cursor-pointer hover:bg-gray-200"
+                    onClick={() => handleSuggestionClick(result)}
+                  >
+                    {result.place_name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
      
       <button 
         onClick={handleSearch} 
@@ -491,7 +574,8 @@ const handleClick = (projectId) => {
 
     </div>
     <div className={`FreelancerExplore ${showDetails? 'show-details':''} `}>
-      
+    <p className="text-2xl font-bold text-gray-700 mb-4 ml-4" >{projectSearch ? 'Applying Filters...' : 'Projects Filtered:'}</p>
+
     <div className="parent-container">
     {projects.length > 0 ? (
         <ProjectList projects={projects} onProjectClick={handleProjectClick} selectedProjectId={selectedProject ? selectedProject.id : null} />

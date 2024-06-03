@@ -105,6 +105,9 @@ const NotificationPage = () => {
     fetchData();
   }, [user]);
 
+  const seenNotifications = data.filter(item => item.isRead);
+  const unseenNotifications = data.filter(item => !item.isRead);
+
   const handleInvitation = async (event, item) => { //type=0
     try {
       setLoading(true);
@@ -112,11 +115,7 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-      
-      //prompt freelancer to apply the project invited, call
-      //item.projectID to get projectID
-      //item.clientID to get clientID
-      //item.to to get freelancerID
+      history.push('/freelancers/explore', { projectId: item.projectID })
 
     } catch (error) {
       console.error("Error updating priority: ", error);
@@ -133,13 +132,8 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-      history.push("/freelancers/project-applied")
+      history.push("/freelancers/projects-applied", { projectId: item.projectID });
       
-      //prompt freelancer with the card that contains the view application
-      //and cancel applictaion button, call
-      //item.projectID to get projectID
-      //item.clientID to get clientID
-      //item.to to get freelancerID
     } catch (error) {
       console.error("Error updating priority: ", error);
     }
@@ -155,7 +149,6 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-
       history.push("/clients/proposal-details",{proposal_key:{projectID:item.projectID, freelancerID:item.freelancerID}});
     } catch (error) {
       console.error("Error updating priority: ", error);
@@ -201,7 +194,6 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-
       history.push("/freelancers/application",{proposal_key:{projectID:item.projectID,freelancerID:item.to}});
     } catch (error) {
       console.error("Error updating priority: ", error);
@@ -218,11 +210,7 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-      history.push("/freelancers/projects-applied",{selectedProjectId:{projectID:item.projectID}});
-      //prompt freelancer with the card that contains the status bar, call
-      //item.projectID to get projectID
-      //item.clientID to get clientID
-      //item.to to get freelancerID
+      history.push("/freelancers/projects-applied", { projectId: item.projectID });
     } catch (error) {
       console.error("Error updating priority: ", error);
     }finally{
@@ -237,7 +225,6 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-      
       history.push("/clients/proposal-received",{proposal_key:{projectID:item.projectID, freelancerID:item.freelancerID}});
     } catch (error) {
       console.error("Error updating priority: ", error);
@@ -253,7 +240,6 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-      
       history.push("/freelancers/explore");
     } catch (error) {
       console.error("Error updating priority: ", error);
@@ -286,11 +272,7 @@ const NotificationPage = () => {
         isRead: true
       });
       
-      history.push("/freelancers/project-applied")
-      //prompt freelancer with the card that contains the apply button, call
-      //item.projectID to get projectID
-      //item.clientID to get clientID
-      //item.to to get freelancerID
+      history.push("/freelancers/projects-applied", { projectId: item.projectID });
     } catch (error) {
       console.error("Error updating priority: ", error);
     }finally{
@@ -305,7 +287,6 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-
       history.push("/clients/project-completed");
     } catch (error) {
       console.error("Error updating priority: ", error);
@@ -321,7 +302,6 @@ const NotificationPage = () => {
       await updateDoc(notificationRef, {
         isRead: true
       });
-
       history.push("/freelancers/project-completed-page");
     } catch (error) {
       console.error("Error updating priority: ", error);
@@ -331,7 +311,6 @@ const NotificationPage = () => {
   };
 
   
-  
   const getPriority = (priority) => {
     return priority === 1 ? 'info' : 'warning';
   };
@@ -340,154 +319,152 @@ const NotificationPage = () => {
     return isRead ? 'outlined' : 'standard';
   };
 
+  const renderNotification = (item) => {
+    const priorityClass = item.priority === 2 && item.isRead === false ? 'breathing-animation' : '';
+
+    switch (item.type) {
+      case 0:
+        return (
+          <Alert key={item.id} severity="info" onClick={(event) => handleInvitation(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle>You have been invited to join <b>{item.projectName || 'a project'}. </b></AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 1:
+        return (
+          <Alert key={item.id} severity="success" onClick={(event) => handleFreelanerCheckApplication(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle>Your application for <b>{item.projectName || 'a project'}</b> has been submitted successfully.</AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 2:
+        return (
+          <Alert key={item.id} severity="info" onClick={(event) => handleClientApplicationView(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle>You have received a new application for <b>{item.projectName || 'a project'}.</b></AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 3:
+        return (
+          <Alert key={item.id} severity="success" onClick={(event) => handleClientAccept(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle>You have assigned <b>{item.projectName || 'a project'}</b> to <b>{item.freelancerName || 'a freelancer'}.</b></AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 3.5:
+        return (
+          <Alert key={item.id} severity="warning" onClick={(event) => handleClientReject(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle>You have rejected the application for <b>{item.projectName || 'a project'}</b> from <b>{item.freelancerName || 'a freelancer'}</b>. Click here to assign your project to other freelancers.</AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 4:
+        return (
+          <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerReceiveAssignment(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle>You have been assigned to <b>{item.projectName || 'a project'}</b> by <b>{item.clientName || 'a client'}</b>.</AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 4.1:
+        return (
+          <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerCheckProjectAssigned(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle>You have accepted the assignment of <b>{item.projectName || 'a project'}</b> from <b>{item.clientName || 'a client'}.</b></AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 4.2:
+        return (
+          <Alert key={item.id} severity="success" onClick={(event) => handleClientCheckAssignment(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle><b>{item.freelancerName || 'A freelancer'}</b> has accepted your assignment for <b>{item.projectName || 'a project'}.</b></AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 4.3:
+        return (
+          <Alert key={item.id} severity="warning" onClick={(event) => handleFreelancerRejectAssignment(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle>You have rejected the assignment of <b>{item.projectName || 'a project'}</b> from <b>{item.clientName || 'a client'}</b>. Click here to explore more projects that you might like.</AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 4.4:
+        return (
+          <Alert key={item.id} severity="info" onClick={(event) => handleClientReceiveRejection(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle><b>{item.freelancerName || 'A freelancer'}</b> has rejected your assignment for <b>{item.projectName || 'a project'}</b>. Click here to assign your project to another talented freelancer.</AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 4.5:
+        return (
+          <Alert key={item.id} severity="warning" onClick={(event) => handleFreelancerReceiveRejection(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle>Your application for <b>{item.projectName || 'a project'}</b> has been rejected. Revise your proposal and click here to apply again.</AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 5:
+        return (
+          <Alert key={item.id} severity="success" onClick={(event) => handleClientMarkAsDone(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle>You have successfully marked <b>{item.projectName || 'a project'}</b> as completed.</AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      case 6:
+        return (
+          <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerDone(event, item)} 
+            variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
+            <AlertTitle>Your <b>{item.projectName || 'project'}</b> has been completed.</AlertTitle>
+            {new Date(item.timestamp?.toDate()).toLocaleString()}
+          </Alert>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="notification-page">
-       <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px' }}>
+      <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px' }}>
         Notifications
       </Heading>
       <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
-      {loading ? ( 
+      {loading ? (
         <Loading />
       ) : (
         <div className="notification-container">
-          
-          {data.map(item => {
+          {unseenNotifications.length === 0 && seenNotifications.length === 0 ? (
+            <div className="no-notifications">No notifications received yet.</div>
+          ) : (
+            <>
+            {unseenNotifications.length > 0 &&(
+              <div className="unseen-notifications">
+                <p className='unread-noti'>Unread</p>
+                {unseenNotifications.map(item => renderNotification(item))}
+              </div>
+            )}
 
-            if (item.type === 0) { //project invitation
-              return (
-                <Alert key={item.id} severity="info" onClick={(event) => handleInvitation(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have been invited to join <b>{item.projectName || 'a project'}. </b></AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 1) { //project applied
-              return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleFreelanerCheckApplication(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>Your application for <b>{item.projectName || 'a project'}</b> has been submitted successfully.</AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 2) { //receive application
-              return (
-                <Alert key={item.id} severity="info" onClick={(event) => handleClientApplicationView(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have received a new application for <b>{item.projectName || 'a project'}.</b></AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 3) { //accept application
-              return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleClientAccept(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have assigned <b>{item.projectName || 'a project'}</b> to <b>{item.freelancerName || 'a freelancer'}.</b></AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 3.5) { //reject application
-              return (
-                <Alert key={item.id} severity="warning" onClick={(event) => handleClientReject(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have rejected the application for <b>{item.projectName || 'a project'}</b> from <b>{item.freelancerName || 'a freelancer'}</b>. Click here to assign your project to other freelancers.</AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 4) { //receive assignment
-              return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerReceiveAssignment(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have been assigned to <b>{item.projectName || 'a project'}</b> by <b>{item.clientName || 'a client'}</b>.</AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 4.1) { //accept assignment(freelancer)
-              return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerCheckProjectAssigned(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have accepted the assignment of <b>{item.projectName || 'a project'}</b> from <b>{item.clientName || 'a client'}.</b></AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 4.2) { //accept assignment (client)
-              return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleClientCheckAssignment(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle><b>{item.freelancerName || 'A freelancer'}</b> has accepted your assignment for <b>{item.projectName || 'a project'}.</b></AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 4.3) { //reject assignment (freelancer)
-              return (
-                <Alert key={item.id} severity="warning" onClick={(event) => handleFreelancerRejectAssignment(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have rejected the assignment of <b>{item.projectName || 'a project'}</b> from <b>{item.clientName || 'a client'}</b>. Click here to explore more projects that you might like.</AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 4.4) { //reject assignment (client)
-              return (
-                <Alert key={item.id} severity="info" onClick={(event) => handleClientReceiveRejection(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle><b>{item.freelancerName || 'A freelancer'}</b> has rejected your assignment for <b>{item.projectName || 'a project'}</b>. Click here to assign your project to another talented freelancer.</AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 4.5) { //receive rejection
-              return (
-                <Alert key={item.id} severity="warning" onClick={(event) => handleFreelancerReceiveRejection(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>Your application for <b>{item.projectName || 'a project'}</b> has been rejected. Revise your proposal and click here to apply again.</AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 5) { //marked as completed
-              return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleClientMarkAsDone(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>You have successfully marked <b>{item.projectName || 'a project'}</b> as completed.</AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-
-            if (item.type === 6) { //project completeness
-              return (
-                <Alert key={item.id} severity="success" onClick={(event) => handleFreelancerDone(event, item)} 
-                variant={isRead(item.isRead)} className="notification-item" color={getPriority(item.priority)}> 
-                  <AlertTitle>Your <b>{item.projectName || 'project'}</b> has been completed.</AlertTitle>
-                  {new Date(item.timestamp?.toDate()).toLocaleString()}
-                </Alert>
-              );
-            }
-            return null;
-          })}
+            {seenNotifications.length > 0 &&(
+              <div className="seen-notifications">
+                <p className='read-noti'>Read</p>
+                {seenNotifications.map(item => renderNotification(item))}
+              </div>
+            )}
+            </>
+          )}
         </div>
       )}
     </div>
   );
-}
+};
 
 export default NotificationPage;

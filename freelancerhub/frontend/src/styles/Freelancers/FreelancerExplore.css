@@ -19,21 +19,18 @@
 }
 
 
-
-
 .card{
+    width:700px;
     position: relative;
     flex-direction: column;
     align-items: flex-start;
-    padding:2%;
+    padding:15px;
     background-color:#F0F7F9;
+    display: flex;
     box-shadow: rgba(0,0,0,0.30) 0px 1px 3px;
     border-radius: 10px;
     cursor: pointer;
     margin-bottom: 1rem;
-    width: 900px;
-    min-height:230px;
-   
 }
 
 .noprojectcard{
@@ -48,7 +45,7 @@
     border-radius: 10px;
     cursor: pointer;
     margin-bottom: 1rem;
-    width: 700px;
+    width: 900px;
     height:230px;
 }
 
@@ -63,6 +60,7 @@
 
 .card h2{
     font-size: 22px;
+    font-weight: bold;
 }
 .card p{
     font-size: 16px;
@@ -108,10 +106,7 @@ margin-bottom: 1.5rem;
     margin-top: 1.5rem;
 }
 
-#p-title{
-   font-size: 36px; 
 
-}
 
 .jl-profileLink{
     font-size: 24px;
@@ -121,9 +116,10 @@ margin-bottom: 1.5rem;
 
 .list{
     margin-left: 1rem;
-    list-style-type: disc; /* This will give you filled dots */
+    list-style-type: disc; 
 
 }
+
 .btn-primary{
     background-color: #213E60;
     padding:9px 28px; /* Adjust padding to increase button size */
@@ -144,6 +140,7 @@ margin-bottom: 1.5rem;
 
 #detail-title{
     font-size: 28px;
+    font-weight: bold;
     color: black; /* Set the text color */
 }
 
@@ -174,7 +171,7 @@ margin-bottom: 1.5rem;
     border-radius: 8px;
     overflow-y: auto;
     height: 100%;
-    max-width: 600px; /* Limit the maximum width of the modal content */
+    min-width: 600px; /* Limit the maximum width of the modal content */
    
 }
 

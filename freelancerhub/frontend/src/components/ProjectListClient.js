@@ -85,7 +85,7 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
         
         <div className="main-container">
             {projects.map((project, index) => {
-                 const postedTime = project.postedTime?.toDate();
+                 const postedTime = project.postedTime?.toDate() ?? null;
                  const timeAgo = postedTime ? formatDistanceToNow(postedTime, { addSuffix: true }) : '';
                  return(
                 <div className="card-container" key={project.id}>
@@ -112,7 +112,7 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
                         <p><FaLocationDot className="icon-style" />{project.location}</p>
                         <p><MdOutlineAttachMoney size={20} className='icon-style2'/>{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>
                         <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
-                        <div className="absolute bottom-4 right-3  w-50 h-8"  style={{ color: 'grey' }}>
+                        <div className="absolute bottom-2 right-3  w-50 h-8"  style={{ color: 'grey' }}>
                          <p id="posted-time">Posted {timeAgo}</p></div>
 
                     </div>

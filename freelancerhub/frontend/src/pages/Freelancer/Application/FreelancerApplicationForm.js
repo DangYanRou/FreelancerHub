@@ -133,6 +133,7 @@ const ApplicationForm = () => {
         projectID: location.state.project_key.projectID,
         freelancerID: location.state.user_key.freelancerID,
         clientID: location.state.project_key.clientID,
+        createdAt: new Date(),
         statusTime: new Date(),
         statusState: 2
       };
@@ -165,7 +166,7 @@ const ApplicationForm = () => {
       await addDoc(collection(db, 'notifications'), notificationToClientData);
 
       // Redirect user to next page after successful submission
-      history.push('/freelancers/projects-applied');
+      history.push('/freelancers/projects-applied', { projectId: location.state.project_key.projectID });
     } catch (error) {
       toast.error('Error submitting proposal. Please try again.');
     } finally {
