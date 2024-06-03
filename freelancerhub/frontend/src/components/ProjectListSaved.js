@@ -1,7 +1,7 @@
-import './styles/ProjectListSaved.css'
+
 import React from 'react';
 
-const ProjectList=({projects,onProjectClick,selectedProjectId}) => {
+const ProjectListSaved=({projects,onProjectClick,selectedProjectId}) => {
 
     return(
       <div className='flex gap-x-4 overflow-x-auto justify-start align-start w-full'>
@@ -24,4 +24,4 @@ const ProjectList=({projects,onProjectClick,selectedProjectId}) => {
     );
   }
 
-  export default ProjectList;
+  export default ProjectListSaved;

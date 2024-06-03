@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../../styles/Freelancers/ProjectsApplied.css';
+import '../../../styles/Freelancers/ProjectsApplied.css'
 import ProjectList from '../../../components/ProjectList';
 import { GrFormClose } from "react-icons/gr";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';

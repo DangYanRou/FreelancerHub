@@ -85,7 +85,7 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
         
         <div className="main-container">
             {projects.map((project, index) => {
-                 const postedTime = project.postedTime?.toDate();
+                 const postedTime = project.postedTime?.toDate() ?? null;
                  const timeAgo = postedTime ? formatDistanceToNow(postedTime, { addSuffix: true }) : '';
                  return(
                 <div className="card-container" key={project.id}>

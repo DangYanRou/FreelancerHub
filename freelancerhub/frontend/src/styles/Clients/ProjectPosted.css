@@ -4,7 +4,7 @@
     margin-top: 2%;
     margin-left: 43%;
 }
-.jl-centered-container {
+.centered-container {
    margin-top: 1%;
     display: flex;
     justify-content: center; /* Aligns items horizontally */
