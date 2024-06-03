@@ -118,6 +118,7 @@ const handleInputChange = (event) => {
     
   });
 };
+
 const HandleGeoChange = (event) => {
   const { value } = event.target;
 

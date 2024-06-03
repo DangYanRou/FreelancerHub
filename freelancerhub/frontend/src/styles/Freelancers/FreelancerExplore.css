@@ -18,9 +18,6 @@
     padding-top: 10px; /* Add some padding at the top */
 }
 
-
-
-
 .noprojectcard{
     position: relative;
     display: flex; /* Add this */
