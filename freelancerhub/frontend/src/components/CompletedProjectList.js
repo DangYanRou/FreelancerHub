@@ -7,7 +7,7 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { BiTimeFive } from "react-icons/bi";
 import { db } from "../firebase";
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc,onSnapshot } from "firebase/firestore";
 import { formatDistanceToNow } from "date-fns";
 import { getDocs, query, where } from "firebase/firestore";
 import { useUser } from "../context/UserContext";
@@ -42,26 +42,41 @@ const CompletedProjectListClient = ({ projects }) => {
     });
   };
 
+  // 
   useEffect(() => {
-    const fetchFeedback = async () => {
-      const feedbackRef = collection(db, "feedback");
-      const feedbackQuery = query(feedbackRef, where("from", "==", user.id));
-      const feedbackSnapshot = await getDocs(feedbackQuery);
-
-      feedbackSnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
+    const feedbackRef = collection(db, "feedback");
+    const unsubscribes = []; // Array to store the unsubscribe functions
+  
+    // Loop over each project
+    projects.forEach((project) => {
+      // Create a query for the feedback of the current project
+      const feedbackQuery = query(feedbackRef, where("from", "==", user.id), where ("projectID", "==", project.id));
+      
+      // Set up a real-time listener
+      const unsubscribe = onSnapshot(feedbackQuery, (snapshot) => {
+        if (!snapshot.empty) {
+          const feedbackDoc = snapshot.docs[0];
+          // Store the feedback in the state using the project ID as the key
+          setFeedback(prev => ({
+            ...prev,
+            [project.id]: {
+              id: feedbackDoc.id,
+              ...feedbackDoc.data(),
+            },
+          }));
+        }
       });
-
-      if (!feedbackSnapshot.empty) {
-        const feedbackDoc = feedbackSnapshot.docs[0];
-        setFeedback({
-          id: feedbackDoc.id,
-          ...feedbackDoc.data(),
-        });
-      }
+  
+      unsubscribes.push(unsubscribe); // Store the unsubscribe function
+    });
+  
+    // Return a cleanup function that calls all the unsubscribe functions
+    return () => {
+      unsubscribes.forEach(unsubscribe => unsubscribe());
     };
-    fetchFeedback();
-  }, [user.id]);
+  }, [user.id, projects]);
+
+  console.log("Your Feedback = " , feedback);
 
   //deon
   const addFavouriteClient = async (clientID, freelancerID) => {
@@ -147,7 +162,7 @@ const CompletedProjectListClient = ({ projects }) => {
                   "+ Favourite Collaborator"
                 )}
               </button>
-              {!feedback && (
+              {!feedback[project.id] && (
                 <button
                   className="feedbackBtn"
                   onClick={() =>
@@ -161,7 +176,7 @@ const CompletedProjectListClient = ({ projects }) => {
               )}
             </div>
           </div>
-          {feedback && (
+          {feedback[project.id] && (
             <>
               <div
                 className="feedback-toggle"
@@ -190,18 +205,18 @@ const CompletedProjectListClient = ({ projects }) => {
                   <div className="review-header">
                     <h3>Your feedback</h3>
                     <span className="review-date">
-                      {feedback &&
-                        feedback.timestamp &&
-                        formatDistanceToNow(feedback.timestamp.toDate(), {
+                      {feedback[project.id] &&
+                        feedback[project.id].timestamp &&
+                        formatDistanceToNow(feedback[project.id].timestamp.toDate(), {
                           addSuffix: true,
                         })}
                     </span>
                   </div>
                   <div className="review-body">
                     <span className="review-rating">
-                      Rating: {feedback.rating}/5
+                      Rating: {feedback[project.id].rating}/5
                     </span>
-                    <p className="review-content">{feedback.feedback}</p>
+                    <p className="review-content">{feedback[project.id].feedback}</p>
                   </div>
                 </div>
               </div>

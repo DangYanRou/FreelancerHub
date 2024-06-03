@@ -12,6 +12,7 @@ function FreelancerFeedbackPage() {
   const [showSubmitted, setShowSubmitted] = useState(false);
   const location = useLocation();
   const clientId = location.state.clientID;
+  const projectId = location.state.projectID;
 
  console.log('clientId =' , clientId);
 
@@ -34,6 +35,7 @@ function FreelancerFeedbackPage() {
           to: clientId,
           rating: rating,
           feedback: feedback,
+          projectID: projectId,
           timestamp: serverTimestamp(),
         });
         console.log("Feedback submitted!");
