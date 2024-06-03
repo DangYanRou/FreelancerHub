@@ -5,13 +5,13 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
 import AverageReviewBox from "./FreelancerAverageReviewBox";
-import StarRating from "../../../components/Rating";
 import Heading from '../../../components/Heading';
 import { doc, getDocs, setDoc,collection,where,query} from "firebase/firestore";
 import { db } from "../../../firebase";
 import { getAuth, onAuthStateChanged} from "firebase/auth";
 import Loading from '../../../components/Loading';
 import Review from "./FreelancerProfileReviews";
+import ProjectsCompleted from "../Project/ProjectCompletedPage"
 
 const FreelancerProfile = () => {
   const [loading, setLoading] = useState(true);
@@ -520,30 +520,7 @@ const FreelancerProfile = () => {
             </div>
             <div id="projects" style={{ display: showProjects ? 'block' : 'none' }}>
               <p className='projects_text'>Browse My Recents</p>
-              <h2 className='title'>Projects</h2>
-              <div className='projects_container'>
-                <div className='about_details'>
-                  <h2 className='project_name'>E-Commerce Platform</h2>
-                  <p>An online marketplace where vendors can sell products and consumers can shop conveniently.</p>
-                  <div className='btn_container'>
-                    <button className='btn_project' onClick={() => window.location.href = 'https://github.com/tamagoyaki03/board'}>Github</button>
-                  </div>
-                </div>
-                <div className='about_details'>
-                  <h2 className='project_name'>Social Networking Platform</h2>
-                  <p>A platform that connects people, allowing them to create profiles, interact through real-time messaging, and share updates.</p>
-                  <div className='btn_container'>
-                    <button className='btn_project' onClick="#">Github</button>
-                  </div>
-                </div>
-                <div className='about_details'>
-                  <h2 className='project_name'>Travel and Tourism Website</h2>
-                  <p>A website that assists travelers in planning trips, generating itineraries, and providing reviews and recommendations.</p>
-                  <div className='btn_container'>
-                    <button className='btn_project' onClick="#">Github</button>
-                  </div>
-                </div>
-              </div>
+              <ProjectsCompleted style={{paddingTop:0}}/>
             </div> 
             <div
               id="reviews"
@@ -558,6 +535,5 @@ const FreelancerProfile = () => {
     </div>
   );
 }
-
 
 export default FreelancerProfile;

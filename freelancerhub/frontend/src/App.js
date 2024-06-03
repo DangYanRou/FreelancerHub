@@ -26,13 +26,13 @@ function App() {
           <Routes>
             <Route path="/" element={<PublicElement><LoginPage /></PublicElement>} />
           </Routes>
-          <Routes> 
-            <Route path="/resetPassword" element={<ResetPassword />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/freelancers/*" element={<FreelancerElement><FreelancerRoutes /></FreelancerElement>} />
-            <Route path="/clients/*" element={<ClientElement><ClientRoutes /></ClientElement>} />
-          </Routes>
-        </Layout> 
+            <Routes> 
+              <Route path="/resetPassword" element={<ResetPassword />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/freelancers/*" element={<FreelancerElement><FreelancerRoutes /></FreelancerElement>} />
+              <Route path="/clients/*" element={<ClientElement><ClientRoutes /></ClientElement>} />
+            </Routes>
+          </Layout>
       </UserProvider>
     </div>
   );
