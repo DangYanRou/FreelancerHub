@@ -33,11 +33,6 @@ function App() {
               <Route path="/clients/*" element={<ClientElement><ClientRoutes /></ClientElement>} />
             </Routes>
           </Layout>
-     </UserProvider>
-              <Route path="/freelancers/*" element={<FreelancerRoutes />} />
-              <Route path="/clients/*" element={<ClientRoutes />} />
-            </Routes>
-          </Layout>
       </UserProvider>
     </div>
   );
