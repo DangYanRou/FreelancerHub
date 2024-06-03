@@ -169,9 +169,11 @@ const FreelancerExplore = () => {
   }, [minInput, maxInput, currencyInput, selectedOptions]);
 
       
-  
+    //YR Noti used
+    const locationState = useLocation();
+    const projectIdFromState = locationState.state?.projectId;
 
-  const history = useHistory();
+    const history = useHistory();
 
   const handleApply = (projectID, clientID) => {
     history.push('/freelancers/proposal-form', {
