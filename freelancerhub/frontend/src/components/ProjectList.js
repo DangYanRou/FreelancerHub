@@ -34,7 +34,7 @@ const ProjectList = ({ projects, onProjectClick, selectedProjectId }) => {
         return (
           <div className="jl-centred-container" key={blog.id}>
             <div className={`card ${selectedProjectId === blog.id ? 'selected' : ''}`} onClick={() => onProjectClick(blog)}> 
-              <h2>{blog.title}</h2>
+              <h2 className="project-title">{blog.title}</h2>
               <Link to="/freelancers/client-temporary-profile" className="hover-profileLink">{blog.client}</Link>
               <p id="category">{blog.category}</p>
               <p><FaLocationDot className="icon-style" />{blog.location}</p>

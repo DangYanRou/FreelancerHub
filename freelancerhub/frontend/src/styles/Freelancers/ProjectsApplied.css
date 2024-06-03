@@ -150,6 +150,7 @@
 
 .jl-title-pa {
     font-size: 28px;
+    font-weight: bold;
     color: black; /* Change the link color */
     text-decoration: none; /* Remove underline */
     transition: color 0.3s; /* Add transition for smooth color change on hover */
