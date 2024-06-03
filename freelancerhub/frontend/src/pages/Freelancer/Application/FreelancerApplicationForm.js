@@ -133,6 +133,7 @@ const ApplicationForm = () => {
         projectID: location.state.project_key.projectID,
         freelancerID: location.state.user_key.freelancerID,
         clientID: location.state.project_key.clientID,
+        createdAt: new Date(),
         statusTime: new Date(),
         statusState: 2
       };

@@ -21,7 +21,7 @@ const ClientApplicationReceivedPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const notiQuery = query(collection(db, 'proposals'), orderBy('createdAt', 'desc'), where('projectID', '==', projectID));
+        const notiQuery = query(collection(db, 'proposals'), orderBy('statusState', 'desc'), orderBy('statusTime', 'desc'), where('projectID', '==', projectID));
         const notiSnapshot = await getDocs(notiQuery);
         const applications = notiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
@@ -118,7 +118,11 @@ const ClientApplicationReceivedPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 application-card-container">
         {data.map(item => (
-          <Card key={item.id} className="w-full mx-auto application-card" >
+          <Card
+            key={item.id}
+            className={`w-full mx-auto application-card ${
+            item.statusState >= 3 ? 'application-card-inprogress' : ''
+          }`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <span
@@ -143,9 +147,25 @@ const ClientApplicationReceivedPage = () => {
             <p className="font-normal text-gray-700 dark:text-gray-400 application-card-bids" >
             Bids: RM {item.bids || '999999999'}
             </p>
-            <p className="font-normal text-gray-700 dark:text-gray-400 apllication-card-notes" >
-            Notes: {item.notes || '-'}
-            </p>
+
+            {item.statusState < 3 &&(
+              <p className="font-normal text-gray-700 dark:text-gray-400 apllication-card-notes" >
+              Notes: {item.notes || '-'}
+              </p>
+            )}
+
+            {item.statusState == 3 &&(
+              <p className="font-normal text-gray-700 dark:text-gray-400 apllication-card-notes" >
+              Status: <b>Awaiting freelancer's acceptance of assignment</b>
+              </p>
+            )}
+
+            {item.statusState == 4 &&(
+              <p className="font-normal text-gray-700 dark:text-gray-400 apllication-card-notes" >
+              Status: <b>In progress</b>
+              </p>
+            )}
+            
             
             
             <Button className='application-card-button' onClick={() => handleViewApplicationClick(item.projectID, item.freelancerID)}>

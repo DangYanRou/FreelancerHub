@@ -6,8 +6,25 @@
   border-color: #213E60 !important;
 }
 
+.application-card-inprogress {
+  border-color: #213E60 !important;
+  animation: breathing-border 1s infinite alternate;
+}
+
+@keyframes breathing-border {
+  0% {
+    box-shadow: 0 0 5px #90e0ef;
+  }
+  50% {
+    box-shadow: 0 0 20px #90e0ef;
+  }
+  100% {
+    box-shadow: 0 0 5px #90e0ef;
+  }
+}
+
 .application-card-name{
-  color: #213E60;
+  color: #213E60 !important;
   margin-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
@@ -22,7 +39,7 @@
 
 
 .application-card-name:hover{
-  color: #90e0ef;
+  color: #90e0ef !important;
   scale: 1.02;
 }
 
@@ -31,6 +48,7 @@
 }
 
 .application-card-email{
+  color: #213E60 !important;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
@@ -39,20 +57,19 @@
 }
 
 .application-card-email:hover{
-  color: #90e0ef;
+  color: #90e0ef !important;
   scale: 1.02;
 }
 
 .application-card-bids{
-  color: #213E60;
+  color: #213E60 !important;
   margin-left: 20px;
   margin-right: 20px;
   font-size: 15px;
 }
 
-
 .apllication-card-notes {
-  color: #213E60;
+  color: #213E60 !important;
   margin-left: 20px;
   margin-right: 20px;
   font-size: 15px;
