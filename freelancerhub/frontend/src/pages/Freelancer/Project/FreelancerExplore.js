@@ -322,7 +322,7 @@ const handleClick = (projectId) => {
               <BiTimeFive size={20} className='icon-style2' />
               {blog.duration} {blog.durationUnit}
             </p>
-            <div className="absolute bottom-4 right-3  w-50 h-8"  style={{ color: 'grey' }}>
+            <div className="absolute bottom-2 right-3  w-50 h-8"  style={{ color: 'grey' }}>
             <p id="posted-time">Posted {timeAgo}</p></div>
             <div className="absolute top-4 right-3 space-x-4 w-8 h-8">
               {bookmarkedProjects[blog.id] ? (
