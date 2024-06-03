@@ -42,42 +42,25 @@ const CompletedProjectListClient = ({ projects }) => {
     });
   };
 
-  // useEffect(() => {
-  //   const fetchFeedback = async () => {
-  //     const feedbackRef = collection(db, "feedback");
-  
-  //     // Loop over each project
-  //     projects.forEach(async (project) => {
-  //       // Create a query for the feedback of the current project
-  //       const feedbackQuery = query(feedbackRef, where("from", "==", user.id), where ("projectID", "==", project.id));
-  //       const feedbackSnapshot = await getDocs(feedbackQuery);
-  
-  //       feedbackSnapshot.forEach((doc) => {
-  //         console.log(doc.id, " => ", doc.data());
-  //       });
-  
-  //       if (!feedbackSnapshot.empty) {
-  //         const feedbackDoc = feedbackSnapshot.docs[0];
-  //         // Store the feedback in the state using the project ID as the key
-  //         setFeedback(prev => ({
-  //           ...prev,
-  //           [project.id]: {
-  //             id: feedbackDoc.id,
-  //             ...feedbackDoc.data(),
-  //           },
-  //         }));
-  //       }
-  //     });
-  //   };
-  //   fetchFeedback();
-  // }, [user.id, projects]); // Add projects to the dependency array
+   //sort projects
+  const sortedProjects = [...projects].sort((a, b) => {
+    if (a.completedDate && b.completedDate) {
+      return b.completedDate.toDate() - a.completedDate.toDate();
+    } else if (a.completedDate) {
+      return -1; // a has a completedDate, but b doesn't, so a goes first
+    } else if (b.completedDate) {
+      return 1; // b has a completedDate, but a doesn't, so b goes first
+    } else {
+      return 0; // neither a nor b have a completedDate, so they're considered equal
+    }
+  });
+
+  //fetch feedback
   useEffect(() => {
     const feedbackRef = collection(db, "feedback");
-    const unsubscribes = []; // Array to store the unsubscribe functions
+    const unsubscribes = []; 
   
-    // Loop over each project
     projects.forEach((project) => {
-      // Create a query for the feedback of the current project
       const feedbackQuery = query(feedbackRef, where("from", "==", user.id), where ("projectID", "==", project.id));
       
       // Set up a real-time listener
@@ -125,7 +108,7 @@ const CompletedProjectListClient = ({ projects }) => {
 
   return (
     <div className="jl-centered-container">
-      {projects.map((project) => (
+      {sortedProjects.map((project) => (
         <div className="card" key={project.id}>
           <h2>{project.title}</h2>
           <a href="#" className="hover-profileLink">
