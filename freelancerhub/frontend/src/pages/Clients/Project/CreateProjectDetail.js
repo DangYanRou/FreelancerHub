@@ -59,6 +59,7 @@ const CreateProjectDetail = () => {
   const [locationError, setLocationError] = useState(null);
   const [locationResults, setLocationResults] = useState([]);
   const locationInputRef = useRef(null);
+  const dropdownRef = useRef(null);
 
 
 const handleFormSubmit = (event) => {
@@ -155,6 +156,19 @@ const handleSuggestionClick = (suggestion) => {
   setLocationResults([]);
 };
 
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setLocationResults([]);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
+
   return (
     <div>
     <div className="flex flex-col items-start justify-center">
@@ -195,6 +209,7 @@ const handleSuggestionClick = (suggestion) => {
   </div>
   <div className="w-1/2">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">Location: </label>
+    <div className="relative" ref={dropdownRef}>
     <input
         ref={locationInputRef}
         required
@@ -207,7 +222,7 @@ const handleSuggestionClick = (suggestion) => {
       />
       {locationError && <p className="text-red-500 text-xs italic">{locationError}</p>}
       {locationResults.length > 0 && (
-        <ul className="border border-gray-500 bg-white rounded mt-2">
+        <ul className="absolute w-full border border-gray-500 bg-white rounded mt-2">
           {locationResults.map((result) => (
             <li
               key={result.id}
@@ -219,6 +234,7 @@ const handleSuggestionClick = (suggestion) => {
           ))}
         </ul>
       )}
+  </div>
   </div>
 </div>
 <div className="w-8/10 m-4">

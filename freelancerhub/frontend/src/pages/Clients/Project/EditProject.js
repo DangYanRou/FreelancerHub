@@ -30,6 +30,7 @@ const CreateProjectPreview = () => {
   const [locationError, setLocationError] = useState(null);
   const [locationResults, setLocationResults] = useState([]);
     const locationInputRef = useRef(null);
+    const dropdownRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -81,6 +82,20 @@ const CreateProjectPreview = () => {
     }));
     setLocationResults([]);
   };
+
+  
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setLocationResults([]);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   
 
   const handlePostClick = async (event) => {
@@ -422,7 +437,7 @@ id="projectCategory" name="category" value={projectInfo.category} onChange={hand
         onChange={HandleGeoChange}
       />
       {locationError && <p className="text-red-500 text-xs italic">{locationError}</p>}
-      <div className="relative">
+      <div className="relative" ref={dropdownRef}>
       {locationResults && locationResults.length > 0 && (
           <ul className="border border-gray-500 bg-white rounded mt-2 absolute z-10 w-full">
             {locationResults.map((result) => (
