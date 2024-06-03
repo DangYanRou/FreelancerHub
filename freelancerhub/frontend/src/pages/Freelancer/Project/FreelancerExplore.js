@@ -20,6 +20,7 @@ import Loading from '../../../components/Loading';
 import { format } from 'date-fns';
 import { formatDistanceToNow } from 'date-fns';
 import { categories,workloadOptions } from '../../../components/ProjectOptions.js';
+import { useLocation } from 'react-router-dom';
 
 
 const FreelancerExplore = () => {  
@@ -42,6 +43,12 @@ const FreelancerExplore = () => {
   const handleCurrencyChange = (event) => {
     setCurrency(event.target.value);
   };
+
+  //YR Noti used
+  const locationState = useLocation();
+  const projectIdFromState = locationState.state?.projectId;
+
+
 
 
   const handleSearch = async () => {
@@ -173,6 +180,17 @@ const FreelancerExplore = () => {
 
   fetchProjects();
 }, [user]);
+
+//YR Noti used
+useEffect(() => {
+  if (projectIdFromState && projects.length > 0) {
+    const selected = projects.find(project => project.id === projectIdFromState);
+    if (selected) {
+      setSelectedProject(selected);
+    }
+  }
+}, [projects, projectIdFromState]);
+
 
 if (loading) {
   return <div><Loading /></div>;
