@@ -78,7 +78,7 @@ const ClientApplicationDetails = () => {
     }
 
     const handleProfileClick = (freelancerID) => {
-        history.push('freelancer-temporary-profile', { freelancer: { freelancerID } });
+        history.push('client-view-profile', { freelancer: { freelancerID } });
     };
 
     const handleEmailClick = (emailAddress, projectName, clientName) => {
@@ -137,7 +137,7 @@ const ClientApplicationDetails = () => {
                 isPop: false,
                 timestamp: new Date(),
                 type: 3,
-                priority: 2,
+                priority: 1,
                 projectID: proposalDetails.projectID,
                 freelancerID: proposalDetails.freelancerID,
                 to: user.id
@@ -145,7 +145,7 @@ const ClientApplicationDetails = () => {
             await addDoc(collection(db, 'notifications'), notificationToClientData);
     
             setTimeout(() => {
-                history.push('project-posted');
+                history.push('/clients/project-posted');
                 setLoading(false);
             }, 2000);
         } catch (error) {
@@ -216,7 +216,7 @@ const ClientApplicationDetails = () => {
                 isPop: false,
                 timestamp: new Date(),
                 type: 3.5,
-                priority: 2,
+                priority: 1,
                 projectID: proposalDetails.projectID,
                 freelancerID: proposalDetails.freelancerID,
                 to: user.id
@@ -224,7 +224,7 @@ const ClientApplicationDetails = () => {
             await addDoc(collection(db, 'notifications'), notificationToClientData);
     
             setLoading(false); // Set loading to false before navigating
-            history.push('project-posted');
+            history.push('/clients/project-posted');
         } catch (error) {
             toast.error('Error rejecting application! Please try again.');
             setLoading(false); // Set loading to false if there is an error

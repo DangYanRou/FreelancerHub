@@ -20,6 +20,7 @@ import Loading from '../../../components/Loading';
 import { format } from 'date-fns';
 import { formatDistanceToNow } from 'date-fns';
 import { categories,workloadOptions } from '../../../components/ProjectOptions.js';
+import { useLocation } from 'react-router-dom';
 import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 
 
@@ -89,6 +90,8 @@ const FreelancerExplore = () => {
   }, []);
 
   const handleSearch = async () => {
+    setProjectSearch(true);
+
     try {
       let q = collection(db, 'projects');
 
@@ -102,6 +105,7 @@ const FreelancerExplore = () => {
       if (querySnapshot.empty) {
         console.log("No matching documents.");
         setProjects([]); // Set projects to an empty array if no documents are found
+        setProjectSearch(false);
         return;
       }
 
@@ -153,12 +157,13 @@ const FreelancerExplore = () => {
           );
         }
       }
-
+      setProjectSearch(false);
       console.log("Filtered Projects:", filteredProjects);
       setProjects(filteredProjects);
-      setProjectSearch(false);
     } catch (error) {
       console.error("Error searching projects:", error);
+      setProjectSearch(false);
+
     }
 
   };
@@ -168,9 +173,11 @@ const FreelancerExplore = () => {
   }, [minInput, maxInput, currencyInput, selectedOptions]);
 
       
-  
+    //YR Noti used
+    const locationState = useLocation();
+    const projectIdFromState = locationState.state?.projectId;
 
-  const history = useHistory();
+    const history = useHistory();
 
   const handleApply = (projectID, clientID) => {
     history.push('/freelancers/proposal-form', {
@@ -217,6 +224,17 @@ const FreelancerExplore = () => {
 
   fetchProjects();
 }, [user]);
+
+//YR Noti used
+useEffect(() => {
+  if (projectIdFromState && projects.length > 0) {
+    const selected = projects.find(project => project.id === projectIdFromState);
+    if (selected) {
+      setSelectedProject(selected);
+    }
+  }
+}, [projects, projectIdFromState]);
+
 
 if (loading) {
   return <div><Loading /></div>;
@@ -535,7 +553,7 @@ const handleClick = (projectId) => {
                 <label className="text-sm ml-2 font-bold text-gray-700">
                   Currency:
                 </label>
-                <select required className="flex h-[40px] w-3/4 items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
+                <select required className="mt-1 w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 id="currency" name="currencyInput"  onChange={(e) => setCurrency(e.target.value)} value={currencyInput}>
                 <option value="MYR">MYR</option>
                 <option value="USD">USD</option>

@@ -144,15 +144,19 @@ const CreateProjectPreview = () => {
         if (data.uid) {
           const freelancerDoc = doc(db, 'freelancers', data.uid);
           const freelancerSnapshot = await getDoc(freelancerDoc);
-          if (freelancerSnapshot.exists()) {
+          
+          if (freelancerSnapshot.exists() ) {
             const freelancerData = freelancerSnapshot.data();
+            // Check if the freelancer is already in the array
+            const isFreelancerInArray = favouriteFreelancers.some(freelancer => freelancer.uid === data.uid);
+            if(!isFreelancerInArray){
             favouriteFreelancers.push({
               uid: data.uid,
               profilePicture: freelancerData.profilePicture,
               name: freelancerData.name,
               email: freelancerData.email,
               selected:false
-            });
+            })};
           }
         }
       }
@@ -238,7 +242,7 @@ const CreateProjectPreview = () => {
  id="duration">{projectInfo.category}</p>
   </div>
   <div className="w-1/2">
-    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">Location: </label>
+    <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="location">Location: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
  id="duration">{projectInfo.location}</p>
   </div>
@@ -338,7 +342,7 @@ const CreateProjectPreview = () => {
     <tbody>
       {users.map((user, index) => (
         <tr key={index} onClick={() => handleUserClick(index)}>
-          <td className={`rounded-[10px] border border-solid border-gray-500 w-4/5 m-auto my-2 p-2 flex items-center ${user.selected ? 'bg-green-200' : 'bg-red-100'} ${user.selected ? '' : 'hover:bg-gray-200'} transition-colors duration-200`}>
+          <td className={`rounded-[10px] border border-solid border-gray-500 w-4/5 m-auto my-2 p-2 flex items-center ${user.selected ? 'bg-[#0496C7]' : 'bg-gray-200'} ${user.selected ? '' : 'hover:bg-[#04BADE]'} transition-colors duration-200`}>
             <img src={user.profilePicture} alt={user.name} className="w-8 h-8 rounded-full mr-2" />
             <span className="font-bold text-gray-700">{user.name}</span>
           </td>
