@@ -97,7 +97,8 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
                             {showDropdown[index] && (
                                 <div className="pa-options-dropdown">
                                     <ul className="pa-options">
-                                        <li> <Link to={`/clients/edit-project/${project.id}`}>Edit Project</Link></li>                                           <li onClick={(e) => { e.stopPropagation(); openConfirmDeleteModal(project); }}>Delete Project</li>
+                                        <li> <Link to={`/clients/edit-project/${project.id}`}>Edit Project</Link></li>                                           
+                                        <li onClick={(e) => { e.stopPropagation(); openConfirmDeleteModal(project); }}>Delete Project</li>
 
                                         <li><Link to={{ pathname: "/clients/proposal-received"}} state={{ projectID: project.id }} >
                                             View Applications</Link></li>

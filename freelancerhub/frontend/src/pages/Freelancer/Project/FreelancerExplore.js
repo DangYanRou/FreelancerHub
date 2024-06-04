@@ -278,11 +278,12 @@ const handleDelete = async (projectId) => {
 };
 
 //deon
-const handleClick = (projectId) => {
+const handleClick = (projectId,e) => {
+  e.stopPropagation();
   const isBookmarked = bookmarkedProjects[projectId];
 
   if (isBookmarked) {
-    handleDelete(projectId);
+    handleDelete(projectId,e);
   } else {
     handleSave(projects.find(project => project.id === projectId));
   }
@@ -347,13 +348,13 @@ const handleClick = (projectId) => {
                 <BsBookmarkCheckFill
                   size={30}
                   className="bookmark-icon text-green-500"
-                  onClick={() => handleClick(blog.id)}
+                  onClick={(e) => handleClick(blog.id,e)}
                 />
               ) : (
                 <BsBookmark
                   size={30}
                   className="bookmark-icon text-gray-500"
-                  onClick={() => handleClick(blog.id)}
+                  onClick={(e) => handleClick(blog.id,e)}
                 />
               )}
             </div>
