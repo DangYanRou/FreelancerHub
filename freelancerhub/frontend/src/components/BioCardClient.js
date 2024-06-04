@@ -14,10 +14,12 @@ import SvgIcon from '@mui/joy/SvgIcon';
 import { useNavigate } from 'react-router-dom';
 import { db } from "../firebase";
 import { doc, deleteDoc } from "firebase/firestore";
+import { useHistory } from 'react-router-use-history';
 
 export default function BioCardClient({ freelancer }) {
 
   const navigate = useNavigate();
+  const history = useHistory();
 
   const removeFreelancer =async(id)=>{
 	try{
@@ -28,6 +30,9 @@ export default function BioCardClient({ freelancer }) {
 		console.log(error.message);
 	}
 }
+const handleAvatarClick = (freelancerID) => {
+  history.push('client-view-profile', { freelancerID: freelancerID });
+};
 
   return (
     
@@ -39,7 +44,7 @@ export default function BioCardClient({ freelancer }) {
       }}
     >
       <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
-        <Avatar src="/static/images/avatar/1.jpg" sx={{ '--Avatar-size': '4rem' }} />
+        <Avatar onClick={handleAvatarClick(freelancer.uid)} src="/static/images/avatar/1.jpg" sx={{ '--Avatar-size': '4rem' }} />
         <Chip
           size="sm"
           variant="soft"

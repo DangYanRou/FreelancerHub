@@ -14,22 +14,27 @@ import { Link } from 'react-router-dom';
 import { db, auth } from '../../../firebase';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from 'firebase/auth';
+import Loading from '../../../components/Loading';
+import { useUser } from '../../../context/UserContext';
 
 
 const FreelancerSaved = () => {
   const navigate = useNavigate();
   const handleApply = () => {
-    navigate('/freelancers/proposal-form');
+    navigate('/freelancers/proposal-form',{});
   };
 
   const [favProjects, setFavProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
-
   const collectionRef = collection(db, "favouriteProject");
+  const [loading, setLoading] = useState(true);
+  const { user } = useUser();
 
   const getFavProjects = async () => {
     try {
-      const userID = auth.currentUser.uid;
+      setLoading(true);
+      //const userID = auth.currentUser.uid;
+      const userID = user.id;
       const q = query(collectionRef, where("savedBy", "==", userID));
 
       const data = await getDocs(q);
@@ -43,17 +48,21 @@ const FreelancerSaved = () => {
       setFavProjects(filteredData);
     } catch (error) {
       console.log(error.message);
+    }finally{
+      setLoading(false);
     }
   };
 
+
    useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    //const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         getFavProjects(user.uid);
       }
-    });
-    return () => unsubscribe();
+    //});
+    //return () => unsubscribe();
   }, []);
+
 
   const ProjectModal = ({ isOpen, onClose, project }) => {
     if (!isOpen || !project) return null;
@@ -106,6 +115,11 @@ const FreelancerSaved = () => {
   const handleCloseModal = () => {
     setSelectedProject(null);
   };
+
+  if(loading)
+    {
+      return (<Loading></Loading>);
+    }
 
   return (
     <div>
