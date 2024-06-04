@@ -468,14 +468,14 @@ const ClientProfile = () => {
                 </form>
               ) : (
                 <>
-                  {formData.name === "" ? (
+                  {!formData.name ? (
                       <h2 className='no_details'>No details added</h2>
                     ) : (
                       <div className="name-location">
                       <h2 className="name">{formData.name}</h2>
                       <div className="location">
                         <FaMapMarkerAlt className="markerIcon" />
-                        {formData.location === "" ? (
+                        {!formData.location? (
                           <h2 className='no_details'>No details added</h2>
                         ) : (
                           <span>{formData.location}</span>
@@ -484,22 +484,22 @@ const ClientProfile = () => {
                     </div>
                     )}
                   <p style={{ color: "grey" }}>Username: {formData.username}</p>
-                  {formData.companySize === "" && formData.phone ===""? (
+                  {!formData.companySize && !formData.phone? (
                       <h2 className='no_details'>No details added</h2>
                   ) : (
                     <>
-                    {formData.companySize !=="" && (
+                    {formData.companySize ? (  // No need for && here
                       <p className="job">Company Size: {formData.companySize}</p>
-                    )} 
-                      <p className="address" style={{ fontSize: 14 }}>
-                        {formData.address}
-                      </p>
-                      {formData.phone !=="" && (
+                    ) : null}  {/* Optional: Render nothing if companySize is falsy */}
+                    <p className="address" style={{ fontSize: 14 }}>
+                      {formData.address}
+                    </p>
+                    {formData.phone ? (  // No need for && here
                       <p className="phone" style={{ fontSize: 14 }}>
                         Phone: {formData.phone}
                       </p>
-                      )}
-                    </>
+                    ) : null}  {/* Optional: Render nothing if phone is falsy */}
+                  </>
                   )}
                 </>
               )}
@@ -618,8 +618,8 @@ const ClientProfile = () => {
               ) : (
                 <div>
                   <div className="about_container">
-                  {profile.aboutDescription===""? (
-                    <h2 className='no_details' >Edit now</h2>
+                  {!profile.aboutDescription? (
+                    <h2 className='no_details' style={{textAlign:"center"}}>Edit now</h2>
                   ) : (
                     <p>{profile.aboutDescription}</p>
                   )}
