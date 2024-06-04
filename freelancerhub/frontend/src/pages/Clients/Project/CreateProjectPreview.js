@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import '../../../styles/Clients/CreateProjectPreview.css';
 import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
-import { addProject, auth, db } from '../../../firebase';
-import { collection, getDoc,doc, query, where, getDocs, addDoc } from "firebase/firestore";
+import { auth, db } from '../../../firebase';
+import { collection, setDoc,  arrayUnion, getDoc,doc, query, where, getDocs, addDoc } from "firebase/firestore";
 import Loading from '../../../components/Loading';
 import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
@@ -119,17 +119,78 @@ const CreateProjectPreview = () => {
     .then(() => {
         console.log('Notification added successfully!');
         navigate('/clients/project-posted');
-        clearContext(); 
+        setProjectInfo({
+          title: '',
+          minInput: '',
+          maxInput: '',
+          location: '',
+          description: '',
+          category: '',
+          workPlace: '',
+          currencyInput: 'MYR',
+          date: null,
+          workload: '',
+          duration: '',
+          durationUnit: 'day(s)',
+          preferredQualification: '',
+          jobResponsibilities: [],
+          preferredSkills: [],
+          keywords: [],
+          statusState: 1,
+          postedTime: new Date()
+        });
     }).finally(() => {
       setLoading(false);
-      clearContext(); 
-
+      setProjectInfo({
+        title: '',
+        minInput: '',
+        maxInput: '',
+        location: '',
+        description: '',
+        category: '',
+        workPlace: '',
+        currencyInput: 'MYR',
+        date: null,
+        workload: '',
+        duration: '',
+        durationUnit: 'day(s)',
+        preferredQualification: '',
+        jobResponsibilities: [],
+        preferredSkills: [],
+        keywords: [],
+        statusState: 1,
+        postedTime: new Date()
+      });
     }).catch((error) => {
       console.error("Error adding document: ", error);
     });
 } else {
     console.log('No user is signed in');
 }
+  };
+
+  const addProject = async (projectInfo) => {
+    console.log('Adding project:', projectInfo);
+    try {
+      const user = auth.currentUser;
+      const uid = user.uid;
+  
+      // Generate a new document ID
+      const docRef = doc(collection(db, "projects"));
+      const docID = docRef.id;
+  
+      // Add the new project with the custom document ID
+      await setDoc(docRef, projectInfo);
+  
+      await setDoc(doc(db, "clients", uid), {
+        createdProjects: arrayUnion(docID)
+      }, { merge: true });    
+  
+      console.log("Document written with ID: ", docID);
+      return docRef;
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   };
 
   const fetchFavouriteFreelancers = async () => {
@@ -215,8 +276,7 @@ const CreateProjectPreview = () => {
 
   return (
     <div className="flex flex-col items-start justify-center">
-
-                        <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
+           <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
                       Create Project
           </Heading>
 
@@ -225,31 +285,31 @@ const CreateProjectPreview = () => {
       <ProgressBar stages={stages} />
       <div style={{ backgroundColor: '#69ACC2' }} className="w-screen max-w-full h-8/10">
         <div className="bg-white w-4/5 rounded-md my-12 mx-auto text-left">
-        <form className="flex flex-col space-y-4 p-4">
+        <form className="flex flex-col space-y-4 p-6">
 
-          <div className="flex justify-left m-4 w-8/10">
+          <div className="flex justify-left mr-8 ml-8 mt-8 mb-2 w-8/10">
             <div className="w-full">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Subject: </label>
+              <label className="block text-gray-700 text-sm font-bold " htmlFor="subject">Subject: </label>
               <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
  id="duration">{projectInfo.title}</p>
             </div>
           </div>
-          <div className="flex justify-between w-8/10 m-4">
+          <div className="flex justify-between w-8/10 m-8">
   <div className="w-1/2 mr-8">
-    <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Workplace: </label>
+    <label className="block text-gray-700 text-sm font-bold mb-2 " htmlFor="workplace">Workplace: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
  id="duration">{projectInfo.workPlace}</p>
- <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Category: </label>
+ <label className="block text-gray-700 text-sm font-bold mb-2 " htmlFor="workplace">Category: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
  id="duration">{projectInfo.category}</p>
   </div>
   <div className="w-1/2">
-    <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="location">Location: </label>
+    <label className="block text-gray-700 text-sm font-bold mb-2 " htmlFor="location">Location: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
  id="duration">{projectInfo.location}</p>
   </div>
 </div>
-<div className="m-4 w-8/10">
+<div className="m-8 w-8/10">
   <div className="w-full">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Project Description: </label>
     <div className="w-full rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal" id="projectDescriptionSHow">
@@ -257,12 +317,12 @@ const CreateProjectPreview = () => {
 </div>
             </div>
           </div>
-          <div className="flex justify-between w-8/10 m-4">
+          <div className="flex justify-between w-8/10 m-8">
   <div className="w-1/2 mr-8">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contractType">Project Start Time: </label>
     <p className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
   id="startTimePreview">{projectInfo.date ? projectInfo.date.toLocaleDateString() : ''}</p>
-   <label className="block /text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Duration: </label>
+   <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="workplace">Duration: </label>
     <div className="flex h-[40px] w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full"
  id="durationPreview">{projectInfo.duration}
    <div>
@@ -291,17 +351,22 @@ const CreateProjectPreview = () => {
   </div>
 </div>
 
-<div className="flex justify-left m-4 w-8/10">
+<div className="flex justify-left m-8 w-8/10">
             <div className="w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Project Responsibilities: </label>
               <div className="w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal"
  id="responsibilityShow">
- <p>{projectInfo.jonResponsibilities}</p>
- </div>
+<div className="flex">
+{projectInfo.jobResponsibilities.map((responsibilities, index) => (
+      <div key={index} className="m-1 bg-blue-200 text-blue-700 p-1 rounded flex items-center justify-center">
+        <span>#{responsibilities}</span>
+      </div>
+    ))}
+</div> </div>
             </div>
           </div>
 
-          <div className="flex justify-left m-4 w-8/10">
+          <div className="flex justify-left m-8 w-8/10">
             <div className="w-full">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">Preferred Qualification: </label>
             <div className="w-full items-center justify-left rounded-[10px] bg-white-A700 px-5 sm:w-full py-2 whitespace-normal" id="qualificationShow">
@@ -311,7 +376,7 @@ const CreateProjectPreview = () => {
 </div>
           </div>
 
-          <div className="flex justify-between w-8/10 m-4">
+          <div className="flex justify-between w-8/10 m-8">
   <div className="w-1/2 mr-8">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contractType">Preferred Skill: </label>
     <div className="flex">
@@ -336,8 +401,9 @@ const CreateProjectPreview = () => {
     
   </div>
 </div>
-<div className="flex flex-col w-1/2">
-    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="favouriteCollaborator">Favourite Collaborator: </label>
+<div className="flex flex-col w-1/2 m-8">
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="favouriteCollaborator">Send Project Invitation: </label>
+    <p className="text-gray-800 text-xs italic mb-3">Select your favourite collaborator from the dropdown list.</p>
     <div className="rounded-[10px] overflow-hidden border border-solid border-gray-500 bg-white-A700 ">
     {users.length > 0 ? (
   <table className="w-full">
@@ -359,7 +425,7 @@ const CreateProjectPreview = () => {
   </div>
 
 <div className="pt-5">
-<div className="flex justify-between w-8/10 m-4" >
+<div className="flex justify-between w-8/10 m-8" >
   <div className="w-1/4">
     <button onClick={handlePreviousButtonClick} type="button" className="w-full bg-[#213E60] hover:bg-[#69ACC2] text-white font-bold py-2 px-4 rounded-lg">
       Previous
