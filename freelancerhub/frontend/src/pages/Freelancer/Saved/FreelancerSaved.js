@@ -14,67 +14,56 @@ import { Link } from 'react-router-dom';
 import { db, auth } from '../../../firebase';
 import { useUser } from '../../../context/UserContext';
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { onAuthStateChanged } from 'firebase/auth';
 import Loading from '../../../components/Loading';
+import { useUser } from '../../../context/UserContext';
 
 
 const FreelancerSaved = () => {
   const navigate = useNavigate();
   const handleApply = () => {
-    navigate('/freelancers/proposal-form');
+    navigate('/freelancers/proposal-form',{});
   };
 
   const [favProjects, setFavProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [appliedProjects, setAppliedProjects] = useState([]);
-  const[loading,setLoading]=useState(false);
+  const collectionRef = collection(db, "favouriteProject");
+  const [loading, setLoading] = useState(true);
   const { user } = useUser();
 
-  const collectionRef = collection(db, "favouriteProject");
+  const getFavProjects = async () => {
+    try {
+      setLoading(true);
+      //const userID = auth.currentUser.uid;
+      const userID = user.id;
+      const q = query(collectionRef, where("savedBy", "==", userID));
 
-  
-
-  useEffect(() => {
-    const getFavProjects = async () => {
-      setLoading(true)
-        try {
-            const q = query(collectionRef, where("savedBy", "==", user.id));
-            const data = await getDocs(q);
-            const filteredData = data.docs.map((doc) => {
-                const projectData = doc.data();
-                if (projectData.date) {
-                    projectData.date = projectData.date.toDate().toLocaleDateString();
-                }
-                return { ...projectData, id: doc.id };
-            });
-            setFavProjects(filteredData);
-
-            if (user) {
-                console.log(user.id);
-                const proposalsRef = collection(db, 'proposals');
-                const proposalsQuery = query(proposalsRef, where("UserID","==", user.id));
-                const proposalsSnapshot = await getDocs(proposalsQuery);
-                
-                // Extract IDs of projects user has applied for
-                const appliedProjectsIDs = proposalsSnapshot.docs.map(doc => doc.data().freelancerID);
-                
-                console.log("applied:", appliedProjectsIDs);
-                setAppliedProjects(appliedProjectsIDs);
-            }
-
-        } catch (error) {
-            console.error("Error in fetching data:", error.message);
-        }finally{
-          setLoading(false);
+      const data = await getDocs(q);
+      const filteredData = data.docs.map((doc) => {
+        const projectData = doc.data();
+        if (projectData.date) {
+          projectData.date = projectData.date.toDate().toLocaleDateString();
         }
-    }; 
+        return { ...projectData, id: doc.id };
+      });
+      setFavProjects(filteredData);
+    } catch (error) {
+      console.log(error.message);
+    }finally{
+      setLoading(false);
+    }
+  };
 
-    getFavProjects(); // Call the function to fetch data when the component mounts
 
-}, []);
+   useEffect(() => {
+    //const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        getFavProjects(user.uid);
+      }
+    //});
+    //return () => unsubscribe();
+  }, []);
 
-if(loading){
-return <Loading/>
-}
 
   const ProjectModal = ({ isOpen, onClose, project }) => {
     if (!isOpen || !project) return null;
@@ -147,6 +136,11 @@ return <Loading/>
     setSelectedProject(null);
   };
 
+  if(loading)
+    {
+      return (<Loading></Loading>);
+    }
+
   return (
     <div>
       <div className="flex w-full justify-end bg-white-A700 py-[63px] md:py-5">
@@ -160,15 +154,22 @@ return <Loading/>
               Projects
             </div>
             <List
-              className="overflow-x-auto flex gap-x-6 w-full max-w-screen-lg mx-auto ml-[50px]"
+              className="flex gap-x-6 w-full mx-auto ml-[50px]"
               orientation="horizontal"
+              style={{
+              overflowX: 'auto',
+              scrollbarWidth: 'none', /* Firefox */
+              msOverflowStyle: 'none', /* Internet Explorer 10+ */
+            }}
             >
               {favProjects.length > 0 ? (
+                
                 <ProjectList 
                   projects={favProjects}
                   onProjectClick={handleProjectClick}
                   selectedProjectId={selectedProject ? selectedProject.id : null}
                 />
+                
               ) : (
                 <div style={{ fontFamily: 'Poppins' }}>No favourite project at the moment</div>
               )}

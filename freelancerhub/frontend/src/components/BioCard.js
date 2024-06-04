@@ -14,9 +14,11 @@ import SvgIcon from '@mui/joy/SvgIcon';
 import { useNavigate } from 'react-router-dom';
 import { db } from "../firebase";
 import { doc, deleteDoc } from "firebase/firestore";
+import { useHistory } from 'react-router-use-history';
 
 export default function BioCard({ client}) {
   const navigate = useNavigate();
+  const history = useHistory();
 
   const removeClient =async(id)=>{
 	try{
@@ -27,6 +29,10 @@ export default function BioCard({ client}) {
 		console.log(error.message);
 	}
 }
+
+const handleAvatarClick = (event, clientID) => {
+  history.push('freelancer-view-profile', { clientID: clientID });
+};
 
   return (
     <div>
@@ -42,8 +48,8 @@ export default function BioCard({ client}) {
           }}
         >
           <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
-            <Avatar src="/static/images/avatar/1.jpg" sx={{ '--Avatar-size': '4rem' }} />
-            <Chip
+            <Avatar  onClick={(event) => handleAvatarClick(event,client.uid)} src="/static/images/avatar/1.jpg" sx={{ '--Avatar-size': '4rem' }} />
+            <Chip 
               size="sm"
               variant="soft"
               color="primary"
@@ -57,7 +63,7 @@ export default function BioCard({ client}) {
               PRO
             </Chip>
             {/* <div className={`card ${selectedClientId === blog.id ? 'selected' : ''}`} onClick={() => onClientClick(blog)}> */}
-              <Typography level="title-lg">{client.username}</Typography>
+              <Typography onClick={(event) => handleAvatarClick(event,client.uid)} level="title-lg">{client.username}</Typography>
               <Typography level="body-sm" sx={{ maxWidth: '24ch' }}>
                 {client.aboutDescription}
               </Typography>

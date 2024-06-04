@@ -26,6 +26,34 @@ const ProjectListSaved=({projects,onProjectClick,selectedProjectId}) => {
     }
   };
   
+
+    return (
+    <div className='flex gap-x-4 justify-start align-start'>
+      {projects.map((blog) => {
+        // Destructure the budget array if it exists
+     
+        const statusMessage= getStatusType(blog.statusState)
+        return (
+          <div className="flex justify-center items-center " key={blog.id}>
+            <div className={`min-w-[320px] w-auto h-[350px] relative flex-col items-start p-5 bg-[#F0F7F9] flex shadow rounded-lg cursor-pointer mb-4" ${selectedProjectId === blog.id ? 'selected' : ''}`} onClick={() => onProjectClick(blog)}> 
+              <h2 className="project-title">{blog.title}</h2>
+              <Link to="/freelancers/client-temporary-profile" className="hover-profileLink">{blog.client}</Link>
+              <p id="category">{blog.category}</p>
+              <p><FaLocationDot className="icon-style" />{blog.location}</p>
+              <p><MdOutlineAttachMoney size={20} className='icon-style2'/>{blog.minInput}-{blog.maxInput} {blog.currencyInput}/project</p>
+              <p><BiTimeFive size={20} className='icon-style2' />{blog.duration} {blog.durationUnit}</p>
+              <p className="apply-status">{statusMessage}</p>
+              <p className="apply-date">{blog.applyDate}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+  }
+
+export default ProjectListSaved;
+  
     // return(
     //   <div className='flex gap-x-4 overflow-x-auto justify-start align-start w-full'>
     //       {projects.map((blog)=>(

@@ -9,9 +9,9 @@ import FreelancerFeedbackPage from '../../pages/Freelancer/Feedback/FreelancerFe
 import FreelancerAverageReviewBox from '../../pages/Freelancer/Profile/FreelancerAverageReviewBox';
 import ProjectCompletedPage from '../../pages/Freelancer/Project/ProjectCompletedPage';
 import NotificationPage from '../../pages/NotificationPage';
-import ClientTemporaryProfile from '../../pages/Clients/Profile/ClientTemporaryProfile';
 import FreelancerSaved from '../../pages/Freelancer/Saved/FreelancerSaved';
 import WithNavigation from './WithNavigation';
+import ClientProfile from '../../pages/Clients/Profile/ClientProfile'
 
 const FreelancerRoutes = () => {
   return (
@@ -26,7 +26,7 @@ const FreelancerRoutes = () => {
         <Route path="freelancer-average-review-box" element={<FreelancerAverageReviewBox />} />
         <Route path="project-completed-page" element={<ProjectCompletedPage />} />
         <Route path="notifications" element={<NotificationPage/>} />
-        <Route path="client-temporary-profile" element={<ClientTemporaryProfile />} />
+        <Route path="freelancer-view-profile" element={<ClientProfile/>} />
         <Route path="saved" element={<FreelancerSaved />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
