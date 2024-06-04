@@ -19,9 +19,9 @@ import { useUser } from '../../../context/UserContext';
 import { useHistory } from 'react-router-use-history';
 
 
-const FreelancerSaved = (event,projectID, clientID) => {
+const FreelancerSaved = () => {
   const history=useHistory();
-  const handleApply = () => {
+  const handleApply = (event,projectID, clientID) => {
     history.push('/freelancers/proposal-form', {
       user_key: { freelancerID: user.id },
       project_key: { projectID: projectID, clientID: clientID }
@@ -33,6 +33,8 @@ const FreelancerSaved = (event,projectID, clientID) => {
   const collectionRef = collection(db, "favouriteProject");
   const [loading, setLoading] = useState(true);
   const { user } = useUser();
+
+  
 
   const getFavProjects = async () => {
     try {
@@ -107,7 +109,7 @@ const FreelancerSaved = (event,projectID, clientID) => {
         </div>
         <h3 id="preferredQualification">Preferred Qualification:</h3>
         <p>{project.preferredQualification}</p>
-        <button id="applyButton" onClick={(event)=>handleApply(event,project.projectID,project.clientID)} className="btn btn-primary">Apply</button>
+        <button id="applyButton" onClick={(event)=>handleApply(event,project.id,project.clientID)} className="btn btn-primary">Apply</button>
       </div>
     );
   };

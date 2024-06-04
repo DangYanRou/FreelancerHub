@@ -18,6 +18,7 @@ const ApplicationForm = () => {
   const history = useHistory();
   const location = useLocation();
   console.log(location.state);
+  console.log(location.state.project_key);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
 
   const [formData, setFormData] = useState({
