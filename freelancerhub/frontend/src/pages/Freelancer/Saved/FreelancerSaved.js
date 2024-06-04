@@ -89,7 +89,7 @@ const FreelancerSaved = () => {
         <p id="category">{project.category}</p>
         <p><FaLocationDot className="icon-style" />{project.location}</p>
         <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.minInput}-{project.maxInput}/project</p>
-        <p><BiTimeFive size={20} className='icon-style2' />{project.duration}</p>
+        <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
         <p>Starting from: {project.date}</p>
         <h3 id="about-the-project">About the Project:</h3>
         <p>{project.description}</p>
