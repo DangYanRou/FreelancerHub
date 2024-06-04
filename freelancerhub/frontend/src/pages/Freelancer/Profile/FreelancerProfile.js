@@ -18,11 +18,16 @@ const FreelancerProfile = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
+  const storedUserData = localStorage.getItem("user");
+  const userData = JSON.parse(storedUserData);
+  const userType = userData.type;
+  console.log("User type:", userType);
 
   //Profile Navigation
   const [showAbout, setShowAbout] = useState(true);
   const [showProjects, setShowProjects] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
+  const [showButton, setShowButton] = useState(true);
   
   const [profile, setProfile] = useState({
     location: "",
@@ -99,16 +104,29 @@ const FreelancerProfile = () => {
       setShowAbout(true);
       setShowProjects(false);
       setShowReviews(false);
+
+      if(userType==="client"){
+        setShowButton(false);
+        console.log("User type:", userType);
+      }
     }
     else if (section === 'projects') {
       setShowAbout(false);
       setShowProjects(true);
       setShowReviews(false);
+      if(userType==="client"){
+        setShowButton(false);
+        console.log("User type:", userType);
+      }
     }
     else if (section === 'reviews') {
       setShowAbout(false);
       setShowProjects(false);
       setShowReviews(true);
+      if(userType==="client"){
+        setShowButton(false);
+        console.log("User type:", userType);
+      }
     }
     else
       return;
@@ -335,7 +353,7 @@ const FreelancerProfile = () => {
                 </form>
               ) : (
                 <>
-                {profile.name===""? (
+                {!profile.name? (
                   <h2 className='no_details' >No details added</h2>
                 ) : (
                   <div className="name-location" style={{alignContent:"center",justifyContent:"center"}}>
@@ -351,7 +369,7 @@ const FreelancerProfile = () => {
                   <p className="address" style={{ fontSize: 14 }}>
                     {profile.address}
                   </p>
-                  {profile.phone===""? (
+                  {!profile.phone? (
                     <h2 className='no_details' >No details added</h2>
                   ) : (
                     <p className="phone" style={{ fontSize: 14 }}>
@@ -361,8 +379,9 @@ const FreelancerProfile = () => {
                 </>
               )}
             </div>
-            {!isEditing && !freelancerID && (
-              <button onClick={handleEditClick}><MdOutlineModeEdit /> Edit Profile</button>
+            {!isEditing && showButton &&(
+              <button onClick={handleEditClick}>
+                <MdOutlineModeEdit/>Edit Profile</button>
             )}
             {isEditing && (
               <button type="submit" form="profileForm">Save</button>
@@ -449,8 +468,8 @@ const FreelancerProfile = () => {
                 </form>
               ) : (
                 <div>
-                  {profile.aboutDescription===""? (
-                    <h2 className='no_details' >Edit now</h2>
+                  {!profile.aboutDescription? (
+                    <h2 className='no_details' style={{textAlign:"center"}}>Edit now</h2>
                   ) : (
                     <p>{profile.aboutDescription}</p>
                   )}
@@ -489,7 +508,7 @@ const FreelancerProfile = () => {
             </div>
             <div id="projects" style={{ display: showProjects ? 'block' : 'none' }}>
               <p className='projects_text'>Browse My Recents</p>
-              <ProjectsCompleted style={{paddingTop:0}}/>
+              <ProjectsCompleted/>
             </div> 
             <div
               id="reviews"
