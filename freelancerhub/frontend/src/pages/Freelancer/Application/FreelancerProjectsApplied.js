@@ -54,6 +54,7 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
   const statusTime = project.statusTime ? format(project.statusTime.toDate(), 'dd/MM/yyyy') : '';
   const statusMessage = getStatusType(project.statusState);
   console.log(project.statusState)
+  const disappearCancel=project.statusState < 4;
 
   return (
     <div className="pa-project-details">
@@ -72,7 +73,7 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
       </div>
       <div className='jl-button-container'>
         <button className="jl-btn-primary" onClick={handleViewApplication}>View Application</button>
-        <button className="jl-btn-secondary" onClick={handleCancelApplication}>Cancel Application</button>
+        {disappearCancel?(<button className="jl-btn-secondary" onClick={handleCancelApplication}>Cancel Application</button>):(<button className="btn-disabled" disabled>Cancel Application</button>)}
       </div>
     </div>
   );
