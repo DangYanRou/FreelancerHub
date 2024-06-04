@@ -178,7 +178,7 @@
     display: flex;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
-    
+    z-index: 99999;
   }
 
  .confirmation-modal-content,.success-modal-content {
@@ -189,7 +189,7 @@
   height: 220px;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
-  
+  z-index: 99999;
 }
 .confirmation-buttons{
     max-width: 500px;
@@ -242,3 +242,14 @@
     color: #333;
     text-align: center;
   }
+  .btn-disabled{
+    background-color: #BEBEBE;
+    padding:9px 28px; /* Adjust padding to increase button size */
+    border: none; /* Remove default border */
+    font-size: 16px;
+    color: black;
+    border-radius: 8px; 
+    cursor: pointer; /* Change cursor to pointer on hover */
+    margin-bottom: 3rem;
+}
+
