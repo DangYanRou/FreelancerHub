@@ -1,276 +1,283 @@
- .ClientProfile {
-    overflow: hidden;
-  }
+.ClientProfile {
+  overflow: hidden;
+}
+
+.upperProfile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.ClientProfile .profileCard {
+  display: flex;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  margin: 90px 40px 40px 40px;
+  width: 80%;
+}
+
+.profileCard img {
+  border-radius: 100%;
+  padding: 50px;
+  background: white;
+  width: 300px;
+  height: 300px;
+}
+
+.profileCard form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.ClientProfile.profile_text {
+  text-align: left;
+  margin-bottom: 0px;
+}
+
+.pic_container {
+  width: 330px;
+}
+
+.profile_text .name-location {
+  display: flex;
+  align-items: baseline;
+}
+
+.ClientProfile button {
+  margin: 30px 20px 0px;
+  align-self: baseline;
+  border: rgb(255, 255, 255);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 10px 15px;
+  display: flex;
+}
+
+.ClientProfile button:hover {
+  cursor: pointer;
+  background: rgb(105, 172, 194);
+}
+
+.clientAbout_details {
+  margin: 20px;
+  padding: 24px;
+  flex: 1;
+  background: white;
+  border-top: 2px solid rgba(53, 53, 53, 0.2);
+  border-color: rgb(163, 163, 163);
+  text-align: center;
+}
+
+.Card2{
+  margin:0;
+}
+
+.ClientProfile .Card2 img {
+  width: 100px;
+}
+
+.ClientProfile .Card2 h4 {
+  font-weight: 100;
+}
+
+.language_details {
+  margin: 20px;
+  padding: 24px;
+  flex: 1;
+  background: white;
+  border-radius: 32px;
+  border: 2px solid rgba(53, 53, 53, 0.2);
+  border-color: rgb(163, 163, 163);
+  text-align: center;
+}
+
+.interest_container {
+  margin-bottom: 32px;
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.interest_details {
+  padding: 30px;
+  background: white;
+  border-color: rgb(163, 163, 163);
+  text-align: center;
+}
+
+.rateContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   
-  .upperProfile {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-  }
+}
+
+.rate {
+  padding-bottom: 30px;
+  width: 80%;
   
-  .ClientProfile .profileCard {
-    display: flex;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    align-items: center;
-    justify-content: center;
-    margin: 90px 40px 40px 40px;
-    width: 80%;
-  }
-  
-  .profileCard img {
-    border-radius: 100%;
-    padding: 50px;
-    background: white;
-    width: 300px;
-    height: 300px;
-  }
-  
-  .profileCard form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .ClientProfile.profile_text {
-    text-align: left;
-    margin-bottom: 0px;
-  }
-  
-  .pic_container {
-    width: 330px;
-  }
-  
-  .profile_text .name-location {
-    display: flex;
-    align-items: baseline;
-  }
-  
-  .ClientProfile button {
-    margin: 30px 20px 0px;
-    align-self: baseline;
-    border: rgb(255, 255, 255);
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 4px;
-    padding: 10px 15px;
-    display: flex;
-  }
-  
-  .ClientProfile button:hover {
-    cursor: pointer;
-    background: rgb(105, 172, 194);
-  }
-  
-  .clientAbout_details {
-    margin: 20px;
-    padding: 24px;
-    flex: 1;
-    background: white;
-    border-top: 2px solid rgba(53, 53, 53, 0.2);
-    border-color: rgb(163, 163, 163);
-    text-align: center;
-  }
-  
-  .ClientProfile .Card2 img {
-    width: 100px;
-  }
-  
-  .ClientProfile .Card2 h4 {
-    font-weight: 100;
-  }
-  
-  .language_details {
-    margin: 20px;
-    padding: 24px;
-    flex: 1;
-    background: white;
-    border-radius: 32px;
-    border: 2px solid rgba(53, 53, 53, 0.2);
-    border-color: rgb(163, 163, 163);
-    text-align: center;
-  }
-  
-  .interest_container {
-    margin-bottom: 32px;
-    margin-top: 32px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .interest_details {
-    padding: 30px;
-    background: white;
-    border-right: 2px solid rgba(53, 53, 53, 0.2);
-    border-color: rgb(163, 163, 163);
-    text-align: center;
-  }
-  
-  .rate {
-    padding-bottom: 30px;
-    width: 89.5%;
-    margin: auto;
-  }
-  
-  .lowerProfile {
-    width: 90%; /* This will make the item have the same width as upperProfile */
-    margin: auto; /* This will center the item */
-   
-  }
-  
-  .nav-links {
-    width: 96%;
-    margin: auto;
-    padding-bottom: 10px;
-  }
-  
-  #name,
-  #username,
-  #location,
-  #companySize,
-  #address,
-  #phone,
-  #job {
-    width: 100%;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-    font-size: 16px;
-    background-color: #f3f3f3;
-  }
-  
-  #name::placeholder,
-  #username::placeholder,
-  #location::placeholder,
-  #companySize::placeholder,
-  #address::placeholder,
-  #phone::placeholder,
-  #job::placeholder {
-    color: #999;
-  }
-  
-  #name:focus,
-  #username:focus,
-  #location:focus,
-  #companySize:focus,
-  #address:focus,
-  #phone:focus,
-  #job:focus {
-    outline: none;
-    background-color: #e0e0e0;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .form-group {
-    margin-bottom: 1rem; /* Adjust margin between form groups */
-    width: 100%;
-  }
-  
+}
+
+.lowerProfile {
+  width: 80%; /* This will make the item have the same width as upperProfile */
+  margin: auto; /* This will center the item */
+}
+
+.nav-links {
+  width: 96%;
+  margin: auto;
+  padding-bottom: 10px;
+}
+
+#name,
+#username,
+#location,
+#companySize,
+#address,
+#phone,
+#job {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  background-color: #f3f3f3;
+}
+
+#name::placeholder,
+#username::placeholder,
+#location::placeholder,
+#companySize::placeholder,
+#address::placeholder,
+#phone::placeholder,
+#job::placeholder {
+  color: #999;
+}
+
+#name:focus,
+#username:focus,
+#location:focus,
+#companySize:focus,
+#address:focus,
+#phone:focus,
+#job:focus {
+  outline: none;
+  background-color: #e0e0e0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1rem; /* Adjust margin between form groups */
+  width: 100%;
+}
+
 .ClientProfile label {
-    display: block; /* Make labels block-level for better spacing */
-    margin-bottom: 0.5rem; /* Adjust margin below labels */
-  }
-  
-  #aboutDescription {
-    width: 100%; /* Make textarea expand to fill its container */
-    height: 50px;
-    padding: 0.5rem; /* Add padding for better appearance */
-    font-size: 16px; /* Adjust font size */
-    border: 1px solid #ccc; /* Add a border for clarity */
-    border-radius: 4px; /* Add border radius for a softer look */
-  }
-  
-  .Card2 .interest-item input {
-    width: 70%;
-    margin-right: 10px;
-    background-color: #e0e0e0;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-  }
-  
-  .add_company_form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-    border: 2px solid rgba(53, 53, 53, 0.2);
-    border-color: rgb(163, 163, 163);
-    border-radius: 32px;
-  }
-  
-  .add_company_form input[type="text"] {
-    padding: 5px;
-    font-size: 16px;
-    width: 200px;
-  }
-  
-  .add_company_form input[type="file"] {
-    padding: 5px;
-    font-size: 16px;
-  }
-  
-  .add_company_form button {
-    padding: 10px 20px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    align-self: center;
-  }
-  
-  .companiesDisplay {
-    width: 300px;
-  }
-  
-  .review-rating {
-    width: 120px;
-    padding-left:5px;
-    padding-right:5px;
-    font-size: 14px;
-    color:whitesmoke;
-    border-radius: 20px;
-    background-color: #82afe1;
-  }
+  display: block; /* Make labels block-level for better spacing */
+  margin-bottom: 0.5rem; /* Adjust margin below labels */
+}
 
-  .review-rating p{
-    margin-left:5px;
-  }
-  
-  .review_name {
-    font-size: 16px;
-    font-weight: 600;
-    color: #213e60;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    line-height: 1; /* Add this line */
-  }
-  
-  .review_time {
-    color: #999;
-    font-size: 14px;
-    margin-top: 0px;
-    padding-top: 0px;
-    font-weight: thin;
-    line-height: 1; /* Add this line */
-  }
-  
-  .review_user_image {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
+#aboutDescription {
+  width: 100%; /* Make textarea expand to fill its container */
+  height: 50px;
+  padding: 0.5rem; /* Add padding for better appearance */
+  font-size: 16px; /* Adjust font size */
+  border: 1px solid #ccc; /* Add a border for clarity */
+  border-radius: 4px; /* Add border radius for a softer look */
+}
 
+.Card2 .interest-item input {
+  width: 70%;
+  margin-right: 10px;
+  background-color: #e0e0e0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.add_company_form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  border: 2px solid rgba(53, 53, 53, 0.2);
+  border-color: rgb(163, 163, 163);
+  border-radius: 32px;
+}
+
+.add_company_form input[type="text"] {
+  padding: 5px;
+  font-size: 16px;
+  width: 200px;
+}
+
+.add_company_form input[type="file"] {
+  padding: 5px;
+  font-size: 16px;
+}
+
+.add_company_form button {
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: center;
+}
+
+.companiesDisplay {
+  width: 300px;
+}
+
+.review-rating {
+  width: 120px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 14px;
+  color: whitesmoke;
+  border-radius: 20px;
+  background-color: #82afe1;
+}
+
+.review-rating p {
+  margin-left: 5px;
+}
+
+.review_name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #213e60;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  line-height: 1; /* Add this line */
+}
+
+.review_time {
+  color: #999;
+  font-size: 14px;
+  margin-top: 0px;
+  padding-top: 0px;
+  font-weight: thin;
+  line-height: 1; /* Add this line */
+}
+
+.review_user_image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
 
 .reviews-container {
   margin-top: 20px;
-  display:flex;
-  flex-direction:column;
-
+  display: flex;
+  flex-direction: column;
 }
 
 .review-card {
@@ -279,7 +286,6 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 15px;
   margin-bottom: 15px;
-
   
 }
 
@@ -312,11 +318,11 @@
   font-size: 16px;
   margin: 10px 0;
 }
-  
-.edit-profile-btn{
+
+.edit-profile-btn {
   display: flex;
-  flex-direction:flex-end;
-  align-items:right;
+  flex-direction: flex-end;
+  align-items: right;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -328,14 +334,13 @@
   display: flex;
   position: fixed;
   top: 0;
-  left:0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   display: flex;
   justify-content: flex-end; /* Align modal to the right */
   align-items: center;
-  
 }
 
 .modal-content {
@@ -345,7 +350,6 @@
   overflow-y: auto;
   height: 100%;
   max-width: 600px; /* Limit the maximum width of the modal content */
- 
 }
 
 .modal-header {
@@ -356,7 +360,6 @@
   border-bottom: 1px solid #ccc;
 }
 
-
 .jl-close-btn {
   background: none;
   border: none;
@@ -364,17 +367,16 @@
   font-size: 1.5rem;
 }
 
-.jl-view-project-header{
+.jl-view-project-header {
   font-size: 34px;
 }
 
-.no-reviews{
+.no-reviews {
   font-size: 20px;
   color: #999;
-  padding-top:10px;
+  padding-top: 10px;
   text-align: center;
   border-top: 1px solid grey;
-  
 }
 
 .slide-enter {
@@ -395,9 +397,8 @@
 
 .slide-exit-active {
   max-height: 0;
-  
 }
 
-.ClientProfile .no_details{
+.ClientProfile .no_details {
   color: #ccc;
 }
