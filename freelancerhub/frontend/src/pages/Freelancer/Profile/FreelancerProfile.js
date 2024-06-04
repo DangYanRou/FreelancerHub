@@ -18,6 +18,8 @@ const FreelancerProfile = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
+
+  //Retrieve UserType
   const storedUserData = localStorage.getItem("user");
   const userData = JSON.parse(storedUserData);
   const userType = userData.type;
@@ -230,7 +232,7 @@ const FreelancerProfile = () => {
     if (user) {
       try {
         const docRef = doc(db, "freelancers", user.uid);
-        await setDoc(docRef, { interests: updatedEducation }, { merge: true });
+        await setDoc(docRef, { educations: updatedEducation }, { merge: true });
         // Update the profile state after updating the database
         setProfile((prevProfile) => ({ ...prevProfile, educations: updatedEducation }));
       } catch (error) {
