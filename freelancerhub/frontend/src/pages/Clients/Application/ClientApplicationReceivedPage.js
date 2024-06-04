@@ -119,9 +119,8 @@ const ClientApplicationReceivedPage = () => {
         {data.map(item => (
           <Card
             key={item.id}
-            className={`w-full mx-auto application-card ${
-            item.statusState >= 3 ? 'application-card-inprogress' : ''
-          }`}>
+            className={`w-full mx-auto p-0 application-card ${
+            item.statusState >= 3 ? 'application-card-inprogress' : ''}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <span

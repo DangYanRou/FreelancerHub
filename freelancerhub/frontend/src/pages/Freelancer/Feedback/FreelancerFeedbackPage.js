@@ -4,6 +4,7 @@ import { db, auth } from '../../../firebase';
 import { collection, addDoc, serverTimestamp, FieldValue } from 'firebase/firestore';
 import { useUser } from '../../../context/UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Loading from "../../../components/Loading";
 
 function FreelancerFeedbackPage() {
   const user = auth.currentUser;
@@ -14,7 +15,7 @@ function FreelancerFeedbackPage() {
   const clientId = location.state.clientID;
   const projectId = location.state.projectID;
   const navigate = useNavigate();
-  
+  const [loading, setLoading]=useState(false);
 
  console.log('clientId =' , clientId);
 
@@ -33,6 +34,7 @@ function FreelancerFeedbackPage() {
       setShowSubmitted(true);
   
       try {
+        setLoading("Submitting...");
         await addDoc(collection(db, "feedback"), {
           from: user.uid,
           to: clientId,
@@ -46,14 +48,18 @@ function FreelancerFeedbackPage() {
         
       } catch (error) {
         console.error("Error submitting feedback: ", error);
+      }finally{
+        setLoading(false);
       }
     } else {
       alert("Please provide both a rating and your feedback!");
     }
   };
 
+
   return (
     <div className="FeedbackPage">
+      {loading && <Loading text={loading}/>}
       <form className="form" onSubmit={handleSubmit}>
         <div className="title">
           <h2>How was your experience?</h2>
