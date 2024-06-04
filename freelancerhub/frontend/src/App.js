@@ -6,10 +6,9 @@ import LoginPage from './pages/LoginPage/LoginPage.js';
 import ResetPassword from './pages/LoginPage/ResetPassword';
 import Register from './pages/LoginPage/Register';
 import { UserProvider, useUser } from './context/UserContext.js';
-import NotificationProvider from './context/NotificationContext.js';
-import WithNavigation from './nav/routes/WithNavigation';
 import './tailwind.css';
 import Layout from './components/Layout.js';
+import NotificationProvider from './context/NotificationContext.js';
 
 const user_types={
   public:"public",

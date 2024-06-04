@@ -2,12 +2,15 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './styles/NavigationBar.css';
 import { UserProvider } from '../context/UserContext';
+import { useHistory } from 'react-router-use-history';
 
 const NavigationBarFreelancer = () => {
   const { pathname } = useLocation(); 
+  const history = useHistory();
 
   const handleLogout = async () => {
     localStorage.removeItem("user");
+    window.location.replace('/');
   };
   
   return (

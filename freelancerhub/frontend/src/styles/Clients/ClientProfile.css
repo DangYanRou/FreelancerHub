@@ -9,12 +9,13 @@
     align-items: center;
   }
   
-  .profileCard {
+  .ClientProfile .profileCard {
     display: flex;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 6px;
     align-items: center;
-    margin: 30px 40px;
+    justify-content: center;
+    margin: 90px 40px 40px 40px;
     width: 80%;
   }
   
@@ -55,8 +56,6 @@
     border-radius: 4px;
     padding: 10px 15px;
     display: flex;
-    justify-content: baseline;
-    align-items: baseline;
   }
   
   .ClientProfile button:hover {

@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import logo from "../../../Gallery/default-user.jpeg";
 import "../../../styles/Clients/ClientProfile.css";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { MdOutlineModeEdit, MdSchool } from "react-icons/md";
+import { MdOutlineModeEdit} from "react-icons/md";
 import ProjectListClient from "../../../components/ProjectListClient";
-import StarRating from "../../../components/Rating";
 import AverageReviewBox from "./ClientAverageReviewBox";
 import Review from "./ClientProfileReviews";
 import { Link } from 'react-router-dom';
@@ -15,14 +14,7 @@ import { BiTimeFive } from "react-icons/bi";
 import { format } from 'date-fns';
 import { useLocation } from "react-router-dom";
 import { useUser } from '../../../context/UserContext';
-import {
-  doc,
-  getDocs,
-  setDoc,
-  collection,
-  where,
-  query,
-} from "firebase/firestore";
+import {doc, getDocs, setDoc, collection, where, query} from "firebase/firestore";
 import { db } from "../../../firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Loading from "../../../components/Loading";
@@ -34,7 +26,6 @@ const ClientProfile = () => {
   const location = useLocation();
   const clientID = location.state?.clientID;
  
-
   //Profile Navigation
   const [showAbout, setShowAbout] = useState(true);
   const [showCompanies, setShowCompanies] = useState(false);
@@ -56,7 +47,6 @@ const ClientProfile = () => {
     companies: [],
   });
   const [formData, setFormData] = useState({ ...profile });
-  const [originalFormData, setOriginalFormData] = useState({});
 
   const [companies, setCompanies] = useState([]);
   const [newCompanyName, setNewCompanyName] = useState("");
@@ -137,8 +127,6 @@ const ClientProfile = () => {
     fetchProjects();
   }, [user.id]);
 
-  
-
   const handleProfileNavClick = (section) => {
     switch (section) {
       case "about":
@@ -173,7 +161,7 @@ const ClientProfile = () => {
 
   const handleCloseModal = () => {
     setSelectedProject(null);
-}
+  }
 
   const handleProjectClick = (project) => {
     setSelectedProject(project);
@@ -201,45 +189,53 @@ const ClientProfile = () => {
     }
   };
 
-  const changesMade = () => {
-    return Object.keys(formData).some(
-      (key) => formData[key] !== originalFormData[key]
-    );
-  };
-
   const handleEditClick = () => {
-    // Preserve the original name and username values when entering editing mode
-    setOriginalFormData({ ...formData });
     setIsEditing(true);
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     // Update profile in Firestore
     const auth = getAuth();
     const user = auth.currentUser;
 
     if (user) {
       const docRef = doc(db, "clients", user.uid);
-      setDoc(docRef, formData, { merge: true }); // Use merge to update the document
-      setProfile(formData);
+      // Sanitize formData to remove any undefined fields
+    const sanitizedFormData = { ...formData };
+
+    // Remove any fields that are undefined
+    for (const key in sanitizedFormData) {
+      if (sanitizedFormData[key] === undefined) {
+        delete sanitizedFormData[key];
+      }
+    }
+
+    // Log the sanitized formData to check for any remaining issues
+    console.log("Sanitized formData: ", sanitizedFormData);
+
+    try{
+      setDoc(docRef, sanitizedFormData, { merge: true }); // Use merge to update the document
+      setProfile(sanitizedFormData);
       setIsEditing(false);
+    }catch (error) {
+      console.error("Error updating document: ", error);
+    } finally {
+      setLoading(false);
     }
 
     const updatedProfile = {
       ...profile,
-      aboutDescription: formData.aboutDescription,
+      aboutDescription: sanitizedFormData.aboutDescription,
     };
     setProfile(updatedProfile);
     setIsEditing(false);
-  };
+  }
+};
 
   const handleCancelClick = () => {
     setIsEditing(false);
-    // Revert the changes only if there were changes made
-    if (changesMade()) {
-      setFormData({ ...originalFormData });
-    }
   };
 
   const handleAddInterest = () => {
@@ -353,7 +349,7 @@ const ClientProfile = () => {
             </div>
         </div>
     );
-}
+  }
   const ProjectDetails = ({ project }) => {
     if (!project) return null;
    const formattedDate = project.date ? format(project.date.toDate(), 'dd/MM/yyyy') : '';
@@ -390,8 +386,7 @@ const ClientProfile = () => {
         </div>
         </div>
     );
-};
-
+  };
 
   return (
     <div className="ClientProfile">
@@ -401,15 +396,8 @@ const ClientProfile = () => {
             <div className="pic_container">
               {isEditing ? (
                 <>
-                  <img
-                    src={formData.profilePicture}
-                    alt="profile picture"
-                  ></img>
-                  <input
-                    style={{ display: "block", paddingLeft: "30px" }}
-                    type="file"
-                    onChange={handleFileChange}
-                  />
+                  <img src={formData.profilePicture} alt="profile picture"></img>
+                  <input style={{ display: "block", paddingLeft: "30px" }} type="file" onChange={handleFileChange}/>
                 </>
               ) : (
                 <img src={profile.profilePicture} alt="profile picture"></img>
@@ -487,24 +475,28 @@ const ClientProfile = () => {
                       <h2 className="name">{formData.name}</h2>
                       <div className="location">
                         <FaMapMarkerAlt className="markerIcon" />
-                        <span>{profile.location}</span>
-                        </div>
+                        {formData.location === "" ? (
+                          <h2 className='no_details'>No details added</h2>
+                        ) : (
+                          <span>{formData.location}</span>
+                        )}
+                      </div>
                     </div>
                     )}
-                  <p style={{ color: "grey" }}>Username: {profile.username}</p>
-                  {profile.companySize === "" && profile.phone ===""? (
+                  <p style={{ color: "grey" }}>Username: {formData.username}</p>
+                  {formData.companySize === "" && formData.phone ===""? (
                       <h2 className='no_details'>No details added</h2>
                   ) : (
                     <>
-                    {profile.companySize !=="" && (
-                      <p className="job">Company Size: {profile.companySize}</p>
+                    {formData.companySize !=="" && (
+                      <p className="job">Company Size: {formData.companySize}</p>
                     )} 
                       <p className="address" style={{ fontSize: 14 }}>
-                        {profile.address}
+                        {formData.address}
                       </p>
-                      {profile.phone !=="" && (
+                      {formData.phone !=="" && (
                       <p className="phone" style={{ fontSize: 14 }}>
-                        Phone: {profile.phone}
+                        Phone: {formData.phone}
                       </p>
                       )}
                     </>
@@ -528,10 +520,11 @@ const ClientProfile = () => {
               </button>
             )}
           </div>
-          <div className="rate">
+        </div>
+        <div className="rate">
           <div className="rate"><AverageReviewBox feedbacks={feedbacks}/></div>
           </div>
-        </div>
+          </div>
         <div className="lowerProfile">
           <nav className="profileNav">
             <div className="navigation">
@@ -711,12 +704,7 @@ const ClientProfile = () => {
                         <div className="btn_container">
                           <img src={company.image} alt={company.name} />
                         </div>
-                        <h4
-                          className="company_name"
-                          style={{ fontWeight: 500 }}
-                        >
-                          {company.name}
-                        </h4>
+                        <h4 className="company_name" style={{ fontWeight: 500 }}>{company.name}</h4>
                       </div>
                     ))}
                     </div>
@@ -725,10 +713,7 @@ const ClientProfile = () => {
                 )}
               </div>
             </div>
-            <div
-              id="projectPosted"
-              style={{ display: showProjects ? "block" : "none" }}
-            >
+            <div id="projectPosted" style={{ display: showProjects ? "block" : "none" }}>
               <h2 className="title">Project Posted</h2>
               <ProjectListClient
                 projects={projects}
@@ -736,17 +721,13 @@ const ClientProfile = () => {
               />
                <ProjectModal isOpen={selectedProject !== null} onClose={handleCloseModal} project={selectedProject} />
             </div>
-            <div
-              id="reviews"
-              style={{ display: showReviews ? "block" : "none" }}
-            >
+            <div id="reviews" style={{ display: showReviews ? "block" : "none" }}>
               <h2 className="title">Reviews</h2>
               <Review feedbacks={feedbacks} />
             </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
