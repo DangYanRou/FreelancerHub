@@ -153,7 +153,8 @@ const CreateProjectPreview = () => {
 
         try {
             await updateDoc(projectRef, projectInfo);
-            const projectID = docRef.id;
+            const projectID = projectRef.id;
+            console.log('Project updated successfully!',projectID);
 
             if (user) {
                 const promises = freelancerid.map(freelancerid => {
@@ -239,7 +240,7 @@ const handleInputChange = (event) => {
           }
         }
       }
-
+      setLoading(false);
       return favouriteFreelancers;
     } catch (error) {
       console.error('Error fetching favourite freelancers: ', error);
@@ -289,7 +290,6 @@ const handleInputChange = (event) => {
                 console.log('Date is null');
                 data.date = null; // or set it to a default value
               }            setProjectInfo(prevState => ({ ...prevState, ...data }));
-            setLoading(false);
             
           } else {
             console.log('No such document!');

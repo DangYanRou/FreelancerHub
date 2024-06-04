@@ -46,6 +46,7 @@ export const addProject = async (projectInfo) => {
     }, { merge: true });    
 
     console.log("Document written with ID: ", docID);
+    return docRef;
   } catch (e) {
     console.error("Error adding document: ", e);
   }
