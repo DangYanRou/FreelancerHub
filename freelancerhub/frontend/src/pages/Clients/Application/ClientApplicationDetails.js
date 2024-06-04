@@ -78,7 +78,7 @@ const ClientApplicationDetails = () => {
     }
 
     const handleProfileClick = (freelancerID) => {
-        history.push('client-view-profile', { freelancer: { freelancerID } });
+        history.push('client-view-profile', { freelancerID: freelancerID });
     };
 
     const handleEmailClick = (emailAddress, projectName, clientName) => {
