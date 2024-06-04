@@ -12,6 +12,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { BiTimeFive } from "react-icons/bi";
 import { format } from 'date-fns';
+import { useLocation } from "react-router-dom";
 import { useUser } from '../../../context/UserContext';
 import {doc, getDocs, setDoc, collection, where, query} from "firebase/firestore";
 import { db } from "../../../firebase";
@@ -22,6 +23,8 @@ const ClientProfile = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
+  const location = useLocation();
+  const clientID = location.state?.clientID;
  
   //Profile Navigation
   const [showAbout, setShowAbout] = useState(true);
@@ -53,9 +56,9 @@ const ClientProfile = () => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       try {
-        if (user) {
-          const uid = user.uid;
-          console.log(user.uid)
+        if (user || clientID) {
+          const uid = clientID || user?.uid;
+
           const q = query(collection(db, "clients"), where("uid", "==", uid));
           const querySnapshot = await getDocs(q);
 
@@ -501,7 +504,7 @@ const ClientProfile = () => {
                 </>
               )}
             </div>
-            {!isEditing && (
+            {!isEditing && !clientID && (
               <button onClick={handleEditClick}>
                 <MdOutlineModeEdit /> Edit Profile
               </button>

@@ -102,7 +102,12 @@ const CreateProjectPreview = () => {
     setLoading(true);
     event.preventDefault();
     const user = auth.currentUser;
-    
+    if (!user) {
+      console.error('User is not authenticated');
+      setLoading(false);
+      return;
+    }
+
     const docRef = doc(db, "clients", user.uid);
 
     let isValid = true;
@@ -144,48 +149,47 @@ const CreateProjectPreview = () => {
 
       if (isValid) {
         const projectRef = doc(db, 'projects', projectId);
+        console.log('VALIDING!');
 
-        updateDoc(projectRef, projectInfo)
-            .then(() => {
-              const projectID = docRef.id;
-              // setIsDialogOpen(true);
-              // console.log('isDialogOpen should be true now');
-        // Use map to create an array of promises
-        const promises = freelancerid.map(freelancerid => {
-            const notificationToFreelancerData = {
-                isRead: false,
-                isPop: false,
-                timestamp: new Date(),
-                type: 0,
-                priority: 2,
-                projectID: projectID,
-                clientID: user.uid,
-                to: freelancerid
-            };
-            console.log('Notification UID:', freelancerid);
+        try {
+            await updateDoc(projectRef, projectInfo);
+            const projectID = projectRef.id;
+            console.log('Project updated successfully!',projectID);
 
-            // Return the promise from addDoc
-            return addDoc(collection(db, 'notifications'), notificationToFreelancerData);
-        });
+            if (user) {
+                const promises = freelancerid.map(freelancerid => {
+                    const notificationToFreelancerData = {
+                        isRead: false,
+                        isPop: false,
+                        timestamp: new Date(),
+                        type: 0,
+                        priority: 2,
+                        projectID: projectID,
+                        clientID: user.uid,
+                        to: freelancerid
+                    };
+                    console.log('Notification UID:', freelancerid);
+                    return addDoc(collection(db, 'notifications'), notificationToFreelancerData);
+                });
 
-        // Use Promise.all to wait for all promises to complete
-        return Promise.all(promises);
-    })
-    .then(() => {
-        console.log('Notification added successfully!');
-        navigate('/clients/project-posted');
-        clearContext(); 
-
-                })
-            .catch((error) => {
-                console.error("Error updating document: ", error);
-            }).finally(() => {
+                await Promise.all(promises);
+                console.log('Notification added successfully!');
+                navigate('/clients/project-posted');
+                clearContext(); 
+            } else {
+                console.error('User is not defined');
                 setLoading(false);
-            });
+            }
+        } catch (error) {
+            console.error("Error updating document: ", error);
+            setLoading(false);
+            return;
+        } finally {
+            setLoading(false);
+        }
     } else {
         window.alert('All fields must be filled!');
         setLoading(false);
-
     }
 };
 
@@ -222,19 +226,21 @@ const handleInputChange = (event) => {
         if (data.uid) {
           const freelancerDoc = doc(db, 'freelancers', data.uid);
           const freelancerSnapshot = await getDoc(freelancerDoc);
-          if (freelancerSnapshot.exists()) {
-            const freelancerData = freelancerSnapshot.data();
+          if (freelancerSnapshot.exists() ) {
+          const freelancerData = freelancerSnapshot.data();
+          const isFreelancerInArray = favouriteFreelancers.some(freelancer => freelancer.uid === data.uid);
+          if(!isFreelancerInArray){            
             favouriteFreelancers.push({
               uid: data.uid,
               profilePicture: freelancerData.profilePicture,
               name: freelancerData.name,
               email: freelancerData.email,
               selected:false
-            });
+            })};
           }
         }
       }
-
+      setLoading(false);
       return favouriteFreelancers;
     } catch (error) {
       console.error('Error fetching favourite freelancers: ', error);
@@ -242,10 +248,12 @@ const handleInputChange = (event) => {
   };
 
   useEffect(() => {
-    fetchFavouriteFreelancers().then(favouriteFreelancers => {
-      setUsers(favouriteFreelancers);
-    });
-  }, []);
+    if (auth.currentUser) {
+      fetchFavouriteFreelancers().then(favouriteFreelancers => {
+        setUsers(favouriteFreelancers);
+      });
+    }
+  }, [auth.currentUser]);
   
   const handleUserClick = (index) => {
     const updatedUsers = users.map((user, idx) => {
@@ -282,7 +290,6 @@ const handleInputChange = (event) => {
                 console.log('Date is null');
                 data.date = null; // or set it to a default value
               }            setProjectInfo(prevState => ({ ...prevState, ...data }));
-            setLoading(false);
             
           } else {
             console.log('No such document!');
@@ -380,13 +387,9 @@ const handleKeywordDelete = (keywordToDelete) => {
 
   return (
     <div className="flex flex-col items-start justify-center">
-
-                        <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
-                      Edit Project
+          <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
+             Edit Project
           </Heading>
-
-
-
            <hr className="border-gray-700 my-8 w-[93%] mx-auto" />
       <div style={{ backgroundColor: '#69ACC2' }} className="w-screen max-w-full h-8/10">
         <div className="bg-white w-4/5 rounded-md my-12 mx-auto text-left">
@@ -424,7 +427,7 @@ id="projectCategory" name="category" value={projectInfo.category} onChange={hand
     {jobCateError && <p className="text-red-500 text-xs italic">{jobCateError}</p>}
 
   </div>
-  <div className="w-1/2">
+  <div className="w-1/2 ">
     <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="location">Location: </label>
     <input
         ref={locationInputRef}
@@ -628,15 +631,15 @@ id="projectCategory" name="category" value={projectInfo.category} onChange={hand
     <div className="rounded-[10px] overflow-hidden border border-solid border-gray-500 bg-white-A700 ">
     <table className="w-full">
   <tbody>
- {users.map((user, index) => (
-                        <tr key={index} onClick={() => handleUserClick(index)}>
-                          <td className={`rounded-[10px] border border-solid border-gray-500 w-4/5 m-auto my-2 p-2 flex items-center ${user.selected ? 'bg-green-200' : 'bg-red-100'} ${user.selected ? '' : 'hover:bg-gray-200'} transition-colors duration-200`}>
-                            <img src={user.profilePicture} alt={user.name} className="w-8 h-8 rounded-full mr-2" />
-                            <span className="font-bold text-gray-700">{user.name}</span>
-                          </td>
-                        </tr>
-                      ))}
-  </tbody>
+  {users && users.map((user, index) => (
+    <tr key={index} onClick={() => handleUserClick(index)}>
+      <td className={`rounded-[10px] border border-solid border-gray-500 w-4/5 m-auto my-2 p-2 flex items-center ${user.selected ? 'bg-green-200' : 'bg-red-100'} ${user.selected ? '' : 'hover:bg-gray-200'} transition-colors duration-200`}>
+        <img src={user.profilePicture} alt={user.name} className="w-8 h-8 rounded-full mr-2" />
+        <span className="font-bold text-gray-700">{user.name}</span>
+      </td>
+    </tr>
+  ))}
+</tbody>
 </table>
 </div>
   </div>
@@ -647,7 +650,7 @@ id="projectCategory" name="category" value={projectInfo.category} onChange={hand
 
   </div>
   <div className="w-1/4">
-    <button onClick={HandleConfirmationOpen} type="postProject" className="w-full bg-[#213E60] hover:bg-[#69ACC2] text-white font-bold py-2 px-4 rounded-lg">
+    <button onClick={handlePostClick} type="postProject" className="w-full bg-[#213E60] hover:bg-[#69ACC2] text-white font-bold py-2 px-4 rounded-lg">
       Edit
     </button>
   </div>
@@ -657,12 +660,12 @@ id="projectCategory" name="category" value={projectInfo.category} onChange={hand
           </form>
         </div>
       </div>
-        <ConfirmationDialog
+        {/* <ConfirmationDialog
         open={confirmationOpen}
         message="Are you sure you want to edit this project?"
         onConfirm={handlePostClick}
         onCancel={handleCancelSubmission}
-      />
+      /> */}
       {/* {isDialogOpen && (
     <div className="edittedSuccess-overlay">
         <div className="edittedSuccess-content">

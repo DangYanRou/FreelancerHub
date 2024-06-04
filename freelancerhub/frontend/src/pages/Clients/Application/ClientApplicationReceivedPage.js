@@ -98,8 +98,7 @@ const ClientApplicationReceivedPage = () => {
   };
 
   const handleProfileClick = (freelancerID) => {
-    history.push("freelancer-temporary-profile",{freelancer:{freelancerID:freelancerID}});
-    //to freelancer profile
+    history.push('client-view-profile', { freelancerID: freelancerID });
   };
 
   const handleViewApplicationClick = (projectID, freelancerID) => {

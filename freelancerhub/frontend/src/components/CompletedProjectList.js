@@ -7,9 +7,16 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { BiTimeFive } from "react-icons/bi";
 import { db } from "../firebase";
-import { collection, doc, getDoc, setDoc,onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { formatDistanceToNow } from "date-fns";
-import { getDocs, query, where } from "firebase/firestore";
 import { useUser } from "../context/UserContext";
 
 const CompletedProjectListClient = ({ projects }) => {
@@ -21,6 +28,8 @@ const CompletedProjectListClient = ({ projects }) => {
   const [showFeedback, setShowFeedback] = useState({});
   const feedbackRef = useRef(null);
   const [feedbackMaxHeight, setFeedbackMaxHeight] = useState({});
+  const [isFavourite, setIsFavourite] = useState(false);
+  const [favouriteClient, setFavouriteClient] = useState({});
 
   const toggleFavourite = (projectId) => {
     setFavourites((prev) => ({
@@ -55,22 +64,26 @@ const CompletedProjectListClient = ({ projects }) => {
     }
   });
 
-  // 
+  //
   useEffect(() => {
     const feedbackRef = collection(db, "feedback");
     const unsubscribes = []; // Array to store the unsubscribe functions
-  
+
     // Loop over each project
     projects.forEach((project) => {
       // Create a query for the feedback of the current project
-      const feedbackQuery = query(feedbackRef, where("from", "==", user.id), where ("projectID", "==", project.id));
-      
+      const feedbackQuery = query(
+        feedbackRef,
+        where("from", "==", user.id),
+        where("projectID", "==", project.id)
+      );
+
       // Set up a real-time listener
       const unsubscribe = onSnapshot(feedbackQuery, (snapshot) => {
         if (!snapshot.empty) {
           const feedbackDoc = snapshot.docs[0];
           // Store the feedback in the state using the project ID as the key
-          setFeedback(prev => ({
+          setFeedback((prev) => ({
             ...prev,
             [project.id]: {
               id: feedbackDoc.id,
@@ -79,17 +92,61 @@ const CompletedProjectListClient = ({ projects }) => {
           }));
         }
       });
-  
+
       unsubscribes.push(unsubscribe); // Store the unsubscribe function
     });
-  
+
     // Return a cleanup function that calls all the unsubscribe functions
     return () => {
-      unsubscribes.forEach(unsubscribe => unsubscribe());
+      unsubscribes.forEach((unsubscribe) => unsubscribe());
     };
   }, [user.id, projects]);
 
-  console.log("Your Feedback = " , feedback);
+  console.log("Your Feedback = ", feedback);
+
+  //setIsFavourite by checking the favouriteClientdata
+  useEffect(() => {
+    const favouriteClientRef = collection(db, "favouriteClient");
+    const unsubscribes = []; // Array to store the unsubscribe functions
+
+    // Loop over each project
+    projects.forEach((project) => {
+      // Create a query for the favouriteClient of the current project
+      const favouriteClientQuery = query(
+        favouriteClientRef,
+        where("uid", "==", project.clientID),
+        where("freelancerID", "==", project.freelancerID)
+      );
+
+      // Set up a real-time listener
+      const unsubscribe = onSnapshot(favouriteClientQuery, (snapshot) => {
+        if (!snapshot.empty) {
+          const favouriteClientDoc = snapshot.docs[0];
+          // Store the favouriteClient in the state using the project ID as the key
+          setFavouriteClient((prev) => ({
+            ...prev,
+            [project.id]: {
+              id: favouriteClientDoc.id,
+              ...favouriteClientDoc.data(),
+            },
+          }));
+
+          setIsFavourite(true);
+        } else {
+          setIsFavourite(false);
+        }
+      });
+
+      unsubscribes.push(unsubscribe); // Store the unsubscribe function
+    });
+
+    // Return a cleanup function that calls all the unsubscribe functions
+    return () => {
+      unsubscribes.forEach((unsubscribe) => unsubscribe());
+    };
+  }, [projects]);
+
+  console.log("favourite data is ", isFavourite);
 
   //deon
   const addFavouriteClient = async (clientID, freelancerID) => {
@@ -137,7 +194,7 @@ const CompletedProjectListClient = ({ projects }) => {
           <p className="apply-status">{project.status}</p>
           <div className="bottom-row">
             <p style={{ flexGrow: 1 }}>
-              Completed on: {" "}
+              Completed on:{" "}
               <span className="complete-date">
                 {project.completedDate
                   ? project.completedDate.toDate().toLocaleDateString("en-GB")
@@ -158,29 +215,43 @@ const CompletedProjectListClient = ({ projects }) => {
                   setHover((prev) => ({ ...prev, [project.id]: false }))
                 }
                 style={{
-                  backgroundColor: favourites[project.id]
-                    ? "#4CAF50"
-                    : "#69acc2",
+                  backgroundColor:
+                    isFavourite || favourites[project.id]
+                      ? "#4CAF50"
+                      : "#69acc2",
                   color: hover[project.id] ? "#213e60" : "#fff",
                   transition: "color 0.3s ease",
                 }}
+                disabled={isFavourite}
               >
-                {favourites[project.id] ? (
+                {isFavourite ? (
                   <div className="favourite-collaborator">
                     <span className="icon-text">
-                      <AiOutlineCheckCircle /> Favourite Collaborator
+                      <AiOutlineCheckCircle className="icon" /> Favourite
+                      Collaborator
+                    </span>
+                  </div>
+                ) : favourites[project.id] ? (
+                  <div className="favourite-collaborator">
+                    <span className="icon-text">
+                      <AiOutlineCheckCircle className="icon" /> Favourite
+                      Collaborator
                     </span>
                   </div>
                 ) : (
                   "+ Favourite Collaborator"
                 )}
               </button>
+
               {!feedback[project.id] && (
                 <button
                   className="feedbackBtn"
                   onClick={() =>
                     navigate("../freelancer-feedback-page", {
-                      state: { clientID: project.clientID , projectID : project.id},
+                      state: {
+                        clientID: project.clientID,
+                        projectID: project.id,
+                      },
                     })
                   }
                 >
@@ -220,16 +291,21 @@ const CompletedProjectListClient = ({ projects }) => {
                     <span className="review-date">
                       {feedback[project.id] &&
                         feedback[project.id].timestamp &&
-                        formatDistanceToNow(feedback[project.id].timestamp.toDate(), {
-                          addSuffix: true,
-                        })}
+                        formatDistanceToNow(
+                          feedback[project.id].timestamp.toDate(),
+                          {
+                            addSuffix: true,
+                          }
+                        )}
                     </span>
                   </div>
                   <div className="review-body">
                     <span className="review-rating">
                       Rating: {feedback[project.id].rating}/5
                     </span>
-                    <p className="review-content">{feedback[project.id].feedback}</p>
+                    <p className="review-content">
+                      {feedback[project.id].feedback}
+                    </p>
                   </div>
                 </div>
               </div>

@@ -14,12 +14,11 @@ import ClientProfile from '../../pages/Clients/Profile/ClientProfile';
 import ClientFeedbackPage from '../../pages/Clients/Feedback/ClientFeedbackPage';
 import ClientAverageReviewBox from '../../pages/Clients/Profile/ClientAverageReviewBox';
 import NotificationPage from '../../pages/NotificationPage';
-import FreelancerTemporaryProfile from '../../pages/Freelancer/Profile/FreelancerTemporaryProfile';
 import ClientSaved from '../../pages/Clients/Saved/ClientSaved';
 import WithNavigation from './WithNavigation';
 import { ProjectInfoProvider } from '../../context/ProjectInfoProvider'; 
 import { EmailProvider } from '../../context/ProjectInvitationContext'; 
-import FreelancerProfile from '../../pages/Freelancer/Profile/FreelancerTemporaryProfile';
+import FreelancerProfile from '../../pages/Freelancer/Profile/FreelancerProfile';
 
 const ClientRoutes = () => {
   return (
