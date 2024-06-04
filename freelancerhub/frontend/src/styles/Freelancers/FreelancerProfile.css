@@ -325,7 +325,6 @@ a:hover{
     background-color: #69acc2;
   }
 
-.experience_column{
-    display: flex;
-}
-
+  .FreelancerProfile .no_details{
+    color: #ccc;
+  }

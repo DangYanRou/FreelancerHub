@@ -21,7 +21,8 @@ export default function BioCard({ client}) {
   const removeClient =async(id)=>{
 	try{
 		const clientDoc= doc(db,"favouriteClient",id);
-		await deleteDoc(clientDoc);
+    await deleteDoc(clientDoc);
+    window.location.reload();
 	}catch(error){
 		console.log(error.message);
 	}
@@ -56,7 +57,7 @@ export default function BioCard({ client}) {
               PRO
             </Chip>
             {/* <div className={`card ${selectedClientId === blog.id ? 'selected' : ''}`} onClick={() => onClientClick(blog)}> */}
-              <Typography level="title-lg">{client.name}</Typography>
+              <Typography level="title-lg">{client.username}</Typography>
               <Typography level="body-sm" sx={{ maxWidth: '24ch' }}>
                 {client.aboutDescription}
               </Typography>
@@ -84,7 +85,11 @@ export default function BioCard({ client}) {
             <CardActions buttonFlex="1">
               <ButtonGroup variant="outlined" sx={{ bgcolor: 'background.surface' }}>
                 <Button onClick={()=>removeClient(client.id)}>Remove</Button>
-                {/* <Button onClick={() => navigate('/clients/freelancer-temporary-profile')}>Go To Profile</Button> */}
+                <Button 
+                              onClick={() => window.location.href = `mailto:${client.email}`}
+                            >
+                              Message
+                            </Button>
               </ButtonGroup>
             </CardActions>
           </CardOverflow>

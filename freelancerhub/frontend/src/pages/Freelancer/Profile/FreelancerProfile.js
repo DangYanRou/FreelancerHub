@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import"../../../styles/Freelancers/FreelancerProfile.css";
+import "../../../styles/Freelancers/FreelancerProfile.css";
 import logo from "../../../Gallery/default-user.jpeg";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
+import { MdOutlineModeEdit, MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
 import AverageReviewBox from "./FreelancerAverageReviewBox";
 import Heading from '../../../components/Heading';
-import { doc, getDocs, setDoc,collection,where,query} from "firebase/firestore";
+import { doc, getDocs, setDoc, collection, where, query } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { getAuth, onAuthStateChanged} from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Loading from '../../../components/Loading';
 import Review from "./FreelancerProfileReviews";
 import ProjectsCompleted from "../Project/ProjectCompletedPage"
+import { useLocation } from 'react-router-dom';
 
 const FreelancerProfile = () => {
   const [loading, setLoading] = useState(true);
@@ -27,19 +28,23 @@ const FreelancerProfile = () => {
     profilePicture: logo,
     frontendSkills: [],
     backendSkills: [],
-    educations:[],
+    educations: [],
   });
   const [formData, setFormData] = useState({ ...profile });
-  const [originalFormData, setOriginalFormData] = useState({});
   const [feedbacks, setFeedbacks] = useState([]);
 
+  //YR nav used
+  const location = useLocation();
+  const freelancerID = location.state?.freelancerID;
 
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       try {
-        if (user) {
-          const uid = user.uid;
+        if (user || freelancerID) {
+          const uid = freelancerID || user?.uid;
+          console.log("uid,", uid);
+
           const q = query(collection(db, "freelancers"), where("uid", "==", uid));
           const querySnapshot = await getDocs(q);
 
@@ -47,7 +52,7 @@ const FreelancerProfile = () => {
             const userData = querySnapshot.docs[0].data();
             setProfile({
               ...userData,
-              username: userData.username, 
+              username: userData.username,
               profilePicture: userData.profilePicture || logo,
               frontendSkills: userData.frontendSkills || [],
               backendSkills: userData.backendSkills || [],
@@ -55,56 +60,58 @@ const FreelancerProfile = () => {
             });
             setFormData({
               ...userData,
-              username: userData.username, 
+              username: userData.username,
               profilePicture: userData.profilePicture || logo,
               frontendSkills: userData.frontendSkills || [],
               backendSkills: userData.backendSkills || [],
               educations: userData.educations || [],
             });
 
-             //fetch feedbacks
-             const feedbacksCollection = collection(db, "feedback");
-             const feedbacksQuery = query(
-               feedbacksCollection,
-               where("to", "==", uid)
-             );
-             const feedbacksSnapshot = await getDocs(feedbacksQuery);
-             const feedbacksData = feedbacksSnapshot.docs.map((doc) => ({
-               id: doc.id,
-               ...doc.data(),
-             }));
-             setFeedbacks(feedbacksData);
+            //fetch feedbacks
+            const feedbacksCollection = collection(db, "feedback");
+            const feedbacksQuery = query(
+              feedbacksCollection,
+              where("to", "==", uid)
+            );
+            const feedbacksSnapshot = await getDocs(feedbacksQuery);
+            const feedbacksData = feedbacksSnapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            setFeedbacks(feedbacksData);
           } else {
             console.log("No such document!");
           }
+        } else {
+          console.log("User is not logged in");
         }
       } catch (error) {
-        console.error("User is not logged in");
+        console.error("Error fetching user data:", error);
       } finally {
         setLoading(false);
       }
     });
     return () => unsubscribe();
-  }, []);
+  }, [freelancerID]);
 
   const handleProfileNavClick = (section) => {
-    if(section==='about') {
-        setShowAbout(true);
-        setShowProjects(false);
-        setShowReviews(false);
+    if (section === 'about') {
+      setShowAbout(true);
+      setShowProjects(false);
+      setShowReviews(false);
     }
-    else if(section==='projects'){
-        setShowAbout(false);
-        setShowProjects(true);
-        setShowReviews(false);
+    else if (section === 'projects') {
+      setShowAbout(false);
+      setShowProjects(true);
+      setShowReviews(false);
     }
-    else if(section==='reviews'){
-        setShowAbout(false);
-        setShowProjects(false);
-        setShowReviews(true);
+    else if (section === 'reviews') {
+      setShowAbout(false);
+      setShowProjects(false);
+      setShowReviews(true);
     }
     else
-    return;
+      return;
   };
 
   const handleFileChange = (e) => {
@@ -133,48 +140,48 @@ const FreelancerProfile = () => {
     const user = auth.currentUser;
 
     // Validation for frontendSkills
-  for (const skill of formData.frontendSkills) {
-    if (!skill.name || !skill.level) {
-      alert('Please fill out all fields for frontend skills.');
-      setLoading(false);
-      return;
-    }
-  }
-
-  // Validation for backendSkills
-  for (const skill of formData.backendSkills) {
-    if (!skill.name || !skill.level) {
-      alert('Please fill out all fields for backend skills.');
-      setLoading(false);
-      return;
-    }
-  }
-    if (user) {
-      const docRef = doc(db, "freelancers", user.uid);
-      // Sanitize formData to remove any undefined fields
-    const sanitizedFormData = { ...formData };
-
-    // Remove any fields that are undefined
-    for (const key in sanitizedFormData) {
-      if (sanitizedFormData[key] === undefined) {
-        delete sanitizedFormData[key];
+    for (const skill of formData.frontendSkills) {
+      if (!skill.name || !skill.level) {
+        alert('Please fill out all fields for frontend skills.');
+        setLoading(false);
+        return;
       }
     }
 
-    // Log the sanitized formData to check for any remaining issues
-    console.log("Sanitized formData: ", sanitizedFormData);
-
-    try {
-      setDoc(docRef, sanitizedFormData, { merge: true });
-      setProfile(sanitizedFormData);
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Error updating document: ", error);
-    } finally {
-      setLoading(false);
+    // Validation for backendSkills
+    for (const skill of formData.backendSkills) {
+      if (!skill.name || !skill.level) {
+        alert('Please fill out all fields for backend skills.');
+        setLoading(false);
+        return;
+      }
     }
-  }
-};
+    if (user) {
+      const docRef = doc(db, "freelancers", user.uid);
+      // Sanitize formData to remove any undefined fields
+      const sanitizedFormData = { ...formData };
+
+      // Remove any fields that are undefined
+      for (const key in sanitizedFormData) {
+        if (sanitizedFormData[key] === undefined) {
+          delete sanitizedFormData[key];
+        }
+      }
+
+      // Log the sanitized formData to check for any remaining issues
+      console.log("Sanitized formData: ", sanitizedFormData);
+
+      try {
+        setDoc(docRef, sanitizedFormData, { merge: true });
+        setProfile(sanitizedFormData);
+        setIsEditing(false);
+      } catch (error) {
+        console.error("Error updating document: ", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   const handleCancelClick = () => {
     setIsEditing(false);
@@ -191,15 +198,15 @@ const FreelancerProfile = () => {
 
   const handleAddEducation = () => {
     const lastEducation = formData.educations[formData.educations.length - 1];
-  if (lastEducation === '') {
-    alert("Please fill in your education!");
-  } else {
-    setFormData({
-      ...formData,
-      educations: [...formData.educations, ''],
-    });
-  }
-};
+    if (lastEducation === '') {
+      alert("Please fill in your education!");
+    } else {
+      setFormData({
+        ...formData,
+        educations: [...formData.educations, ''],
+      });
+    }
+  };
 
   const handleRemoveEducation = (index) => {
     const updatedEducations = formData.educations.filter((_, i) => i !== index);
@@ -220,7 +227,7 @@ const FreelancerProfile = () => {
         console.error("Error updating education: ", error);
       }
     }
-};
+  };
 
   const handleEducationChange = (index, value) => {
     const updatedEducation = formData.educations.map((education, i) =>
@@ -233,12 +240,12 @@ const FreelancerProfile = () => {
   const handleAddSkill = (type) => {
     // Check if the last skill in the list is empty
     const lastSkill = formData[type + 'Skills'][formData[type + 'Skills'].length - 1];
-    
-    if (lastSkill && !lastSkill.name ){
+
+    if (lastSkill && !lastSkill.name) {
       alert('Please fill out the name of the current skill before adding a new one.');
       return;
     }
-  
+
     // Add the new skill
     const newSkill = { name: '', level: '' };
     setFormData({
@@ -246,21 +253,22 @@ const FreelancerProfile = () => {
       [type + 'Skills']: [...formData[type + 'Skills'], newSkill],
     });
   };
-  
-  
+
   const handleRemoveSkill = (type, index) => {
-    const updatedSkills = [...formData[type + 'Skills']];
-    updatedSkills.splice(index, 1);
-    setFormData({
-      ...formData,
-      [type + 'Skills']: updatedSkills,
-    });
+    const updatedSkills = formData[type + 'Skills'].filter((_, i) => i !== index);
+    setFormData({ ...formData, [type + 'Skills']: updatedSkills });
+  };
+
+  const handleSkillChange = (type, index, field, value) => {
+    const updatedSkills = formData[type + 'Skills'].map((skill, i) =>
+      i === index ? { ...skill, [field]: value } : skill
+    );
+    setFormData({ ...formData, [type + 'Skills']: updatedSkills });
   };
 
   if (loading) {
-    return <Loading/>; 
+    return <Loading />;
   }
-
   return (
     <div className="FreelancerProfile">
           <Heading as="h1" className="tracking-[-0.90px]" style={{ fontSize: '26px', marginLeft: '40px' }}>Profile</Heading>
@@ -336,25 +344,33 @@ const FreelancerProfile = () => {
                 </form>
               ) : (
                 <>
-              <div className="name-location" style={{alignContent:"center",justifyContent:"center"}}>
+                {profile.name===""? (
+                  <h2 className='no_details' >No details added</h2>
+                ) : (
+                  <div className="name-location" style={{alignContent:"center",justifyContent:"center"}}>
                     <h2 className="name">{profile.name}</h2>
                     <div className="location">
                       <FaMapMarkerAlt className="markerIcon" />
                       <span>{profile.location}</span>
                     </div>
-              </div>
+                  </div>
+                )}         
               <p style={{color:"grey"}}>Username: {profile.username}</p>
                   <p className="job">{profile.job}</p>
                   <p className="address" style={{ fontSize: 14 }}>
                     {profile.address}
                   </p>
-                  <p className="phone" style={{ fontSize: 14 }}>
-                    Phone: {profile.phone}
-                  </p>
+                  {profile.phone===""? (
+                    <h2 className='no_details' >No details added</h2>
+                  ) : (
+                    <p className="phone" style={{ fontSize: 14 }}>
+                      Phone: {profile.phone}
+                    </p>
+                  )}
                 </>
               )}
             </div>
-            {!isEditing && (
+            {!isEditing && !freelancerID && (
               <button onClick={handleEditClick}><MdOutlineModeEdit /> Edit Profile</button>
             )}
             {isEditing && (
@@ -407,41 +423,7 @@ const FreelancerProfile = () => {
                       <button type="button" onClick={handleAddEducation}>Add Education</button>
                     </div>
                     <div className='about_details'>
-                      <GrAchievement className='aboutIcon' /><h3>Experience</h3>
-                      <div className='about_details'>
-                        <h2 className='experience_name'>Frontend Development</h2>
-                        <div className='experience_content'>
-                          {formData.frontendSkills.map((skill, index) => (
-                            <div key={index} className='experience_description'>
-                              <MdVerified className='verifiedIcon' />
-                              <input
-                                type="text"
-                                value={skill.name}
-                                placeholder="Skill"
-                                onChange={(e) => {
-                                  const updatedSkills = [...formData.frontendSkills];
-                                  updatedSkills[index].name = e.target.value;
-                                  setFormData({ ...formData, frontendSkills: updatedSkills });
-                                }}
-                              />
-                              <input
-                                type="text"
-                                value={skill.level}
-                                placeholder='Level'
-                                onChange={(e) => {
-                                  const updatedSkills = [...formData.frontendSkills];
-                                  updatedSkills[index].level = e.target.value;
-                                  setFormData({ ...formData, frontendSkills: updatedSkills });
-                                }}
-                              />
-                              <button type="button" onClick={() => handleRemoveSkill('frontend', index)}>Remove</button>
-                            </div>
-                          ))}
-                          <button type="button" onClick={() => handleAddSkill('frontend')}>Add Frontend Skill</button>
-                        </div>
-                      </div>
-                      <div className='about_details'>
-                        <h2 className='experience_name'>Backend Development</h2>
+                      <GrAchievement className='aboutIcon' /><h3>Skills</h3>
                         <div className='experience_content'>
                           {formData.backendSkills.map((skill, index) => (
                             <div key={index} className='experience_description'>
@@ -469,39 +451,35 @@ const FreelancerProfile = () => {
                               <button type="button" onClick={() => handleRemoveSkill('backend', index)}>Remove</button>
                             </div>
                           ))}
-                          <button type="button" onClick={() => handleAddSkill('backend')}>Add Backend Skill</button>
+                          <button type="button" onClick={() => handleAddSkill('backend')}>Add Skill</button>
                         </div>
-                    </div>
                     </div>
                   </div>
                 </form>
               ) : (
                 <div>
-                  <p>{profile.aboutDescription}</p>
+                  {profile.aboutDescription===""? (
+                    <h2 className='no_details' >Edit now</h2>
+                  ) : (
+                    <p>{profile.aboutDescription}</p>
+                  )}
                   <div className='about_container'>
                   <div className='about_details'>
                     <MdSchool className='aboutIcon' /><h3>Education</h3>
-                    {profile.educations.map((education, index) => (
-                      <p key={index} className='education_text'>{education}</p>
-                    ))}
+                    {profile.educations.length === 0 ? (
+                      <h2 className='no_details'>No Education added</h2>
+                    ) : (
+                      profile.educations.map((education, index) => (
+                          <p key={index} className='education_text'>{education}</p>
+                      ))
+                  )}
                   </div>
                   <div id="experience_box" className='about_details'>
-                  <GrAchievement className='aboutIcon' /><h3>Experience</h3>
+                  <GrAchievement className='aboutIcon' /><h3>Skills</h3>
                   <div className='experience_column'>
-                    <div className='about_details' style={{width:300}}>
-                      <h2 className='experience_name'>Frontend Development</h2>
-                      <div className='experience_content'>
-                        {formData.frontendSkills.map((skill, index) => (
-                          <div key={index} className='experience_description'>
-                            <MdVerified className='verifiedIcon' />
-                            <p>{skill.name}</p>
-                            <p className='experience_detail'>{skill.level}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className='about_details'>
-                      <h2 className='experience_name'>Backend Development</h2>
+                  {profile.backendSkills.length === 0 ? (
+                      <h2 className='no_details'>No Skills added</h2>
+                    ) : (
                       <div className='experience_content'>
                         {formData.backendSkills.map((skill, index) => (
                           <div key={index} className='experience_description'>
@@ -511,7 +489,7 @@ const FreelancerProfile = () => {
                           </div>
                         ))}
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
                   </div>

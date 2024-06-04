@@ -78,7 +78,7 @@ const ClientApplicationDetails = () => {
     }
 
     const handleProfileClick = (freelancerID) => {
-        history.push('client-view-profile', { freelancer: { freelancerID } });
+        history.push('client-view-profile', { freelancerID: freelancerID });
     };
 
     const handleEmailClick = (emailAddress, projectName, clientName) => {
@@ -110,6 +110,7 @@ const ClientApplicationDetails = () => {
                     statusTime: new Date(),
                 });
                 console.log("Proposal status updated successfully");
+                
 
                 await updateDoc(projectRef, {
                     statusState: 3,
@@ -145,7 +146,7 @@ const ClientApplicationDetails = () => {
             await addDoc(collection(db, 'notifications'), notificationToClientData);
     
             setTimeout(() => {
-                history.push('/clients/project-posted');
+                history.push('/clients/proposal-received',{projectID:proposalDetails.projectID});
                 setLoading(false);
             }, 2000);
         } catch (error) {
