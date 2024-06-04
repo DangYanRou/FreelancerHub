@@ -28,29 +28,6 @@ const auth = getAuth(app);
 
 export { db, storage,auth,ref, getDownloadURL  };
 
-export const addProject = async (projectInfo) => {
-  console.log('Adding project:', projectInfo);
-  try {
-    const user = auth.currentUser;
-    const uid = user.uid;
-
-    // Generate a new document ID
-    const docRef = doc(collection(db, "projects"));
-    const docID = docRef.id;
-
-    // Add the new project with the custom document ID
-    await setDoc(docRef, projectInfo);
-
-    await setDoc(doc(db, "clients", uid), {
-      createdProjects: arrayUnion(docID)
-    }, { merge: true });    
-
-    console.log("Document written with ID: ", docID);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
-};
-
 
 
 

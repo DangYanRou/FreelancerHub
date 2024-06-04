@@ -16,12 +16,16 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from 'firebase/auth';
 import Loading from '../../../components/Loading';
 import { useUser } from '../../../context/UserContext';
+import { useHistory } from 'react-router-use-history';
 
 
-const FreelancerSaved = () => {
-  const navigate = useNavigate();
+const FreelancerSaved = (event,projectID, clientID) => {
+  const history=useHistory();
   const handleApply = () => {
-    navigate('/freelancers/proposal-form',{});
+    history.push('/freelancers/proposal-form', {
+      user_key: { freelancerID: user.id },
+      project_key: { projectID: projectID, clientID: clientID }
+    });
   };
 
   const [favProjects, setFavProjects] = useState([]);
@@ -103,7 +107,7 @@ const FreelancerSaved = () => {
         </div>
         <h3 id="preferredQualification">Preferred Qualification:</h3>
         <p>{project.preferredQualification}</p>
-        <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
+        <button id="applyButton" onClick={(event)=>handleApply(event,project.projectID,project.clientID)} className="btn btn-primary">Apply</button>
       </div>
     );
   };

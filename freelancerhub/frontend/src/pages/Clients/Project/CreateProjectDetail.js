@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
 import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
+import '../../../styles/Clients/CreateProject.css';
 
 // ProgressBar component to display the stages of project creation
 const ProgressBar = ({ stages }) => {
@@ -60,7 +61,7 @@ const CreateProjectDetail = () => {
   const [locationResults, setLocationResults] = useState([]);
   const locationInputRef = useRef(null);
   const dropdownRef = useRef(null);
-
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 const handleFormSubmit = (event) => {
   event.preventDefault();
@@ -99,7 +100,7 @@ const handleFormSubmit = (event) => {
   if (isValid) {
     navigate("/clients/post-project-description");
   }  else {
-    window.alert('All fields must be filled!');
+    setIsDialogOpen(true);
   }
 };
 
@@ -172,7 +173,13 @@ useEffect(() => {
   return (
     <div>
     <div className="flex flex-col items-start justify-center">
-        
+    {isDialogOpen && (
+      <div className="allfilled-overlay" onClick={() => setIsDialogOpen(false)}>
+            <div className="allfilled-content">
+                <h2>All fields must be filled!</h2>
+              </div>
+            </div>
+          )}
     <Heading as="h1" className="text-center tracking-[-0.90px]" style={{ fontSize: '26px', marginLeft: '50px'  }}>
                       Create Project
           </Heading>

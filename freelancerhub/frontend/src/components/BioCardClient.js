@@ -56,7 +56,7 @@ const handleAvatarClick = (event, freelancerID) => {
             borderColor: 'background.surface',
           }}
         >
-          PRO
+          To Profile
         </Chip>
         <Typography onClick={(event) => handleAvatarClick(event,freelancer.uid)}  level="title-lg">{ freelancer.username}</Typography>
         <Typography level="body-sm" sx={{ maxWidth: '24ch' }}>

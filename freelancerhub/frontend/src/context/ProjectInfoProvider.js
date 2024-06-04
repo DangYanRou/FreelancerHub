@@ -24,6 +24,8 @@ export const ProjectInfoProvider = ({ children }) => {
 
 });
 
+
+
   return (
     <ProjectContext.Provider value={[project, setProject]}>
       {children}
