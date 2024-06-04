@@ -39,7 +39,7 @@ function AverageReviewBox({ feedbacks }) {
 
   return (
     <div className="container">
-      <h3 className="title">Reviews</h3>
+      <h3 className="title">Ratings</h3>
       <div className="content">
         <div className="avgNumContainer">
           <div className="circle">
