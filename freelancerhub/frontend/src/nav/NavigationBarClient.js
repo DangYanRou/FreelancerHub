@@ -7,6 +7,7 @@ const NavigationBarClient = () => {
 
     const handleLogout = async () => {
         localStorage.removeItem("user");
+        window.location.replace('/');
       };
   
       
