@@ -351,7 +351,7 @@ const NotificationPage = () => {
         return (
           <Alert key={item.id} severity="success" onClick={(event) => handleClientAccept(event, item)} 
             variant={isRead(item.isRead)} className={`notification-item ${priorityClass}`} color={getPriority(item.priority)}>
-            <AlertTitle>You have assigned <b>{item.projectName || 'a project'}</b> to <b>{item.freelancerName || 'a freelancer'}.</b></AlertTitle>
+            <AlertTitle>You have assigned <b>{item.projectName || 'a project'}</b> to <b>{item.freelancerName || 'a freelancer'}</b>. If the assignment hasn't been accepted yet, please contact <b>{item.freelancerName || 'the freelancer'}</b> via email.</AlertTitle>
             {new Date(item.timestamp?.toDate()).toLocaleString()}
           </Alert>
         );
