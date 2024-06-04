@@ -387,13 +387,9 @@ const handleKeywordDelete = (keywordToDelete) => {
 
   return (
     <div className="flex flex-col items-start justify-center">
-
-                        <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
-                      Edit Project
+          <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
+             Edit Project
           </Heading>
-
-
-
            <hr className="border-gray-700 my-8 w-[93%] mx-auto" />
       <div style={{ backgroundColor: '#69ACC2' }} className="w-screen max-w-full h-8/10">
         <div className="bg-white w-4/5 rounded-md my-12 mx-auto text-left">
