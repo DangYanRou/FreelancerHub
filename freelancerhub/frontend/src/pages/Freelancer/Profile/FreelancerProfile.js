@@ -16,17 +16,20 @@ import { useLocation } from 'react-router-dom';
 
 const FreelancerProfile = () => {
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [feedbacks, setFeedbacks] = useState([]);
+
+  //Profile Navigation
   const [showAbout, setShowAbout] = useState(true);
   const [showProjects, setShowProjects] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  
   const [profile, setProfile] = useState({
     location: "",
     job: "",
     phone: "",
     about: "",
     profilePicture: logo,
-    frontendSkills: [],
     backendSkills: [],
     educations: [],
   });
@@ -54,7 +57,6 @@ const FreelancerProfile = () => {
               ...userData,
               username: userData.username,
               profilePicture: userData.profilePicture || logo,
-              frontendSkills: userData.frontendSkills || [],
               backendSkills: userData.backendSkills || [],
               educations: userData.educations || [],
             });
@@ -62,7 +64,6 @@ const FreelancerProfile = () => {
               ...userData,
               username: userData.username,
               profilePicture: userData.profilePicture || logo,
-              frontendSkills: userData.frontendSkills || [],
               backendSkills: userData.backendSkills || [],
               educations: userData.educations || [],
             });
@@ -138,15 +139,6 @@ const FreelancerProfile = () => {
     // Update profile in Firestore
     const auth = getAuth();
     const user = auth.currentUser;
-
-    // Validation for frontendSkills
-    for (const skill of formData.frontendSkills) {
-      if (!skill.name || !skill.level) {
-        alert('Please fill out all fields for frontend skills.');
-        setLoading(false);
-        return;
-      }
-    }
 
     // Validation for backendSkills
     for (const skill of formData.backendSkills) {
