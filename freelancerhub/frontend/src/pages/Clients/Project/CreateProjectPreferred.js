@@ -185,7 +185,7 @@ const handleResDelete = (ResToDelete) => {
             </div>
             <div className="flex justify-between w-8/10 m-4">
   <div className="flex flex-col w-1/2 mr-8">
-    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectStartTime">Preffered Skills: </label>
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectStartTime">Preferred Skills: </label>
     <input 
     className="flex h-[40px] w-full items-center justify-center self-stretch rounded-[10px] border border-solid border-gray-500 bg-white-A700 px-5"
     id="preferredSkills"

@@ -5,13 +5,13 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineModeEdit,MdSchool, MdVerified } from "react-icons/md";
 import { GrAchievement } from "react-icons/gr";
 import AverageReviewBox from "./FreelancerAverageReviewBox";
-import StarRating from "../../../components/Rating";
 import Heading from '../../../components/Heading';
 import { doc, getDocs, setDoc,collection,where,query} from "firebase/firestore";
 import { db } from "../../../firebase";
 import { getAuth, onAuthStateChanged} from "firebase/auth";
 import Loading from '../../../components/Loading';
 import Review from "./FreelancerProfileReviews";
+import ProjectsCompleted from "../Project/ProjectCompletedPage"
 
 const FreelancerProfile = () => {
   const [loading, setLoading] = useState(true);
@@ -30,7 +30,6 @@ const FreelancerProfile = () => {
     educations:[],
   });
   const [formData, setFormData] = useState({ ...profile });
-  const [originalFormData, setOriginalFormData] = useState({});
   const [feedbacks, setFeedbacks] = useState([]);
 
 
@@ -336,21 +335,29 @@ const FreelancerProfile = () => {
                 </form>
               ) : (
                 <>
-              <div className="name-location" style={{alignContent:"center",justifyContent:"center"}}>
+                {profile.name===""? (
+                  <h2 className='no_details' >No details added</h2>
+                ) : (
+                  <div className="name-location" style={{alignContent:"center",justifyContent:"center"}}>
                     <h2 className="name">{profile.name}</h2>
                     <div className="location">
                       <FaMapMarkerAlt className="markerIcon" />
                       <span>{profile.location}</span>
                     </div>
-              </div>
+                  </div>
+                )}         
               <p style={{color:"grey"}}>Username: {profile.username}</p>
                   <p className="job">{profile.job}</p>
                   <p className="address" style={{ fontSize: 14 }}>
                     {profile.address}
                   </p>
-                  <p className="phone" style={{ fontSize: 14 }}>
-                    Phone: {profile.phone}
-                  </p>
+                  {profile.phone===""? (
+                    <h2 className='no_details' >No details added</h2>
+                  ) : (
+                    <p className="phone" style={{ fontSize: 14 }}>
+                      Phone: {profile.phone}
+                    </p>
+                  )}
                 </>
               )}
             </div>
@@ -407,41 +414,7 @@ const FreelancerProfile = () => {
                       <button type="button" onClick={handleAddEducation}>Add Education</button>
                     </div>
                     <div className='about_details'>
-                      <GrAchievement className='aboutIcon' /><h3>Experience</h3>
-                      <div className='about_details'>
-                        <h2 className='experience_name'>Frontend Development</h2>
-                        <div className='experience_content'>
-                          {formData.frontendSkills.map((skill, index) => (
-                            <div key={index} className='experience_description'>
-                              <MdVerified className='verifiedIcon' />
-                              <input
-                                type="text"
-                                value={skill.name}
-                                placeholder="Skill"
-                                onChange={(e) => {
-                                  const updatedSkills = [...formData.frontendSkills];
-                                  updatedSkills[index].name = e.target.value;
-                                  setFormData({ ...formData, frontendSkills: updatedSkills });
-                                }}
-                              />
-                              <input
-                                type="text"
-                                value={skill.level}
-                                placeholder='Level'
-                                onChange={(e) => {
-                                  const updatedSkills = [...formData.frontendSkills];
-                                  updatedSkills[index].level = e.target.value;
-                                  setFormData({ ...formData, frontendSkills: updatedSkills });
-                                }}
-                              />
-                              <button type="button" onClick={() => handleRemoveSkill('frontend', index)}>Remove</button>
-                            </div>
-                          ))}
-                          <button type="button" onClick={() => handleAddSkill('frontend')}>Add Frontend Skill</button>
-                        </div>
-                      </div>
-                      <div className='about_details'>
-                        <h2 className='experience_name'>Backend Development</h2>
+                      <GrAchievement className='aboutIcon' /><h3>Skills</h3>
                         <div className='experience_content'>
                           {formData.backendSkills.map((skill, index) => (
                             <div key={index} className='experience_description'>
@@ -469,39 +442,35 @@ const FreelancerProfile = () => {
                               <button type="button" onClick={() => handleRemoveSkill('backend', index)}>Remove</button>
                             </div>
                           ))}
-                          <button type="button" onClick={() => handleAddSkill('backend')}>Add Backend Skill</button>
+                          <button type="button" onClick={() => handleAddSkill('backend')}>Add Skill</button>
                         </div>
-                    </div>
                     </div>
                   </div>
                 </form>
               ) : (
                 <div>
-                  <p>{profile.aboutDescription}</p>
+                  {profile.aboutDescription===""? (
+                    <h2 className='no_details' >Edit now</h2>
+                  ) : (
+                    <p>{profile.aboutDescription}</p>
+                  )}
                   <div className='about_container'>
                   <div className='about_details'>
                     <MdSchool className='aboutIcon' /><h3>Education</h3>
-                    {profile.educations.map((education, index) => (
-                      <p key={index} className='education_text'>{education}</p>
-                    ))}
+                    {profile.educations.length === 0 ? (
+                      <h2 className='no_details'>No Education added</h2>
+                    ) : (
+                      profile.educations.map((education, index) => (
+                          <p key={index} className='education_text'>{education}</p>
+                      ))
+                  )}
                   </div>
                   <div id="experience_box" className='about_details'>
-                  <GrAchievement className='aboutIcon' /><h3>Experience</h3>
+                  <GrAchievement className='aboutIcon' /><h3>Skills</h3>
                   <div className='experience_column'>
-                    <div className='about_details' style={{width:300}}>
-                      <h2 className='experience_name'>Frontend Development</h2>
-                      <div className='experience_content'>
-                        {formData.frontendSkills.map((skill, index) => (
-                          <div key={index} className='experience_description'>
-                            <MdVerified className='verifiedIcon' />
-                            <p>{skill.name}</p>
-                            <p className='experience_detail'>{skill.level}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className='about_details'>
-                      <h2 className='experience_name'>Backend Development</h2>
+                  {profile.backendSkills.length === 0 ? (
+                      <h2 className='no_details'>No Skills added</h2>
+                    ) : (
                       <div className='experience_content'>
                         {formData.backendSkills.map((skill, index) => (
                           <div key={index} className='experience_description'>
@@ -511,7 +480,7 @@ const FreelancerProfile = () => {
                           </div>
                         ))}
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
                   </div>
@@ -520,30 +489,7 @@ const FreelancerProfile = () => {
             </div>
             <div id="projects" style={{ display: showProjects ? 'block' : 'none' }}>
               <p className='projects_text'>Browse My Recents</p>
-              <h2 className='title'>Projects</h2>
-              <div className='projects_container'>
-                <div className='about_details'>
-                  <h2 className='project_name'>E-Commerce Platform</h2>
-                  <p>An online marketplace where vendors can sell products and consumers can shop conveniently.</p>
-                  <div className='btn_container'>
-                    <button className='btn_project' onClick={() => window.location.href = 'https://github.com/tamagoyaki03/board'}>Github</button>
-                  </div>
-                </div>
-                <div className='about_details'>
-                  <h2 className='project_name'>Social Networking Platform</h2>
-                  <p>A platform that connects people, allowing them to create profiles, interact through real-time messaging, and share updates.</p>
-                  <div className='btn_container'>
-                    <button className='btn_project' onClick="#">Github</button>
-                  </div>
-                </div>
-                <div className='about_details'>
-                  <h2 className='project_name'>Travel and Tourism Website</h2>
-                  <p>A website that assists travelers in planning trips, generating itineraries, and providing reviews and recommendations.</p>
-                  <div className='btn_container'>
-                    <button className='btn_project' onClick="#">Github</button>
-                  </div>
-                </div>
-              </div>
+              <ProjectsCompleted style={{paddingTop:0}}/>
             </div> 
             <div
               id="reviews"
@@ -558,6 +504,5 @@ const FreelancerProfile = () => {
     </div>
   );
 }
-
 
 export default FreelancerProfile;
