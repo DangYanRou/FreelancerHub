@@ -34,7 +34,6 @@ const FreelancerProfile = () => {
     educations: [],
   });
   const [formData, setFormData] = useState({ ...profile });
-  const [feedbacks, setFeedbacks] = useState([]);
 
   //YR nav used
   const location = useLocation();
