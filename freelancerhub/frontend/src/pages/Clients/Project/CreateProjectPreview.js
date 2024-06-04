@@ -170,7 +170,6 @@ const CreateProjectPreview = () => {
   };
 
   const addProject = async (projectInfo) => {
-    setLoading(true); // Set loading to true when starting to fetch data
     console.log('Adding project:', projectInfo);
     try {
       const user = auth.currentUser;
@@ -191,31 +190,18 @@ const CreateProjectPreview = () => {
       return docRef;
     } catch (e) {
       console.error("Error adding document: ", e);
-      setLoading(false); // Also set loading to false if an error occurs
-
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        fetchFavouriteFreelancers(user.uid).then(favouriteFreelancers => {
-          setUsers(favouriteFreelancers);
-        });
-      }
-    });
-  
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, []);
-  
-  const fetchFavouriteFreelancers = async (uid) => {
+  const fetchFavouriteFreelancers = async () => {
     try {
+      const user = auth.currentUser;
+      const clientID = user.uid;
       const collectionRef = collection(db, 'favouriteFreelancer');
-      const q = query(collectionRef, where('clientID', '==', uid));
+      const q = query(collectionRef, where('clientID', '==', clientID));
       const snapshot = await getDocs(q);
       const favouriteFreelancers = [];
-  
+
       for (let docSnapshot of snapshot.docs) {
         const data = docSnapshot.data();
         if (data.uid) {
@@ -245,6 +231,12 @@ const CreateProjectPreview = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchFavouriteFreelancers().then(favouriteFreelancers => {
+      setUsers(favouriteFreelancers);
+    });
+  }, []);
 
   
   const handleUserClick = (index) => {
