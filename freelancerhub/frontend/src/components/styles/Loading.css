@@ -16,7 +16,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(3px); 
+  /* backdrop-filter: blur(3px); */
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .content-container {
@@ -47,13 +48,13 @@
   top: 20%;
   left: 45%;
   transform: translateX(-50%);
-  width: 40px; 
-  height: 40px; 
+  width: 40px;
+  height: 40px;
 }
 
 .loading-text {
   margin-top: 20px;
-  color:#213e60;
+  color: #213e60;
   font-size: 1.5em;
   text-align: center;
   display: inline-block;
@@ -65,7 +66,8 @@
 }
 
 @keyframes breatheBlue {
-  0%, 100% {
+  0%,
+  100% {
     filter: contrast(1);
   }
   50% {
@@ -74,7 +76,8 @@
 }
 
 @keyframes pop {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -87,7 +90,8 @@
 }
 
 @keyframes zoomInOut {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
