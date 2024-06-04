@@ -381,7 +381,7 @@ const FreelancerProfile = () => {
                 </>
               )}
             </div>
-            {!isEditing && showButton &&(
+            {!isEditing && showButton && !freelancerID &&(
               <button onClick={handleEditClick}>
                 <MdOutlineModeEdit/>Edit Profile</button>
             )}
