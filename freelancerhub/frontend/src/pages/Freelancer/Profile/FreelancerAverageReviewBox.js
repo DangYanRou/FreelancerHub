@@ -9,22 +9,26 @@ function AverageReviewBox({ feedbacks }) {
   useEffect(() => {
     const computeRatings = () => {
       const newRatings = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-      feedbacks.forEach((feedback) => {
-        newRatings[feedback.rating]++;
-      });
 
-      setRatings(newRatings);
-
-      const total = Object.values(newRatings).reduce((a, b) => a + b, 0);
-      setTotalRatings(total);
-
-      const average = total
-        ? Object.entries(newRatings).reduce(
-            (acc, [score, count]) => acc + score * count,
-            0
-          ) / total
-        : 0;
-      setAverageRating(average);
+      if(feedbacks !=null){
+        feedbacks.forEach((feedback) => {
+          newRatings[feedback.rating]++;
+        });
+  
+        setRatings(newRatings);
+  
+        const total = Object.values(newRatings).reduce((a, b) => a + b, 0);
+        setTotalRatings(total);
+  
+        const average = total
+          ? Object.entries(newRatings).reduce(
+              (acc, [score, count]) => acc + score * count,
+              0
+            ) / total
+          : 0;
+        setAverageRating(average);
+      }
+      
     };
 
     computeRatings();
