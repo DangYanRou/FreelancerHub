@@ -10,12 +10,12 @@
     display: flex;
     justify-content: flex-start; /* Aligns items horizontally */
     align-items: flex-start; /* Aligns items vertically */
-    overflow-y: auto;
+    
    
 }
 
 .card{
-    width:700px;
+    width:900px;
     position: relative;
     flex-direction: column;
     align-items: flex-start;
