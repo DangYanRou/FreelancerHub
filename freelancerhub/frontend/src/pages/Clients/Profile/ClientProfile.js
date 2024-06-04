@@ -25,12 +25,19 @@ const ClientProfile = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const location = useLocation();
   const clientID = location.state?.clientID;
+
+  //Retrieve UserType
+  const storedUserData = localStorage.getItem("user");
+  const userData = JSON.parse(storedUserData);
+  const userType = userData.type;
+  console.log("User type:", userType);
  
   //Profile Navigation
   const [showAbout, setShowAbout] = useState(true);
   const [showCompanies, setShowCompanies] = useState(false);
   const [showProjects, setShowProjects] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
+  const [showButton, setShowButton] = useState(true);
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [newInterest, setNewInterest] = useState("");
@@ -134,24 +141,40 @@ const ClientProfile = () => {
         setShowCompanies(false);
         setShowProjects(false);
         setShowReviews(false);
+        if(userType==="freelancer"){
+          setShowButton(false);
+          console.log("User type:", userType);
+        }
         break;
       case "affiliatedCompanies":
         setShowAbout(false);
         setShowCompanies(true);
         setShowProjects(false);
         setShowReviews(false);
+        if(userType==="freelancer"){
+          setShowButton(false);
+          console.log("User type:", userType);
+        }
         break;
       case "projectPosted":
         setShowAbout(false);
         setShowCompanies(false);
         setShowProjects(true);
         setShowReviews(false);
+        if(userType==="freelancer"){
+          setShowButton(false);
+          console.log("User type:", userType);
+        }
         break;
       case "reviews":
         setShowAbout(false);
         setShowCompanies(false);
         setShowProjects(false);
         setShowReviews(true);
+        if(userType==="freelancer"){
+          setShowButton(false);
+          console.log("User type:", userType);
+        }
         break;
       default:
         break;
@@ -504,7 +527,7 @@ const ClientProfile = () => {
                 </>
               )}
             </div>
-            {!isEditing && !clientID && (
+            {!isEditing && !clientID && showButton && (
               <button onClick={handleEditClick}>
                 <MdOutlineModeEdit /> Edit Profile
               </button>
