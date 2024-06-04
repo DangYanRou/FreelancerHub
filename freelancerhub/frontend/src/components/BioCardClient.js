@@ -23,6 +23,7 @@ export default function BioCardClient({ freelancer }) {
 	try{
 		const freelancerDoc= doc(db,"favouriteFreelancer",id);
     await deleteDoc(freelancerDoc);
+    window.location.reload();
 	}catch(error){
 		console.log(error.message);
 	}
@@ -52,7 +53,7 @@ export default function BioCardClient({ freelancer }) {
         >
           PRO
         </Chip>
-        <Typography level="title-lg">{ freelancer.name}</Typography>
+        <Typography level="title-lg">{ freelancer.username}</Typography>
         <Typography level="body-sm" sx={{ maxWidth: '24ch' }}>
           { freelancer.aboutDescription}
         </Typography>

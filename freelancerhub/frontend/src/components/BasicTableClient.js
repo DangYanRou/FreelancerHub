@@ -80,7 +80,7 @@ export default function BasicTableClient() {
                 style={cellStyle}
               >
                 <TableCell component="th" scope="row" style={cellStyle}>
-                  {row.name}
+                  {row.username}
                 </TableCell>
                 <TableCell align="right" style={cellStyle}>{row.email}</TableCell>
                 <TableCell align="right" style={cellStyle}>{row.phone}</TableCell>

@@ -477,21 +477,35 @@ const ClientProfile = () => {
                 </form>
               ) : (
                 <>
-                  <div className="name-location">
-                    <h2 className="name">{formData.name}</h2>
-                    <div className="location">
-                      <FaMapMarkerAlt className="markerIcon" />
-                      <span>{profile.location}</span>
+                  {formData.name === "" ? (
+                      <h2 className='no_details'>No details added</h2>
+                    ) : (
+                      <div className="name-location">
+                      <h2 className="name">{formData.name}</h2>
+                      <div className="location">
+                        <FaMapMarkerAlt className="markerIcon" />
+                        <span>{profile.location}</span>
+                        </div>
                     </div>
-                  </div>
+                    )}
                   <p style={{ color: "grey" }}>Username: {profile.username}</p>
-                  <p className="job">Company Size: {profile.companySize}</p>
-                  <p className="address" style={{ fontSize: 14 }}>
-                    {profile.address}
-                  </p>
-                  <p className="phone" style={{ fontSize: 14 }}>
-                    Phone: {profile.phone}
-                  </p>
+                  {profile.companySize === "" && profile.phone ===""? (
+                      <h2 className='no_details'>No details added</h2>
+                  ) : (
+                    <>
+                    {profile.companySize !=="" && (
+                      <p className="job">Company Size: {profile.companySize}</p>
+                    )} 
+                      <p className="address" style={{ fontSize: 14 }}>
+                        {profile.address}
+                      </p>
+                      {profile.phone !=="" && (
+                      <p className="phone" style={{ fontSize: 14 }}>
+                        Phone: {profile.phone}
+                      </p>
+                      )}
+                    </>
+                  )}
                 </>
               )}
             </div>
@@ -608,10 +622,17 @@ const ClientProfile = () => {
               ) : (
                 <div>
                   <div className="about_container">
+                  {profile.aboutDescription===""? (
+                    <h2 className='no_details' >Edit now</h2>
+                  ) : (
                     <p>{profile.aboutDescription}</p>
+                  )}
                   </div>
                   <div className="clientAbout_details">
                     <h3 style={{ fontSize: 20, fontWeight: 500 }}>Interest</h3>
+                    {profile.interests.length===0? (
+                    <h2 className='no_details' >No interest added</h2>
+                  ) : (
                     <div className="interest_container">
                       {(profile.interests || []).map((interest, index) => (
                         <div key={index} className="interest_details">
@@ -619,6 +640,7 @@ const ClientProfile = () => {
                         </div>
                       ))}
                     </div>
+                  )}
                   </div>
                 </div>
               )}
@@ -677,6 +699,10 @@ const ClientProfile = () => {
                   </div>
                 ) : (
                   <div className="companiesDisplay">
+                    {formData.companies.length===0? (
+                    <h2 className='no_details' style={{textAlign:"center"}}>No company added</h2>
+                  ) : (
+                    <div>
                     {(formData.companies ?? []).map((company, index) => (
                       <div key={index} className="about_details">
                         <div className="btn_container">
@@ -690,6 +716,8 @@ const ClientProfile = () => {
                         </h4>
                       </div>
                     ))}
+                    </div>
+                  )}
                   </div>
                 )}
               </div>

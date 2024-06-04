@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { db, auth } from '../../../firebase';
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { onAuthStateChanged } from 'firebase/auth';
 
 
 const FreelancerSaved = () => {
@@ -45,8 +46,13 @@ const FreelancerSaved = () => {
     }
   };
 
-  useEffect(() => {
-    getFavProjects();
+   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        getFavProjects(user.uid);
+      }
+    });
+    return () => unsubscribe();
   }, []);
 
   const ProjectModal = ({ isOpen, onClose, project }) => {
@@ -118,7 +124,7 @@ const FreelancerSaved = () => {
               orientation="horizontal"
             >
               {favProjects.length > 0 ? (
-                <ProjectList
+                <ProjectList 
                   projects={favProjects}
                   onProjectClick={handleProjectClick}
                   selectedProjectId={selectedProject ? selectedProject.id : null}
