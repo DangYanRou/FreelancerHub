@@ -12,8 +12,9 @@ import '../../../styles/Freelancers/FreelancerSaved.css';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { db, auth } from '../../../firebase';
+import { useUser } from '../../../context/UserContext';
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { onAuthStateChanged } from 'firebase/auth';
+import Loading from '../../../components/Loading';
 
 
 const FreelancerSaved = () => {
@@ -24,36 +25,56 @@ const FreelancerSaved = () => {
 
   const [favProjects, setFavProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [appliedProjects, setAppliedProjects] = useState([]);
+  const[loading,setLoading]=useState(false);
+  const { user } = useUser();
 
   const collectionRef = collection(db, "favouriteProject");
 
-  const getFavProjects = async () => {
-    try {
-      const userID = auth.currentUser.uid;
-      const q = query(collectionRef, where("savedBy", "==", userID));
+  
 
-      const data = await getDocs(q);
-      const filteredData = data.docs.map((doc) => {
-        const projectData = doc.data();
-        if (projectData.date) {
-          projectData.date = projectData.date.toDate().toLocaleDateString();
+  useEffect(() => {
+    const getFavProjects = async () => {
+      setLoading(true)
+        try {
+            const q = query(collectionRef, where("savedBy", "==", user.id));
+            const data = await getDocs(q);
+            const filteredData = data.docs.map((doc) => {
+                const projectData = doc.data();
+                if (projectData.date) {
+                    projectData.date = projectData.date.toDate().toLocaleDateString();
+                }
+                return { ...projectData, id: doc.id };
+            });
+            setFavProjects(filteredData);
+
+            if (user) {
+                console.log(user.id);
+                const proposalsRef = collection(db, 'proposals');
+                const proposalsQuery = query(proposalsRef, where("UserID","==", user.id));
+                const proposalsSnapshot = await getDocs(proposalsQuery);
+                
+                // Extract IDs of projects user has applied for
+                const appliedProjectsIDs = proposalsSnapshot.docs.map(doc => doc.data().freelancerID);
+                
+                console.log("applied:", appliedProjectsIDs);
+                setAppliedProjects(appliedProjectsIDs);
+            }
+
+        } catch (error) {
+            console.error("Error in fetching data:", error.message);
+        }finally{
+          setLoading(false);
         }
-        return { ...projectData, id: doc.id };
-      });
-      setFavProjects(filteredData);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+    }; 
 
-   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        getFavProjects(user.uid);
-      }
-    });
-    return () => unsubscribe();
-  }, []);
+    getFavProjects(); // Call the function to fetch data when the component mounts
+
+}, []);
+
+if(loading){
+return <Loading/>
+}
 
   const ProjectModal = ({ isOpen, onClose, project }) => {
     if (!isOpen || !project) return null;
@@ -63,7 +84,7 @@ const FreelancerSaved = () => {
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <div className="modal-header">
             <h2 id='view-application-header'>View Project</h2>
-            <button className="close-btn" onClick={onClose}><GrFormClose /></button>
+            <button className="jl-close-btn" onClick={onClose}><GrFormClose /></button>
           </div>
           <ProjectDetails project={project} />
         </div>
@@ -73,6 +94,9 @@ const FreelancerSaved = () => {
 
   const ProjectDetails = ({ project }) => {
     if (!project) return null;
+    const hasApplied = appliedProjects.includes(project.savedBy);
+    console.log(project.savedBy)
+    console.log("hasApplied"+hasApplied)
     return (
       <div className="project-details">
         <h2 id="detail-title">{project.title}</h2>
@@ -80,7 +104,7 @@ const FreelancerSaved = () => {
         <p id="category">{project.category}</p>
         <p><FaLocationDot className="icon-style" />{project.location}</p>
         <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.minInput}-{project.maxInput}/project</p>
-        <p><BiTimeFive size={20} className='icon-style2' />{project.duration}</p>
+        <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
         <p>Starting from: {project.date}</p>
         <h3 id="about-the-project">About the Project:</h3>
         <p>{project.description}</p>
@@ -94,8 +118,24 @@ const FreelancerSaved = () => {
         </div>
         <h3 id="preferredQualification">Preferred Qualification:</h3>
         <p>{project.preferredQualification}</p>
-        <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
+        <div>
+            <h3 id="key-requirement">Preferred Skills:</h3>
+              <ul className="list">
+              {(project.preferredSkills ?? []).map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+            </div>
+
+            {hasApplied ? (
+          <button id="applyButton" className="btn-disabled" disabled>Applied</button>
+        ) : (
+          <button id="applyButton" onClick={() => handleApply(project.id, project.clientID)} className="btn btn-primary">Apply</button>
+        )}
+        
+       
       </div>
+      
     );
   };
 

@@ -61,8 +61,7 @@ const ProjectListSaved=({projects,onProjectClick,selectedProjectId}) => {
               <p><FaLocationDot className="icon-style" />{blog.location}</p>
               <p><MdOutlineAttachMoney size={20} className='icon-style2'/>{blog.minInput}-{blog.maxInput} {blog.currencyInput}/project</p>
               <p><BiTimeFive size={20} className='icon-style2' />{blog.duration} {blog.durationUnit}</p>
-              <p className="apply-status">{statusMessage}</p>
-              <p className="apply-date">{blog.applyDate}</p>
+              
             </div>
           </div>
         );
