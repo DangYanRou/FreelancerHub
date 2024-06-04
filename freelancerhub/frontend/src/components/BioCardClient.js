@@ -30,7 +30,7 @@ export default function BioCardClient({ freelancer }) {
 		console.log(error.message);
 	}
 }
-const handleAvatarClick = (freelancerID) => {
+const handleAvatarClick = (event, freelancerID) => {
   history.push('client-view-profile', { freelancerID: freelancerID });
 };
 
