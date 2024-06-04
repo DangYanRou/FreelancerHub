@@ -145,7 +145,7 @@ const ClientApplicationDetails = () => {
             await addDoc(collection(db, 'notifications'), notificationToClientData);
     
             setTimeout(() => {
-                history.push('/clients/project-posted');
+                history.push('/clients/proposal-received',{projectID:proposalDetails.projectID});
                 setLoading(false);
             }, 2000);
         } catch (error) {
