@@ -110,6 +110,7 @@ const ClientApplicationDetails = () => {
                     statusTime: new Date(),
                 });
                 console.log("Proposal status updated successfully");
+                
 
                 await updateDoc(projectRef, {
                     statusState: 3,
