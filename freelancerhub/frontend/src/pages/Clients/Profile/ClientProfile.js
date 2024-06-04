@@ -527,7 +527,7 @@ const ClientProfile = () => {
                 </>
               )}
             </div>
-            {!isEditing && showButton &&!clientID && (
+            {!isEditing && !clientID && showButton && (
               <button onClick={handleEditClick}>
                 <MdOutlineModeEdit /> Edit Profile
               </button>

@@ -41,7 +41,6 @@ const FreelancerProfile = () => {
     educations: [],
   });
   const [formData, setFormData] = useState({ ...profile });
-  const [feedbacks, setFeedbacks] = useState([]);
 
   //YR nav used
   const location = useLocation();
@@ -382,7 +381,7 @@ const FreelancerProfile = () => {
                 </>
               )}
             </div>
-            {!isEditing && showButton &&(
+            {!isEditing && showButton && !freelancerID &&(
               <button onClick={handleEditClick}>
                 <MdOutlineModeEdit/>Edit Profile</button>
             )}
