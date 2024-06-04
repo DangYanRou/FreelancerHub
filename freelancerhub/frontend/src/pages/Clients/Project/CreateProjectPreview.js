@@ -119,9 +119,48 @@ const CreateProjectPreview = () => {
     .then(() => {
         console.log('Notification added successfully!');
         navigate('/clients/project-posted');
+        setProjectInfo({
+          title: '',
+          minInput: '',
+          maxInput: '',
+          location: '',
+          description: '',
+          category: '',
+          workPlace: '',
+          currencyInput: 'MYR',
+          date: null,
+          workload: '',
+          duration: '',
+          durationUnit: 'day(s)',
+          preferredQualification: '',
+          jobResponsibilities: [],
+          preferredSkills: [],
+          keywords: [],
+          statusState: 1,
+          postedTime: new Date()
+        });
     }).finally(() => {
       setLoading(false);
-
+      setProjectInfo({
+        title: '',
+        minInput: '',
+        maxInput: '',
+        location: '',
+        description: '',
+        category: '',
+        workPlace: '',
+        currencyInput: 'MYR',
+        date: null,
+        workload: '',
+        duration: '',
+        durationUnit: 'day(s)',
+        preferredQualification: '',
+        jobResponsibilities: [],
+        preferredSkills: [],
+        keywords: [],
+        statusState: 1,
+        postedTime: new Date()
+      });
     }).catch((error) => {
       console.error("Error adding document: ", error);
     });
@@ -246,7 +285,7 @@ const CreateProjectPreview = () => {
       <ProgressBar stages={stages} />
       <div style={{ backgroundColor: '#69ACC2' }} className="w-screen max-w-full h-8/10">
         <div className="bg-white w-4/5 rounded-md my-12 mx-auto text-left">
-        <form className="flex flex-col space-y-4 p-4">
+        <form className="flex flex-col space-y-4 p-6">
 
           <div className="flex justify-left mr-8 ml-8 mt-8 mb-2 w-8/10">
             <div className="w-full">

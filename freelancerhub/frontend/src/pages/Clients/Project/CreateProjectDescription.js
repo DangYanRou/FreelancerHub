@@ -4,6 +4,7 @@ import noteImage from '../../../Gallery/note.png';
 import { useNavigate } from "react-router-dom";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import '../../../styles/Clients/CreateProject.css';
 import Heading from '../../../components/Heading';
 import { ProjectContext } from '../../../context/ProjectContext';
 import { categories,workloadOptions } from '../../../components/ProjectOptions.js';
@@ -53,7 +54,7 @@ const CreateProjectDescription = () => {
   const [date, setDate] = useState(new Date());
   const [jobCateInput, setJobCateInput] = useState('');
   const [jobCateError, setJobCateError] = useState('');
-
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   
 const handleFormSubmit = (event) => {
   event.preventDefault();
@@ -72,8 +73,8 @@ const handleFormSubmit = (event) => {
     if (isValid) {
       navigate("/clients/post-project-preferred");
     }  else {
-      window.alert('All fields must be filled!');
-    }
+      setIsDialogOpen(true);
+        }
 };
 
 const handleNextButtonClick = async (event) => {
@@ -99,6 +100,15 @@ const handleDateChange = (date) => {
 
   return (
     <div className="flex flex-col items-start justify-center">
+
+      {isDialogOpen && (
+      <div className="allfilled-overlay" onClick={() => setIsDialogOpen(false)}>
+            <div className="allfilled-content">
+                <h2>All fields must be filled!</h2>
+              </div>
+            </div>
+          )}
+
                 <Heading as="h1" className="ml-[25px] tracking-[-0.90px] md:p-5 mt-5">
                       Create Project
           </Heading>

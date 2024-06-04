@@ -175,8 +175,27 @@ const CreateProjectPreview = () => {
                 await Promise.all(promises);
                 console.log('Notification added successfully!');
                 navigate('/clients/project-posted');
-                clearContext(); 
-            } else {
+                setProjectInfo({
+                  title: '',
+                  minInput: '',
+                  maxInput: '',
+                  location: '',
+                  description: '',
+                  category: '',
+                  workPlace: '',
+                  currencyInput: 'MYR',
+                  date: null,
+                  workload: '',
+                  duration: '',
+                  durationUnit: 'day(s)',
+                  preferredQualification: '',
+                  jobResponsibilities: [],
+                  preferredSkills: [],
+                  keywords: [],
+                  statusState: 1,
+                  postedTime: new Date()
+                });
+                          } else {
                 console.error('User is not defined');
                 setLoading(false);
             }
