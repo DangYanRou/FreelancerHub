@@ -30,7 +30,7 @@ export default function BioCardClient({ freelancer }) {
 		console.log(error.message);
 	}
 }
-const handleAvatarClick = (freelancerID) => {
+const handleAvatarClick = (event, freelancerID) => {
   history.push('client-view-profile', { freelancerID: freelancerID });
 };
 
@@ -44,7 +44,7 @@ const handleAvatarClick = (freelancerID) => {
       }}
     >
       <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
-        <Avatar onClick={handleAvatarClick(freelancer.uid)} src="/static/images/avatar/1.jpg" sx={{ '--Avatar-size': '4rem' }} />
+        <Avatar onClick={(event) => handleAvatarClick(event,freelancer.uid)} src="/static/images/avatar/1.jpg" sx={{ '--Avatar-size': '4rem' }} />
         <Chip
           size="sm"
           variant="soft"
@@ -58,7 +58,7 @@ const handleAvatarClick = (freelancerID) => {
         >
           PRO
         </Chip>
-        <Typography level="title-lg">{ freelancer.username}</Typography>
+        <Typography onClick={(event) => handleAvatarClick(event,freelancer.uid)}  level="title-lg">{ freelancer.username}</Typography>
         <Typography level="body-sm" sx={{ maxWidth: '24ch' }}>
           { freelancer.aboutDescription}
         </Typography>
