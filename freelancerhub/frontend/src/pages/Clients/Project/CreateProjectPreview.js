@@ -72,7 +72,6 @@ const CreateProjectPreview = () => {
 
       const docRef = doc(db, "clients", user.uid);
       const docSnap = await getDoc(docRef);
-
       let name='';
       if (docSnap.exists()) {
         name = docSnap.data().name || null; // If `name` is `undefined`, use `null` instead
@@ -90,12 +89,13 @@ const CreateProjectPreview = () => {
     console.log('navigate:', navigate);
     console.log('handlePostClick called');
     addProject(projectInfoWithClient)
-    .then(() => {
+    .then((projectRef) => {
         // alert('Project posted successfully!');
-        const projectID = docRef.id;
+        const projectID = projectRef.id;
+        console.log('Project ID:', projectID);
         // Use map to create an array of promises
-        const promises = freelancerid.map(freelancerid => {
-          if(freelancerid.length > 0){
+        const promises = freelancerid.map(id => {
+          if(id.length > 0){
 
             const notificationToFreelancerData = {
                 isRead: false,
@@ -105,9 +105,9 @@ const CreateProjectPreview = () => {
                 priority: 2,
                 projectID: projectID,
                 clientID: user.uid,
-                to: freelancerid
+                to: id
             };
-            console.log('Notification UID:', freelancerid);
+            console.log('Notification UID:', id);
           
             // Return the promise from addDoc
             return addDoc(collection(db, 'notifications'), notificationToFreelancerData);
@@ -122,6 +122,8 @@ const CreateProjectPreview = () => {
         clearContext(); 
     }).finally(() => {
       setLoading(false);
+      clearContext(); 
+
     }).catch((error) => {
       console.error("Error adding document: ", error);
     });
@@ -160,7 +162,7 @@ const CreateProjectPreview = () => {
           }
         }
       }
-
+      setLoading(false);
       return favouriteFreelancers;
     } catch (error) {
       console.error('Error fetching favourite freelancers: ', error);

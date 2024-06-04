@@ -14,22 +14,27 @@ import { Link } from 'react-router-dom';
 import { db, auth } from '../../../firebase';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from 'firebase/auth';
+import Loading from '../../../components/Loading';
+import { useUser } from '../../../context/UserContext';
 
 
 const FreelancerSaved = () => {
   const navigate = useNavigate();
   const handleApply = () => {
-    navigate('/freelancers/proposal-form');
+    navigate('/freelancers/proposal-form',{});
   };
 
   const [favProjects, setFavProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
-
   const collectionRef = collection(db, "favouriteProject");
+  const [loading, setLoading] = useState(true);
+  const { user } = useUser();
 
   const getFavProjects = async () => {
     try {
-      const userID = auth.currentUser.uid;
+      setLoading(true);
+      //const userID = auth.currentUser.uid;
+      const userID = user.id;
       const q = query(collectionRef, where("savedBy", "==", userID));
 
       const data = await getDocs(q);
@@ -43,17 +48,21 @@ const FreelancerSaved = () => {
       setFavProjects(filteredData);
     } catch (error) {
       console.log(error.message);
+    }finally{
+      setLoading(false);
     }
   };
 
+
    useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    //const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         getFavProjects(user.uid);
       }
-    });
-    return () => unsubscribe();
+    //});
+    //return () => unsubscribe();
   }, []);
+
 
   const ProjectModal = ({ isOpen, onClose, project }) => {
     if (!isOpen || !project) return null;
@@ -80,7 +89,7 @@ const FreelancerSaved = () => {
         <p id="category">{project.category}</p>
         <p><FaLocationDot className="icon-style" />{project.location}</p>
         <p><MdOutlineAttachMoney size={20} className='icon-style2' />{project.minInput}-{project.maxInput}/project</p>
-        <p><BiTimeFive size={20} className='icon-style2' />{project.duration}</p>
+        <p><BiTimeFive size={20} className='icon-style2' />{project.duration} {project.durationUnit}</p>
         <p>Starting from: {project.date}</p>
         <h3 id="about-the-project">About the Project:</h3>
         <p>{project.description}</p>
@@ -107,6 +116,11 @@ const FreelancerSaved = () => {
     setSelectedProject(null);
   };
 
+  if(loading)
+    {
+      return (<Loading></Loading>);
+    }
+
   return (
     <div>
       <div className="flex w-full justify-end bg-white-A700 py-[63px] md:py-5">
@@ -120,15 +134,22 @@ const FreelancerSaved = () => {
               Projects
             </div>
             <List
-              className="overflow-x-auto flex gap-x-6 w-full max-w-screen-lg mx-auto ml-[50px]"
+              className="flex gap-x-6 w-full mx-auto ml-[50px]"
               orientation="horizontal"
+              style={{
+              overflowX: 'auto',
+              scrollbarWidth: 'none', /* Firefox */
+              msOverflowStyle: 'none', /* Internet Explorer 10+ */
+            }}
             >
               {favProjects.length > 0 ? (
+                
                 <ProjectList 
                   projects={favProjects}
                   onProjectClick={handleProjectClick}
                   selectedProjectId={selectedProject ? selectedProject.id : null}
                 />
+                
               ) : (
                 <div style={{ fontFamily: 'Poppins' }}>No favourite project at the moment</div>
               )}
