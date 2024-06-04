@@ -2,40 +2,46 @@ import React, { useEffect, useState } from "react";
 import "../../../styles/Clients/ClientAverageReviewBox.css";
 
 function AverageReviewBox({ feedbacks }) {
-  const [ratings, setRatings] = useState({ 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
+  const [ratingCount, setRatingCount] = useState({
+    5: 0,
+    4: 0,
+    3: 0,
+    2: 0,
+    1: 0,
+  });
   const [averageRating, setAverageRating] = useState(0);
   const [totalRatings, setTotalRatings] = useState(0);
 
   useEffect(() => {
     const computeRatings = () => {
-      const newRatings = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+      const newRatingCount = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+      const totalRatingCount = feedbacks.length;
       feedbacks.forEach((feedback) => {
-        newRatings[feedback.rating]++;
+        newRatingCount[feedback.rating]++;
       });
 
-      setRatings(newRatings);
+      setRatingCount(newRatingCount);
+      setTotalRatings(totalRatingCount);
 
-      const total = Object.values(newRatings).reduce((a, b) => a + b, 0);
-      setTotalRatings(total);
-
-      const average = total
-        ? Object.entries(newRatings).reduce(
+      const average = totalRatingCount
+        ? Object.entries(newRatingCount).reduce(
             (acc, [score, count]) => acc + score * count,
             0
-          ) / total
+          ) / totalRatingCount
         : 0;
       setAverageRating(average);
     };
 
     computeRatings();
   }, [feedbacks]);
-  console.log("rating:",ratings)
-  console.log("averageRating:",averageRating)
-  console.log("totalRatings:",totalRatings)
+  console.log(feedbacks);
+  console.log("rating:", ratingCount);
+  console.log("averageRating:", averageRating);
+  console.log("totalRatings:", totalRatings);
 
   return (
     <div className="container">
-      <h3 className="title">Reviews</h3>
+      <h3 className="title">Ratings</h3>
       <div className="content">
         <div className="avgNumContainer">
           <div className="circle">
@@ -44,7 +50,7 @@ function AverageReviewBox({ feedbacks }) {
           <p className="totalRating">{totalRatings} Ratings</p>
         </div>
         <div className="ratingBarContainer">
-          {Object.entries(ratings)
+          {Object.entries(ratingCount)
             .sort((a, b) => b[0] - a[0])
             .map(([score, count]) => (
               <div className="ratingBar" key={score}>
@@ -52,11 +58,15 @@ function AverageReviewBox({ feedbacks }) {
                 <div className="BarBase">
                   <div
                     className="BarOverlay"
-                    style={{ width: `${totalRatings ? (count / totalRatings) * 100 : 0}%` }}
+                    style={{
+                      width: `${
+                        totalRatings ? (count / totalRatings) * 100 : 0
+                      }%`,
+                    }}
                   ></div>
                 </div>
                 <span className="count">
-                  {count} {(count === 1 || count === 0) ? "rate" : "rates"}
+                  {count} {count === 1 || count === 0 ? "rate" : "rates"}
                 </span>
               </div>
             ))}
