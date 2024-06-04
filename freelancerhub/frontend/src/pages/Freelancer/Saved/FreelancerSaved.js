@@ -134,15 +134,22 @@ const FreelancerSaved = () => {
               Projects
             </div>
             <List
-              className="overflow-x-auto flex gap-x-6 w-full max-w-screen-lg mx-auto ml-[50px]"
+              className="flex gap-x-6 w-full mx-auto ml-[50px]"
               orientation="horizontal"
+              style={{
+              overflowX: 'auto',
+              scrollbarWidth: 'none', /* Firefox */
+              msOverflowStyle: 'none', /* Internet Explorer 10+ */
+            }}
             >
               {favProjects.length > 0 ? (
+                
                 <ProjectList 
                   projects={favProjects}
                   onProjectClick={handleProjectClick}
                   selectedProjectId={selectedProject ? selectedProject.id : null}
                 />
+                
               ) : (
                 <div style={{ fontFamily: 'Poppins' }}>No favourite project at the moment</div>
               )}
