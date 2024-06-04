@@ -222,13 +222,13 @@ const CompletedProjectListClient = ({ projects }) => {
                 {isFavourite ? (
                   <div className="favourite-collaborator">
                     <span className="icon-text">
-                      <AiOutlineCheckCircle /> Favourite Collaborator
+                      <AiOutlineCheckCircle className="icon" /> Favourite Collaborator
                     </span>
                   </div>
                 ) : favourites[project.id] ? (
                   <div className="favourite-collaborator">
                     <span className="icon-text">
-                      <AiOutlineCheckCircle /> Favourite Collaborator
+                      <AiOutlineCheckCircle className="icon"/> Favourite Collaborator
                     </span>
                   </div>
                 ) : (

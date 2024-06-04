@@ -132,7 +132,7 @@ const CompletedProjectListClient = ({ projects }) => {
           }));
 
           setIsFavourite(true);
-        }else{
+        } else {
           setIsFavourite(false);
         }
       });
@@ -215,9 +215,10 @@ const CompletedProjectListClient = ({ projects }) => {
                   setHover((prev) => ({ ...prev, [project.id]: false }))
                 }
                 style={{
-                  backgroundColor: (isFavourite || favourites[project.id])
-                    ? "#4CAF50"
-                    : "#69acc2",
+                  backgroundColor:
+                    isFavourite || favourites[project.id]
+                      ? "#4CAF50"
+                      : "#69acc2",
                   color: hover[project.id] ? "#213e60" : "#fff",
                   transition: "color 0.3s ease",
                 }}
@@ -226,13 +227,15 @@ const CompletedProjectListClient = ({ projects }) => {
                 {isFavourite ? (
                   <div className="favourite-collaborator">
                     <span className="icon-text">
-                      <AiOutlineCheckCircle /> Favourite Collaborator
+                      <AiOutlineCheckCircle className="icon" /> Favourite
+                      Collaborator
                     </span>
                   </div>
                 ) : favourites[project.id] ? (
                   <div className="favourite-collaborator">
                     <span className="icon-text">
-                      <AiOutlineCheckCircle /> Favourite Collaborator
+                      <AiOutlineCheckCircle className="icon" /> Favourite
+                      Collaborator
                     </span>
                   </div>
                 ) : (

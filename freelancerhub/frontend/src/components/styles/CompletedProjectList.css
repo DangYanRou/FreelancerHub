@@ -149,9 +149,15 @@
   align-items: center;
 }
 
+.icon{
+  margin-left:10px;
+  margin-right:3px;
+}
 .icon-text {
   display: flex;
   align-items: center;
+  justify-content: center;
+  
 }
 
 .review-rating {
