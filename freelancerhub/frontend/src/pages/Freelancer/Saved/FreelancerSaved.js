@@ -12,7 +12,6 @@ import '../../../styles/Freelancers/FreelancerSaved.css';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { db, auth } from '../../../firebase';
-import { useUser } from '../../../context/UserContext';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from 'firebase/auth';
 import Loading from '../../../components/Loading';
@@ -73,7 +72,7 @@ const FreelancerSaved = () => {
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <div className="modal-header">
             <h2 id='view-application-header'>View Project</h2>
-            <button className="jl-close-btn" onClick={onClose}><GrFormClose /></button>
+            <button className="close-btn" onClick={onClose}><GrFormClose /></button>
           </div>
           <ProjectDetails project={project} />
         </div>
@@ -83,9 +82,6 @@ const FreelancerSaved = () => {
 
   const ProjectDetails = ({ project }) => {
     if (!project) return null;
-    const hasApplied = appliedProjects.includes(project.savedBy);
-    console.log(project.savedBy)
-    console.log("hasApplied"+hasApplied)
     return (
       <div className="project-details">
         <h2 id="detail-title">{project.title}</h2>
@@ -107,24 +103,8 @@ const FreelancerSaved = () => {
         </div>
         <h3 id="preferredQualification">Preferred Qualification:</h3>
         <p>{project.preferredQualification}</p>
-        <div>
-            <h3 id="key-requirement">Preferred Skills:</h3>
-              <ul className="list">
-              {(project.preferredSkills ?? []).map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
-            </div>
-
-            {hasApplied ? (
-          <button id="applyButton" className="btn-disabled" disabled>Applied</button>
-        ) : (
-          <button id="applyButton" onClick={() => handleApply(project.id, project.clientID)} className="btn btn-primary">Apply</button>
-        )}
-        
-       
+        <button id="applyButton" onClick={handleApply} className="btn btn-primary">Apply</button>
       </div>
-      
     );
   };
 
