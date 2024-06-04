@@ -94,8 +94,8 @@ const CreateProjectPreview = () => {
         // alert('Project posted successfully!');
         const projectID = docRef.id;
         // Use map to create an array of promises
-        const promises = freelancerid.map(freelancerid => {
-          if(freelancerid.length > 0){
+        const promises = freelancerid.map(id => {
+          if(id && id.length > 0){
 
             const notificationToFreelancerData = {
                 isRead: false,
@@ -105,9 +105,9 @@ const CreateProjectPreview = () => {
                 priority: 2,
                 projectID: projectID,
                 clientID: user.uid,
-                to: freelancerid
+                to: id
             };
-            console.log('Notification UID:', freelancerid);
+            console.log('Notification UID:', id);
           
             // Return the promise from addDoc
             return addDoc(collection(db, 'notifications'), notificationToFreelancerData);
@@ -141,7 +141,7 @@ const CreateProjectPreview = () => {
 
       for (let docSnapshot of snapshot.docs) {
         const data = docSnapshot.data();
-        if (data.uid) {
+        if (data && data.uid) {
           const freelancerDoc = doc(db, 'freelancers', data.uid);
           const freelancerSnapshot = await getDoc(freelancerDoc);
           
