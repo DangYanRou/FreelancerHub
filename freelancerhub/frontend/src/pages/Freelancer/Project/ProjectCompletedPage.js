@@ -15,8 +15,9 @@ const ProjectCompletedPage = ({ freelancerID }) => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        if (user && freelancerID) {
+        if (user || freelancerID) {
           const uid = freelancerID || user.id;
+          console.log("completed",uid);
           const projectsCollection = collection(db, "projects");
           const completedProjectsQuery = query(
             projectsCollection,
@@ -36,8 +37,12 @@ const ProjectCompletedPage = ({ freelancerID }) => {
         setLoading(false);
       }
     };
-    if (freelancerID) {
+
+    // Only fetch projects if user and either freelancerID or user.id is available
+    if (user && (freelancerID || user.id)) {
       fetchProjects();
+    } else {
+      setLoading(false);
     }
   }, [freelancerID, user]);
 
