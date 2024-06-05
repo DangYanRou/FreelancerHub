@@ -30,6 +30,7 @@ const FreelancerProfile = () => {
   const [showProjects, setShowProjects] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
   const [showButton, setShowButton] = useState(true);
+  const [userRead,setUserRead] = useState(null);
   
   const [profile, setProfile] = useState({
     location: "",
@@ -52,6 +53,7 @@ const FreelancerProfile = () => {
       try {
         if (user || freelancerID) {
           const uid = freelancerID || user?.uid;
+          setUserRead(uid);
           console.log("uid,", uid);
 
           const q = query(collection(db, "freelancers"), where("uid", "==", uid));
@@ -510,7 +512,7 @@ const FreelancerProfile = () => {
             </div>
             <div id="projects" style={{ display: showProjects ? 'block' : 'none' }}>
               <p className='projects_text'>Browse My Recents</p>
-              <ProjectsCompleted/>
+              <ProjectsCompleted freelancerID={freelancerID} />
             </div> 
             <div
               id="reviews"

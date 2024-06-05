@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import CompletedProjectList from "../../../components/CompletedProjectList";
 import Heading from "../../../components/Heading";
-import { db, auth } from "../../../firebase";
+import { db } from "../../../firebase";
 import { collection, query, getDocs, where } from "firebase/firestore";
 import { useUser } from "../../../context/UserContext";
 import Loading from "../../../components/Loading";
 import "../../../styles/Freelancers/FreelancerCompletedProject.css";
 
-const ProjectCompletedPage = (freelancerID) => {
+const ProjectCompletedPage = ({ freelancerID }) => {
   const [projects, setProjects] = useState([]);
   const { user } = useUser();
   const [loading, setLoading] = useState(true);
@@ -16,16 +15,14 @@ const ProjectCompletedPage = (freelancerID) => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        if (user) {
+        if (user && freelancerID) {
           const uid = freelancerID || user.id;
-          console.log(user.id);
           const projectsCollection = collection(db, "projects");
           const completedProjectsQuery = query(
             projectsCollection,
             where("statusState", "==", 5),
-            where("freelancerID", "==", user.id)
+            where("freelancerID", "==", uid)
           );
-          console.log(user.id);
           const querySnapshot = await getDocs(completedProjectsQuery);
           const projectsData = querySnapshot.docs.map((doc) => ({
             id: doc.id,
@@ -39,16 +36,13 @@ const ProjectCompletedPage = (freelancerID) => {
         setLoading(false);
       }
     };
-    fetchProjects();
-  }, [freelancerID,user]);
-  // Cleanup function to unsubscribe from the listener when the component unmounts
+    if (freelancerID) {
+      fetchProjects();
+    }
+  }, [freelancerID, user]);
 
   if (loading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -61,7 +55,6 @@ const ProjectCompletedPage = (freelancerID) => {
         Completed Projects
       </Heading>
 
-      {/* Line divider */}
       <hr className="border-gray-700 my-8 w-[95%] mx-auto" />
       <div className="jl-centered-container">
         <CompletedProjectList projects={projects} />
