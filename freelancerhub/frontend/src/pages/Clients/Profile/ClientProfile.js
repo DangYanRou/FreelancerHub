@@ -123,9 +123,11 @@ const ClientProfile = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        const uid = clientID || user?.uid;
         const projectsRef = query(
           collection(db, "projects"),
-          where("clientID", "==", user.id)
+          where("clientID", "==", uid),
+          where("statusState", "<", 5,)
         );
         console.log("client:" + user.id); // Use the correct method for collection reference
         const snapshot = await getDocs(projectsRef); // Fetch the documents
