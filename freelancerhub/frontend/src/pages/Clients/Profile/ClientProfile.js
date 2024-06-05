@@ -123,7 +123,8 @@ const ClientProfile = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const uid = clientID || user?.uid;
+        const uid = clientID || user?.id;
+        
         const projectsRef = query(
           collection(db, "projects"),
           where("clientID", "==", uid),
