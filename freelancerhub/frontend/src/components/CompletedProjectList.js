@@ -131,9 +131,15 @@ const CompletedProjectListClient = ({ projects }) => {
             },
           }));
 
-          setIsFavourite(true);
+          setIsFavourite((prevIsFavourite) => ({
+            ...prevIsFavourite,
+            [project.id]: true,
+          }));
         } else {
-          setIsFavourite(false);
+          setIsFavourite((prevIsFavourite) => ({
+            ...prevIsFavourite,
+            [project.id]: false,
+          }));
         }
       });
 
@@ -216,15 +222,15 @@ const CompletedProjectListClient = ({ projects }) => {
                 }
                 style={{
                   backgroundColor:
-                    isFavourite || favourites[project.id]
+                    isFavourite[project.id] || favourites[project.id]
                       ? "#4CAF50"
                       : "#69acc2",
                   color: hover[project.id] ? "#213e60" : "#fff",
                   transition: "color 0.3s ease",
                 }}
-                disabled={isFavourite}
+                disabled={isFavourite[project.id]}
               >
-                {isFavourite ? (
+                {isFavourite[project.id] ? (
                   <div className="favourite-collaborator">
                     <span className="icon-text">
                       <AiOutlineCheckCircle className="icon" /> Favourite
