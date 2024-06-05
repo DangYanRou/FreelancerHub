@@ -100,21 +100,21 @@ const CompletedProjectListClient = ({ projects }) => {
   }, [user.id, projects]);
 
   console.log("Your Feedback = ", feedback);
+ 
 
-  //setIsFavourite by checking the favouriteClientdata
+  //setIsFavourite by checking the favouriteFreelancerdata
   useEffect(() => {
     const favouriteFreelancerRef = collection(db, "favouriteFreelancer");
     const unsubscribes = []; // Array to store the unsubscribe functions
-
-    // Loop over each project
+  
     projects.forEach((project) => {
       // Create a query for the favouriteClient of the current project
       const favouriteFreelancerQuery = query(
         favouriteFreelancerRef,
-        where("uid", "==", project.freelancerID ),
+        where("uid", "==", project.freelancerID),
         where("clientID", "==", project.clientID)
       );
-
+  
       // Set up a real-time listener
       const unsubscribe = onSnapshot(favouriteFreelancerQuery, (snapshot) => {
         if (!snapshot.empty) {
@@ -126,23 +126,32 @@ const CompletedProjectListClient = ({ projects }) => {
               ...favouriteFreelancerDoc.data(),
             },
           }));
-
-          setIsFavourite(true);
+  
+          setIsFavourite((prevIsFavourite) => ({
+            ...prevIsFavourite,
+            [project.id]: true,
+          }));
         } else {
-          setIsFavourite(false);
+          setIsFavourite((prevIsFavourite) => ({
+            ...prevIsFavourite,
+            [project.id]: false,
+          }));
         }
       });
-
+  
       unsubscribes.push(unsubscribe); // Store the unsubscribe function
     });
-
+  
     // Return a cleanup function that calls all the unsubscribe functions
     return () => {
       unsubscribes.forEach((unsubscribe) => unsubscribe());
     };
   }, [projects]);
-  console.log("favourite data is ", isFavourite);
-
+  
+  console.log("favourite data is ", favouriteFreelancer);
+  console.log("isFavourite is ", isFavourite);
+  
+ 
   //add favourite freelancer
   const addFavouriteFreelancer = async (clientID, freelancerID) => {
     // Get client data
@@ -158,6 +167,7 @@ const CompletedProjectListClient = ({ projects }) => {
         ...FreelancerData,
         clientID,
       });
+      console.log("freelancer found!")
     } else {
       console.log("No such freelancer!");
     }
@@ -197,7 +207,7 @@ const CompletedProjectListClient = ({ projects }) => {
               </span>
             </p>
             <div className="buttonContainer">
-              <button
+            <button
                 className="favouriteBtn"
                 onClick={() => {
                   toggleFavourite(project.id);
@@ -211,24 +221,26 @@ const CompletedProjectListClient = ({ projects }) => {
                 }
                 style={{
                   backgroundColor:
-                    isFavourite || favourites[project.id]
+                    isFavourite[project.id] || favourites[project.id]
                       ? "#4CAF50"
                       : "#69acc2",
                   color: hover[project.id] ? "#213e60" : "#fff",
                   transition: "color 0.3s ease",
                 }}
-                disabled={isFavourite}
+                disabled={isFavourite[project.id]}
               >
-                {isFavourite ? (
+                {isFavourite[project.id] ? (
                   <div className="favourite-collaborator">
                     <span className="icon-text">
-                      <AiOutlineCheckCircle className="icon" /> Favourite Collaborator
+                      <AiOutlineCheckCircle className="icon" /> Favourite
+                      Collaborator
                     </span>
                   </div>
                 ) : favourites[project.id] ? (
                   <div className="favourite-collaborator">
                     <span className="icon-text">
-                      <AiOutlineCheckCircle className="icon"/> Favourite Collaborator
+                      <AiOutlineCheckCircle className="icon" /> Favourite
+                      Collaborator
                     </span>
                   </div>
                 ) : (
