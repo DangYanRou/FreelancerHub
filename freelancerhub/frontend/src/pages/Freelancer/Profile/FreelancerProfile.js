@@ -53,8 +53,9 @@ const FreelancerProfile = () => {
       try {
         if (user || freelancerID) {
           const uid = freelancerID || user?.uid;
-          setUserRead(uid);
-          console.log("uid,", uid);
+          if(freelancerID){
+            setUserRead(freelancerID);
+          }
 
           const q = query(collection(db, "freelancers"), where("uid", "==", uid));
           const querySnapshot = await getDocs(q);
@@ -512,7 +513,7 @@ const FreelancerProfile = () => {
             </div>
             <div id="projects" style={{ display: showProjects ? 'block' : 'none' }}>
               <p className='projects_text'>Browse My Recents</p>
-              <ProjectsCompleted freelancerID={freelancerID} />
+              <ProjectsCompleted freelancerID={userRead} />
             </div> 
             <div
               id="reviews"

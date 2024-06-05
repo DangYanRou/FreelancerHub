@@ -39,7 +39,7 @@ const ProjectCompletedPage = ({ freelancerID }) => {
     };
 
     // Only fetch projects if user and either freelancerID or user.id is available
-    if (user && (freelancerID || user.id)) {
+    if (user || (freelancerID || user.id)) {
       fetchProjects();
     } else {
       setLoading(false);
