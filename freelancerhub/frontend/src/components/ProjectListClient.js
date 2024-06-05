@@ -102,7 +102,9 @@ const ProjectListClient = ({ projects, onProjectClick, selectedProjectId, onMark
 
                                         <li><Link to={{ pathname: "/clients/proposal-received"}} state={{ projectID: project.id }} >
                                             View Applications</Link></li>
-                                        <li onClick={(e) => { e.stopPropagation(); openModal(project); }}>Mark As Done</li>
+                                        {project.statusState==4&&(
+                                            <li onClick={(e) => { e.stopPropagation(); openModal(project); }}>Mark As Done</li>
+                                        )}
                                     </ul>
                                 </div>
                             )}

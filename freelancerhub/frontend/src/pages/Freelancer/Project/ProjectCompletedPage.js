@@ -8,7 +8,7 @@ import { useUser } from "../../../context/UserContext";
 import Loading from "../../../components/Loading";
 import "../../../styles/Freelancers/FreelancerCompletedProject.css";
 
-const ProjectCompletedPage = () => {
+const ProjectCompletedPage = (freelancerID) => {
   const [projects, setProjects] = useState([]);
   const { user } = useUser();
   const [loading, setLoading] = useState(true);
@@ -17,6 +17,7 @@ const ProjectCompletedPage = () => {
     const fetchProjects = async () => {
       try {
         if (user) {
+          const uid = freelancerID || user.id;
           console.log(user.id);
           const projectsCollection = collection(db, "projects");
           const completedProjectsQuery = query(
@@ -39,7 +40,7 @@ const ProjectCompletedPage = () => {
       }
     };
     fetchProjects();
-  }, []);
+  }, [freelancerID,user]);
   // Cleanup function to unsubscribe from the listener when the component unmounts
 
   if (loading) {

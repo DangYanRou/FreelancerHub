@@ -54,7 +54,7 @@ const ProjectDetails = ({ project ,user,onCancelApplication}) => {
   const statusTime = project.statusTime ? format(project.statusTime.toDate(), 'dd/MM/yyyy') : '';
   const statusMessage = getStatusType(project.statusState);
   console.log(project.statusState)
-  const disappearCancel=project.statusState < 3;
+  const disappearCancel=project.statusState <= 3;
 
   return (
     <div className="pa-project-details">
