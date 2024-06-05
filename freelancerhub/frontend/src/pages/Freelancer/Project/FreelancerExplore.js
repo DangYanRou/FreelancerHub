@@ -312,6 +312,10 @@ const handleClick = (projectId,e) => {
   const handleCloseModal = () => {
     setSelectedProject(null);
  }
+
+ const handleCheckClientProfile = (event, clientID) => {
+  history.push('freelancer-view-profile', { clientID: clientID });
+};
  
 
 
@@ -391,7 +395,7 @@ const handleClick = (projectId,e) => {
     return(
       <div className="project-details">
         <h2 id="detail-title">{project.title}</h2>
-        <h2 className="jl-profileLink">{project.client}</h2>
+        <h2 className="jl-profileLink" onClick={(event) => handleCheckClientProfile(event,project.clientID)}>{project.client}</h2>
             <p id="category">{project.category}</p>
             <p><FaLocationDot className="icon-style"/>{project.location}</p>
             <p><MdOutlineAttachMoney size={20}className='icon-style2' />{project.minInput}-{project.maxInput} {project.currencyInput}/project</p>

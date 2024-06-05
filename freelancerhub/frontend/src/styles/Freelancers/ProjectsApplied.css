@@ -160,6 +160,13 @@
     font-size: 24px;
 }
 
+.jl-profileLink:hover{
+    cursor: pointer;
+    color:#213E60;
+    font-weight: bold;
+}
+
+
 #category{
    font-size: 18px;
 }

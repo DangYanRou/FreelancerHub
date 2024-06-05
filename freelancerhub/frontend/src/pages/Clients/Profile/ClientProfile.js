@@ -31,6 +31,7 @@ const ClientProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
   const location = useLocation();
+  console.log(location);
   const clientID = location.state?.clientID;
 
   //Retrieve UserType
