@@ -38,7 +38,7 @@ const FreelancerProfile = () => {
     phone: "",
     about: "",
     profilePicture: logo,
-    backendSkills: [],
+    skills: [],
     educations: [],
   });
   const [formData, setFormData] = useState({ ...profile });
@@ -66,14 +66,14 @@ const FreelancerProfile = () => {
               ...userData,
               username: userData.username,
               profilePicture: userData.profilePicture || logo,
-              backendSkills: userData.backendSkills || [],
+              skills: userData.skills || [],
               educations: userData.educations || [],
             });
             setFormData({
               ...userData,
               username: userData.username,
               profilePicture: userData.profilePicture || logo,
-              backendSkills: userData.backendSkills || [],
+              skills: userData.skills || [],
               educations: userData.educations || [],
             });
 
@@ -162,10 +162,10 @@ const FreelancerProfile = () => {
     const auth = getAuth();
     const user = auth.currentUser;
 
-    // Validation for backendSkills
-    for (const skill of formData.backendSkills) {
+    // Validation for skills
+    for (const skill of formData.skills) {
       if (!skill.name || !skill.level) {
-        alert('Please fill out all fields for backend skills.');
+        alert('Please fill out all fields for skills.');
         setLoading(false);
         return;
       }
@@ -251,9 +251,9 @@ const FreelancerProfile = () => {
     updateEducationInDatabase(updatedEducation);
   };
 
-  const handleAddSkill = (type) => {
+  const handleAddSkill = () => {
     // Check if the last skill in the list is empty
-    const lastSkill = formData[type + 'Skills'][formData[type + 'Skills'].length - 1];
+    const lastSkill = formData.skills[formData.skills.length - 1];
 
     if (lastSkill && !lastSkill.name) {
       alert('Please fill out the name of the current skill before adding a new one.');
@@ -264,20 +264,13 @@ const FreelancerProfile = () => {
     const newSkill = { name: '', level: '' };
     setFormData({
       ...formData,
-      [type + 'Skills']: [...formData[type + 'Skills'], newSkill],
+      skills: [...formData['skills'], newSkill],
     });
   };
 
-  const handleRemoveSkill = (type, index) => {
-    const updatedSkills = formData[type + 'Skills'].filter((_, i) => i !== index);
-    setFormData({ ...formData, [type + 'Skills']: updatedSkills });
-  };
-
-  const handleSkillChange = (type, index, field, value) => {
-    const updatedSkills = formData[type + 'Skills'].map((skill, i) =>
-      i === index ? { ...skill, [field]: value } : skill
-    );
-    setFormData({ ...formData, [type + 'Skills']: updatedSkills });
+  const handleRemoveSkill = (index) => {
+    const updatedSkills = formData['skills'].filter((_, i) => i !== index);
+    setFormData({ ...formData, skills: updatedSkills });
   };
 
   if (loading) {
@@ -440,7 +433,7 @@ const FreelancerProfile = () => {
                     <div className='about_details'>
                       <GrAchievement className='aboutIcon' /><h3>Skills</h3>
                         <div className='experience_content'>
-                          {formData.backendSkills.map((skill, index) => (
+                          {formData.skills && formData.skills.map((skill, index) => (
                             <div key={index} className='experience_description'>
                               <MdVerified className='verifiedIcon' />
                               <input
@@ -448,9 +441,9 @@ const FreelancerProfile = () => {
                                 value={skill.name}
                                 placeholder="Skill"
                                 onChange={(e) => {
-                                  const updatedSkills = [...formData.backendSkills];
+                                  const updatedSkills = [...formData.skills];
                                   updatedSkills[index].name = e.target.value;
-                                  setFormData({ ...formData, backendSkills: updatedSkills });
+                                  setFormData({ ...formData, skills: updatedSkills });
                                 }}
                               />
                               <input
@@ -458,15 +451,15 @@ const FreelancerProfile = () => {
                                 value={skill.level}
                                 placeholder='Level'
                                 onChange={(e) => {
-                                  const updatedSkills = [...formData.backendSkills];
+                                  const updatedSkills = [...formData.skills];
                                   updatedSkills[index].level = e.target.value;
-                                  setFormData({ ...formData, backendSkills: updatedSkills });
+                                  setFormData({ ...formData, skills: updatedSkills });
                                 }}
                               />
-                              <button type="button" onClick={() => handleRemoveSkill('backend', index)}>Remove</button>
+                              <button type="button" onClick={() => handleRemoveSkill(index)}>Remove</button>
                             </div>
                           ))}
-                          <button type="button" onClick={() => handleAddSkill('backend')}>Add Skill</button>
+                          <button type="button" onClick={() => handleAddSkill()}>Add Skill</button>
                         </div>
                     </div>
                   </div>
@@ -492,11 +485,11 @@ const FreelancerProfile = () => {
                   <div id="experience_box" className='about_details'>
                   <GrAchievement className='aboutIcon' /><h3>Skills</h3>
                   <div className='experience_column'>
-                  {profile.backendSkills.length === 0 ? (
+                  {profile.skills.length === 0 ? (
                       <h2 className='no_details'>No Skills added</h2>
                     ) : (
                       <div className='experience_content'>
-                        {formData.backendSkills.map((skill, index) => (
+                        {formData.skills && formData.skills.map((skill, index) => (
                           <div key={index} className='experience_description'>
                             <MdVerified className='verifiedIcon' />
                             <p>{skill.name}</p>
