@@ -272,7 +272,7 @@ const NotificationPage = () => {
         isRead: true
       });
       
-      history.push("/freelancers/projects-applied", { projectId: item.projectID });
+      history.push("/freelancers/explore", { projectId: item.projectID });
     } catch (error) {
       console.error("Error updating priority: ", error);
     }finally{
