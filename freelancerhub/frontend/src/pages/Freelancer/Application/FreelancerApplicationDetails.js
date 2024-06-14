@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-use-history';
 import { useLocation } from 'react-router-dom';
 import { db } from '../../../firebase';
-import { doc, getDoc,collection,addDoc,updateDoc, deleteDoc,deleteField } from 'firebase/firestore';
+import { doc, getDoc,collection,addDoc,updateDoc, deleteDoc } from 'firebase/firestore';
+import { getStorage, ref, deleteObject } from "firebase/storage";
 import '../../../styles/ApplicationDetails.css';
 import Loading from '../../../components/Loading';
 import PdfPreview from '../../../components/PdfPreview';
 import Heading from '../../../components/Heading';
 import {Button,ButtonGroup } from 'flowbite-react';
-import NavigationBarFreelancer from '../../../nav/NavigationBarFreelancer';
 import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
 const ApplicationDetails = () => {
@@ -43,13 +43,14 @@ const ApplicationDetails = () => {
                         console.log('No such project document!');
                     }
                 } else {
-                    console.log('No such document!');
+                    console.log('No such proposal document!');
                 }
 
             } catch (error) {
                 console.error('Error fetching proposal details:', error);
             } finally {
                 setLoading(false);
+                console.log("Application Details Fetched:",proposalDetails);
             }
         };
 
@@ -96,7 +97,9 @@ const ApplicationDetails = () => {
 
             //update project
             const projectRef = doc(db, 'projects',proposalDetails.projectID);
-            await updateDoc(projectRef, { statusState: 4, freelancerID: proposalDetails.freelancerID});
+            await updateDoc(projectRef, {
+                statusState: 4,
+                freelancerID: proposalDetails.freelancerID});
 
             //update proposal
             const proposal_key = `${proposalDetails.projectID}_${proposalDetails.freelancerID}`
@@ -156,6 +159,31 @@ const ApplicationDetails = () => {
             const proposal_key = `${proposalDetails.projectID}_${proposalDetails.freelancerID}`
             const proposalRef = doc(db, 'proposals',proposal_key);
             await deleteDoc(proposalRef);
+
+            //delete cv
+            if (proposalDetails.cvUrl) {
+                const storage = getStorage();
+                const fileRef = ref(storage, proposalDetails.cvUrl);
+                try {
+                    await deleteObject(fileRef);
+                    console.log('cv deleted successfully');
+                } catch (error) {
+                    console.error('Error deleting cv:', error);
+                }
+            }
+    
+            //delete proposal
+            if (proposalDetails.proposalUrl) {
+                const storage = getStorage();
+                const fileRef = ref(storage, proposalDetails.proposalUrl);
+    
+                try {
+                    await deleteObject(fileRef);
+                    console.log('proposal deleted successfully');
+                } catch (error) {
+                    console.error('Error deleting proposal:', error);
+                }
+            }
 
         } catch (error) {
             console.error("Error updating priority: ", error);

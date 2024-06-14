@@ -176,7 +176,8 @@ const ApplicationForm = () => {
   };
 
   const uploadFile = async (file, folder) => {
-    const storageRef = ref(storage, `${folder}/${location.state.project_key.projectID}_${location.state.user_key.freelancerID}`);
+    const storageRef = ref(storage, `${folder}/
+      ${location.state.project_key.projectID}_${location.state.user_key.freelancerID}`);
     await uploadBytes(storageRef, file);
     return await getDownloadURL(storageRef);
   };

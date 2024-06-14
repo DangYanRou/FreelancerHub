@@ -242,13 +242,14 @@ const FreelancerProjectsApplied = () => {
         const proposalDoc = proposalSnapshot.docs[0];
         if (proposalDoc) {
             const proposalData = proposalDoc.data();
+
+            // Delete record
             await deleteDoc(doc(db, 'proposals', proposalDoc.id));
 
-            // Delete CV
+            // Delete CV file
             if (proposalData.cvUrl) {
                 const storage = getStorage();
                 const fileRef = ref(storage, proposalData.cvUrl);
-
                 try {
                     await deleteObject(fileRef);
                     console.log('CV deleted successfully');
@@ -257,11 +258,10 @@ const FreelancerProjectsApplied = () => {
                 }
             }
 
-            // Delete proposal
+            // Delete proposal file
             if (proposalData.proposalUrl) {
                 const storage = getStorage();
                 const fileRef = ref(storage, proposalData.proposalUrl);
-
                 try {
                     await deleteObject(fileRef);
                     console.log('Proposal deleted successfully');

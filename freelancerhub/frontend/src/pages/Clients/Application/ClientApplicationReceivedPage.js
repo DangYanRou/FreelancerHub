@@ -21,9 +21,10 @@ const ClientApplicationReceivedPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const notiQuery = query(collection(db, 'proposals'), orderBy('statusState', 'desc'), orderBy('statusTime', 'desc'), where('projectID', '==', projectID));
-        const notiSnapshot = await getDocs(notiQuery);
-        const applications = notiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const appQuery = query(collection(db, 'proposals'), orderBy('statusState', 'desc'),
+          orderBy('statusTime', 'desc'), where('projectID', '==', projectID));
+        const appSnapshot = await getDocs(appQuery);
+        const applications = appSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
         const fetchRelatedData = async (applications) => {
           const projectFetchPromises = applications.map(async (application) => {
@@ -78,11 +79,12 @@ const ClientApplicationReceivedPage = () => {
         console.error("Error fetching data: ", error);
       } finally {
         setLoading(false);
+        console.log("Applications Received:", data);
       }
     };
 
     fetchData();
-  }, [projectID]);
+  }, [projectID, data]);
 
   if (loading) {
     return <Loading />;
